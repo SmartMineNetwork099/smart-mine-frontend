@@ -1,9 +1,8 @@
 'use client';
-import React from 'react';
-interface TabProps {
-    activeTab: string;
-    onTabChange: (tab: string) => void;
-}
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from 'rizzui';
+
 
 const tabs = [
     { label: 'Dashboard', link: 'dashboard' },
@@ -13,21 +12,28 @@ const tabs = [
     { label: 'Royalty & Rewards', link: 'royaltyAndRewards' },
 ];
 
-const Tab: React.FC<TabProps> = ({ activeTab, onTabChange }) => {
+const Tab = () => {
+    const [activeTab, setActiveTab] = useState('dashboard');
+    const router = useRouter();
+
+    const handleTabClick = (link: string) => {
+        setActiveTab(link);
+        router.push(`/${link}`);
+    };
     return (
-        <div className="flex gap-4 mb-4">
-            {tabs.map((tab) => (
-                <button
+        <div className="flex items-center justify-start lg:justify-center gap-4 overflow-x-auto px-2">
+            {tabs?.map((tab) => (
+                <Button
                     key={tab?.link}
-                    onClick={() => onTabChange(tab?.link)}
-                    className={`px-8 py-3 rounded-lg font-semibold text-lg transition 
+                    onClick={() => handleTabClick(tab?.link)}
+                    className={`min-w-36 sm:min-w-44 py-3 rounded-lg font-semibold text-xs sm:text-sm transition text-black
                         ${activeTab === tab?.link
-                            ? 'bg-yellow-400 text-black shadow-md'
-                            : 'bg-white text-gray-800 hover:bg-gray-100'
+                            ? 'bg-yellow-300'
+                            : 'bg-white'
                         }`}
                 >
                     {tab?.label}
-                </button>
+                </Button>
             ))}
         </div>
     );
