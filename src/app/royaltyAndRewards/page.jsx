@@ -1,5 +1,5 @@
 import React from 'react'
-import RoyaltyAndRewards from '@/moduleS/royaltyAndRewards/index';
+import RoyaltyAndRewards from '@/modules/royaltyAndRewards/index';
 const page = () => {
     return (
         <>
