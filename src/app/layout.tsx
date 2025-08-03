@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import Tab from '@/components/Tab';
 import Header from '@/components/Header';
 import './globals.css';

@@ -5,7 +5,7 @@ import { LuCopy, LuCopyCheck } from "react-icons/lu";
 
 
 const ReferralLink = () => {
-    const [referralLink, setReferralLink] = useState('https://example.com/referral?code=12345');
+    const [referralLink] = useState('https://example.com/referral?code=12345');
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {

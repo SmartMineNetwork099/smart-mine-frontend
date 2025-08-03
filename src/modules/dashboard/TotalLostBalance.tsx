@@ -1,5 +1,4 @@
 import React from 'react'
-import { SiBinance } from 'react-icons/si';
 import { AiOutlineWarning } from 'react-icons/ai';
 import { IoGiftOutline } from 'react-icons/io5';
 

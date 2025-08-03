@@ -1,6 +1,5 @@
 'use client';
 import React from 'react'
-import { Text } from 'rizzui'
 import TodayBonus from '@/modules/dashboard/TodayBonus';
 import UserDetails from '@/modules/dashboard/UserDetails';
 import ReferralLink from '@/modules/dashboard/ReferralLink';

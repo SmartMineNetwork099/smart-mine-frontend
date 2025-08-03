@@ -1,5 +1,4 @@
 import React from 'react';
-import { GrAmazon } from 'react-icons/gr';
 import { Text } from 'rizzui';
 
 const employees = [
