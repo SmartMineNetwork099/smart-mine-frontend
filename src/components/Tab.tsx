@@ -21,7 +21,7 @@ const Tab = () => {
         router.push(`/${link}`);
     };
     return (
-        <div className="flex items-center justify-start lg:justify-center gap-4 overflow-x-auto px-2">
+        <div className="flex items-center justify-start lg:justify-center gap-4 overflow-x-auto px-2 scrollbar-hidden">
             {tabs?.map((tab) => (
                 <Button
                     key={tab?.link}

@@ -3,6 +3,8 @@ import React from 'react';
 import Tab from '@/components/Tab';
 import Header from '@/components/Header';
 import './globals.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 
   return (
@@ -15,6 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
           <main className="p-4">
             {children}
+            <ToastContainer />
           </main>
         </div>
       </body>

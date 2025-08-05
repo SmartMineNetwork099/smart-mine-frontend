@@ -7,14 +7,16 @@ import Summery from '@/modules/dashboard/Summery';
 import TotalLostBalance from '@/modules/dashboard/TotalLostBalance';
 import RankBonus from '@/modules/dashboard/RankBonus';
 import RecentBonus from '@/modules/dashboard/RecentBonus';
+import CollectCoins from '@/modules/dashboard/CollectCoins';
 const index = () => {
   return (
     <>
       <TodayBonus />
       <UserDetails />
+      <TotalLostBalance />
+      <CollectCoins />
       <ReferralLink />
       <Summery />
-      <TotalLostBalance />
       <RankBonus />
       <RecentBonus />
     </>
