@@ -1,10 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 const colors = require("tailwindcss/colors");
 
+
 module.exports = {
     content: [
-        "./node_modules/rizzui/dist/*.{js,ts,jsx,tsx}", 
+        "./node_modules/rizzui/dist/*.{js,ts,jsx,tsx}",
         "./src/**/*.{js,ts,jsx,tsx,mdx}",],
+
+
     theme: {
         extend: {
             colors: {
@@ -79,8 +82,8 @@ module.exports = {
                     dark: colors.emerald[700]
                 }
             },
-        
-    },
+
+        },
     },
     plugins: [require("@tailwindcss/forms")], // ⚠️ Required @tailwindcss/forms plugin.
 };
