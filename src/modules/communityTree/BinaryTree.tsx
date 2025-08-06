@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+interface TreeNode {
+  id: string;
+  children: TreeNode[];
+}
 
 const sampleData = {
   id: "752058",
@@ -38,12 +42,12 @@ const UserNode = ({ id }: { id: string }) => (
 );
 
 // 🔸 Level 2 component (for grandchildren)
-const LevelTwoNode = ({ children }: { children: any[] }) => (
+const LevelTwoNode = ({ data }: { data: TreeNode[] }) => (
   <div className="flex justify-center space-x-8 sm:space-x-16 relative">
     {/* Horizontal line */}
     <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[4.6rem] sm:w-[7.1rem] h-0.5 bg-green-500 z-0 overflow-hidden" />
 
-    {children?.map((child, idx) => (
+    {data?.map((child) => (
       <div key={child?.id} className="flex flex-col items-center relative">
         {/* Green vertical line */}
         <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
@@ -54,7 +58,7 @@ const LevelTwoNode = ({ children }: { children: any[] }) => (
 );
 
 // 🔸 Level 1 component (for direct children)
-const LevelOneNode = ({ node }: { node: any }) => (
+const LevelOneNode = ({ node }: { node: TreeNode }) => (
   <div className="flex flex-col items-center">
     {/* Parent Node */}
     <UserNode id={node?.id} />
@@ -67,7 +71,7 @@ const LevelOneNode = ({ node }: { node: any }) => (
       {/* Green horizontal line */}
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[8rem] sm:w-[15rem] h-0.5 bg-green-500 z-0 overflow-hidden" />
 
-      {node?.children?.map((child: any, idx: number) => (
+      {node?.children?.map((child: TreeNode) => (
         <div key={child?.id} className="flex flex-col items-center relative">
           {/* Green vertical line */}
           <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
@@ -77,7 +81,7 @@ const LevelOneNode = ({ node }: { node: any }) => (
           <div className="h-6 w-0.5 bg-red-500 z-10"></div>
 
           {/* Level 2 children */}
-          <LevelTwoNode children={child?.children} />
+          <LevelTwoNode data={child?.children} />
         </div>
       ))}
     </div>
@@ -86,18 +90,10 @@ const LevelOneNode = ({ node }: { node: any }) => (
 
 // 🔹 Main Tree
 const BinaryTree = () => {
-  const [rootNode, setRootNode] = useState(sampleData);
+  const [rootNode] = useState(sampleData);
 
   return (
-    <div className="">
-      {/* <h1 className="text-3xl font-bold text-green-500 mb-6">Community Tree</h1> */}
-
-      {/* Root Node */}
-      {/* <UserNode id={rootNode?.id} /> */}
-
-      {/* Red vertical line */}
-      {/* <div className="h-6 w-0.5 bg-red-500 my-1 z-10"></div> */}
-
+    <div>
       {/* Level 1 + Level 2 */}
       <LevelOneNode node={rootNode} />
     </div>
