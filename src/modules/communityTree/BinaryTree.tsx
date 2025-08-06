@@ -83,7 +83,7 @@ const BinaryTree = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black p-6 flex flex-col items-center">
+    <div className="min-h-screen p-6 flex flex-col items-center">
       <h1 className="text-xl sm:text-2xl text-green-500 font-bold mb-4">Community Tree</h1>
       <LevelOneNode node={rootNode} onNodeClick={handleNodeClick} />
     </div>
