@@ -12,7 +12,7 @@ import Tab from '@/components/Tab'
 const tabs = [
   { label: 'Staking' },
   { label: 'Binery' },
-  { label: 'Gaming' }
+  { label: 'Gaming' } 
 ];
 const index = () => {
   return (
