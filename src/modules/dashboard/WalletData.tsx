@@ -1,36 +1,30 @@
-'use client'
 import React from 'react'
 import { Text } from 'rizzui';
 
-const userData = [
+const walletData = [
     {
-        name: 'My Wallet Fund',
+        name: 'Available Balance',
         transactions: '0.001234 ST',
     },
     {
-        name: 'User ID',
-        transactions: '12345',
+        name: 'Today Income',
+        transactions: '0.245 ST',
     },
     {
-        name: 'Rank',
-        transactions: 'Hero',
+        name: 'Total Income',
+        transactions: '0.03736 ST',
     },
     {
-        name: 'Activation Date',
-        transactions: '24-03-2023',
+        name: 'Total Withdraw',
+        transactions: '0.6374 ST',
     },
-    {
-        name: 'Referred By',
-        transactions: '978675',
-    },
+  
 ];
-const UserDetails = () => {
-
+const WalletData = () => {
     return (
         <>
-
             <div className="flex flex-col gap-4 p-4 flex-grow bg-gray-600 rounded-lg mt-4">
-                {userData?.map((item: { name: string; transactions: string }, index: number) => (
+                {walletData?.map((item: { name: string; transactions: string }, index: number) => (
                     <div key={index} className="flex items-center justify-between">
                         <div className='w-1/2'>
                             <Text className="font-medium p-1 text-white text-sm sm:text-base">
@@ -56,4 +50,4 @@ const UserDetails = () => {
     )
 }
 
-export default UserDetails
+export default WalletData
