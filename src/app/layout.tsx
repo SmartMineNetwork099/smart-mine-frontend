@@ -9,9 +9,9 @@ import { IoGameControllerOutline } from "react-icons/io5";
 import { TbBinaryTree } from "react-icons/tb";
 import { LiaDonateSolid } from "react-icons/lia";
 const tabs = [
-  { label: 'Staking',icon:LiaDonateSolid   },
-  { label: 'Binary',icon:TbBinaryTree  },
-  { label: 'Gaming' ,icon:IoGameControllerOutline}
+  { label: 'Stacking', icon: LiaDonateSolid, link: 'stacking/dashboard' },
+  { label: 'Binary', icon: TbBinaryTree, link: 'binary/dashboard' },
+  { label: 'Gaming', icon: IoGameControllerOutline, link: 'gaming' }
 ];
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 
