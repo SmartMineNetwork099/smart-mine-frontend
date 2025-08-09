@@ -36,7 +36,7 @@ const Tab: React.FC<TabProps> = ({ tabs, style, heading }) => {
                         <Button
                             key={tab?.label}
                             onClick={() => handleTabClick(tab?.link)}
-                            className={`${style} py-3 rounded-lg font-semibold text-xs sm:text-sm transition text-black cursor-pointer
+                            className={`${style} py-3 rounded-lg font-semibold text-sm transition text-black cursor-pointer
                         ${activeTab === tab?.link
                                     ? 'bg-yellow-300'
                                     : 'bg-white'
