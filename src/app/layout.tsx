@@ -8,10 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { IoGameControllerOutline } from "react-icons/io5";
 import { TbBinaryTree } from "react-icons/tb";
 import { LiaDonateSolid } from "react-icons/lia";
-
-
-
-
 const tabs = [
   { label: 'Staking',icon:LiaDonateSolid   },
   { label: 'Binary',icon:TbBinaryTree  },

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from 'rizzui';
 
 const employees = [
     {
@@ -89,7 +88,7 @@ const RecentBonus = () => {
     return (
         <>
             <div className='mt-6 mb-4'>
-                <Text className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>Recent <span className='text-green-500'>Bonus</span></Text>
+                <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>Recent <span className='text-green-500'>Bonus</span></p>
             </div>
             <div className="overflow-auto w-full max-h-[400px] md:max-h-[500px] rounded-lg">
                 <table className="table-fixed min-w-[600px] sm:min-w-[900px] w-full text-sm">

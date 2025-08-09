@@ -4,7 +4,6 @@ import { IoGiftOutline } from 'react-icons/io5';
 import { LiaUsersSolid } from 'react-icons/lia';
 import { PiHandDeposit } from 'react-icons/pi';
 import { RiTeamLine } from 'react-icons/ri';
-import { Text } from 'rizzui';
 
 const summeryData: {
     name: string;
@@ -82,10 +81,10 @@ const Summery = () => {
                             className="flex gap-2 items-center justify-between text-white rounded-lg px-3 sm:px-6 py-3 bg-gray-600"
                         >
                             <div>
-                                <Text className="font-semibold text-sm sm:text-base mb-1 text-yellow-400">
+                                <p className="font-semibold text-sm sm:text-base mb-1 text-yellow-400">
                                     {item.name}
-                                </Text>
-                                <Text className="font-semibold text-sm">
+                                </p>
+                                <p className="font-semibold text-sm">
                                     {item.price.includes('ST') ? (
                                         <>
                                             {item.price.replace(' ST', '')}{' '}
@@ -94,7 +93,7 @@ const Summery = () => {
                                     ) : (
                                         item.price
                                     )}
-                                </Text>
+                                </p>
                             </div>
                             <div>
                                 <Icon className="text-2xl" />

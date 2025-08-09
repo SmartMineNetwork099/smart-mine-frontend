@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react'
-import { Text, Input } from "rizzui";
+import { Input } from "rizzui";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";
 
 
@@ -17,7 +17,7 @@ const ReferralLink = () => {
     return (
         <>
             <div className='bg-gray-600 p-4 rounded-lg mt-4'>
-                <Text className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>Referral <span className='text-green-500'>Link</span></Text>
+                <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>Referral <span className='text-green-500'>Link</span></p>
                 <div className='flex items-center justify-between rounded-lg border-2 border-green-500 mt-3'>
                     <Input
                         className=' w-11/12 border-e-2 border-green-500 text-gray-300 px-2 focus:outline-none'

@@ -1,5 +1,4 @@
 import React from 'react'
-import { Text } from 'rizzui'
 const RankBonusData = [
     { rank: 'Beginner', amount: 0.09474 },
     { rank: 'Influencer', amount: 0.04845 },
@@ -24,7 +23,7 @@ const RankBonus = () => {
     return (
         <>
         <div className='mt-6 mb-2'>
-            <Text className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>Rank <span className='text-green-500'>Bonus</span></Text>
+            <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>Rank <span className='text-green-500'>Bonus</span></p>
         </div>
             <div className="p-2 sm:p-4">
                 <div className="flex justify-between items-center gap-4 sm:gap-10 mb-4 w-full text-green-500">
@@ -34,14 +33,14 @@ const RankBonus = () => {
                 {RankBonusData?.map((data, index) => (
                     <div key={index} className="flex justify-between items-center gap-4 sm:gap-10 mb-2 ">
                         <div className=" p-2 rounded-lg  text-center  bg-gray-600 w-1/2">
-                            <Text className='font-medium text-white'>
+                            <p className='font-medium text-white'>
                                 {data?.rank}
-                            </Text>
+                            </p>
                         </div>
                         <div className=" p-2 rounded-lg  text-center  text-center bg-gray-600 w-1/2">
-                            <Text className='font-medium text-white'>
+                            <p className='font-medium text-white'>
                                 {data?.amount} <span className='text-yellow-400 font-semibold'>ST</span>
-                            </Text>
+                            </p>
                         </div>
                     </div>
                 ))}

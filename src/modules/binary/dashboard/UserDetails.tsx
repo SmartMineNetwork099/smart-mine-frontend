@@ -1,6 +1,5 @@
 'use client'
 import React from 'react'
-import { Text } from 'rizzui';
 
 const userData = [
     {
@@ -33,12 +32,12 @@ const UserDetails = () => {
                 {userData?.map((item: { name: string; transactions: string }, index: number) => (
                     <div key={index} className="flex items-center justify-between">
                         <div className='w-1/2'>
-                            <Text className="font-medium p-1 text-white text-sm sm:text-base">
+                            <p className="font-medium p-1 text-white text-sm sm:text-base">
                                 {item?.name}
-                            </Text>
+                            </p>
                         </div>
                         <div className="w-1/2 sm:w-auto text-left">
-                            <Text className="font-medium text-black bg-white rounded-lg py-1 px-4 text-sm sm:text-base inline sm:block">
+                            <p className="font-medium text-black bg-white rounded-lg py-1 px-4 text-sm sm:text-base inline sm:block">
                                 {item.transactions.includes('ST') ? (
                                     <>
                                         {item?.transactions.replace(' ST', '')}{' '}
@@ -47,7 +46,7 @@ const UserDetails = () => {
                                 ) : (
                                     item?.transactions
                                 )}
-                            </Text>
+                            </p>
                         </div>
                     </div>
                 ))}

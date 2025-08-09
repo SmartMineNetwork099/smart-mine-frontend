@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Text, Button } from 'rizzui';
+import { Button } from 'rizzui';
 import { toast } from 'react-toastify';
 import { FaHandHoldingDollar } from 'react-icons/fa6';
 import { ClockLoader } from 'react-spinners';
@@ -17,7 +17,6 @@ const CollectCoins = () => {
         }
         return null;
     });
-
     const [timeLeft, setTimeLeft] = useState<number>(0);
 
     useEffect(() => {
@@ -51,7 +50,7 @@ const CollectCoins = () => {
     return (
         <div className="flex items-center justify-between rounded-2xl p-4 sm:p-6 w-full mx-auto border-2 border-red-400 bg-gradient-to-r from-[#ff512f] to-[#f9d423] relative shadow-lg mt-4">
             <div className='w-[70%]'>
-                <Text className="text-white font-semibold text-sm sm:text-lg mt-1">Act now to stop losing bonus!</Text>
+                <p className="text-white font-semibold text-sm sm:text-lg mt-1">Act now to stop losing bonus!</p>
                 <Button
                     onClick={handleClaim}
                     disabled={isDisabled}
