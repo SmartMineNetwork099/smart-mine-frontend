@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react'
 import { Text, Input } from "rizzui";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";

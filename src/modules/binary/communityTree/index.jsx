@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import BinaryTree from '@/modules/communityTree/BinaryTree'
+import BinaryTree from '@/modules/binary/communityTree/BinaryTree'
 
 const index = () => {
   return (

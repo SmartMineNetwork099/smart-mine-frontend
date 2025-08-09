@@ -1,9 +1,9 @@
 import React from 'react'
-import RoyaltyAndRewards from '@/modules/royaltyAndRewards/index';
+import Index from '@/modules/stacking/index'
 const page = () => {
     return (
         <>
-            <RoyaltyAndRewards />
+            <Index />
         </>
     )
 }

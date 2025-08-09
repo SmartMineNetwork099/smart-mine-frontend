@@ -1,5 +1,5 @@
 import React from 'react'
-import CommunityInfo from '@/modules/communityInfo/index';
+import CommunityInfo from '@/modules/binary/communityInfo/index';
 const page = () => {
     return (
         <>

@@ -1,9 +1,10 @@
 import React from 'react'
-import CommunityTree from '@/modules/communityTree/index';
+import Dashboard from '@/modules/binary/dashboard/index'
+
 const page = () => {
     return (
         <>
-            <CommunityTree />
+            <Dashboard />
         </>
     )
 }
