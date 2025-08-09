@@ -16,10 +16,11 @@ interface TabProps {
     tabs: TabItem[];
     style?: string;
     heading?: string;
+    defaultLink?:string
 }
 
-const Tab: React.FC<TabProps> = ({ tabs, style, heading }) => {
-    const [activeTab, setActiveTab] = useState('dashboard');
+const Tab: React.FC<TabProps> = ({ tabs, style, heading,defaultLink }) => {
+    const [activeTab, setActiveTab] = useState(defaultLink);
     const router = useRouter();
 
     const handleTabClick = (link?: string) => {

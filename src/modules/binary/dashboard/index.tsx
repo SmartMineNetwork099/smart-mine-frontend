@@ -4,14 +4,15 @@ import WalletData from '@/components/WalletData';
 import Summery from '@/modules/binary/dashboard/Summery';
 import RankBonus from '@/modules/binary/dashboard/RankBonus';
 import RecentBonus from '@/modules/binary/dashboard/RecentBonus';
+import Tab from '@/components/Tab';
 
-const tabs2 = [
-  { label: 'Dashboard', link: 'dashboard' },
-  { label: 'My Team', link: 'myTeam' },
-  { label: 'Community Tree', link: 'communityTree' },
-  { label: 'Community Info', link: 'communityInfo' },
-  { label: 'Royalty & Rewards', link: 'royaltyAndRewards' },
-];
+// const tabs2 = [
+//   { label: 'Dashboard', link: 'binary/dashboard' },
+//   { label: 'My Team', link: 'binary/myTeam' },
+//   { label: 'Community Tree', link: 'binary/communityTree' },
+//   { label: 'Community Info', link: 'binary/communityInfo' },
+//   { label: 'Royalty & Rewards', link: 'binary/royaltyAndRewards' },
+// ];
 const index = () => {
   return (
     <>
@@ -22,7 +23,7 @@ const index = () => {
       {/* <UserDetails /> */}
       {/* <TotalLostBalance /> */}
 
-     
+
       <Summery />
       <RankBonus />
       <RecentBonus />
