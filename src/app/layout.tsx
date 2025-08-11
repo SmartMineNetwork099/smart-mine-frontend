@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import './globals.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { IoGameControllerOutline, IoGiftOutline } from "react-icons/io5";
+import { IoGameControllerOutline } from "react-icons/io5";
 import { TbBinaryTree } from "react-icons/tb";
 import { LiaDonateSolid } from "react-icons/lia";
 import { usePathname } from 'next/navigation';
