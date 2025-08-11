@@ -27,7 +27,6 @@ const walletInfo = [
 const WalletData = () => {
     return (
         <>
-            <p>Wallet data</p>
             <Card className="flex flex-col gap-4 flex-grow">
                 {walletInfo?.map((item: { name: string; transactions: string }, index: number) => (
                     <div key={index} className="flex items-center justify-between">
