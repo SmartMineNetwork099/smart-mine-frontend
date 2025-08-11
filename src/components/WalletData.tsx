@@ -3,11 +3,11 @@ import Card from '@/components/Card';
 
 const walletInfo = [
     {
-        name: 'Available Balance',
+        name: 'Today Income',
         transactions: '0.001234 ST',
     },
     {
-        name: 'Today Income',
+        name: 'Level Income',
         transactions: '0.245 ST',
     },
     {
@@ -15,7 +15,7 @@ const walletInfo = [
         transactions: '0.03736 ST',
     },
     {
-        name: 'Total Withdraw',
+        name: 'Binary Withdraw',
         transactions: '0.6374 ST',
     },
 
