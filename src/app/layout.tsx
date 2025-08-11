@@ -12,6 +12,7 @@ import { usePathname } from 'next/navigation';
 import { RiDashboardHorizontalLine } from "react-icons/ri";
 import { RiTeamLine } from "react-icons/ri";
 import { MdOutlineInfo } from "react-icons/md";
+import WalletData from '@/components/WalletData';
 
 const tabs = [
   { label: 'Stacking', icon: LiaDonateSolid, link: 'stacking/dashboard' },
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname();
 
   const isBinaryPage = pathname.includes('/binary');
+  const isNotGammingPage = !pathname.includes('/gaming');
   return (
     <html lang="en">
       <body className="bg-gray-200">
@@ -36,6 +38,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="w-full p-4">
             <Tab tabs={tabs} style='min-w-20 sm:w-32' defaultLink='stacking/dashboard' />
           </div>
+          {isNotGammingPage &&
+            <div className="w-full p-4 pt-0">
+              <WalletData />
+            </div>
+          }
           {isBinaryPage && (
             <div className="w-full p-4">
               <Tab tabs={tabs2} style='min-w-40 sm:min-w-44' defaultLink='binary/dashboard' />

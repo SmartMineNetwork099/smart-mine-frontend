@@ -15,7 +15,11 @@ const walletInfo = [
         transactions: '0.03736 ST',
     },
     {
-        name: 'Binary Withdraw',
+        name: 'Binary Income',
+        transactions: '0.6374 ST',
+    },
+    {
+        name: 'Total Withdraw',
         transactions: '0.6374 ST',
     },
 
