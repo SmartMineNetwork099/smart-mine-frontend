@@ -21,7 +21,6 @@ const tabs = [
 ];
 const tabs2 = [
   { label: 'Dashboard', icon: RiDashboardHorizontalLine, link: 'binary/dashboard' },
-  { label: 'My Team', icon: RiTeamLine, link: 'binary/myTeam' },
   { label: 'Community Tree', icon: TbBinaryTree, link: 'binary/communityTree' },
   { label: 'Community Info', icon: MdOutlineInfo, link: 'binary/communityInfo' },
 ];
