@@ -17,7 +17,7 @@ const summeryData: {
 
 const Summery = () => {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             {summeryData.map((item, index) => {
                 const Icon = item.icon;
 
@@ -40,7 +40,7 @@ const Summery = () => {
                             </p>
                         </div>
                         <div>
-                            <Icon className="text-2xl" />
+                            <Icon className="text-4xl" />
                         </div>
                     </Card>
                 );
