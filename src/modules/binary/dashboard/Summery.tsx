@@ -8,20 +8,11 @@ import { RiTeamLine } from 'react-icons/ri';
 
 const summeryData: {
     name: string;
-    price?: string;
     number?: string;
     icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }[] = [
-    { name: 'Total Bonus', price: '0.001234', icon: IoGiftOutline },
-    { name: 'Total Deposit', price: '1.753849', icon: PiHandDeposit },
     { name: 'Direct Referrals', number: '0', icon: RiTeamLine },
     { name: 'My Community size', number: '234', icon: LiaUsersSolid },
-    { name: 'Direct Bonus', price: '2.001234', icon: IoGiftOutline },
-    { name: 'Referral Bonus', price: '9.345683', icon: IoGiftOutline },
-    { name: 'Upgrade Bonus', price: '3.001234', icon: IoGiftOutline },
-    { name: 'Level Bonus', price: '0.0000', icon: IoGiftOutline },
-    { name: 'Royalty Bonus', price: '10', icon: IoGiftOutline },
-    { name: 'Reward Bonus', price: '44.231234', icon: IoGiftOutline },
 ];
 
 const Summery = () => {
@@ -30,7 +21,7 @@ const Summery = () => {
             {summeryData.map((item, index) => {
                 const Icon = item.icon;
 
-                const value = item.price ?? item.number ?? '0';
+                const value = item.number ?? '0';
                 const numericValue = parseFloat(value);
                 const valueColorClass =
                     numericValue <= 0 ? 'text-red-500' : 'text-green-500';
@@ -42,15 +33,9 @@ const Summery = () => {
                     >
                         <div>
                             <p className="font-semibold text-sm sm:text-base mb-1 text-yellow-400">
-                                {item.name}
+                                {item?.name}
                             </p>
                             <p className={`font-semibold text-sm ${valueColorClass}`}>
-                                {item?.price && (
-                                    <>
-                                        {item.price}{' '}
-                                        <span className="text-yellow-400">ST</span>
-                                    </>
-                                )}
                                 {item?.number && <>{item?.number}</>}
                             </p>
                         </div>
