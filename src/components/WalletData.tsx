@@ -1,4 +1,5 @@
 import React from 'react'
+import Card from '@/components/Card';
 
 const walletInfo = [
     {
@@ -23,7 +24,7 @@ const WalletData = () => {
     return (
         <>
             <p>Wallet data</p>
-            <div className="flex flex-col gap-4 p-4 flex-grow bg-gray-600 rounded-lg">
+            <Card className="flex flex-col gap-4 flex-grow">
                 {walletInfo?.map((item: { name: string; transactions: string }, index: number) => (
                     <div key={index} className="flex items-center justify-between">
                         <div className='w-1/2'>
@@ -45,7 +46,7 @@ const WalletData = () => {
                         </div>
                     </div>
                 ))}
-            </div>
+            </Card>
         </>
     )
 }

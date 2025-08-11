@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { Input } from "rizzui";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";
+import Card from '@/components/Card';
 
 
 const ReferralLink = () => {
@@ -16,7 +17,7 @@ const ReferralLink = () => {
 
     return (
         <>
-            <div className='bg-gray-600 p-4 rounded-lg mt-4'>
+            <Card className=' mt-4'>
                 <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>Referral <span className='text-green-500'>Link</span></p>
                 <div className='flex items-center justify-between rounded-lg border-2 border-green-500 mt-3'>
                     <Input
@@ -32,7 +33,7 @@ const ReferralLink = () => {
                     </div>
                 </div>
                 
-            </div>
+            </Card>
         </>
     )
 }

@@ -1,4 +1,5 @@
 'use client'
+import Card from '@/components/Card';
 import React from 'react'
 
 const userData = [
@@ -28,7 +29,7 @@ const UserDetails = () => {
     return (
         <>
 
-            <div className="flex flex-col gap-4 p-4 flex-grow bg-gray-600 rounded-lg mt-4">
+            <Card className="flex flex-col gap-4 flex-grow mt-4">
                 {userData?.map((item: { name: string; transactions: string }, index: number) => (
                     <div key={index} className="flex items-center justify-between">
                         <div className='w-1/2'>
@@ -50,7 +51,7 @@ const UserDetails = () => {
                         </div>
                     </div>
                 ))}
-            </div>
+            </Card>
         </>
     )
 }

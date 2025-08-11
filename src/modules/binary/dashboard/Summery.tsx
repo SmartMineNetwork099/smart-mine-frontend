@@ -1,4 +1,5 @@
 'use client';
+import Card from '@/components/Card';
 import React from 'react';
 import { IoGiftOutline } from 'react-icons/io5';
 import { LiaUsersSolid } from 'react-icons/lia';
@@ -76,9 +77,9 @@ const Summery = () => {
                 ) => {
                     const Icon = item.icon;
                     return (
-                        <div
+                        <Card
                             key={index}
-                            className="flex gap-2 items-center justify-between text-white rounded-lg px-3 sm:px-6 py-3 bg-gray-600"
+                            className="flex gap-2 items-center justify-between text-white px-3 sm:px-6 py-3"
                         >
                             <div>
                                 <p className="font-semibold text-sm sm:text-base mb-1 text-yellow-400">
@@ -98,7 +99,7 @@ const Summery = () => {
                             <div>
                                 <Icon className="text-2xl" />
                             </div>
-                        </div>
+                        </Card>
                     );
                 }
             )}

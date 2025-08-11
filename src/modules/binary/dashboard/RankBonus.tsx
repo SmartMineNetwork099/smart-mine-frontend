@@ -1,3 +1,4 @@
+import Card from '@/components/Card';
 import React from 'react'
 const RankBonusData = [
     { rank: 'Beginner', amount: 0.09474 },
@@ -32,16 +33,16 @@ const RankBonus = () => {
                 </div>
                 {RankBonusData?.map((data, index) => (
                     <div key={index} className="flex justify-between items-center gap-4 sm:gap-10 mb-2 ">
-                        <div className=" p-2 rounded-lg  text-center  bg-gray-600 w-1/2">
+                        <Card className=" p-2 text-center w-1/2">
                             <p className='font-medium text-white'>
                                 {data?.rank}
                             </p>
-                        </div>
-                        <div className=" p-2 rounded-lg  text-center  text-center bg-gray-600 w-1/2">
+                        </Card>
+                        <Card className=" p-2 text-center text-center w-1/2">
                             <p className='font-medium text-white'>
                                 {data?.amount} <span className='text-yellow-400 font-semibold'>ST</span>
                             </p>
-                        </div>
+                        </Card>
                     </div>
                 ))}
             </div>
