@@ -10,7 +10,6 @@ import { TbBinaryTree } from "react-icons/tb";
 import { LiaDonateSolid } from "react-icons/lia";
 import { usePathname } from 'next/navigation';
 import { RiDashboardHorizontalLine } from "react-icons/ri";
-import { RiTeamLine } from "react-icons/ri";
 import { MdOutlineInfo } from "react-icons/md";
 import WalletData from '@/components/WalletData';
 
