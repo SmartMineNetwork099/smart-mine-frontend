@@ -59,8 +59,8 @@ const index = () => {
   return (
     <>
       <div className='h-screen p-4'>
-        <div className=''>
-          <Pagination currentPage={page} totalPages={20} onPageChange={setPage} />
+        <div className='flex items-center justify-start md:justify-center overflow-x-auto scrollbar-hidden'>
+          <Pagination currentPage={page} totalPages={15} onPageChange={setPage} />
         </div>
         <div className="overflow-auto w-full max-h-[400px] md:max-h-[500px] rounded-lg mt-4">
           <table className="table-fixed min-w-[600px] sm:min-w-[900px] w-full text-sm">
