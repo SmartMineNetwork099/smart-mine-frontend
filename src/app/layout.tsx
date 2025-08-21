@@ -28,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   const isBinaryPage = pathname.includes('/binary');
   const isNotGammingPage = !pathname.includes('/gaming');
+  
   return (
     <html lang="en">
       <body className="bg-gray-200">
