@@ -29,8 +29,8 @@ const sampleData: TreeNode = {
 };
 
 // 🔹 Reusable Node
-const UserNode = ({ id, onClick }: { id: string; onClick?: () => void }) => (
-  <div className="flex flex-col items-center cursor-pointer" onClick={onClick}>
+const UserNode = ({ id, onClickModel,onClickTree }: { id: string; onClickModel?: () => void; onClickTree?: () => void }) => (
+  <div className="flex flex-col items-center cursor-pointer" >
     <div className="w-5 sm:w-10 h-5 sm:h-10 sm:w-12 sm:h-12 rounded-full bg-gray-900 border-4 border-yellow-400 flex items-center justify-center z-10">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@ const UserNode = ({ id, onClick }: { id: string; onClick?: () => void }) => (
       </svg>
     </div>
     <p className="text-cyan-400 mt-1 text-xs sm:text-sm font-mono font-semibold">{id}</p>
-    <Button className="flex items-center justify-center gap-1 text-black bg-green-500 border-0 !py-1 !px-2 mt-2"> <IoIosArrowDown /></Button>
+    <Button className="flex items-center justify-center gap-1 text-black bg-green-500 border-0 !py-1 !px-2 mt-2" onClick={onClickTree}> <IoIosArrowDown /></Button>
   </div>
 );
 
@@ -53,7 +53,7 @@ const LevelTwoNode = ({ data, onNodeClick }: { data: TreeNode[]; onNodeClick: (n
     {data?.map((child) => (
       <div key={child.id} className="flex flex-col items-center relative">
         <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
-        <UserNode id={child.id} onClick={() => onNodeClick(child)} />
+        <UserNode id={child.id} onClickTree={() => onNodeClick(child)} />
       </div>
     ))}
   </div>
@@ -62,7 +62,7 @@ const LevelTwoNode = ({ data, onNodeClick }: { data: TreeNode[]; onNodeClick: (n
 // 🔸 Level 1 Nodes
 const LevelOneNode = ({ node, onNodeClick }: { node: TreeNode; onNodeClick: (node: TreeNode) => void }) => (
   <div className="flex flex-col items-center">
-    <UserNode id={node.id} onClick={() => onNodeClick(node)} />
+    <UserNode id={node.id} onClickTree={() => onNodeClick(node)} />
     {
       node?.children.length > 0 &&
       <>
@@ -72,7 +72,7 @@ const LevelOneNode = ({ node, onNodeClick }: { node: TreeNode; onNodeClick: (nod
           {node.children?.map((child) => (
             <div key={child.id} className="flex flex-col items-center relative">
               <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
-              <UserNode id={child.id} onClick={() => onNodeClick(child)} />
+              <UserNode id={child.id} onClickTree={() => onNodeClick(child)} />
               {
                 child.children.length > 0 &&
                 <>
