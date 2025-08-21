@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { Button } from "rizzui/button";
+import Model from "@/components/Model";
 
 interface TreeNode {
   id: string;
@@ -29,25 +30,35 @@ const sampleData: TreeNode = {
 };
 
 // 🔹 Reusable Node
-const UserNode = ({ id, onClickModel,onClickTree }: { id: string; onClickModel?: () => void; onClickTree?: () => void }) => {
-  // const [modelOpen, setModelOpen] = useState(false);
+const UserNode = ({ id, onClickModel, onClickTree }: { id: string; onClickModel?: () => void; onClickTree?: () => void }) => {
+  const [modelOpen, setModelOpen] = useState(false);
 
-  return(
-  <div className="flex flex-col items-center cursor-pointer" >
-    <div className="w-5 sm:w-10 h-5 sm:h-10 sm:w-12 sm:h-12 rounded-full bg-gray-900 border-4 border-yellow-400 flex items-center justify-center z-10">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-4 sm:w-6 h-4 sm:h-6 text-yellow-300"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26z" />
-      </svg>
-    </div>
-    <p className="text-cyan-400 mt-1 text-xs sm:text-sm font-mono font-semibold">{id}</p>
-    <Button className="flex items-center justify-center gap-1 text-black bg-green-500 border-0 !py-1 !px-2 mt-2" onClick={onClickTree}> <IoIosArrowDown /></Button>
-  </div>
-)};
+  return (
+    <>
+      <div className="flex flex-col items-center cursor-pointer" >
+        <div className="w-5 sm:w-10 h-5 sm:h-10 sm:w-12 sm:h-12 rounded-full bg-gray-900 border-4 border-yellow-400 flex items-center justify-center z-10">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-4 sm:w-6 h-4 sm:h-6 text-yellow-300"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26z" />
+          </svg>
+        </div>
+        <p className="text-cyan-400 mt-1 text-xs sm:text-sm font-mono font-semibold">{id}</p>
+        <Button className="flex items-center justify-center gap-1 text-black bg-green-500 border-0 !py-1 !px-2 mt-2" onClick={onClickTree}> <IoIosArrowDown /></Button>
+      </div>
+      {modelOpen && (
+        <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`Node ID: ${id}`}>
+          <h1>testing</h1>
+
+        </Model>
+      )}
+
+    </>
+  )
+};
 
 // 🔸 Level 2 Nodes
 const LevelTwoNode = ({ data, onNodeClick }: { data: TreeNode[]; onNodeClick: (node: TreeNode) => void }) => (
