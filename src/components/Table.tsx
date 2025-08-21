@@ -14,7 +14,7 @@ type Employee = {
 type Column<T> = {
     key: keyof T;
     label: string;
-    render?: (value: any, row: T) => React.ReactNode; // optional custom renderer
+    render?: (value: T[keyof T], row: T) => React.ReactNode;
 };
 
 type TableProps<T> = {
@@ -26,7 +26,7 @@ const columns: Column<Employee>[] = [
     {
         key: "amount",
         label: "Amount",
-        render: (value: string) => (
+        render: (value: Employee["amount"]) => (
             <span className="text-green-500">
                 {value} <span className="font-semibold">{DEFAULT_CURRENCY}</span>
             </span>
@@ -53,10 +53,15 @@ const Table = ({ data }: TableProps<Employee>) => {
                 </thead>
                 <tbody>
                     {data.map((row, rowIndex) => (
-                        <tr key={rowIndex} className="text-center text-white bg-gray-600 odd:bg-gray-700">
+                        <tr
+                            key={rowIndex}
+                            className="text-center text-white bg-gray-600 odd:bg-gray-700"
+                        >
                             {columns.map((col, colIndex) => (
                                 <td key={colIndex} className="px-4 py-2">
-                                    {col.render ? col.render(row[col.key], row) : row[col.key]}
+                                    {col.render
+                                        ? col.render(row[col.key], row)
+                                        : row[col.key]}
                                 </td>
                             ))}
                         </tr>

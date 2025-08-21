@@ -29,7 +29,10 @@ const sampleData: TreeNode = {
 };
 
 // 🔹 Reusable Node
-const UserNode = ({ id, onClickModel,onClickTree }: { id: string; onClickModel?: () => void; onClickTree?: () => void }) => (
+const UserNode = ({ id, onClickModel,onClickTree }: { id: string; onClickModel?: () => void; onClickTree?: () => void }) => {
+  // const [modelOpen, setModelOpen] = useState(false);
+
+  return(
   <div className="flex flex-col items-center cursor-pointer" >
     <div className="w-5 sm:w-10 h-5 sm:h-10 sm:w-12 sm:h-12 rounded-full bg-gray-900 border-4 border-yellow-400 flex items-center justify-center z-10">
       <svg
@@ -44,7 +47,7 @@ const UserNode = ({ id, onClickModel,onClickTree }: { id: string; onClickModel?:
     <p className="text-cyan-400 mt-1 text-xs sm:text-sm font-mono font-semibold">{id}</p>
     <Button className="flex items-center justify-center gap-1 text-black bg-green-500 border-0 !py-1 !px-2 mt-2" onClick={onClickTree}> <IoIosArrowDown /></Button>
   </div>
-);
+)};
 
 // 🔸 Level 2 Nodes
 const LevelTwoNode = ({ data, onNodeClick }: { data: TreeNode[]; onNodeClick: (node: TreeNode) => void }) => (
