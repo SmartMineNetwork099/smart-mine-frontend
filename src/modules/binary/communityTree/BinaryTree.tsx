@@ -1,5 +1,7 @@
 'use client';
 import React, { useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
+import { Button } from "rizzui/button";
 
 interface TreeNode {
   id: string;
@@ -40,6 +42,7 @@ const UserNode = ({ id, onClick }: { id: string; onClick?: () => void }) => (
       </svg>
     </div>
     <p className="text-cyan-400 mt-1 text-xs sm:text-sm font-mono font-semibold">{id}</p>
+    <Button className="flex items-center justify-center gap-1 text-black bg-green-500 border-0 !py-1 !px-2 mt-2"> <IoIosArrowDown /></Button>
   </div>
 );
 
@@ -60,18 +63,28 @@ const LevelTwoNode = ({ data, onNodeClick }: { data: TreeNode[]; onNodeClick: (n
 const LevelOneNode = ({ node, onNodeClick }: { node: TreeNode; onNodeClick: (node: TreeNode) => void }) => (
   <div className="flex flex-col items-center">
     <UserNode id={node.id} onClick={() => onNodeClick(node)} />
-    <div className="h-6 w-0.5 bg-red-500 z-10"></div>
-    <div className="flex justify-center space-x-4 sm:space-x-20 relative">
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[8rem] sm:w-[15rem] h-0.5 bg-green-500 z-0" />
-      {node.children?.map((child) => (
-        <div key={child.id} className="flex flex-col items-center relative">
-          <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
-          <UserNode id={child.id} onClick={() => onNodeClick(child)} />
-          <div className="h-6 w-0.5 bg-red-500 z-10"></div>
-          <LevelTwoNode data={child.children} onNodeClick={onNodeClick} />
+    {
+      node?.children.length > 0 &&
+      <>
+        <div className="h-6 w-0.5 bg-red-500 z-10"></div>
+        <div className="flex justify-center space-x-4 sm:space-x-20 relative">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[130px] sm:w-[240px] h-0.5 bg-green-500 z-0" />
+          {node.children?.map((child) => (
+            <div key={child.id} className="flex flex-col items-center relative">
+              <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
+              <UserNode id={child.id} onClick={() => onNodeClick(child)} />
+              {
+                child.children.length > 0 &&
+                <>
+                  <div className="h-6 w-0.5 bg-red-500 z-10"></div>
+                  <LevelTwoNode data={child.children} onNodeClick={onNodeClick} />
+                </>
+              }
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      </>
+    }
   </div>
 );
 
