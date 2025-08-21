@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import Pagination from '@/components/Pagination'
-import { DEFAULT_CURRENCY } from "@/constants/currency";
+import Table from '@/components/Table';
 const employees = [
     {
         from: "78337",
@@ -57,37 +57,11 @@ const YourCommunity = () => {
     return (
         <>
             <div className='h-screen p-4'>
+                <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white mb-4'>Your <span className='text-green-500'>Community</span></p>
                 <div className='flex justify-start md:justify-center items-center overflow-x-auto scrollbar-hidden'>
                     <Pagination currentPage={page} totalPages={15} onPageChange={setPage} />
                 </div>
-                <div className="overflow-auto w-full max-h-[400px] md:max-h-[500px] rounded-lg mt-4">
-                    <table className="table-fixed min-w-[600px] sm:min-w-[900px] w-full text-sm">
-                        <thead className="sticky top-0 z-10 bg-green-500 text-black">
-                            <tr className="bg-green-500 text-black font-bold text-center">
-                                <th className="w-40 px-4 py-2">From</th>
-                                <th className="w-40 px-4 py-2">Amount</th>
-                                <th className="w-40 px-4 py-2">Income Type</th>
-                                <th className="w-40 px-4 py-2">Rank Level</th>
-                                <th className="w-40 px-4 py-2">Layer</th>
-                                <th className="w-40 px-4 py-2">Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {employees?.map((employee, index) => (
-                                <tr key={index} className="text-center text-white bg-gray-600">
-                                    <td className="px-4 py-2">{employee.from}</td>
-                                    <td className="px-4 py-2 text-green-500">
-                                        {employee.amount} <span className="font-semibold">{DEFAULT_CURRENCY}</span>
-                                    </td>
-                                    <td className="px-4 py-2">{employee.incomeType}</td>
-                                    <td className="px-4 py-2">{employee.rankLevel}</td>
-                                    <td className="px-4 py-2">{employee.layer}</td>
-                                    <td className="px-4 py-2">{employee.time}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                <Table data={employees} />
             </div>
         </>
     )
