@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
 export default function Home() {
-    redirect('/binary/dashboard');
+    redirect('/stacking/dashboard');
     // return null;
 }

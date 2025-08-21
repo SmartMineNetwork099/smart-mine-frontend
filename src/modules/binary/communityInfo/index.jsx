@@ -1,6 +1,8 @@
 "use client"
 import React, { useState } from 'react'
 import Pagination from '@/components/Pagination'
+import { DEFAULT_CURRENCY } from "@/constants/currency";
+
 const employees = [
   {
     from: "78337",
@@ -76,8 +78,8 @@ const index = () => {
               {employees?.map((employee, index) => (
                 <tr key={index} className="text-center text-white bg-gray-600">
                   <td className="px-4 py-2">{employee.from}</td>
-                  <td className="px-4 py-2">
-                    {employee.amount} <span className="text-yellow-400 font-semibold">ST</span>
+                  <td className="px-4 py-2 text-green-500">
+                    {employee.amount} <span className="font-semibold">{DEFAULT_CURRENCY}</span>
                   </td>
                   <td className="px-4 py-2">{employee.incomeType}</td>
                   <td className="px-4 py-2">{employee.rankLevel}</td>

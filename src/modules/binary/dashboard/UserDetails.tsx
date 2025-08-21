@@ -1,11 +1,13 @@
 'use client'
 import Card from '@/components/Card';
 import React from 'react'
+import { DEFAULT_CURRENCY } from "@/constants/currency";
+
 
 const userData = [
     {
         name: 'My Wallet Fund',
-        transactions: '0.001234 ST',
+        transactions: '0.001234 USD',
     },
     {
         name: 'User ID',
@@ -38,11 +40,11 @@ const UserDetails = () => {
                             </p>
                         </div>
                         <div className="w-1/2 sm:w-auto text-left">
-                            <p className="font-medium text-black bg-white rounded-lg py-1 px-4 text-sm sm:text-base inline sm:block">
-                                {item.transactions.includes('ST') ? (
+                            <p className="font-medium text-green-500 bg-white rounded-lg py-1 px-4 text-sm sm:text-base inline sm:block">
+                                {item.transactions.includes(DEFAULT_CURRENCY) ? (
                                     <>
-                                        {item?.transactions.replace(' ST', '')}{' '}
-                                        <span className="text-yellow-400 font-semibold">ST</span>
+                                        {item?.transactions.replace(DEFAULT_CURRENCY, '')}{' '}
+                                        <span className="font-semibold">{DEFAULT_CURRENCY}</span>
                                     </>
                                 ) : (
                                     item?.transactions

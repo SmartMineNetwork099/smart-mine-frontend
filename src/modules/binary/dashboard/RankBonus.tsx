@@ -1,5 +1,8 @@
 import Card from '@/components/Card';
 import React from 'react'
+import { DEFAULT_CURRENCY } from "@/constants/currency";
+
+
 const RankBonusData = [
     { rank: 'Beginner', amount: 0.09474 },
     { rank: 'Influencer', amount: 0.04845 },
@@ -39,8 +42,8 @@ const RankBonus = () => {
                             </p>
                         </Card>
                         <Card className=" p-2 text-center text-center w-1/2">
-                            <p className='font-medium text-white'>
-                                {data?.amount} <span className='text-yellow-400 font-semibold'>ST</span>
+                            <p className='font-medium text-green-500'>
+                                {data?.amount} <span className='font-semibold'>{DEFAULT_CURRENCY}</span>
                             </p>
                         </Card>
                     </div>

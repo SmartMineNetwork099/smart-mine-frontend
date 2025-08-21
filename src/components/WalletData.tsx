@@ -1,26 +1,27 @@
 import React from 'react'
 import Card from '@/components/Card';
+import { DEFAULT_CURRENCY } from "@/constants/currency";
 
 const walletInfo = [
     {
         name: 'Today Income',
-        transactions: '0.001234 ST',
+        transactions: '0.001234 USD',
     },
     {
         name: 'Level Income',
-        transactions: '0.245 ST',
+        transactions: '0.245 USD',
     },
     {
         name: 'Total Income',
-        transactions: '0.03736 ST',
+        transactions: '0.03736 USD',
     },
     {
         name: 'Binary Income',
-        transactions: '0.6374 ST',
+        transactions: '0.6374 USD',
     },
     {
         name: 'Total Withdraw',
-        transactions: '0.6374 ST',
+        transactions: '0.6374 USD',
     },
 
 ];
@@ -36,11 +37,11 @@ const WalletData = () => {
                             </p>
                         </div>
                         <div className="w-1/2 sm:w-auto text-left">
-                            <p className="font-medium text-black bg-white rounded-lg py-1 px-4 text-sm sm:text-base inline sm:block">
-                                {item.transactions.includes('ST') ? (
+                            <p className="font-medium text-green-500 bg-white rounded-lg py-1 px-4 text-sm sm:text-base inline sm:block">
+                                {item.transactions.includes(DEFAULT_CURRENCY) ? (
                                     <>
-                                        {item?.transactions.replace(' ST', '')}{' '}
-                                        <span className="text-yellow-400 font-semibold">ST</span>
+                                        {item?.transactions.replace(DEFAULT_CURRENCY, '')}{' '}
+                                        <span className="font-semibold">{DEFAULT_CURRENCY}</span>
                                     </>
                                 ) : (
                                     item?.transactions

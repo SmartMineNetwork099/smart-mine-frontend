@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
 import Card from "@/components/Card";
 import { IoLogoWhatsapp } from "react-icons/io5";
+import {DEFAULT_SYMBOL} from "@/constants/currency";
 
 type Deliverable = {
     id: number;
@@ -140,7 +141,7 @@ const YourCommunity = () => {
                                             <span className="font-medium text-white">{deliverable?.level}</span>
                                         </td>
                                         <td className="px-4 py-3 text-center text-white">{deliverable?.team}</td>
-                                        <td className="px-4 py-3 text-center text-green-500">$ {deliverable?.staking.toLocaleString()}</td>
+                                        <td className="px-4 py-3 text-center text-green-500">{DEFAULT_SYMBOL} {deliverable?.staking.toLocaleString()}</td>
                                         <td className={`px-4 py-3 text-center ${deliverable?.status === 'active' ? 'text-green-500' : 'text-red-600'}`}>{deliverable?.status} <span className="font-bold border border-green-500 rounded-full p-1">{` ${activeMembers} `}</span></td>
                                         <td className="px-4 py-3 text-center">
                                             <button className="px-3 py-1 rounded transition">
@@ -163,7 +164,7 @@ const YourCommunity = () => {
                                                                 <tr key={subtask.id} className="border-b border-gray-700 last:border-b-0">
                                                                     <td className="px-4 py-2 flex items-center gap-2 text-white min-w-40"><span className="text-green-500">↳</span>{subtask?.id}</td>
                                                                     <td className="px-4 py-2 text-center text-white min-w-36">{subtask?.name}</td>
-                                                                    <td className="px-4 py-2 text-center text-green-500 min-w-36">$ {subtask?.staking}</td>
+                                                                    <td className="px-4 py-2 text-center text-green-500 min-w-36">{DEFAULT_SYMBOL} {subtask?.staking}</td>
                                                                     <td className={`px-4 py-2 text-center min-w-36 ${subtask?.status === 'active' ? 'text-green-500' : 'text-red-600'}`}>{subtask?.status}</td>
                                                                     <td className="px-4 py-2 text-center min-w-52">
                                                                         <button className="px-2 py-1 rounded cursor-pointer text-white">

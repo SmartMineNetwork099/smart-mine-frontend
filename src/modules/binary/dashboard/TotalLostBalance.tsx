@@ -1,6 +1,8 @@
 import React from 'react'
 import { AiOutlineWarning } from 'react-icons/ai';
 import { IoGiftOutline } from 'react-icons/io5';
+import { DEFAULT_CURRENCY } from "@/constants/currency";
+
 
 const TotalLostBalance = () => {
     return (
@@ -10,7 +12,7 @@ const TotalLostBalance = () => {
                     <AiOutlineWarning className="text-yellow-400 text-2xl" />
                     <span className="text-white font-bold text-sm sm:text-xl">Total Lost Bonus</span>
                 </div>
-                <div className="text-yellow-400 font-extrabold text-md sm:text-3xl mt-2">0.0008227 <span>ST</span></div>
+                <div className="text-green-500 font-extrabold text-md sm:text-3xl mt-2">0.0008227 <span>{DEFAULT_CURRENCY}</span></div>
                 <div className="text-white font-semibold text-sm sm:text-lg mt-2">Act now to stop losing bonus!</div>
             </div>
             <div className="flex-1 flex justify-end items-center">
