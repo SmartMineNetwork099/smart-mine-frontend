@@ -11,6 +11,7 @@ type Employee = {
 type Column = {
     key: keyof Employee;
     label: string;
+    width: string;
 };
 
 const employees: Employee[] = [
@@ -28,14 +29,14 @@ const employees: Employee[] = [
     { level: "12", team: "88", teamStaking: "300$" },
     { level: "13", team: "102", teamStaking: "330$" },
     { level: "14", team: "117", teamStaking: "360$" },
-    { level: "15", team: "133", teamStaking: "400$" },
+    { level: "15", team: "13390", teamStaking: "400000$" },
 ];
 
 
 const columns: Column[] = [
-    { key: "level", label: "Level" },
-    { key: "team", label: "Team" },
-    { key: "teamStaking", label: "Team Staking" },
+    { key: "level", label: "Level", width: "w-8 sm:32" },
+    { key: "team", label: "Team", width: "w-12 sm:32" },
+    { key: "teamStaking", label: "Team Staking", width: "w-16 sm:32" },
 
 ];
 
