@@ -34,7 +34,7 @@ const SingleUserData = () => {
                 {walletInfo?.map((item: { name: string; transactions: string }, index: number) => (
                     <div key={index} className="flex items-center justify-between">
                         <div className='w-1/2'>
-                            <p className="font-medium p-1  text-sm sm:text-base">
+                            <p className="font-medium p-1 text-black text-sm sm:text-base">
                                 {item?.name}
                             </p>
                         </div>

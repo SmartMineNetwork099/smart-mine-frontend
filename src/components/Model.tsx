@@ -42,7 +42,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
             >
                 {/* header */}
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-semibold">{title}</h2>
+                    <h2 className="text-lg font-semibold text-black">{title}</h2>
                     <button
                         onClick={onClose}
                         className="text-gray-600 hover:text-red-500"
