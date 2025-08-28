@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { Button } from "rizzui/button";
 import Model from "@/components/Model";
+import SingleUserData from "@/modules/binary/communityTree/SingleUserData";
 
 interface TreeNode {
   id: string;
@@ -32,12 +33,12 @@ const sampleData: TreeNode = {
 // 🔹 Reusable Node
 const UserNode = ({ id, onClickModel, onClickTree }: { id: string; onClickModel?: () => void; onClickTree?: () => void }) => {
   const [modelOpen, setModelOpen] = useState(false);
-
   return (
     <>
       <div className="flex flex-col items-center cursor-pointer" >
         <div className="w-5 sm:w-10 h-5 sm:h-10 sm:w-12 sm:h-12 rounded-full bg-gray-900 border-4 border-yellow-400 flex items-center justify-center z-10">
           <svg
+            onClick={onClickModel ? onClickModel : () => setModelOpen(true)}
             xmlns="http://www.w3.org/2000/svg"
             className="w-4 sm:w-6 h-4 sm:h-6 text-yellow-300"
             fill="currentColor"
@@ -50,9 +51,8 @@ const UserNode = ({ id, onClickModel, onClickTree }: { id: string; onClickModel?
         <Button className="flex items-center justify-center gap-1 text-black bg-green-500 border-0 !py-1 !px-2 mt-2" onClick={onClickTree}> <IoIosArrowDown /></Button>
       </div>
       {modelOpen && (
-        <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`Node ID: ${id}`}>
-          <h1>testing</h1>
-
+        <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`User Detail`} className="!bg-gray-200">
+          <SingleUserData />
         </Model>
       )}
 
