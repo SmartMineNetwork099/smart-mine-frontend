@@ -34,10 +34,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-gray-200">
         <div className='bg-gradient-to-b w-full from-[#0f0c29] via-[#302b63] to-[#24243e]'>
           <Header />
-          <div className="w-full p-4">
+          {/* <div className="w-full p-4">
             <Tab tabs={tabs} style='min-w-20 sm:w-32' defaultLink='stacking/dashboard' />
-          </div>
-          {isNotGammingPage &&
+          </div> */}
+          {/* {isNotGammingPage &&
             <div className="w-full p-4 pt-0">
               <WalletData />
             </div>
@@ -46,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="w-full p-4">
               <Tab tabs={tabs2} style='min-w-40 sm:min-w-44' defaultLink='binary/dashboard' />
             </div>
-          )}
+          )} */}
           <main className="p-4">
             {children}
             <ToastContainer />
