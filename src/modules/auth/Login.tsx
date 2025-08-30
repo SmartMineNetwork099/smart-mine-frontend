@@ -107,13 +107,13 @@ const Login: React.FC = () => {
             const nonceRes = await axios.get<{ nonce: string }>(`${API}/api/auth/nonce`, {
                 params: { walletAddress },
             });
+            setWalletAddress(walletAddress);
             const nonce = nonceRes?.data?.nonce;
             if (!nonce) throw new Error("Failed to get nonce");
 
             // ✅ Step 4: User signs message
             const message = `Login with wallet. Nonce: ${nonce}`;
             const signature = await signer!.signMessage(message);
-            setWalletAddress(walletAddress);
             setWalletSignature(signature);
             alert("get verify ");
             // ✅ Step 5: Verify & receive JWT tokenz
