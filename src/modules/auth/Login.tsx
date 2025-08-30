@@ -107,6 +107,7 @@ const Login: React.FC = () => {
             const nonceRes = await axios.get<{ nonce: string }>(`${API}/api/auth/nonce`, {
                 params: { walletAddress },
             });
+            
             setWalletAddress(walletAddress);
             const nonce = nonceRes?.data?.nonce;
             if (!nonce) throw new Error("Failed to get nonce");
