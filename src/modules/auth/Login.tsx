@@ -90,7 +90,7 @@ const Login = () => {
       }
 
       // ✅ Step 3: Get nonce from backend
-      const nonceRes = await axios.get(`${API}/auth/nonce`, {
+      const nonceRes = await axios.get(`${API}/api/auth/nonce`, {
         params: { walletAddress },
       });
       const nonce = nonceRes?.data?.nonce;
@@ -101,7 +101,7 @@ const Login = () => {
       const signature = await signer.signMessage(message);
 
       // ✅ Step 5: Verify & receive JWT token
-      const verifyRes = await fetch(`${API}/auth/verify`, {
+      const verifyRes = await fetch(`${API}/api/auth/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ walletAddress, signature, nonce }),
