@@ -16,6 +16,8 @@ const Login: React.FC = () => {
     const [type, setType] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [tokken, setTokken] = useState<string | null>(null);
+    const [walletAddress, setWalletAddress] = useState<string | null>(null);
+    const [walletSignature, setWalletSignature] = useState<string | null>(null);
 
     const handleLogin = async () => {
         try {
@@ -109,7 +111,8 @@ const Login: React.FC = () => {
             // ✅ Step 4: User signs message
             const message = `Login with wallet. Nonce: ${nonce}`;
             const signature = await signer!.signMessage(message);
-
+            setWalletAddress(walletAddress);
+            setWalletSignature(signature);
             // ✅ Step 5: Verify & receive JWT token
             const verifyRes = await fetch(`${API}/api/auth/verify`, {
                 method: "POST",
@@ -157,9 +160,12 @@ const Login: React.FC = () => {
                     <>
                         <p className="mt-4 text-sm break-all">Connected: {address}</p>
                         <p className="mt-4 text-sm break-all">Token: {tokken}</p>
-                        <p className="mt-4 text-sm break-all">Type: {type}</p>
+
                     </>
                 )}
+                <p className="mt-4 text-sm break-all">Type: {type || 'N/A'}</p>
+                <p className="mt-4 text-sm break-all">WalletAddress: {walletAddress || 'N/A'}</p>
+                <p className="mt-4 text-sm break-all">WalletSignature: {walletSignature || 'N/A'}</p>
             </div>
         </div>
     );
