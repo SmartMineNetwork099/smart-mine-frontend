@@ -14,7 +14,8 @@ type TableProps<T> = {
 
 const Table = <T extends object>({ data, columns }: TableProps<T>) => {
     return (
-        <div className="overflow-auto w-full max-h-[400px] md:max-h-[500px] rounded-lg my-4 scrollbar-hidden">
+        <div className="overflow-auto w-full rounded-lg scrollbar-hidden">
+        {/* <div className="overflow-auto w-full max-h-[400px] md:max-h-[500px] rounded-lg my-4 scrollbar-hidden"> */}
             <table className="table-fixed  w-full text-sm">
                 <thead className="sticky top-0 z-10 bg-green-500 text-black">
                     <tr className="bg-green-500 text-black font-bold text-center">

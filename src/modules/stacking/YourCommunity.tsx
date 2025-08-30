@@ -42,7 +42,7 @@ const columns: Column[] = [
 
 const YourCommunity = () => {
     return (
-        <div className='h-screen p-4'>
+        <div className='p-4'>
             <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white mb-4'>
                 Your <span className='text-green-500'>Community</span>
             </p>
