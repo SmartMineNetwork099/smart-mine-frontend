@@ -13,6 +13,7 @@ const OPBNB_CHAIN_ID_DEC = 204;
 
 const Login: React.FC = () => {
     const [address, setAddress] = useState<string>("");
+    const [type, setType] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [tokken, setTokken] = useState<string | null>(null);
 
@@ -34,6 +35,7 @@ const Login: React.FC = () => {
                 signer = await provider.getSigner();
                 walletAddress = await signer.getAddress();
                 type = "extension";
+                setType(type);
             } else {
                 // Mobile SafePal via WalletConnect
                 const wcProvider = await EthereumProvider.init({
@@ -47,6 +49,7 @@ const Login: React.FC = () => {
                 signer = await provider.getSigner();
                 walletAddress = await signer.getAddress();
                 type = "walletconnect";
+                setType(type);
             }
 
             console.log("✅ Connected:", walletAddress, "via", type);
@@ -154,6 +157,7 @@ const Login: React.FC = () => {
                     <>
                         <p className="mt-4 text-sm break-all">Connected: {address}</p>
                         <p className="mt-4 text-sm break-all">Token: {tokken}</p>
+                        <p className="mt-4 text-sm break-all">Type: {type}</p>
                     </>
                 )}
             </div>
