@@ -4,29 +4,33 @@ import { ethers } from "ethers";
 import axios from "axios";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 
-const API = process.env.NEXT_PUBLIC_API_BASE;
+const API = process.env.NEXT_PUBLIC_API_BASE as string;
 const WC_PROJECT_ID = "7eb8ecbd5aa37c35eabf3edda64d0a1e"; // apna WalletConnect projectId
 
 // ✅ opBNB Mainnet Chain Info
 const OPBNB_CHAIN_ID_HEX = "0xcc"; // 204 in hex
 const OPBNB_CHAIN_ID_DEC = 204;
 
-const Login = () => {
+const Login: React.FC = () => {
     const [address, setAddress] = useState<string>("");
-    const [loading, setLoading] = useState(false);
-    const [tokken, setTokken] = useState(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [tokken, setTokken] = useState<string | null>(null);
 
     const handleLogin = async () => {
         try {
             setLoading(true);
             setTokken(null);
-            let provider: any, signer: any, walletAddress: string, type: string;
+
+            let provider: ethers.BrowserProvider | null = null;
+            let signer: ethers.Signer | null = null;
+            let walletAddress = "";
+            let type: "extension" | "walletconnect" = "extension";
 
             // ✅ Step 1: Detect Wallet Type (PC Extension vs Mobile SafePal)
-            if ((window as any).ethereum) {
+            if ((window as { ethereum?: ethers.Eip1193Provider }).ethereum) {
                 // Browser Extension (MetaMask / SafePal PC)
-                await (window as any).ethereum.request({ method: "eth_requestAccounts" });
-                provider = new ethers.BrowserProvider((window as any).ethereum);
+                await (window as { ethereum?: ethers.Eip1193Provider }).ethereum!.request({ method: "eth_requestAccounts" });
+                provider = new ethers.BrowserProvider((window as { ethereum?: ethers.Eip1193Provider }).ethereum!);
                 signer = await provider.getSigner();
                 walletAddress = await signer.getAddress();
                 type = "extension";
@@ -39,7 +43,7 @@ const Login = () => {
                 });
                 await wcProvider.enable();
 
-                provider = new ethers.BrowserProvider(wcProvider as any);
+                provider = new ethers.BrowserProvider(wcProvider as ethers.Eip1193Provider);
                 signer = await provider.getSigner();
                 walletAddress = await signer.getAddress();
                 type = "walletconnect";
@@ -49,7 +53,7 @@ const Login = () => {
             setAddress(walletAddress);
 
             // ✅ Step 2: Check Network (must be opBNB Mainnet)
-            const chainIdHex = await provider.send("eth_chainId", []);
+            const chainIdHex: string = await provider!.send("eth_chainId", []);
             console.log("Chain ID (hex):", chainIdHex);
 
             const chainId = parseInt(chainIdHex, 16);
@@ -58,15 +62,16 @@ const Login = () => {
             if (chainId !== OPBNB_CHAIN_ID_DEC) {
                 try {
                     // Try switching
-                    await provider.send("wallet_switchEthereumChain", [
+                    await provider!.send("wallet_switchEthereumChain", [
                         { chainId: OPBNB_CHAIN_ID_HEX },
                     ]);
                     console.log("✅ Switched to opBNB");
-                } catch (switchError: any) {
+                } catch (switchError: unknown) {
+                    const err = switchError as Error & { code?: number };
                     // If chain is not added → add it
-                    if (switchError.code === 4902) {
+                    if (err.code === 4902) {
                         try {
-                            await provider.send("wallet_addEthereumChain", [
+                            await provider!.send("wallet_addEthereumChain", [
                                 {
                                     chainId: OPBNB_CHAIN_ID_HEX,
                                     chainName: "opBNB Mainnet",
@@ -80,7 +85,7 @@ const Login = () => {
                                 },
                             ]);
                             console.log("✅ opBNB added & switched");
-                        } catch (addError) {
+                        } catch {
                             alert("❌ Please manually switch your wallet to opBNB Mainnet (204)");
                             return;
                         }
@@ -92,7 +97,7 @@ const Login = () => {
             }
 
             // ✅ Step 3: Get nonce from backend
-            const nonceRes = await axios.get(`${API}/api/auth/nonce`, {
+            const nonceRes = await axios.get<{ nonce: string }>(`${API}/api/auth/nonce`, {
                 params: { walletAddress },
             });
             const nonce = nonceRes?.data?.nonce;
@@ -100,7 +105,7 @@ const Login = () => {
 
             // ✅ Step 4: User signs message
             const message = `Login with wallet. Nonce: ${nonce}`;
-            const signature = await signer.signMessage(message);
+            const signature = await signer!.signMessage(message);
 
             // ✅ Step 5: Verify & receive JWT token
             const verifyRes = await fetch(`${API}/api/auth/verify`, {
@@ -108,18 +113,23 @@ const Login = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ walletAddress, signature, nonce }),
             });
-            const data = await verifyRes.json();
+            const data: { token?: string; error?: string } = await verifyRes.json();
             if (!verifyRes.ok) throw new Error(data.error || "Verify failed");
 
             // ✅ Step 6: Save token
-            localStorage.setItem("token", data.token);
-            setTokken(data.token);
-            alert("✅ Login successful! Token saved.");
-
-            // router.push("/dashboard"); // if needed
-        } catch (err: any) {
-            console.error("❌ Login error:", err);
-            alert(err.message || "Login failed");
+            if (data.token) {
+                localStorage.setItem("token", data.token);
+                setTokken(data.token);
+                alert("✅ Login successful! Token saved.");
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                console.error("❌ Login error:", err);
+                alert(err.message || "Login failed");
+            } else {
+                console.error("❌ Login error:", err);
+                alert("Login failed");
+            }
         } finally {
             setLoading(false);
         }
@@ -143,7 +153,7 @@ const Login = () => {
                 {address && (
                     <>
                         <p className="mt-4 text-sm break-all">Connected: {address}</p>
-                        <p className="mt-4 text-sm break-all">Tokken: {tokken}</p>
+                        <p className="mt-4 text-sm break-all">Token: {tokken}</p>
                     </>
                 )}
             </div>
