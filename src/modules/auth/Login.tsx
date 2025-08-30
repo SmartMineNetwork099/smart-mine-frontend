@@ -18,6 +18,7 @@ const Login: React.FC = () => {
     const [tokken, setTokken] = useState<string | null>(null);
     const [walletAddress, setWalletAddress] = useState<string | null>(null);
     const [walletSignature, setWalletSignature] = useState<string | null>(null);
+    const [chainID, setChainID] = useState<string | null>(null);
 
     const handleLogin = async () => {
         try {
@@ -63,7 +64,7 @@ const Login: React.FC = () => {
 
             const chainId = parseInt(chainIdHex, 16);
             console.log("Connected Chain:", chainId);
-
+            setChainID(chainId.toString());
             if (chainId !== OPBNB_CHAIN_ID_DEC) {
                 try {
                     // Try switching
@@ -166,6 +167,7 @@ const Login: React.FC = () => {
                 <p className="mt-4 text-sm break-all">Type: {type || 'N/A'}</p>
                 <p className="mt-4 text-sm break-all">WalletAddress: {walletAddress || 'N/A'}</p>
                 <p className="mt-4 text-sm break-all">WalletSignature: {walletSignature || 'N/A'}</p>
+                <p className="mt-4 text-sm break-all">ChainID: {chainID || 'N/A'}</p>
             </div>
         </div>
     );
