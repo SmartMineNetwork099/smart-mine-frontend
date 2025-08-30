@@ -59,24 +59,26 @@ const Login: React.FC = () => {
             setAddress(walletAddress);
 
             // ✅ Step 2: Check Network (must be opBNB Mainnet)
+            // ✅ Step 2: Check Network (must be opBNB Mainnet)
             const chainIdHex: string = await provider!.send("eth_chainId", []);
             console.log("Chain ID (hex):", chainIdHex);
 
             const chainId = parseInt(chainIdHex, 16);
             console.log("Connected Chain:", chainId);
             setChainID(chainId.toString());
+
             if (chainId !== OPBNB_CHAIN_ID_DEC) {
-                alert("Switching to opBNB Mainnet...");
                 try {
-                    // Try switching
+                    // 🔄 Auto Switch
                     await provider!.send("wallet_switchEthereumChain", [
                         { chainId: OPBNB_CHAIN_ID_HEX },
                     ]);
-                    console.log("✅ Switched to opBNB");
+                    console.log("✅ Switched to opBNB Mainnet");
                 } catch (switchError: unknown) {
                     const err = switchError as Error & { code?: number };
-                    // If chain is not added → add it
+
                     if (err.code === 4902) {
+                        // Wallet doesn’t have opBNB → add it
                         try {
                             await provider!.send("wallet_addEthereumChain", [
                                 {
@@ -93,21 +95,26 @@ const Login: React.FC = () => {
                             ]);
                             console.log("✅ opBNB added & switched");
                         } catch {
-                            alert("❌ Please manually switch your wallet to opBNB Mainnet (204)");
+                            if (confirm("❌ You are not on opBNB Mainnet. Do you want to switch now?")) {
+                                alert("Please manually change your wallet to opBNB (204).");
+                            }
                             return;
                         }
                     } else {
-                        alert("❌ Please manually switch your wallet to opBNB Mainnet (204)");
+                        if (confirm("❌ Wrong network detected! Do you want to switch to opBNB?")) {
+                            alert("Please manually switch your wallet to opBNB (ChainId: 204).");
+                        }
                         return;
                     }
                 }
             }
+
             alert("get nonce ");
             // ✅ Step 3: Get nonce from backend
             const nonceRes = await axios.get<{ nonce: string }>(`${API}/api/auth/nonce`, {
                 params: { walletAddress },
             });
-            
+
             setWalletAddress(walletAddress);
             const nonce = nonceRes?.data?.nonce;
             if (!nonce) throw new Error("Failed to get nonce");
