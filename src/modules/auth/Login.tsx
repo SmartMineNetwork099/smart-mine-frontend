@@ -66,6 +66,7 @@ const Login: React.FC = () => {
             console.log("Connected Chain:", chainId);
             setChainID(chainId.toString());
             if (chainId !== OPBNB_CHAIN_ID_DEC) {
+                alert("Switching to opBNB Mainnet...");
                 try {
                     // Try switching
                     await provider!.send("wallet_switchEthereumChain", [
@@ -101,7 +102,7 @@ const Login: React.FC = () => {
                     }
                 }
             }
-
+            alert("get nonce ");
             // ✅ Step 3: Get nonce from backend
             const nonceRes = await axios.get<{ nonce: string }>(`${API}/api/auth/nonce`, {
                 params: { walletAddress },
@@ -114,7 +115,8 @@ const Login: React.FC = () => {
             const signature = await signer!.signMessage(message);
             setWalletAddress(walletAddress);
             setWalletSignature(signature);
-            // ✅ Step 5: Verify & receive JWT token
+            alert("get verify ");
+            // ✅ Step 5: Verify & receive JWT tokenz
             const verifyRes = await fetch(`${API}/api/auth/verify`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
