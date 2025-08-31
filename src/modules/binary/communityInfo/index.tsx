@@ -39,7 +39,7 @@ const Index = () => {
   return (
     <>
       <div className='h-screen p-4'>
-        <div className='flex items-center justify-start md:justify-center overflow-x-auto scrollbar-hidden'>
+        <div className='flex items-center justify-start md:justify-center overflow-x-auto scrollbar-hidden mb-2'>
           <Pagination currentPage={page} totalPages={15} onPageChange={setPage} />
         </div>
         <Table data={employees} columns={columns}/>

@@ -12,16 +12,16 @@ import { usePathname } from 'next/navigation';
 import { RiDashboardHorizontalLine } from "react-icons/ri";
 import { MdOutlineInfo } from "react-icons/md";
 import WalletData from '@/components/WalletData';
-
+import ROUTES from '@/constants/routes';
 const tabs = [
-  { label: 'Stacking', icon: LiaDonateSolid, link: 'stacking/dashboard' },
-  { label: 'Binary', icon: TbBinaryTree, link: 'binary/dashboard' },
-  { label: 'Gaming', icon: IoGameControllerOutline, link: 'gaming' }
+  { label: 'Stacking', icon: LiaDonateSolid, link: ROUTES?.STACKING?.DASHBOARD },
+  { label: 'Binary', icon: TbBinaryTree, link: ROUTES?.BINARY?.DASHBOARD },
+  { label: 'Gaming', icon: IoGameControllerOutline, link: ROUTES?.GAMING?.HOME },
 ];
 const tabs2 = [
-  { label: 'Dashboard', icon: RiDashboardHorizontalLine, link: 'binary/dashboard' },
-  { label: 'Community Tree', icon: TbBinaryTree, link: 'binary/communityTree' },
-  { label: 'Community Info', icon: MdOutlineInfo, link: 'binary/communityInfo' },
+  { label: 'Dashboard', icon: RiDashboardHorizontalLine, link: ROUTES?.BINARY?.DASHBOARD },
+  { label: 'Community Tree', icon: TbBinaryTree, link: ROUTES?.BINARY?.COMMUNITY_TREE },
+  { label: 'Community Info', icon: MdOutlineInfo, link: ROUTES?.BINARY?.COMMUNITY_INFO },
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -49,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Header />
 
               <div className="w-full p-4">
-                <Tab tabs={tabs} style='min-w-20 sm:w-32' defaultLink='stacking/dashboard' />
+                <Tab tabs={tabs} style='min-w-20 sm:w-32' defaultLink={ROUTES?.STACKING?.DASHBOARD} />
               </div>
 
               {isNotGamingPage && (
@@ -60,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
               {isBinaryPage && (
                 <div className="w-full p-4">
-                  <Tab tabs={tabs2} style='min-w-40 sm:min-w-44' defaultLink='binary/dashboard' />
+                  <Tab tabs={tabs2} style='min-w-40 sm:min-w-44' defaultLink={ROUTES?.BINARY?.DASHBOARD} />
                 </div>
               )}
             </>

@@ -26,7 +26,7 @@ const Tab: React.FC<TabProps> = ({ tabs, style, heading,defaultLink }) => {
     const handleTabClick = (link?: string) => {
         if (!link) return;
         setActiveTab(link);
-        router.push(`/${link}`);
+        router.push(`${link}`);
     };
     return (
         <>

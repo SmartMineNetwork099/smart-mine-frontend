@@ -2,11 +2,11 @@ import { useRouter } from 'next/navigation';
 import React from 'react'
 import { Button } from 'rizzui'
 import { DEFAULT_CURRENCY } from "@/constants/currency";
-
+import ROUTES from '@/constants/routes';
 const Header = () => {
   const router = useRouter();
   const goHomePage = () => {
-    router.push('/stacking/dashboard')
+    router.push(ROUTES?.STACKING?.DASHBOARD);
   }
   return (
     <>
