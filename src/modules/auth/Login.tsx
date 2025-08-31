@@ -4,6 +4,8 @@ import { ethers } from "ethers";
 import axios from "axios";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { toast } from 'react-toastify';
+import { useRouter } from "next/navigation";
+
 
 const API = process.env.NEXT_PUBLIC_API_BASE as string;
 const WC_PROJECT_ID = "7eb8ecbd5aa37c35eabf3edda64d0a1e"; // apna WalletConnect projectId
@@ -22,6 +24,7 @@ const Login: React.FC = () => {
     const [walletAddress, setWalletAddress] = useState<string | null>(null);
     const [walletSignature, setWalletSignature] = useState<string | null>(null);
     const [chainID, setChainID] = useState<string | null>(null);
+    const router = useRouter();
 
     const handleLogin = async () => {
         try {
@@ -136,6 +139,7 @@ const Login: React.FC = () => {
             if (data.token) {
                 localStorage.setItem("token", data.token);
                 setTokken(data.token);
+                router.replace("/stacking/dashboard");
                 toast.success("✅ Login successful! Token saved.");
             }
         } catch (err: unknown) {

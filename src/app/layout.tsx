@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Tab from '@/components/Tab';
 import Header from '@/components/Header';
 import './globals.css';
@@ -23,34 +23,54 @@ const tabs2 = [
   { label: 'Community Tree', icon: TbBinaryTree, link: 'binary/communityTree' },
   { label: 'Community Info', icon: MdOutlineInfo, link: 'binary/communityInfo' },
 ];
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
 
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const [tokken, setTokken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    if (token) {
+      setTokken(token);
+    }
+  }, []);
+
+  const pathname = usePathname();
   const isBinaryPage = pathname.includes('/binary');
-  const isNotGammingPage = !pathname.includes('/gaming');
-  
+  const isNotGamingPage = !pathname.includes('/gaming');
+
   return (
     <html lang="en">
       <body className="bg-gray-200">
         <div className='bg-gradient-to-b w-full from-[#0f0c29] via-[#302b63] to-[#24243e]'>
-          <Header />
-          {/* <div className="w-full p-4">
-            <Tab tabs={tabs} style='min-w-20 sm:w-32' defaultLink='stacking/dashboard' />
-          </div> */}
-          {/* {isNotGammingPage &&
-            <div className="w-full p-4 pt-0">
-              <WalletData />
-            </div>
-          }
-          {isBinaryPage && (
-            <div className="w-full p-4">
-              <Tab tabs={tabs2} style='min-w-40 sm:min-w-44' defaultLink='binary/dashboard' />
-            </div>
-          )} */}
+
+          {/* ✅ Show only when tokken exists */}
+          {tokken && (
+            <>
+              <Header />
+
+              <div className="w-full p-4">
+                <Tab tabs={tabs} style='min-w-20 sm:w-32' defaultLink='stacking/dashboard' />
+              </div>
+
+              {isNotGamingPage && (
+                <div className="w-full p-4 pt-0">
+                  <WalletData />
+                </div>
+              )}
+
+              {isBinaryPage && (
+                <div className="w-full p-4">
+                  <Tab tabs={tabs2} style='min-w-40 sm:min-w-44' defaultLink='binary/dashboard' />
+                </div>
+              )}
+            </>
+          )}
+
           <main className="p-4">
             {children}
             <ToastContainer />
           </main>
+
         </div>
       </body>
     </html>
