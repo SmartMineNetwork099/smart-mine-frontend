@@ -5,10 +5,15 @@ import { useRouter } from "next/navigation";
 import { getNonceApi, verifySignatureApi } from "@/apis/auth";
 import { connectWallet, checkAndSwitchNetwork } from "@/utils/walletHelpers";
 import ROUTES from "@/constants/routes";
+import { useSearchParams } from "next/navigation";
 
 const Login: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
+    
+     const searchParams = useSearchParams();
+  const ref = searchParams.get("ref");
+  console.log("refffffffffff", ref);
 
     const handleLogin = async () => {
         try {
@@ -40,7 +45,7 @@ const Login: React.FC = () => {
                 toast.error(verifyRes?.error);
                 return;
             }
-
+            console.log("verifyRes", verifyRes);
             // ✅ Step 6: Save token
             if (verifyRes?.data) {
                 localStorage.setItem("token", verifyRes.data.token);
