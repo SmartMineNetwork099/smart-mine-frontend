@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { ethers } from "ethers";
 import axios from "axios";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
+import { toast } from 'react-toastify';
 
 const API = process.env.NEXT_PUBLIC_API_BASE as string;
 const WC_PROJECT_ID = "7eb8ecbd5aa37c35eabf3edda64d0a1e"; // apna WalletConnect projectId
@@ -39,7 +40,7 @@ const Login: React.FC = () => {
 
                 // ❌ Reject MetaMask / Other extensions
                 if (!ethProvider.isSafePal) {
-                    alert("❌ Only SafePal wallet is allowed. Please use SafePal.");
+                    toast.error("❌ Only SafePal wallet is allowed. Please use SafePal.");
                     return;
                 }
 
@@ -65,7 +66,7 @@ const Login: React.FC = () => {
                 console.log("Connected Wallet via WC:", walletName);
 
                 if (!walletName.toLowerCase().includes("safepal")) {
-                    alert("❌ Only SafePal Wallet is allowed via WalletConnect.");
+                    toast.error("❌ Only SafePal Wallet is allowed via WalletConnect.");
                     return;
                 }
 
@@ -101,7 +102,7 @@ const Login: React.FC = () => {
                             },
                         ]);
                     } else {
-                        alert("❌ Please switch your wallet to opBNB (204).");
+                        toast.error("❌ Please switch your wallet to opBNB (204).");
                         return;
                     }
                 }
@@ -135,11 +136,11 @@ const Login: React.FC = () => {
             if (data.token) {
                 localStorage.setItem("token", data.token);
                 setTokken(data.token);
-                alert("✅ Login successful! Token saved.");
+                toast.success("✅ Login successful! Token saved.");
             }
         } catch (err: unknown) {
             console.error("❌ Login error:", err);
-            alert(err instanceof Error ? err.message : "Login failed");
+            toast.error(err instanceof Error ? err.message : "Login failed");
         } finally {
             setLoading(false);
         }
