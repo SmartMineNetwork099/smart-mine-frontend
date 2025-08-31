@@ -56,19 +56,21 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen p-6">
-            <div className="w-full max-w-md border rounded-2xl p-6 shadow text-black">
-                <h1 className="text-2xl font-semibold mb-2">Login with Wallet</h1>
-                <p className="text-sm opacity-80 mb-6">
-                    Only SafePal wallet is supported (Extension + WalletConnect) and select network opBNB.
-                </p>
-                <button
-                    onClick={handleLogin}
-                    disabled={loading}
-                    className="w-full rounded-xl px-4 py-3 bg-black text-white disabled:opacity-60"
-                >
-                    {loading ? "Connecting..." : "Connect SafePal & Login"}
-                </button>
+        <div className="bg-gradient-to-b h-[95vh] from-[#0f0c29] via-[#302b63] to-[#24243e] flex flex-col">
+            <div className="flex flex-1 items-center justify-center p-4">
+                <div className="w-full max-w-md bg-white border rounded-2xl p-8 shadow-lg text-black">
+                    <h1 className="text-2xl font-bold mb-4 text-center">Login with Wallet</h1>
+                    <p className="text-sm opacity-80 mb-6 text-center">
+                        Only SafePal wallet is supported (Extension + WalletConnect) and select network opBNB.
+                    </p>
+                    <button
+                        onClick={handleLogin}
+                        disabled={loading}
+                        className="w-full rounded-xl px-4 py-3 bg-black text-white font-semibold disabled:opacity-60"
+                    >
+                        {loading ? "Connecting..." : "Connect SafePal & Login"}
+                    </button>
+                </div>
             </div>
         </div>
     );

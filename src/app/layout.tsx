@@ -37,14 +37,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname();
   const isBinaryPage = pathname.includes('/binary');
   const isNotGamingPage = !pathname.includes('/gaming');
-
+  const isAuthRoute = pathname.includes(ROUTES?.AUTH?.LOGIN);
   return (
     <html lang="en">
       <body className="bg-gray-200">
         <div className='bg-gradient-to-b w-full from-[#0f0c29] via-[#302b63] to-[#24243e]'>
 
           {/* ✅ Show only when tokken exists */}
-          {tokken && (
+          {tokken && !isAuthRoute && (
             <>
               <Header />
 
