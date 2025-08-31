@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const API = process.env.NEXT_PUBLIC_API_BASE as string;
 
@@ -9,8 +9,9 @@ export const getNonceApi = async (walletAddress: string) => {
             params: { walletAddress },
         });
         return { data: res?.data, error: null };
-    } catch (error: any) {
-        return { data: null, error: error?.response?.data?.message };
+    } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
+        return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
 
@@ -27,7 +28,8 @@ export const verifySignatureApi = async (
             nonce,
         });
         return { data: res?.data, error: null };
-    } catch (error: any) {
-        return { data: null, error: error?.response?.data?.message };
+    } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
+        return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };

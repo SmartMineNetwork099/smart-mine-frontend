@@ -8,6 +8,7 @@ export const OPBNB_CHAIN_ID_DEC = 204;
 
 const WC_PROJECT_ID = "7eb8ecbd5aa37c35eabf3edda64d0a1e";
 
+// ---------- Types ----------
 export type WalletType = "extension" | "walletconnect";
 
 export type WalletConnectResult = {
@@ -17,7 +18,12 @@ export type WalletConnectResult = {
   type: WalletType;
 };
 
-// ✅ Step 1: Detect Wallet (SafePal Extension OR SafePal WalletConnect)
+// SafePal ka ethereum object type (extends EIP-1193)
+export interface SafePalEthereumProvider extends ethers.Eip1193Provider {
+  isSafePal?: boolean;
+}
+
+// ---------- Step 1: Detect Wallet ----------
 export const connectWallet = async (): Promise<WalletConnectResult | null> => {
   try {
     let provider: ethers.BrowserProvider | null = null;
@@ -25,16 +31,10 @@ export const connectWallet = async (): Promise<WalletConnectResult | null> => {
     let walletAddress = "";
     let type: WalletType;
 
+    const ethProvider = (window as Window & { ethereum?: SafePalEthereumProvider }).ethereum;
+
     // ✅ SafePal Extension
-    if (
-      (window as Window & {
-        ethereum?: {
-          isSafePal?: boolean;
-          request: (args: { method: string; params?: unknown[] }) => Promise<unknown>;
-        };
-      }).ethereum
-    ) {
-      const ethProvider = (window as any).ethereum;
+    if (ethProvider) {
       if (!ethProvider.isSafePal) {
         toast.error("❌ Only SafePal extension is allowed.");
         return null;
@@ -61,22 +61,26 @@ export const connectWallet = async (): Promise<WalletConnectResult | null> => {
         return null;
       }
 
-      provider = new ethers.BrowserProvider(wcProvider as any);
+      provider = new ethers.BrowserProvider(
+        wcProvider as unknown as ethers.Eip1193Provider
+      );
       signer = await provider.getSigner();
       walletAddress = await signer.getAddress();
       type = "walletconnect";
     }
 
     return { provider, signer, address: walletAddress, type };
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("Wallet connection failed:", err);
     toast.error("❌ Wallet connection failed");
     return null;
   }
 };
 
-// ✅ Step 2: Check & Switch Network
-export const checkAndSwitchNetwork = async (provider: ethers.BrowserProvider): Promise<boolean> => {
+// ---------- Step 2: Check & Switch Network ----------
+export const checkAndSwitchNetwork = async (
+  provider: ethers.BrowserProvider
+): Promise<boolean> => {
   try {
     const chainIdHex = (await provider.send("eth_chainId", [])) as string;
     const chainId = parseInt(chainIdHex, 16);
@@ -86,8 +90,9 @@ export const checkAndSwitchNetwork = async (provider: ethers.BrowserProvider): P
         await provider.send("wallet_switchEthereumChain", [
           { chainId: OPBNB_CHAIN_ID_HEX },
         ]);
-      } catch (err: any) {
-        if (err.code === 4902) {
+      } catch (err: unknown) {
+        const e = err as { code?: number };
+        if (e.code === 4902) {
           await provider.send("wallet_addEthereumChain", [
             {
               chainId: OPBNB_CHAIN_ID_HEX,
@@ -104,7 +109,7 @@ export const checkAndSwitchNetwork = async (provider: ethers.BrowserProvider): P
       }
     }
     return true;
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("Network check failed:", err);
     toast.error("❌ Network check failed");
     return false;
