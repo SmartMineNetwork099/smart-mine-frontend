@@ -24,11 +24,12 @@ const columns: Column[] = [
 ]
 const ReferralLink = () => {
     const [referralLink, setReferralLink] = useState('');
+    const [walletAddress, setWalletAddress] = useState('');
     const [copied, setCopied] = useState(false);
     const [tableData, setTableData] = useState<Employee[]>([]);
 
     const getLevelData = async () => {
-        const response = await getReferralsAtLevel('0x51efAf6b1512d0318B6E7240F9977acFDf7456a0', 1)
+        const response = await getReferralsAtLevel(walletAddress, 1)
         console.log("referrals at level 1", response?.data);
         setTableData(Array.isArray(response?.data) ? response.data : []);
     }
@@ -42,7 +43,9 @@ const ReferralLink = () => {
     useEffect(() => {
         const walletDataString = localStorage.getItem("walletData");
         const referralLink = walletDataString ? JSON.parse(walletDataString) : null;
+        console.log("referralLink", referralLink);
         setReferralLink(referralLink?.referralLink)
+        setWalletAddress(referralLink?.walletAddress)
     }, [])
 
     return (
