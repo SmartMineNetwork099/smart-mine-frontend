@@ -40,7 +40,7 @@ const ReferralLink = () => {
 
                     />
 
-                    <div className='cursor-pointer flex items-center justify-center w-1/6 sm:w-1/12 text-xl text-white border border-red-500' onClick={handleCopy}>
+                    <div className='cursor-pointer flex items-center justify-center w-1/6 sm:w-1/12 text-xl text-white' onClick={handleCopy}>
                         {copied ? <LuCopyCheck /> : <LuCopy />}
                     </div>
                 </div>
