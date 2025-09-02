@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { getNonceApi, verifySignatureApi } from "@/apis/auth";
@@ -7,13 +7,12 @@ import { connectWallet, checkAndSwitchNetwork } from "@/utils/walletHelpers";
 import ROUTES from "@/constants/routes";
 import { useSearchParams } from "next/navigation";
 
-const Login: React.FC = () => {
+const LoginContent: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
-    
-     const searchParams = useSearchParams();
-  const ref = searchParams.get("ref");
-  console.log("refffffffffff", ref);
+    const searchParams = useSearchParams();
+    const ref = searchParams.get("ref");
+    console.log("refffffffffff", ref);
 
     const handleLogin = async () => {
         try {
@@ -60,6 +59,7 @@ const Login: React.FC = () => {
         }
     };
 
+
     return (
         <div className="bg-gradient-to-b h-[95vh] from-[#0f0c29] via-[#302b63] to-[#24243e] flex flex-col">
             <div className="flex flex-1 items-center justify-center p-4">
@@ -80,5 +80,11 @@ const Login: React.FC = () => {
         </div>
     );
 };
+
+const Login: React.FC = () => (
+    <Suspense>
+        <LoginContent />
+    </Suspense>
+);
 
 export default Login;
