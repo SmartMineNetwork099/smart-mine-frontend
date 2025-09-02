@@ -4,15 +4,33 @@ import { Input } from "rizzui";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";
 import Card from '@/components/Card';
 import { getReferralsAtLevel } from '@/apis/user';
+import Table from '@/components/Table';
+type Employee = {
+    walletAddress: string;
+    referredBy: string;
+    nonce: string;
+};
 
+type Column = {
+    key: keyof Employee;
+    label: string;
+    width: string;
+};
+const columns: Column[] = [
+    { key: "walletAddress", label: "walletAddress", width: "w-8 sm:32" },
+    { key: "referredBy", label: "referredBy", width: "w-12 sm:32" },
+    { key: "nonce", label: "nonce", width: "w-16 sm:32" },
 
+]
 const ReferralLink = () => {
-    const [referralLink, setReferralLink] = useState('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+    const [referralLink, setReferralLink] = useState('');
     const [copied, setCopied] = useState(false);
+    const [tableData, setTableData] = useState<Employee[]>([]);
 
     const getLevelData = async () => {
         const response = await getReferralsAtLevel('0x51efAf6b1512d0318B6E7240F9977acFDf7456a0', 1)
-        console.log("referrals at level 1", response);
+        console.log("referrals at level 1", response?.data);
+        setTableData(Array.isArray(response?.data) ? response.data : []);
     }
     const handleCopy = () => {
         getLevelData();
@@ -46,6 +64,13 @@ const ReferralLink = () => {
                 </div>
 
             </Card>
+
+            <div className='p-4'>
+                <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white mb-4'>
+                    Your <span className='text-green-500'>Community</span>
+                </p>
+                <Table data={tableData} columns={columns} />
+            </div>
         </>
     )
 }
