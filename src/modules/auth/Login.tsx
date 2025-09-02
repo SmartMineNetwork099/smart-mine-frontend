@@ -48,6 +48,7 @@ const LoginContent: React.FC = () => {
             // ✅ Step 6: Save token
             if (verifyRes?.data) {
                 localStorage.setItem("token", verifyRes.data.token);
+                localStorage.setItem("walletData", JSON.stringify(verifyRes?.data));
                 router.replace(ROUTES?.STACKING?.DASHBOARD);
                 toast.success(verifyRes?.data?.message);
             }
