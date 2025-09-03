@@ -29,6 +29,7 @@ const ReferralLink = () => {
     const [tableData, setTableData] = useState<Employee[]>([]);
 
     const getLevelData = async () => {
+        console.log(walletAddress,'walletAddresswalletAddresswalletAddress')
         const response = await getReferralsAtLevel(walletAddress, 1)
         console.log("referrals at level 1", response?.data);
         setTableData(Array.isArray(response?.data) ? response.data : []);

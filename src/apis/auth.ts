@@ -19,13 +19,15 @@ export const getNonceApi = async (walletAddress: string) => {
 export const verifySignatureApi = async (
     walletAddress: string,
     signature: string,
-    nonce: string
+    nonce: string,
+    ref: string | null = null,
 ) => {
     try {
         const res = await axios.post<{ token: string, message: string }>(`${API}/api/auth/verify`, {
             walletAddress,
             signature,
             nonce,
+            ref,
         });
         return { data: res?.data, error: null };
     } catch (err) {
