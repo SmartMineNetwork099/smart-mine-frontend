@@ -27,7 +27,7 @@ const LoginContent: React.FC = () => {
             if (!isCorrectNetwork) return;
 
             // ✅ Step 3: Get nonce
-            const nonceRes = await getNonceApi(wallet.address);
+            const nonceRes = await getNonceApi(wallet.address , ref);
             if (nonceRes?.error) {
                 toast.error(nonceRes?.error);
                 return;
@@ -39,7 +39,7 @@ const LoginContent: React.FC = () => {
             const signature = await wallet.signer.signMessage(message);
 
             // ✅ Step 5: Verify
-            const verifyRes = await verifySignatureApi(wallet.address, signature, nonce , ref);
+            const verifyRes = await verifySignatureApi(wallet.address, signature, nonce );
             if (verifyRes?.error) {
                 toast.error(verifyRes?.error);
                 return;

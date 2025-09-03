@@ -3,10 +3,10 @@ import axios, { AxiosError } from "axios";
 const API = process.env.NEXT_PUBLIC_API_BASE as string;
 
 // ✅ Get Nonce
-export const getNonceApi = async (walletAddress: string) => {
+export const getNonceApi = async (walletAddress: string, ref: string | null = null) => {
     try {
-        const res = await axios.get<{ nonce: string }>(`${API}/api/auth/nonce`, {
-            params: { walletAddress },
+        const res = await axios.post<{ nonce: string }>(`${API}/api/auth/nonce`, {
+            walletAddress, ref
         });
         return { data: res?.data, error: null };
     } catch (err) {
