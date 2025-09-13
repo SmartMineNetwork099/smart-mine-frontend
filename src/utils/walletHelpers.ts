@@ -115,3 +115,14 @@ export const checkAndSwitchNetwork = async (
     return false;
   }
 };
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+export const getUserIdFromWallet = () => {
+  try {
+    const walletData = JSON.parse(localStorage.getItem('walletData') || '{}');
+    return walletData?.userId || null;
+  } catch {
+    return null;
+  }
+};
