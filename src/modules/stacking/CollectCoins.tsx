@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { FaHandHoldingDollar } from 'react-icons/fa6';
 import { ClockLoader } from 'react-spinners';
 import { IoGiftOutline } from 'react-icons/io5';
+import { startMiningApi } from '@/apis/mining';
 
 const COUNTDOWN_MS = 10 * 1000;
 // const COUNTDOWN_MS = 12 * 60 * 60 * 1000; // 12 hours = 43,200,000 ms
@@ -18,6 +19,7 @@ const CollectCoins = () => {
         return null;
     });
     const [timeLeft, setTimeLeft] = useState<number>(0);
+    const [refId, setRefId] = useState<string | null>(null);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -28,13 +30,33 @@ const CollectCoins = () => {
         }, 1000);
         return () => clearInterval(interval);
     }, [nextClaimTime]);
+    useEffect(() => {
+        const id = getReferralIdFromLocalStorage();
+        setRefId(id);
+    }, []);
+    const getReferralIdFromLocalStorage = () => {
+        try {
+            const walletDataStr = localStorage.getItem("walletData");
+            if (!walletDataStr) return null;
+            const walletData = JSON.parse(walletDataStr);
+            if (!walletData?.referralLink) return null;
 
-    const handleClaim = () => {
+            const url = new URL(walletData.referralLink);
+            return url.searchParams.get("ref");
+        } catch (error) {
+            console.error("Error reading walletData:", error);
+            return null;
+        }
+    }
+    const handleClaim = async () => {
         const newTime = Date.now() + COUNTDOWN_MS;
         localStorage.setItem('nextClaimTime', newTime.toString());
         setNextClaimTime(newTime);
         // setTimeLeft(COUNTDOWN_MS); 
+        const StartMining = await startMiningApi(refId);
+        console.log("StartMining11", StartMining)
         toast.success("🎉 You collected coins!");
+
     };
 
     const formatTime = (ms: number) => {
