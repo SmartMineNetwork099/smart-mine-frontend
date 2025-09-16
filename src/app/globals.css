@@ -45,3 +45,6 @@ body {
 .sr-only{
   display: none;
 }
+.apexcharts-menu-icon{
+  display: none !important;
+}
