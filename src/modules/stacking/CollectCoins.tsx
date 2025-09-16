@@ -17,7 +17,7 @@ type walletType = {
 const COUNTDOWN_MS = 10 * 1000;
 // const COUNTDOWN_MS = 12 * 60 * 60 * 1000; // 12 hours = 43,200,000 ms
 
-const socket = io('http://localhost:5001'); // Use your backend URL and port
+const socket = io(process.env.NEXT_PUBLIC_API_BASE); // Use your backend URL and port
 
 const CollectCoins = () => {
     const [nextClaimTime, setNextClaimTime] = useState<number | null>(() => {
