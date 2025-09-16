@@ -13,6 +13,7 @@ import { RiDashboardHorizontalLine } from "react-icons/ri";
 import { MdOutlineInfo } from "react-icons/md";
 import WalletData from '@/components/WalletData';
 import ROUTES from '@/constants/routes';
+import UserData from '@/components/UserData';
 const tabs = [
   { label: 'Stacking', icon: LiaDonateSolid, link: ROUTES?.STACKING?.DASHBOARD },
   { label: 'Binary', icon: TbBinaryTree, link: ROUTES?.BINARY?.DASHBOARD },
@@ -53,9 +54,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
 
               {isNotGamingPage && (
+                <>
+                <div className="w-full p-4 pt-0">
+                  <UserData />
+                </div>
                 <div className="w-full p-4 pt-0">
                   <WalletData />
                 </div>
+                </>
               )}
 
               {isBinaryPage && (
