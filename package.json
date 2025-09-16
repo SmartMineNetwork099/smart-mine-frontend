@@ -21,7 +21,8 @@
     "react-select": "^5.10.2",
     "react-spinners": "^0.17.0",
     "react-toastify": "^11.0.5",
-    "rizzui": "^1.0.1"
+    "rizzui": "^1.0.1",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
