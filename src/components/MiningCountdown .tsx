@@ -1,6 +1,9 @@
 'use client';
 import React, { useState, useEffect } from "react";
-import ReactApexChart from "react-apexcharts";
+import dynamic from "next/dynamic"; 
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
 import { ApexOptions } from "apexcharts";
 
 interface MiningCountdownProps {
