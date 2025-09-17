@@ -11,19 +11,19 @@ import { FaRegUser } from "react-icons/fa6";
 const walletInfo = [
     {
         name: 'Today Income',
-        transactions: '0.001234 USD',
+        transactions: '0.001234 $',
     },
     {
         name: 'Total Income',
-        transactions: '0.03736 USD',
+        transactions: '0.03736 $',
     },
     {
         name: 'Total Deposit',
-        transactions: '0.6374 USD',
+        transactions: '0.6374 $',
     },
     {
         name: 'Total Withdraw',
-        transactions: '0.6374 USD',
+        transactions: '0.6374 $',
     },
 
 ];
