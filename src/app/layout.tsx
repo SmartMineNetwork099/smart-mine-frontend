@@ -13,7 +13,6 @@ import { RiDashboardHorizontalLine } from "react-icons/ri";
 import { MdOutlineInfo } from "react-icons/md";
 import WalletData from '@/components/WalletData';
 import ROUTES from '@/constants/routes';
-import UserData from '@/components/UserData';
 const tabs = [
   { label: 'Stacking', icon: LiaDonateSolid, link: ROUTES?.STACKING?.DASHBOARD },
   { label: 'Binary', icon: TbBinaryTree, link: ROUTES?.BINARY?.DASHBOARD },
@@ -42,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="bg-gray-200">
-        <div className='bg-gradient-to-b w-full from-[#0f0c29] via-[#302b63] to-[#24243e]'>
+        <div className='w-full bg-black'>
 
           {/* ✅ Show only when tokken exists */}
           {tokken && !isAuthRoute && (
@@ -55,9 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
               {isNotGamingPage && (
                 <>
-                <div className="w-full p-4 pt-0">
-                  <UserData />
-                </div>
+               
                 <div className="w-full p-4 pt-0">
                   <WalletData />
                 </div>
