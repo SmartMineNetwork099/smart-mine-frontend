@@ -102,7 +102,7 @@ const WalletData = () => {
                 {/* //////////////////////////////////// */}
                 <div className='shadow-2xl rounded py-2 px-0.5 flex flex-col gap-2'>
                     {walletInfo?.map((item: { name: string; transactions: string }, index: number) => (
-                        <div key={index} className="flex items-center justify-between px-2 py-2.5 bg-black text-white rounded">
+                        <div key={index} className="flex items-center justify-between px-2 py-2.5 bg-black text-white rounded-lg">
                             <div className=''>
                                 <p className="font-medium text-gray-300 text-sm sm:text-base">
                                     {item?.name}
