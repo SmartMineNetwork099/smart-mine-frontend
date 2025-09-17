@@ -36,9 +36,7 @@ const WalletData = () => {
         if (file) {
             const imageUrl = URL.createObjectURL(file);
             setProfileImage(imageUrl);
-            console.log(file, 'filefilefile')
             const imageUrl1 = await uploadToCloudinary(file);
-            console.log(imageUrl1, 'imageUrlimageUrl')
             if (!imageUrl1) {
                 toast.error("Image upload failed. Please try again.");
                 return;
@@ -50,10 +48,8 @@ const WalletData = () => {
             }
             const imageSaveInDB = await updateUserImage(userID, imageUrl1);
             toast.success("Image uploaded successfully!");
-            console.log(imageSaveInDB?.data?.image_url, 'imageSaveInDBimageSaveInDB')
             setProfileImage(imageSaveInDB?.data?.image_url || imageUrl);
             const getUser = await getUserData(userID);
-            console.log(getUser?.data?.user, 'getUsergetUsergetUser')
             localStorage.setItem("walletData", JSON.stringify(getUser?.data?.user));
         }
     };
@@ -106,7 +102,7 @@ const WalletData = () => {
                 {/* //////////////////////////////////// */}
                 <div className='shadow-2xl rounded py-2 px-0.5 flex flex-col gap-2'>
                     {walletInfo?.map((item: { name: string; transactions: string }, index: number) => (
-                        <div key={index} className="flex items-center justify-between p-1 shadow-lg text-white rounded">
+                        <div key={index} className="flex items-center justify-between p-1 bg-black text-white rounded">
                             <div className=''>
                                 <p className="font-medium p-1 text-gray-300 text-sm sm:text-base">
                                     {item?.name}
