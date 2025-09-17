@@ -1,6 +1,12 @@
-import React, { useState, ChangeEvent } from 'react'
+"use client"
+import React, { useState, ChangeEvent, useEffect } from 'react'
 import Card from '@/components/Card';
 import { DEFAULT_CURRENCY } from "@/constants/currency";
+import { uploadToCloudinary } from '@/utils/uploadToCloudinary ';
+import { getUserData, updateUserImage } from '@/apis/user';
+import { toast } from 'react-toastify';
+import { getUserIdFromWallet } from '@/utils/walletHelpers';
+import { FaRegUser } from "react-icons/fa6";
 
 const walletInfo = [
     {
@@ -25,13 +31,37 @@ const WalletData = () => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
 
     // Handle Image Upload
-    const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             const imageUrl = URL.createObjectURL(file);
             setProfileImage(imageUrl);
+            console.log(file, 'filefilefile')
+            const imageUrl1 = await uploadToCloudinary(file);
+            console.log(imageUrl1, 'imageUrlimageUrl')
+            if (!imageUrl1) {
+                toast.error("Image upload failed. Please try again.");
+                return;
+            }
+            const userID = getUserIdFromWallet()
+            if (!userID) {
+                toast.error("User not found. Please login again.");
+                return;
+            }
+            const imageSaveInDB = await updateUserImage(userID, imageUrl1);
+            toast.success("Image uploaded successfully!");
+            console.log(imageSaveInDB?.data?.image_url, 'imageSaveInDBimageSaveInDB')
+            setProfileImage(imageSaveInDB?.data?.image_url || imageUrl);
+            const getUser = await getUserData(userID);
+            console.log(getUser?.data?.user, 'getUsergetUsergetUser')
+            localStorage.setItem("walletData", JSON.stringify(getUser?.data?.user));
         }
     };
+    useEffect(() => {
+        const walletDataString = localStorage.getItem("walletData");
+        const walletData = walletDataString ? JSON.parse(walletDataString) : null;
+        setProfileImage(walletData?.image_url || null);
+    }, []);
     return (
         <>
             <Card className="flex flex-col  flex-grow">
@@ -41,11 +71,21 @@ const WalletData = () => {
                         {/* Profile Image Upload */}
                         <div className="flex justify-center">
                             <label className="cursor-pointer relative">
-                                <img
-                                    src={profileImage || "/default-avatar.png"}
-                                    alt="User"
-                                    className="w-14 sm:w-16 h-14 sm:h-16 rounded-full border-2 border-gray-500 hover:opacity-80 transition"
-                                />
+                                {
+                                    profileImage ? (
+                                        <img
+                                            src={profileImage || "/default-avatar.png"}
+                                            alt="User"
+                                            className="w-14 sm:w-16 h-14 sm:h-16 rounded-full border-2 border-gray-500 hover:opacity-80 transition"
+                                        />
+                                    ) : (
+
+                                        <FaRegUser className="w-14 sm:w-16 h-14 sm:h-16 rounded-full border-2 border-gray-500 p-1 hover:opacity-80 transition"
+                                        />
+                                    )
+                                }
+
+
                                 <input
                                     type="file"
                                     accept="image/*"
