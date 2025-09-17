@@ -4,9 +4,13 @@ import Table from '@/components/Table';
 import { getReferralsAtLevel } from '@/apis/user';
 import Pagination from '@/components/Pagination';
 type Employee = {
-    walletAddress: string;
+    Sno: string;
+    userID: string;
     referredBy: string;
-    nonce: string;
+    stacking: string;
+    lavel: string;
+    status: string;
+    directTeam: string;
 };
 
 type Column = {
@@ -17,22 +21,24 @@ type Column = {
 
 
 const columns: Column[] = [
-    { key: "walletAddress", label: "walletAddress", width: "w-8 sm:32" },
-    { key: "referredBy", label: "referredBy", width: "w-12 sm:32" },
-    { key: "nonce", label: "nonce", width: "w-16 sm:32" },
+    { key: "Sno", label: "Sno.", width: "w-32" },
+    { key: "userID", label: "UserID", width: "w-32" },
+    { key: "referredBy", label: "ReferredBy", width: "w-32" },
+    { key: "stacking", label: "Stacking", width: "w-32" },
+    { key: "lavel", label: "Lavel", width: "w-32" },
+    { key: "status", label: "Status", width: "w-32" },
+    { key: "directTeam", label: "DirectTeam", width: "w-32" },
 ]
 
 const YourCommunity = () => {
     const [tableData, setTableData] = useState<Employee[]>([]);
     const [walletAddress, setWalletAddress] = useState('');
-    const [referralLink, setReferralLink] = useState('');
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const walletDataString = localStorage.getItem("walletData");
         const referralLink = walletDataString ? JSON.parse(walletDataString) : null;
-        setReferralLink(referralLink?.referralLink)
         setWalletAddress(referralLink?.walletAddress)
     }, [])
     const getLevelData = async (LevelNumber: number = 1) => {
