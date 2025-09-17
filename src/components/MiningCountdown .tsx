@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from "react";
-import dynamic from "next/dynamic"; 
+import dynamic from "next/dynamic";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
@@ -15,6 +15,8 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ totalTime = 6, handle
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [series, setSeries] = useState<number[]>([0]);
   const [isMining, setIsMining] = useState(false);
+  const [fontSize, setFontSize] = useState("22px");
+
 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
@@ -38,6 +40,23 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ totalTime = 6, handle
     const percentage = timeLeft >= 0 ? ((totalTime - timeLeft) / totalTime) * 100 : 0;
     setSeries([parseFloat(percentage.toFixed(2))]);
   }, [timeLeft, totalTime]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setFontSize("20px");
+      } else if (window.innerWidth > 640) {
+        setFontSize("30px");
+      } else {
+        setFontSize("22px");
+      }
+    };
+
+    handleResize(); // Initial call
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const options: ApexOptions = {
     chart: {
@@ -95,7 +114,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ totalTime = 6, handle
               return `${minutes}:${seconds.toString().padStart(2, "0")}`;
             },
             color: "#111",
-            fontSize: "30px",
+            fontSize: fontSize,
             show: true,
           },
         },
@@ -123,15 +142,24 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ totalTime = 6, handle
   return (
     <>
       <div className="flex flex-col items-center">
-        <div style={{ cursor: (!isMining || timeLeft === 0) ? 'pointer' : 'default' }}
+        <div
+          style={{ cursor: (!isMining || timeLeft === 0) ? 'pointer' : 'default' }}
           onClick={() => {
             if (!isMining || timeLeft === 0) {
               setTimeLeft(totalTime);
               setIsMining(true);
               handleClaim && handleClaim();
             }
-          }}>
-          <ReactApexChart options={options} series={series} type="radialBar" height={350} />
+          }}
+          className="w-[250px] sm:w-[450px]"
+        >
+          <ReactApexChart
+            options={options}
+            series={series}
+            type="radialBar"
+            height={350}
+            className="w-full"
+          />
         </div>
       </div>
     </>
