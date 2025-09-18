@@ -3,29 +3,18 @@ import { Button } from "rizzui";
 
 interface PaginationProps {
     currentPage: number;
-    totalPages: number;
     onPageChange: (page: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
     currentPage,
-    totalPages,
     onPageChange,
 }) => {
-    const generatePages = () => {
-        const pages = [];
-
-        for (let i = 1; i <= totalPages; i++) {
-            pages.push(i);
-        }
-
-        return pages;
-    };
-
+    const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     return (
         <div className="rounded-md shadow-md">
             <div className="flex overflow-x-auto whitespace-nowrap gap-2 px-1 scrollbar-hidden">
-                {generatePages().map((page) => (
+                {pages.map((page) => (
                     <Button
                         key={page}
                         onClick={() => onPageChange(page)}
