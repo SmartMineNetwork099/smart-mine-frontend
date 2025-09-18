@@ -15,7 +15,9 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ totalTime = 6, handle
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [series, setSeries] = useState<number[]>([0]);
   const [isMining, setIsMining] = useState(false);
-  const [fontSize, setFontSize] = useState("22px");
+  const [fontSize, setFontSize] = useState("20px");
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
 
   useEffect(() => {
@@ -43,12 +45,10 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ totalTime = 6, handle
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 640) {
+      if (window.innerWidth <= 640) {
         setFontSize("20px");
       } else if (window.innerWidth > 640) {
         setFontSize("30px");
-      } else {
-        setFontSize("22px");
       }
     };
 
@@ -153,13 +153,16 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ totalTime = 6, handle
           }}
           className="w-[250px] sm:w-[450px]"
         >
-          <ReactApexChart
-            options={options}
-            series={series}
-            type="radialBar"
-            height={350}
-            className="w-full"
-          />
+          {
+            mounted &&
+            <ReactApexChart
+              options={options}
+              series={series}
+              type="radialBar"
+              height={350}
+              className="w-full"
+            />
+          }
         </div>
       </div>
     </>
