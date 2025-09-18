@@ -47,7 +47,7 @@ const YourCommunity = () => {
         try {
             setLoading(true);
             const response = await getReferralsAtLevel(walletAddress, LevelNumber);
-            console.log("referrals at level 1", response?.data);
+            console.log(`referrals at level ${LevelNumber}`, response?.data);
             setTableData(Array.isArray(response?.data) ? response.data : []);
         } catch (error) {
             console.error("Error fetching referrals:", error);
