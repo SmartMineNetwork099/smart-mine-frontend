@@ -7,8 +7,8 @@ type Employee = {
     Sno: string;
     userID: string;
     referredBy: string;
-    stacking: string;
-    lavel: string;
+    staking: string;
+    level: string;
     status: string;
     directTeam: string;
 };
@@ -24,8 +24,8 @@ const columns: Column[] = [
     { key: "Sno", label: "Sno.", width: "w-32" },
     { key: "userID", label: "UserID", width: "w-32" },
     { key: "referredBy", label: "ReferredBy", width: "w-32" },
-    { key: "stacking", label: "Stacking", width: "w-32" },
-    { key: "lavel", label: "Lavel", width: "w-32" },
+    { key: "staking", label: "Staking", width: "w-32" },
+    { key: "level", label: "Level", width: "w-32" },
     { key: "status", label: "Status", width: "w-32" },
     { key: "directTeam", label: "DirectTeam", width: "w-32" },
 ]
