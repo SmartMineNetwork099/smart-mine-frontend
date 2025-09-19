@@ -1,31 +1,47 @@
 'use client';
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-const ReactApexChart = dynamic(() => import("react-apexcharts"), {
-  ssr: false,
-});
+import { toast } from "react-toastify";
+const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 import { ApexOptions } from "apexcharts";
 
 interface MiningCountdownProps {
-  totalTime?: number;
   handleClaim?: () => void;
 }
 
-const MiningCountdown: React.FC<MiningCountdownProps> = ({ totalTime = 6, handleClaim }) => {
-  const [timeLeft, setTimeLeft] = useState<number>(0);
+const MINING_COOLDOWN_MINUTES = 3; // time  in minutes
+const LAST_MINING_KEY = "lastMiningTimestamp"; // localStorage key
+
+const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
+  const [timeLeft, setTimeLeft] = useState<number>(0); // seconds remaining
   const [series, setSeries] = useState<number[]>([0]);
   const [isMining, setIsMining] = useState(false);
   const [fontSize, setFontSize] = useState("20px");
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => setMounted(true), []);
 
-
+  // Calculate remaining cooldown time when component mounts
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-    if (isMining && timeLeft >= 0) {
+    const lastMining = localStorage.getItem(LAST_MINING_KEY);
+    if (lastMining) {
+      const lastTime = parseInt(lastMining, 10);
+      const nextAvailable = lastTime + MINING_COOLDOWN_MINUTES * 60 * 1000;
+      const remainingMs = nextAvailable - Date.now();
+      if (remainingMs > 0) {
+        setTimeLeft(Math.ceil(remainingMs / 1000)); // convert ms -> sec
+        setIsMining(true);
+      }
+    }
+  }, []);
+
+  // Countdown logic
+  useEffect(() => {
+    let timer: NodeJS.Timeout | undefined;
+    if (isMining && timeLeft > 0) {
       timer = setInterval(() => {
         setTimeLeft((prev) => {
-          if (prev <= 0) {
+          if (prev <= 1) {
             setIsMining(false);
             return 0;
           }
@@ -36,36 +52,45 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ totalTime = 6, handle
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [isMining, timeLeft, totalTime]);
+  }, [isMining, timeLeft]);
 
+
+  // Progress Bar % (based on total cooldown)
   useEffect(() => {
-    const percentage = timeLeft >= 0 ? ((totalTime - timeLeft) / totalTime) * 100 : 0;
+    const percentage = timeLeft > 0
+      ? (((MINING_COOLDOWN_MINUTES * 60) - timeLeft) / (MINING_COOLDOWN_MINUTES * 60)) * 100
+      : 100;
     setSeries([parseFloat(percentage.toFixed(2))]);
-  }, [timeLeft, totalTime]);
+  }, [timeLeft]);
 
+  // Handle Responsive Font Size
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 640) {
-        setFontSize("20px");
-      } else if (window.innerWidth > 640) {
-        setFontSize("30px");
-      }
+      setFontSize(window.innerWidth <= 640 ? "20px" : "30px");
     };
-
-    handleResize(); // Initial call
+    handleResize();
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Check & Start Mining
+  const startMining = () => {
+    if (timeLeft > 0) {
+      const remainingMinutes = Math.ceil(timeLeft / 60);
+      toast.error(`⏳ Mining will be available after ${remainingMinutes} minutes`);
+      return;
+    }
+
+    // ✅ Save new mining start timestamp
+    localStorage.setItem(LAST_MINING_KEY, Date.now().toString());
+
+    setTimeLeft(MINING_COOLDOWN_MINUTES * 60); // convert minutes → sec
+    setIsMining(true);
+    handleClaim && handleClaim();
+  };
+
   const options: ApexOptions = {
-    chart: {
-      height: 350,
-      type: "radialBar",
-      toolbar: {
-        show: true,
-      },
-    },
+    chart: { height: 350, type: "radialBar", toolbar: { show: true } },
     plotOptions: {
       radialBar: {
         startAngle: -135,
@@ -75,25 +100,13 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ totalTime = 6, handle
           size: "70%",
           background: "#fff",
           position: "front",
-          dropShadow: {
-            enabled: true,
-            top: 3,
-            left: 0,
-            blur: 4,
-            opacity: 0.5,
-          },
+          dropShadow: { enabled: true, top: 3, blur: 4, opacity: 0.5 },
         },
         track: {
           background: "#fff",
           strokeWidth: "67%",
           margin: 0,
-          dropShadow: {
-            enabled: true,
-            top: -3,
-            left: 0,
-            blur: 4,
-            opacity: 0.7,
-          },
+          dropShadow: { enabled: true, top: -3, blur: 4, opacity: 0.7 },
         },
         dataLabels: {
           show: true,
@@ -102,16 +115,14 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ totalTime = 6, handle
             show: true,
             color: "#888",
             fontSize: "17px",
-            // text: "Countdown",
           },
           value: {
             formatter: () => {
-              if (!isMining || timeLeft === 0) {
-                return "Claim Reward";
-              }
-              const minutes = Math.floor(timeLeft / 60);
+              if (!isMining || timeLeft === 0) return "Claim Reward";
+              const hours = Math.floor(timeLeft / 3600);
+              const minutes = Math.floor((timeLeft % 3600) / 60);
               const seconds = timeLeft % 60;
-              return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+              return `${hours}h ${minutes}m ${seconds.toString().padStart(2, "0")}s`;
             },
             color: "#111",
             fontSize: fontSize,
@@ -133,39 +144,28 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ totalTime = 6, handle
         stops: [0, 100],
       },
     },
-    stroke: {
-      lineCap: "round",
-    },
-    labels: ["25$"],
+    stroke: { lineCap: "round" },
+    labels: ["Mining"],
   };
 
   return (
-    <>
-      <div className="flex flex-col items-center">
-        <div
-          style={{ cursor: (!isMining || timeLeft === 0) ? 'pointer' : 'default' }}
-          onClick={() => {
-            if (!isMining || timeLeft === 0) {
-              setTimeLeft(totalTime);
-              setIsMining(true);
-              handleClaim && handleClaim();
-            }
-          }}
-          className="w-[250px] sm:w-[450px]"
-        >
-          {
-            mounted &&
-            <ReactApexChart
-              options={options}
-              series={series}
-              type="radialBar"
-              height={350}
-              className="w-full"
-            />
-          }
-        </div>
+    <div className="flex flex-col items-center">
+      <div
+        style={{ cursor: timeLeft === 0 ? "pointer" : "default" }}
+        onClick={() => timeLeft === 0 && startMining()}
+        className="w-[250px] sm:w-[450px]"
+      >
+        {mounted && (
+          <ReactApexChart
+            options={options}
+            series={series}
+            type="radialBar"
+            height={350}
+            className="w-full"
+          />
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

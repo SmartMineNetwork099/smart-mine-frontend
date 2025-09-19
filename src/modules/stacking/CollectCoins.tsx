@@ -1,15 +1,10 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Button } from 'rizzui';
 import { toast } from 'react-toastify';
-import { FaHandHoldingDollar } from 'react-icons/fa6';
 import { startMiningApi } from '@/apis/mining';
 import { getUserIdFromWallet } from '@/utils/walletHelpers';
-import { formatTime } from '@/utils/func';
 import { io } from 'socket.io-client';
 import MiningCountdown from '@/components/MiningCountdown ';
-import { IoGiftOutline } from 'react-icons/io5';
-import { ClockLoader } from 'react-spinners';
 import Card from '@/components/Card';
 
 type walletType = {
@@ -34,7 +29,7 @@ const CollectCoins = () => {
             socket.emit('join', id);
             socket.on('walletUpdated', (updatedWallet) => {
                 setWallet(updatedWallet);
-                toast.info('Wallet updated instantly!');
+                // toast.info('Wallet updated instantly!');
             });
         }
         return () => {
@@ -44,8 +39,10 @@ const CollectCoins = () => {
 
 
     const handleClaim = async () => {
-        await startMiningApi(userId);
-        toast.success('🎉 You collected coins!');
+        const response = await startMiningApi(userId);
+        console.log(response, "responseeeee");
+        toast.success(response?.data?.message);
+        if (response?.error) toast.error(response?.error);
     };
 
 
@@ -55,7 +52,7 @@ const CollectCoins = () => {
             <Card>
                 <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>Claim <span className='text-green-500'>Reward</span></p>
 
-                <MiningCountdown totalTime={10} handleClaim={handleClaim} />
+                <MiningCountdown handleClaim={handleClaim} />
                 {/* Wallet info */}
                 {wallet && (
                     <div className="mt-2 text-white text-xs">
