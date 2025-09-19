@@ -40,22 +40,44 @@ const YourCommunity = () => {
     const socket = io(process.env.NEXT_PUBLIC_API_BASE, {
         transports: ["websocket"],
     });
-    // 👇 Real-time listener for status updates
+
+    // 👇 Unified real-time listener for wallet + status updates
     useEffect(() => {
-        socket.on("statusUpdated", (data) => {
+        socket.on("walletUpdated", (data) => {
+            console.log("🔄 Real-time update:", data);
             setTableData((prev: any) =>
                 prev.map((user: any) =>
-                    user._id === data.userId
-                        ? { ...user, status: data.status }
+                    user._id === data.userId || user._id === data._id
+                        ? {
+                            ...user,
+                            status: data.status ?? user.status,
+                            wallet: data.wallet ?? user.wallet,
+                        }
                         : user
                 )
             );
+
+            // 📝 Optional: update localStorage walletData if current user matches
+            const walletDataString = localStorage.getItem("walletData");
+            if (walletDataString) {
+                const parsed = JSON.parse(walletDataString);
+                if (parsed._id === data.userId || parsed._id === data._id) {
+                    const updated = {
+                        ...parsed,
+                        wallet: data.wallet ?? parsed.wallet,
+                        status: data.status ?? parsed.status,
+                        miningTime: data.miningTime ?? parsed.miningTime
+                    };
+                    localStorage.setItem("walletData", JSON.stringify(updated));
+                }
+            }
         });
 
         return () => {
-            socket.off("statusUpdated");
+            socket.off("walletUpdated");
         };
     }, []);
+
     return (
         <div className='p-4'>
             <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white mb-4'>
