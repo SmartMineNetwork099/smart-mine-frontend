@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import StakingTable from '@/components/StakingTable';
 import { getReferralsAtLevel } from '@/apis/user';
 import Pagination from '@/components/Pagination';
+import { io } from "socket.io-client";
 
 const YourCommunity = () => {
     const [tableData, setTableData] = useState<any>([]);
@@ -36,6 +37,25 @@ const YourCommunity = () => {
         }
     }, [walletAddress, page]);
 
+    const socket = io(process.env.NEXT_PUBLIC_API_BASE, {
+        transports: ["websocket"],
+    });
+    // 👇 Real-time listener for status updates
+    useEffect(() => {
+        socket.on("statusUpdated", (data) => {
+            setTableData((prev: any) =>
+                prev.map((user: any) =>
+                    user._id === data.userId
+                        ? { ...user, status: data.status }
+                        : user
+                )
+            );
+        });
+
+        return () => {
+            socket.off("statusUpdated");
+        };
+    }, []);
     return (
         <div className='p-4'>
             <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white mb-4'>
