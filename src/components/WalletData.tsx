@@ -8,27 +8,10 @@ import { toast } from 'react-toastify';
 import { getUserIdFromWallet } from '@/utils/walletHelpers';
 import { FaRegUser } from "react-icons/fa6";
 
-const walletInfo = [
-    {
-        name: 'Today Income',
-        transactions: '0.001234 $',
-    },
-    {
-        name: 'Total Income',
-        transactions: '0.03736 $',
-    },
-    {
-        name: 'Total Deposit',
-        transactions: '0.6374 $',
-    },
-    {
-        name: 'Total Withdraw',
-        transactions: '0.6374 $',
-    },
-
-];
 const WalletData = () => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
+    const [walletData, setWalletData] = useState<any>([]);
+    const [isMobile, setIsMobile] = useState(false);
 
     // Handle Image Upload
     const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -53,35 +36,54 @@ const WalletData = () => {
             localStorage.setItem("walletData", JSON.stringify(getUser?.data?.user));
         }
     };
+
     useEffect(() => {
         const walletDataString = localStorage.getItem("walletData");
         const walletData = walletDataString ? JSON.parse(walletDataString) : null;
         setProfileImage(walletData?.image_url || null);
+        setWalletData(walletData || []);
+        console.log("walletData1111", walletData);
     }, []);
+
+    // Detect mobile screen for short address
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 640);
+        handleResize(); // Run once on mount
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    // Generate display address
+    const displayAddress = walletData?.walletAddress
+        ? isMobile
+            ? `${walletData.walletAddress.slice(0, 8)}......${walletData.walletAddress.slice(-8)}`
+            : walletData.walletAddress
+        : "";
+
+
+    const walletInfo = [
+        { name: 'Today Income', transactions: '0.001234 $' },
+        { name: 'Total Income', transactions: '0.03736 $' },
+        { name: 'Total Deposit', transactions: '0.6374 $' },
+        { name: 'Total Withdraw', transactions: '0.6374 $' },
+    ];
     return (
         <>
-            <Card className="flex flex-col  flex-grow">
-                {/* //////////////////////////////////// */}
+            <Card className="flex flex-col flex-grow">
                 <div className="rounded-2xl text-white">
-                    <div className='flex gap-2'>
+                    <div className='flex gap-1 sm:gap-2'>
                         {/* Profile Image Upload */}
                         <div className="flex justify-center">
                             <label className="cursor-pointer relative">
-                                {
-                                    profileImage ? (
-                                        <img
-                                            src={profileImage || "/default-avatar.png"}
-                                            alt="User"
-                                            className="w-14 sm:w-16 h-14 sm:h-16 rounded-full border-2 border-gray-500 hover:opacity-80 transition"
-                                        />
-                                    ) : (
-
-                                        <FaRegUser className="w-14 sm:w-16 h-14 sm:h-16 rounded-full border-2 border-gray-500 p-1 hover:opacity-80 transition"
-                                        />
-                                    )
-                                }
-
-
+                                {profileImage ? (
+                                    <img
+                                        src={profileImage || "/default-avatar.png"}
+                                        alt="User"
+                                        className="w-12 sm:w-16 h-12 sm:h-16 rounded-full border-2 border-gray-500 hover:opacity-80 transition"
+                                    />
+                                ) : (
+                                    <FaRegUser className="w-12 sm:w-16 h-12 sm:h-16 rounded-full border-2 border-gray-500 p-1 hover:opacity-80 transition" />
+                                )}
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -91,32 +93,37 @@ const WalletData = () => {
                             </label>
                         </div>
                         {/* User Info */}
-                        <div className=" mb-4">
-                            <p className="text-gray-300 text-xs sm:text-sm">User ID: <span>HX595415500002</span></p>
-                            <p className="text-gray-300 text-xs sm:text-sm">Refer By: <span>HX1872963477</span></p>
-                            <p className="text-gray-300 text-xs sm:text-sm">Address: <span>0x706...06c99</span></p>
+                        <div className="mb-4 text-[10px] sm:text-sm text-gray-300">
+                            <p>
+                                User ID: <span>{walletData?.userId}</span>
+                            </p>
+                            <p>
+                                Refer By: <span>{walletData?.referredBy || '-'}</span>
+                            </p>
+                            <p>
+                                Address: <span>{displayAddress}</span>
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                {/* //////////////////////////////////// */}
                 <div className='shadow-2xl rounded py-2 px-0.5 flex flex-col gap-2'>
-                    {walletInfo?.map((item: { name: string; transactions: string }, index: number) => (
+                    {walletInfo?.map((item, index) => (
                         <div key={index} className="flex items-center justify-between px-2 py-2.5 bg-black text-white rounded-lg">
-                            <div className=''>
+                            <div>
                                 <p className="font-medium text-gray-300 text-sm sm:text-base">
-                                    {item?.name}
+                                    {item.name}
                                 </p>
                             </div>
-                            <div className=" sm:w-auto">
+                            <div className="sm:w-auto">
                                 <p className="font-bold text-green-500 rounded-lg text-sm sm:text-base inline sm:block">
                                     {item.transactions.includes(DEFAULT_CURRENCY) ? (
                                         <>
-                                            {item?.transactions.replace(DEFAULT_CURRENCY, '')}{' '}
+                                            {item.transactions.replace(DEFAULT_CURRENCY, '')}{' '}
                                             <span className="font-bold">{DEFAULT_CURRENCY}</span>
                                         </>
                                     ) : (
-                                        item?.transactions
+                                        item.transactions
                                     )}
                                 </p>
                             </div>
