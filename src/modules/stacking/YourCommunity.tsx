@@ -11,7 +11,7 @@ const YourCommunity = () => {
     const [walletAddress, setWalletAddress] = useState('');
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);
-     const socket = getSocket();
+    const socket = getSocket();
 
     useEffect(() => {
         const walletDataString = localStorage.getItem("walletData");
@@ -41,7 +41,11 @@ const YourCommunity = () => {
 
     // 👇 Unified real-time listener for wallet + status updates
     useEffect(() => {
-        socket.on("walletUpdated", (data:any) => {
+        if (!socket) {
+            console.warn("⚠️ Socket not initialized yet");
+            return;
+        }
+        socket.on("walletUpdated", (data: any) => {
             console.log("🔄 Real-time update:", data);
             setTableData((prev: any) =>
                 prev.map((user: any) =>

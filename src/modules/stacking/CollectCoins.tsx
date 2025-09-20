@@ -16,7 +16,7 @@ type walletType = {
 
 
 const CollectCoins = () => {
-    
+
     const [wallet, setWallet] = useState<walletType>();
     const [userId, setUserId] = useState<string | null>(null);
     const socket = getSocket();
@@ -26,8 +26,12 @@ const CollectCoins = () => {
     useEffect(() => {
         const id = getUserIdFromWallet();
         setUserId(id);
+        if (!socket) {
+            console.warn("⚠️ Socket not initialized yet");
+            return;
+        }
         if (id) {
-            socket.on('walletUpdated', (updatedWallet:any) => {
+            socket.on('walletUpdated', (updatedWallet: any) => {
                 setWallet(updatedWallet);
                 // toast.info('Wallet updated instantly!');
             });
