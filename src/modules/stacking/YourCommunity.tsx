@@ -48,9 +48,8 @@ const YourCommunity = () => {
             return;
         }
         // ✅ Ensure socket is always initialized here
-        // initSocket(id);
-        // const socket = getSocket();
-         const socket = initSocket(id); 
+        initSocket(id);
+        const socket = getSocket();
         if (!socket) {
             console.warn("⚠️ Socket not initialized yet");
             return;
