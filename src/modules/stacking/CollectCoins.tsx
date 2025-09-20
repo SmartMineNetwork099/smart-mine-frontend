@@ -43,10 +43,19 @@ const CollectCoins = () => {
 
 
     const handleClaim = async () => {
-        const response = await startMiningApi(userId);
-        console.log(response, "responseeeee");
-        toast.success(response?.data?.message);
-        if (response?.error) toast.error(response?.error);
+        try {
+            const response = await startMiningApi(userId);
+            if (response?.data?.success) {
+                toast.success(response?.data?.message);
+                return true; // ✅ mining start kar sakte ho
+            } else {
+                toast.error(response?.data?.message || "Failed to start mining");
+                return false; // ❌ mining start na ho
+            }
+        } catch (error: any) {
+            toast.error(error?.message || "Something went wrong!");
+            return false;
+        }
     };
 
 

@@ -74,10 +74,17 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
   }, []);
 
   // Check & Start Mining
-  const startMining = () => {
+  const startMining = async () => {
     if (timeLeft > 0) {
       const remainingMinutes = Math.ceil(timeLeft / 60);
       toast.error(`⏳ Mining will be available after ${remainingMinutes} minutes`);
+      return;
+    }
+    // 🔥 Wait for API response first
+    const success = await handleClaim?.();
+    console.log(success, 'successsuccesssuccess')
+    if (!success) {
+      // ❌ Agar API fail ho gai to countdown start na karo
       return;
     }
 
@@ -86,7 +93,6 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
 
     setTimeLeft(MINING_COOLDOWN_MINUTES * 60); // convert minutes → sec
     setIsMining(true);
-    handleClaim && handleClaim();
   };
 
   const options: ApexOptions = {
