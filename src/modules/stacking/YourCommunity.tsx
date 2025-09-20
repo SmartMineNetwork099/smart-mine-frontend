@@ -76,7 +76,7 @@ const YourCommunity = () => {
         });
 
         return () => {
-            socket.off("walletUpdated");
+            socket.off("statusUpdated");
         };
     }, []);
 
