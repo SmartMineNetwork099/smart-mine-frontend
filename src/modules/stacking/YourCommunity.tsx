@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react'
 import StakingTable from '@/components/StakingTable';
 import { getReferralsAtLevel } from '@/apis/user';
 import Pagination from '@/components/Pagination';
-import { getSocket } from "@/utils/socket";
+import { getSocket, initSocket } from "@/utils/socket";
+import { getUserIdFromWallet } from '@/utils/walletHelpers';
+import { toast } from 'react-toastify';
 
 
 const YourCommunity = () => {
@@ -40,6 +42,13 @@ const YourCommunity = () => {
 
     // 👇 Unified real-time listener for wallet + status updates
     useEffect(() => {
+         const id = getUserIdFromWallet();
+                if (!id) {
+                    toast.warn('id not find')
+                    return;
+                }
+                // ✅ Ensure socket is always initialized here
+                initSocket(id);
       const socket = getSocket();
         if (!socket) {
             console.warn("⚠️ Socket not initialized yet");
