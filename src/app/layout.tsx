@@ -13,6 +13,8 @@ import { RiDashboardHorizontalLine } from "react-icons/ri";
 import { MdOutlineInfo } from "react-icons/md";
 import WalletData from '@/components/WalletData';
 import ROUTES from '@/constants/routes';
+import { initSocket } from "@/utils/socket";
+import { getUserIdFromWallet } from '@/utils/walletHelpers';
 const tabs = [
   { label: 'Stacking', icon: LiaDonateSolid, link: ROUTES?.STACKING?.DASHBOARD },
   { label: 'Binary', icon: TbBinaryTree, link: ROUTES?.BINARY?.DASHBOARD },
@@ -26,7 +28,13 @@ const tabs2 = [
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [tokken, setTokken] = useState<string | null>(null);
+  const userID = getUserIdFromWallet()
 
+ useEffect(() => {
+    if (userID) {
+      initSocket(userID);
+    }
+  }, [userID]);
   useEffect(() => {
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     if (token) {
@@ -54,10 +62,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
               {isNotGamingPage && (
                 <>
-               
-                <div className="w-full p-4 pt-0">
-                  <WalletData />
-                </div>
+
+                  <div className="w-full p-4 pt-0">
+                    <WalletData />
+                  </div>
                 </>
               )}
 

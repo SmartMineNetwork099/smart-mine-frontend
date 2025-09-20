@@ -3,13 +3,15 @@ import React, { useEffect, useState } from 'react'
 import StakingTable from '@/components/StakingTable';
 import { getReferralsAtLevel } from '@/apis/user';
 import Pagination from '@/components/Pagination';
-import { io } from "socket.io-client";
+import { getSocket } from "@/utils/socket";
+
 
 const YourCommunity = () => {
     const [tableData, setTableData] = useState<any>([]);
     const [walletAddress, setWalletAddress] = useState('');
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);
+     const socket = getSocket();
 
     useEffect(() => {
         const walletDataString = localStorage.getItem("walletData");
@@ -37,13 +39,9 @@ const YourCommunity = () => {
         }
     }, [walletAddress, page]);
 
-    const socket = io(process.env.NEXT_PUBLIC_API_BASE, {
-        transports: ["websocket"],
-    });
-
     // 👇 Unified real-time listener for wallet + status updates
     useEffect(() => {
-        socket.on("walletUpdated", (data) => {
+        socket.on("walletUpdated", (data:any) => {
             console.log("🔄 Real-time update:", data);
             setTableData((prev: any) =>
                 prev.map((user: any) =>

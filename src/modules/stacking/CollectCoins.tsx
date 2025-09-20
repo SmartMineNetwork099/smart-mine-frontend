@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { startMiningApi } from '@/apis/mining';
 import { getUserIdFromWallet } from '@/utils/walletHelpers';
-import { io } from 'socket.io-client';
 import MiningCountdown from '@/components/MiningCountdown ';
 import Card from '@/components/Card';
+import { getSocket } from "@/utils/socket";
+
 
 type walletType = {
     miningEarnings: number;
@@ -13,12 +14,12 @@ type walletType = {
     balance: number;
 };
 
-const socket = io(process.env.NEXT_PUBLIC_API_BASE as string);
 
 const CollectCoins = () => {
-
+    
     const [wallet, setWallet] = useState<walletType>();
     const [userId, setUserId] = useState<string | null>(null);
+    const socket = getSocket();
 
 
     // 🔗 Socket.IO listener
@@ -26,8 +27,7 @@ const CollectCoins = () => {
         const id = getUserIdFromWallet();
         setUserId(id);
         if (id) {
-            socket.emit('join', id);
-            socket.on('walletUpdated', (updatedWallet) => {
+            socket.on('walletUpdated', (updatedWallet:any) => {
                 setWallet(updatedWallet);
                 // toast.info('Wallet updated instantly!');
             });
