@@ -26,8 +26,13 @@ export const initSocket = (userId) => {
     socket.on("connect_error", (err) => {
       console.error("⚠️ Socket connection error:", err.message);
     });
+  } else if (userId) {
+    // ⚠️ agar socket already bana hua hai to bhi join emit kara do
+    socket.emit("join", userId);
+    console.log("🔄 Re-joined room with userId:", userId);
   }
   return socket;
 };
+
 
 export const getSocket = () => socket;

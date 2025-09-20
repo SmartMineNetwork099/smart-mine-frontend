@@ -42,14 +42,15 @@ const YourCommunity = () => {
 
     // 👇 Unified real-time listener for wallet + status updates
     useEffect(() => {
-         const id = getUserIdFromWallet();
-                if (!id) {
-                    toast.warn('id not find')
-                    return;
-                }
-                // ✅ Ensure socket is always initialized here
-                initSocket(id);
-      const socket = getSocket();
+        const id = getUserIdFromWallet();
+        if (!id) {
+            toast.warn('id not find')
+            return;
+        }
+        // ✅ Ensure socket is always initialized here
+        // initSocket(id);
+        // const socket = getSocket();
+         const socket = initSocket(id); 
         if (!socket) {
             console.warn("⚠️ Socket not initialized yet");
             return;
