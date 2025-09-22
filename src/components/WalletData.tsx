@@ -12,7 +12,7 @@ const WalletData = () => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
     const [walletData, setWalletData] = useState<any>([]);
     const [isMobile, setIsMobile] = useState(false);
-
+    const userID = getUserIdFromWallet()
     // Handle Image Upload
     const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -24,7 +24,7 @@ const WalletData = () => {
                 toast.error("Image upload failed. Please try again.");
                 return;
             }
-            const userID = getUserIdFromWallet()
+
             if (!userID) {
                 toast.error("User not found. Please login again.");
                 return;
@@ -36,13 +36,15 @@ const WalletData = () => {
             localStorage.setItem("walletData", JSON.stringify(getUser?.data?.user));
         }
     };
-
-    useEffect(() => {
+    const handleWalletDataFetch = async () => {
         const walletDataString = localStorage.getItem("walletData");
         const walletData = walletDataString ? JSON.parse(walletDataString) : null;
         setProfileImage(walletData?.image_url || null);
-        setWalletData(walletData || []);
-        console.log("walletData1111", walletData);
+        const getUser = await getUserData(userID);
+        setWalletData(getUser?.data?.user?.wallet || []);
+    }
+    useEffect(() => {
+        handleWalletDataFetch()
     }, []);
 
     // Detect mobile screen for short address
@@ -62,11 +64,12 @@ const WalletData = () => {
 
 
     const walletInfo = [
-        { name: 'Today Income', transactions: '0.001234 $' },
-        { name: 'Total Income', transactions: '0.03736 $' },
-        { name: 'Total Deposit', transactions: '0.6374 $' },
-        { name: 'Total Withdraw', transactions: '0.6374 $' },
+        { name: 'Today Income', transactions: `${walletData?.todayIncome || 0} $` },
+        { name: 'Total Income', transactions: `${walletData?.balance || 0} $` },
+        { name: 'Total Deposit', transactions: `${walletData?.totalDeposit || 0} $` },
+        { name: 'Total Withdraw', transactions: `${walletData?.totalWithdraw || 0} $` },
     ];
+    console.log(walletData, 'walletDatawalletDatawalletData')
     return (
         <>
             <Card className="flex flex-col flex-grow">
