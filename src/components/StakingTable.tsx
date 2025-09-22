@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
 
 type TableProps = {
@@ -9,6 +9,16 @@ type TableProps = {
 };
 
 const StakingTable = ({ data, loading = true }: TableProps) => {
+    const [responsiveColspan, setResponsiveColspan] = useState<number>(2)
+    // Handle Responsive 
+    useEffect(() => {
+        const handleResize = () => {
+            setResponsiveColspan(window.innerWidth <= 640 ? 2 : 6);
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
     return (
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden">
             <table className="min-w-[700px] w-full text-sm border-collapse">
@@ -25,7 +35,7 @@ const StakingTable = ({ data, loading = true }: TableProps) => {
                 <tbody>
                     {loading ? (
                         <tr>
-                            <td colSpan={6} className="!text-center py-6">
+                            <td colSpan={responsiveColspan} className="!text-center py-6">
                                 <div className="flex justify-center items-center">
                                     <Loading />
                                 </div>
@@ -51,7 +61,7 @@ const StakingTable = ({ data, loading = true }: TableProps) => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan={6} className="text-center py-6">
+                            <td colSpan={responsiveColspan} className="text-center py-6">
                                 <Image
                                     src="/undraw_no_data_found.svg"
                                     className="mx-auto w-28 sm:w-40 h-28 sm:h-40"
