@@ -11,15 +11,15 @@ type TableProps = {
 const StakingTable = ({ data, loading = true }: TableProps) => {
     return (
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden">
-            <table className="min-w-[800px] w-full text-sm border-collapse">
+            <table className="min-w-[700px] w-full text-sm border-collapse">
                 <thead className="sticky top-0 z-10 bg-green-500 text-black">
                     <tr className="bg-green-500 text-black font-bold text-center">
-                        <th className="px-4 py-2 min-w-[150px]">Sno.</th>
-                        <th className="px-4 py-2 min-w-[250px]">UserID</th>
-                        <th className="px-4 py-2 min-w-[100px] text-end">Staking</th>
-                        <th className="px-4 py-2 min-w-[150px]">Level</th>
-                        <th className="px-4 py-2 min-w-[100px]">Status</th>
-                        <th className="px-4 py-2 min-w-[150px]">DirectTeam</th>
+                        <th className="px-4 py-2 w-[70px] sm:w-[100px]">Sno.</th>
+                        <th className="px-4 py-2 w-[200px] sm:w-[230px]">UserID</th>
+                        <th className="px-4 py-2 w-[100px] text-end">Staking</th>
+                        <th className="px-4 py-2 w-[100px]">Level</th>
+                        <th className="px-4 py-2 w-[100px]">Status</th>
+                        <th className="px-4 py-2 w-[110px] sm:w-[130px]">Direct Team</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,7 +35,7 @@ const StakingTable = ({ data, loading = true }: TableProps) => {
                         data?.map((row: any, rowIndex: number) => (
                             <tr
                                 key={rowIndex}
-                                className="text-center text-white bg-gray-600 odd:bg-gray-700"
+                                className="text-center text-white bg-gray-600 odd:bg-gray-700 text-xs sm:text-sm"
                             >
                                 <td className="px-4 py-2 whitespace-nowrap">{rowIndex + 1}</td>
                                 <td className="px-4 py-2 whitespace-nowrap">{row?._id ?? "-"}</td>
