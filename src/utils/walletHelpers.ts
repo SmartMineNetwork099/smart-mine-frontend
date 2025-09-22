@@ -126,3 +126,11 @@ export const getUserIdFromWallet = () => {
     return null;
   }
 };
+export const getUserWalletAddress = () => {
+  try {
+    const walletData = JSON.parse(localStorage.getItem('walletData') || '{}');
+    return walletData?.walletAddress || null;
+  } catch {
+    return null;
+  }
+};

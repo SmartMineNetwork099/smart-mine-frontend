@@ -75,3 +75,34 @@ export const getUserData = async (
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
+
+export const getTeamStats = async (walletAddress: string) => {
+    try {
+        // Send walletAddress in the body
+        const res = await axios.post(`${API}/api/auth/getTeamStats`, {
+            walletAddress,
+        });
+
+        console.log(res.data, "getTeamStats response");
+
+        if (res.status !== 200) {
+            return {
+                data: null,
+                error: "Failed to fetch team stats. Please try again.",
+            };
+        }
+
+        // Directly return only needed data
+        return {
+            data: res.data.data, // contains { directTeam, communitySize }
+            error: null,
+        };
+    } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
+        return {
+            data: null,
+            error: error.response?.data?.message ?? "Something went wrong. Try again.",
+        };
+    }
+};
+

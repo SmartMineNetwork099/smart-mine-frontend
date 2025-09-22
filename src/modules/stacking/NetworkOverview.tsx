@@ -1,8 +1,30 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import Card from '@/components/Card'
+import { getTeamStats } from "@/apis/user";
+import { getUserWalletAddress } from "@/utils/walletHelpers";
 
 const NetworkOverview = () => {
+    const [stats, setStats] = useState<{ directTeam: number; communitySize: number } | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    const walletAddress = getUserWalletAddress();
+    useEffect(() => {
+        const fetchStats = async () => {
+            setLoading(true);
+            const { data, error } = await getTeamStats(walletAddress);
+            if (error) {
+                console.error(error);
+            } else {
+                setStats(data);
+            }
+            setLoading(false);
+        };
+
+        if (walletAddress) fetchStats();
+    }, [walletAddress]);
+    console.log(stats, 'statsstats')
+
     return (
         <>
             <Card className='mt-4'>
@@ -12,11 +34,11 @@ const NetworkOverview = () => {
                 <div className='flex items-center justify-between sm:justify-start gap-2 mt-3 text-gray-300'>
                     <div className='border border-green-500 rounded-lg p-2'>
                         <p>Direct Team</p>
-                        <p className='text-sm sm:text-base'>12</p>
+                        <p className='text-sm sm:text-base'>{stats?.directTeam || 0}</p>
                     </div>
                     <div className='border border-green-500 rounded-lg p-2'>
                         <p>Community Size</p>
-                        <p className='text-sm sm:text-base'>120</p>
+                        <p className='text-sm sm:text-base'>{stats?.communitySize || 0}</p>
                     </div>
                 </div>
             </Card>
