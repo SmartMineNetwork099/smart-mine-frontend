@@ -22,42 +22,48 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
   const [userID, setUserID] = useState<string | null>(null);
   const user_Id = getUserIdFromWallet();
 
+
   useEffect(() => setMounted(true), []);
 
-  // Calculate remaining cooldown time when component mounts
+  // Always recalculate timeLeft from localStorage and current time
   useEffect(() => {
     setUserID(user_Id);
-    const lastMining = localStorage.getItem(`${LAST_MINING_KEY}_${userID}`);
-    if (lastMining) {
-      const lastTime = parseInt(lastMining, 10);
-      const nextAvailable = lastTime + MINING_COOLDOWN_MINUTES * 60 * 1000;
-      const remainingMs = nextAvailable - Date.now();
-      if (remainingMs > 0) {
-        setTimeLeft(Math.ceil(remainingMs / 1000)); // convert ms -> sec
-        setIsMining(true);
+    const interval = setInterval(() => {
+      const lastMining = localStorage.getItem(`${LAST_MINING_KEY}_${user_Id}`);
+      if (lastMining) {
+        const lastTime = parseInt(lastMining, 10);
+        const nextAvailable = lastTime + MINING_COOLDOWN_MINUTES * 60 * 1000;
+        const remainingMs = nextAvailable - Date.now();
+        if (remainingMs > 0) {
+          setTimeLeft(Math.ceil(remainingMs / 1000));
+          setIsMining(true);
+        } else {
+          setTimeLeft(0);
+          setIsMining(false);
+        }
+      } else {
+        setTimeLeft(0);
+        setIsMining(false);
       }
-    }
-  }, []);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [user_Id]);
 
-  // Countdown logic
-  useEffect(() => {
-    let timer: NodeJS.Timeout | undefined;
-    if (isMining && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            setIsMining(false);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-  }, [isMining, timeLeft]);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
   // Progress Bar % (based on total cooldown)
   useEffect(() => {
@@ -93,10 +99,8 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
     }
 
     // ✅ Save new mining start timestamp
-    localStorage.setItem(`${LAST_MINING_KEY}_${userID}`, Date.now().toString());
-
-    setTimeLeft(MINING_COOLDOWN_MINUTES * 60); // convert minutes → sec
-    setIsMining(true);
+    localStorage.setItem(`${LAST_MINING_KEY}_${user_Id}`, Date.now().toString());
+    // The timer will update automatically on next interval
   };
 
   const options: ApexOptions = {
