@@ -46,8 +46,8 @@ const LoginContent: React.FC = () => {
             console.log("verifyRes", verifyRes);
             // ✅ Step 6: Save token
             if (verifyRes?.data) {
-                localStorage.setItem(`userID`, verifyRes.data.userID);
-                const userID = getUserIdFromWallet();
+                const userID = verifyRes.data.userId;
+                localStorage.setItem(`userID`, userID);
                 localStorage.setItem(`token_${userID}`, verifyRes.data.token);
                 localStorage.setItem(`walletData_${userID}`, JSON.stringify(verifyRes?.data));
                 router.replace(ROUTES?.STACKING?.DASHBOARD);
