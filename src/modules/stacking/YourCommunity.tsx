@@ -13,9 +13,10 @@ const YourCommunity = () => {
     const [walletAddress, setWalletAddress] = useState('');
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);
+    const userID = getUserIdFromWallet();
 
     useEffect(() => {
-        const walletDataString = localStorage.getItem("walletData");
+        const walletDataString = localStorage.getItem(`walletData_${userID}`);
         const referralLink = walletDataString ? JSON.parse(walletDataString) : null;
         setWalletAddress(referralLink?.walletAddress)
     }, []);
@@ -42,13 +43,12 @@ const YourCommunity = () => {
 
     // 👇 Unified real-time listener for wallet + status updates
     useEffect(() => {
-        const id = getUserIdFromWallet();
-        if (!id) {
-            toast.warn('id not find')
+        if (!userID) {
+            toast.warn('userID not find')
             return;
         }
         // ✅ Ensure socket is always initialized here
-        initSocket(id);
+        initSocket(userID);
         const socket = getSocket();
         if (!socket) {
             console.warn("⚠️ Socket not initialized yet");
@@ -69,7 +69,7 @@ const YourCommunity = () => {
             );
 
             // 📝 Optional: update localStorage walletData if current user matches
-            const walletDataString = localStorage.getItem("walletData");
+            const walletDataString = localStorage.getItem(`walletData_${userID}`);
             if (walletDataString) {
                 const parsed = JSON.parse(walletDataString);
                 if (parsed._id === data.userId || parsed._id === data._id) {
@@ -79,7 +79,7 @@ const YourCommunity = () => {
                         status: data.status ?? parsed.status,
                         miningTime: data.miningTime ?? parsed.miningTime
                     };
-                    localStorage.setItem("walletData", JSON.stringify(updated));
+                    localStorage.setItem(`walletData_${userID}`, JSON.stringify(updated));
                 }
             }
         });

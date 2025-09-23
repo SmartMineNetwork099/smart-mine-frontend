@@ -120,7 +120,8 @@ export const checkAndSwitchNetwork = async (
 //////////////////////////////////////////////////////////////////////////////////////////
 export const getUserIdFromWallet = () => {
   try {
-    const walletData = JSON.parse(localStorage.getItem('walletData') || '{}');
+    const userID = JSON.parse(localStorage.getItem(`userID`) || '{}');
+    const walletData = JSON.parse(localStorage.getItem(`walletData_${userID}`) || '{}');
     return walletData?.userId || null;
   } catch {
     return null;
@@ -128,7 +129,8 @@ export const getUserIdFromWallet = () => {
 };
 export const getUserWalletAddress = () => {
   try {
-    const walletData = JSON.parse(localStorage.getItem('walletData') || '{}');
+    const userID = JSON.parse(localStorage.getItem(`userID`) || '{}');
+    const walletData = JSON.parse(localStorage.getItem(`walletData_${userID}`) || '{}');
     return walletData?.walletAddress || null;
   } catch {
     return null;

@@ -12,6 +12,7 @@ const WalletData = () => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
     const [walletData, setWalletData] = useState<any>([]);
     const [isMobile, setIsMobile] = useState(false);
+
     const userID = getUserIdFromWallet()
     // Handle Image Upload
     const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -33,12 +34,10 @@ const WalletData = () => {
             toast.success("Image uploaded successfully!");
             setProfileImage(imageSaveInDB?.data?.image_url || imageUrl);
             const getUser = await getUserData(userID);
-            localStorage.setItem("walletData", JSON.stringify(getUser?.data?.user));
+            localStorage.setItem(`walletData_${userID}`, JSON.stringify(getUser?.data?.user));
         }
     };
     const handleWalletDataFetch = async () => {
-        // const walletDataString = localStorage.getItem("walletData");
-        // const walletData = walletDataString ? JSON.parse(walletDataString) : null;
         const getUser = await getUserData(userID);
         setProfileImage(walletData?.image_url || null);
         setWalletData(getUser?.data?.user || []);

@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { toast } from "react-toastify";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 import { ApexOptions } from "apexcharts";
+import { getUserIdFromWallet } from "@/utils/walletHelpers";
 
 interface MiningCountdownProps {
   handleClaim?: () => void;
@@ -18,12 +19,15 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
   const [isMining, setIsMining] = useState(false);
   const [fontSize, setFontSize] = useState("20px");
   const [mounted, setMounted] = useState(false);
+  const [userID, setUserID] = useState<string | null>(null);
+  const user_Id = getUserIdFromWallet();
 
   useEffect(() => setMounted(true), []);
 
   // Calculate remaining cooldown time when component mounts
   useEffect(() => {
-    const lastMining = localStorage.getItem(LAST_MINING_KEY);
+    setUserID(user_Id);
+    const lastMining = localStorage.getItem(`${LAST_MINING_KEY}_${userID}`);
     if (lastMining) {
       const lastTime = parseInt(lastMining, 10);
       const nextAvailable = lastTime + MINING_COOLDOWN_MINUTES * 60 * 1000;
@@ -89,7 +93,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
     }
 
     // ✅ Save new mining start timestamp
-    localStorage.setItem(LAST_MINING_KEY, Date.now().toString());
+    localStorage.setItem(`${LAST_MINING_KEY}_${userID}`, Date.now().toString());
 
     setTimeLeft(MINING_COOLDOWN_MINUTES * 60); // convert minutes → sec
     setIsMining(true);

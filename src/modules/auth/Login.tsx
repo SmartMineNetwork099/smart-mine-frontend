@@ -3,7 +3,7 @@ import React, { useState, Suspense } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { getNonceApi, verifySignatureApi } from "@/apis/auth";
-import { connectWallet, checkAndSwitchNetwork } from "@/utils/walletHelpers";
+import { connectWallet, checkAndSwitchNetwork, getUserIdFromWallet } from "@/utils/walletHelpers";
 import ROUTES from "@/constants/routes";
 import { useSearchParams } from "next/navigation";
 
@@ -13,7 +13,7 @@ const LoginContent: React.FC = () => {
     const searchParams = useSearchParams();
     const ref = searchParams.get("ref");
     console.log("refffffffffff", ref);
-
+    const userID = getUserIdFromWallet();
     const handleLogin = async () => {
         try {
             setLoading(true);
@@ -27,7 +27,7 @@ const LoginContent: React.FC = () => {
             if (!isCorrectNetwork) return;
 
             // ✅ Step 3: Get nonce
-            const nonceRes = await getNonceApi(wallet.address , ref);
+            const nonceRes = await getNonceApi(wallet.address, ref);
             if (nonceRes?.error) {
                 toast.error(nonceRes?.error);
                 return;
@@ -39,7 +39,7 @@ const LoginContent: React.FC = () => {
             const signature = await wallet.signer.signMessage(message);
 
             // ✅ Step 5: Verify
-            const verifyRes = await verifySignatureApi(wallet.address, signature, nonce );
+            const verifyRes = await verifySignatureApi(wallet.address, signature, nonce);
             if (verifyRes?.error) {
                 toast.error(verifyRes?.error);
                 return;
@@ -47,8 +47,9 @@ const LoginContent: React.FC = () => {
             console.log("verifyRes", verifyRes);
             // ✅ Step 6: Save token
             if (verifyRes?.data) {
-                localStorage.setItem("token", verifyRes.data.token);
-                localStorage.setItem("walletData", JSON.stringify(verifyRes?.data));
+                localStorage.setItem(`userID`, verifyRes.data.userID);
+                localStorage.setItem(`token_${userID}`, verifyRes.data.token);
+                localStorage.setItem(`walletData_${userID}`, JSON.stringify(verifyRes?.data));
                 router.replace(ROUTES?.STACKING?.DASHBOARD);
                 toast.success(verifyRes?.data?.message);
             }

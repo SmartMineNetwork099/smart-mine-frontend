@@ -3,17 +3,19 @@ import React, { useEffect, useState } from 'react'
 import { Input } from "rizzui";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";
 import Card from '@/components/Card';
+import { getUserIdFromWallet } from '@/utils/walletHelpers';
 
 const ReferralLink = () => {
     const [referralLink, setReferralLink] = useState('');
     const [copied, setCopied] = useState(false);
+    const userID = getUserIdFromWallet()
     const handleCopy = () => {
         navigator.clipboard.writeText(referralLink);
         setCopied(true);
         setTimeout(() => setCopied(false), 1000);
     };
     useEffect(() => {
-        const walletDataString = localStorage.getItem("walletData");
+        const walletDataString = localStorage.getItem(`walletData_${userID}`);
         const referralLink = walletDataString ? JSON.parse(walletDataString) : null;
         setReferralLink(referralLink?.referralLink)
     }, [])
