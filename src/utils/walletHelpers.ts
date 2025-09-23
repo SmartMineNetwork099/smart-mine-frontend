@@ -118,21 +118,49 @@ export const checkAndSwitchNetwork = async (
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-export const getUserIdFromWallet = () => {
+// utils/walletHelpers.ts
+export const getUserIdFromWallet = (): string | null => {
   try {
-    const userID = JSON.parse(localStorage.getItem(`userID`) || '{}');
-    const walletData = JSON.parse(localStorage.getItem(`walletData_${userID}`) || '{}');
-    return walletData?.userId || null;
-  } catch {
+    // 1️⃣ Try from localStorage
+    const userID = localStorage.getItem("userID");
+
+    if (userID) {
+      const walletData = JSON.parse(localStorage.getItem(`walletData_${userID}`) || "{}");
+      return walletData?.userId || userID; // prefer walletData.userId but fallback to raw
+    }
+
+    // 2️⃣ If not in localStorage, fallback to URL param
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlUserId = urlParams.get("userId");
+    console.log("urlUserId", urlUserId);
+    if (urlUserId) {
+      try {
+        localStorage.setItem("userID", urlUserId);
+      } catch (e) {
+        console.warn("Could not save userID to localStorage", e);
+      }
+      const walletData = JSON.parse(localStorage.getItem(`walletData_${urlUserId}`) || "{}");
+      return walletData?.userId || urlUserId;
+    }
+
+    return null;
+  } catch (error) {
+    console.error("getUserIdFromWallet error:", error);
     return null;
   }
 };
-export const getUserWalletAddress = () => {
+
+export const getUserWalletAddress = (): string | null => {
   try {
-    const userID = JSON.parse(localStorage.getItem(`userID`) || '{}');
-    const walletData = JSON.parse(localStorage.getItem(`walletData_${userID}`) || '{}');
+    // 1️⃣ Get userId first (use above function so fallback works automatically)
+    const userID = getUserIdFromWallet();
+    if (!userID) return null;
+
+    // 2️⃣ Read walletData from storage
+    const walletData = JSON.parse(localStorage.getItem(`walletData_${userID}`) || "{}");
     return walletData?.walletAddress || null;
-  } catch {
+  } catch (error) {
+    console.error("getUserWalletAddress error:", error);
     return null;
   }
 };

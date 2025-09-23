@@ -21,10 +21,7 @@ export interface User {
     wallet: Wallet;
 }
 
-// 🔹 API Response ka type
-interface GetUserResponse {
-    user: User;
-}
+
 export const getReferralsAtLevel = async (
     walletAddress: string,
     level: number,
@@ -63,7 +60,7 @@ export const getUserData = async (
     id: string,
 ) => {
     try {
-        const res = await axios.get<GetUserResponse>(`${API}/api/auth/getUserByID/${id}`);
+        const res = await axios.get<any>(`${API}/api/auth/getUserByID/${id}`);
         console.log(res, 'resresres1111')
         if (res.status !== 200) {
             return { data: null, error: "Failed to fetch user data. Please try again." };

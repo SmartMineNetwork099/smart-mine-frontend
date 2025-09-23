@@ -42,52 +42,52 @@ const YourCommunity = () => {
     }, [walletAddress, page]);
 
     // 👇 Unified real-time listener for wallet + status updates
-    useEffect(() => {
-        if (!userID) {
-            toast.warn('userID not find')
-            return;
-        }
-        // ✅ Ensure socket is always initialized here
-        initSocket(userID);
-        const socket = getSocket();
-        if (!socket) {
-            console.warn("⚠️ Socket not initialized yet");
-            return;
-        }
-        socket.on("statusUpdated", (data: any) => {
-            console.log("🔄 Real-time update:", data);
-            setTableData((prev: any) =>
-                prev.map((user: any) =>
-                    user._id === data.userId || user._id === data._id
-                        ? {
-                            ...user,
-                            status: data.status ?? user.status,
-                            wallet: data.wallet ?? user.wallet,
-                        }
-                        : user
-                )
-            );
+    // useEffect(() => {
+    //     if (!userID) {
+    //         toast.warn('userID not find.....')
+    //         return;
+    //     }
+    //     // ✅ Ensure socket is always initialized here
+    //     initSocket(userID);
+    //     const socket = getSocket();
+    //     if (!socket) {
+    //         console.warn("⚠️ Socket not initialized yet");
+    //         return;
+    //     }
+    //     socket.on("statusUpdated", (data: any) => {
+    //         console.log("🔄 Real-time update:", data);
+    //         setTableData((prev: any) =>
+    //             prev.map((user: any) =>
+    //                 user._id === data.userId || user._id === data._id
+    //                     ? {
+    //                         ...user,
+    //                         status: data.status ?? user.status,
+    //                         wallet: data.wallet ?? user.wallet,
+    //                     }
+    //                     : user
+    //             )
+    //         );
 
-            // 📝 Optional: update localStorage walletData if current user matches
-            const walletDataString = localStorage.getItem(`walletData_${userID}`);
-            if (walletDataString) {
-                const parsed = JSON.parse(walletDataString);
-                if (parsed._id === data.userId || parsed._id === data._id) {
-                    const updated = {
-                        ...parsed,
-                        wallet: data.wallet ?? parsed.wallet,
-                        status: data.status ?? parsed.status,
-                        miningTime: data.miningTime ?? parsed.miningTime
-                    };
-                    localStorage.setItem(`walletData_${userID}`, JSON.stringify(updated));
-                }
-            }
-        });
+    //         // 📝 Optional: update localStorage walletData if current user matches
+    //         const walletDataString = localStorage.getItem(`walletData_${userID}`);
+    //         if (walletDataString) {
+    //             const parsed = JSON.parse(walletDataString);
+    //             if (parsed._id === data.userId || parsed._id === data._id) {
+    //                 const updated = {
+    //                     ...parsed,
+    //                     wallet: data.wallet ?? parsed.wallet,
+    //                     status: data.status ?? parsed.status,
+    //                     miningTime: data.miningTime ?? parsed.miningTime
+    //                 };
+    //                 localStorage.setItem(`walletData_${userID}`, JSON.stringify(updated));
+    //             }
+    //         }
+    //     });
 
-        return () => {
-            socket.off("statusUpdated");
-        };
-    }, []);
+    //     return () => {
+    //         socket.off("statusUpdated");
+    //     };
+    // }, []);
 
     return (
         <div className='p-4'>

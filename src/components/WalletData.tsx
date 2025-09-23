@@ -7,13 +7,17 @@ import { getUserData, updateUserImage } from '@/apis/user';
 import { toast } from 'react-toastify';
 import { getUserIdFromWallet } from '@/utils/walletHelpers';
 import { FaRegUser } from "react-icons/fa6";
+import { useSearchParams } from 'next/navigation';
 
 const WalletData = () => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
     const [walletData, setWalletData] = useState<any>([]);
     const [isMobile, setIsMobile] = useState(false);
+    const [userID, setUserID] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const searchParams = useSearchParams();
 
-    const userID = getUserIdFromWallet()
+    // const userID = getUserIdFromWallet()
     // Handle Image Upload
     const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -37,14 +41,65 @@ const WalletData = () => {
             localStorage.setItem(`walletData_${userID}`, JSON.stringify(getUser?.data?.user));
         }
     };
-    const handleWalletDataFetch = async () => {
-        const getUser = await getUserData(userID);
-        setProfileImage(walletData?.image_url || null);
-        setWalletData(getUser?.data?.user || []);
-    }
+    // Fetch user data by id (idParam overrides current state userID)
+    const handleWalletDataFetch = async (idParam?: string | null) => {
+        const id = idParam ?? userID;
+        if (!id) return;
+        setLoading(true);
+        try {
+            const res = await getUserData(id);
+            const user = res?.data?.user || {};
+            setWalletData(user);
+            setProfileImage(user?.image_url || null);
+
+            // sync to localStorage (optional, helpful for other pages)
+            try {
+                localStorage.setItem(`walletData_${id}`, JSON.stringify(user));
+            } catch (err) {
+                // ignore storage errors
+            }
+        } catch (err) {
+            console.error("Failed to fetch user data:", err);
+            toast.error("Failed to load user data");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Init: prefer localStorage, fallback to URL param; listen to storage events
     useEffect(() => {
-        handleWalletDataFetch()
+        const init = async () => {
+            let id = getUserIdFromWallet();
+
+            if (!id) {
+                const urlId = searchParams?.get("userId");
+                if (urlId) {
+                    id = urlId;
+                    // save back to localStorage for future reads
+                    try {
+                        localStorage.setItem("userID", urlId);
+                    } catch (err) {
+                        console.warn("Couldn't write userID to localStorage", err);
+                    }
+                }
+            }
+
+            setUserID(id);
+            if (id) {
+                await handleWalletDataFetch(id);
+            }
+        };
+
+        init();
     }, []);
+    // const handleWalletDataFetch = async () => {
+    //     const getUser = await getUserData(userID);
+    //     setProfileImage(walletData?.image_url || null);
+    //     setWalletData(getUser?.data?.user || []);
+    // }
+    // useEffect(() => {
+    //     handleWalletDataFetch()
+    // }, []);
 
     // Detect mobile screen for short address
     useEffect(() => {

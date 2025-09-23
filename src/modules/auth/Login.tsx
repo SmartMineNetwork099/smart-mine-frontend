@@ -50,7 +50,7 @@ const LoginContent: React.FC = () => {
                 localStorage.setItem(`userID`, userID);
                 localStorage.setItem(`token_${userID}`, verifyRes.data.token);
                 localStorage.setItem(`walletData_${userID}`, JSON.stringify(verifyRes?.data));
-                router.replace(ROUTES?.STACKING?.DASHBOARD);
+                router.replace(`${ROUTES?.STACKING?.DASHBOARD}?userId=${userID}`);
                 toast.success(verifyRes?.data?.message);
             }
         } catch (err) {
