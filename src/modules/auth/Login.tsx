@@ -13,7 +13,6 @@ const LoginContent: React.FC = () => {
     const searchParams = useSearchParams();
     const ref = searchParams.get("ref");
     console.log("refffffffffff", ref);
-    const userID = getUserIdFromWallet();
     const handleLogin = async () => {
         try {
             setLoading(true);
@@ -48,6 +47,7 @@ const LoginContent: React.FC = () => {
             // ✅ Step 6: Save token
             if (verifyRes?.data) {
                 localStorage.setItem(`userID`, verifyRes.data.userID);
+                const userID = getUserIdFromWallet();
                 localStorage.setItem(`token_${userID}`, verifyRes.data.token);
                 localStorage.setItem(`walletData_${userID}`, JSON.stringify(verifyRes?.data));
                 router.replace(ROUTES?.STACKING?.DASHBOARD);
