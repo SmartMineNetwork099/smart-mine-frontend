@@ -121,6 +121,7 @@ export const checkAndSwitchNetwork = async (
 // utils/walletHelpers.ts
 export const getUserIdFromWallet = (): string | null => {
   try {
+    if (typeof window === "undefined") return null; // 🛡️ SSR Guard
     // 1️⃣ Try from localStorage
     const userID = localStorage.getItem("userID");
 
@@ -152,6 +153,7 @@ export const getUserIdFromWallet = (): string | null => {
 
 export const getUserWalletAddress = (): string | null => {
   try {
+    if (typeof window === "undefined") return null; // 🛡️ SSR Guard
     // 1️⃣ Get userId first (use above function so fallback works automatically)
     const userID = getUserIdFromWallet();
     if (!userID) return null;

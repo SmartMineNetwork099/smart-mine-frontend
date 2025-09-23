@@ -10,6 +10,10 @@ const NetworkOverview = () => {
 
     const walletAddress = getUserWalletAddress();
     useEffect(() => {
+        if (!walletAddress) {
+            setLoading(false); // agar wallet nahi mila to loading false kar do
+            return;
+        }
         const fetchStats = async () => {
             setLoading(true);
             const { data, error } = await getTeamStats(walletAddress);
