@@ -9,7 +9,7 @@ interface MiningCountdownProps {
   handleClaim?: () => void;
 }
 
-const MINING_COOLDOWN_MINUTES = 0.1; // time  in minutes
+const MINING_COOLDOWN_MINUTES = 10; // time  in minutes
 const LAST_MINING_KEY = "lastMiningTimestamp"; // localStorage key
 
 const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
