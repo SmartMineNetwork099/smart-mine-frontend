@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { getUserIdFromWallet } from '@/utils/walletHelpers';
 import { FaRegUser } from "react-icons/fa6";
 import { useSearchParams } from 'next/navigation';
+import { getSocket, initSocket } from '@/utils/socket';
 
 const WalletData = () => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -15,6 +16,7 @@ const WalletData = () => {
     const [isMobile, setIsMobile] = useState(false);
     const [userID, setUserID] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const [userId, setUserId] = useState<string | null>(null);
     const searchParams = useSearchParams();
 
     // Handle Image Upload
@@ -54,7 +56,7 @@ const WalletData = () => {
             try {
                 localStorage.setItem(`walletData_${id}`, JSON.stringify(user));
             } catch (err) {
-                console.log(err,'err')
+                console.log(err, 'err')
                 // ignore storage errors
             }
         } catch (err) {
@@ -91,14 +93,6 @@ const WalletData = () => {
 
         init();
     }, []);
-    // const handleWalletDataFetch = async () => {
-    //     const getUser = await getUserData(userID);
-    //     setProfileImage(walletData?.image_url || null);
-    //     setWalletData(getUser?.data?.user || []);
-    // }
-    // useEffect(() => {
-    //     handleWalletDataFetch()
-    // }, []);
 
     // Detect mobile screen for short address
     useEffect(() => {
@@ -123,6 +117,61 @@ const WalletData = () => {
         { name: 'Total Withdraw', transactions: `${walletData?.wallet?.totalWithdraw || 0} $` },
     ];
     console.log(walletData, 'walletDatawalletDatawalletData')
+    /////////////////////////////////////////////////////////////////////////////
+    useEffect(() => {
+        const checkUserId = () => {
+            let id = getUserIdFromWallet();
+            if (!id) {
+                const urlId = searchParams?.get("userId");
+                if (urlId) {
+                    id = urlId;
+                    // save back to localStorage for future reads
+                    try {
+                        localStorage.setItem("userID", urlId);
+                    } catch (err) {
+                        console.warn("Couldn't write userID to localStorage", err);
+                    }
+                }
+            }
+            setUserId(id);
+        };
+
+        checkUserId(); // first time check        
+    }, []);
+
+    useEffect(() => {
+        // ✅ Ensure socket is always initialized here
+        initSocket(userId);
+        const socket = getSocket();
+        if (!socket) {
+            console.warn("⚠️ Socket not initialized yet");
+            return;
+        }
+
+        // ✅ Wait until socket is connected before attaching listeners
+        const handleConnect = () => {
+            console.log("🔌 Socket connected in CollectCoins, attaching wallet listener...");
+            if (userId) {
+                socket.on('walletUpdated', (data: any) => {
+                    console.log("💰 Wallet update received:", data);
+                    setWalletData(data);
+                    // toast.info('Wallet updated instantly!');
+                });
+            }
+        };
+
+        if (socket.connected) {
+            handleConnect(); // already connected → directly attach listener
+        } else {
+            socket.on('connect', handleConnect);
+        }
+
+        return () => {
+            socket.off('walletUpdated');
+            socket.off('connect', handleConnect);
+        };
+    }, [userId]);
+
     return (
         <>
             <Card className="flex flex-col flex-grow">
