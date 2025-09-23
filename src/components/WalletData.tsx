@@ -50,7 +50,6 @@ const WalletData = () => {
             const user = res?.data?.user || {};
             setWalletData(user);
             setProfileImage(user?.image_url || null);
-
             // sync to localStorage (optional, helpful for other pages)
             try {
                 localStorage.setItem(`walletData_${id}`, JSON.stringify(user));
