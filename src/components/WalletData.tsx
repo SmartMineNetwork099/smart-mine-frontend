@@ -17,7 +17,6 @@ const WalletData = () => {
     const [loading, setLoading] = useState(false);
     const searchParams = useSearchParams();
 
-    // const userID = getUserIdFromWallet()
     // Handle Image Upload
     const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -56,6 +55,7 @@ const WalletData = () => {
             try {
                 localStorage.setItem(`walletData_${id}`, JSON.stringify(user));
             } catch (err) {
+                console.log(err,'err')
                 // ignore storage errors
             }
         } catch (err) {
