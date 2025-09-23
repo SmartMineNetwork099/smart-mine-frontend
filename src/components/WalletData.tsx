@@ -37,11 +37,11 @@ const WalletData = () => {
         }
     };
     const handleWalletDataFetch = async () => {
-        const walletDataString = localStorage.getItem("walletData");
-        const walletData = walletDataString ? JSON.parse(walletDataString) : null;
-        setProfileImage(walletData?.image_url || null);
+        // const walletDataString = localStorage.getItem("walletData");
+        // const walletData = walletDataString ? JSON.parse(walletDataString) : null;
         const getUser = await getUserData(userID);
-        setWalletData(getUser?.data?.user?.wallet || []);
+        setProfileImage(walletData?.image_url || null);
+        setWalletData(getUser?.data?.user || []);
     }
     useEffect(() => {
         handleWalletDataFetch()
