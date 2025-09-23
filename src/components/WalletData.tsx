@@ -64,10 +64,10 @@ const WalletData = () => {
 
 
     const walletInfo = [
-        { name: 'Today Income', transactions: `${walletData?.todayIncome || 0} $` },
-        { name: 'Total Income', transactions: `${walletData?.balance || 0} $` },
-        { name: 'Total Deposit', transactions: `${walletData?.totalDeposit || 0} $` },
-        { name: 'Total Withdraw', transactions: `${walletData?.totalWithdraw || 0} $` },
+        { name: 'Today Income', transactions: `${walletData?.wallet?.todayIncome || 0} $` },
+        { name: 'Total Income', transactions: `${walletData?.wallet?.balance || 0} $` },
+        { name: 'Total Deposit', transactions: `${walletData?.wallet?.totalDeposit || 0} $` },
+        { name: 'Total Withdraw', transactions: `${walletData?.wallet?.totalWithdraw || 0} $` },
     ];
     console.log(walletData, 'walletDatawalletDatawalletData')
     return (
