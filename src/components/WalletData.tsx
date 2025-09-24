@@ -180,7 +180,7 @@ const WalletData = () => {
                         {/* User Info */}
                         <div className="mb-4 text-[10px] sm:text-sm text-gray-300">
                             <p>
-                                User ID: <span>{walletData?.userID}</span>
+                                User ID: <span>{walletData?.userId}</span>
                             </p>
                             <p>
                                 Refer By: <span>{walletData?.referredBy || '-'}</span>
