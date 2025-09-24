@@ -9,6 +9,7 @@ import { getUserIdFromWallet } from '@/utils/walletHelpers';
 import { FaRegUser } from "react-icons/fa6";
 import { useSearchParams } from 'next/navigation';
 import { getSocket, initSocket } from '@/utils/socket';
+import { formatAmount } from '@/utils/func';
 
 const WalletData = () => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -16,7 +17,6 @@ const WalletData = () => {
     const [isMobile, setIsMobile] = useState(false);
     const [userID, setUserID] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
-    const [userId, setUserId] = useState<string | null>(null);
     const searchParams = useSearchParams();
 
     // Handle Image Upload
@@ -111,37 +111,17 @@ const WalletData = () => {
 
 
     const walletInfo = [
-        { name: 'Today Income', transactions: `${walletData?.wallet?.todayIncome || 0} $` },
-        { name: 'Total Income', transactions: `${walletData?.wallet?.balance || 0} $` },
-        { name: 'Total Deposit', transactions: `${walletData?.wallet?.totalDeposit || 0} $` },
-        { name: 'Total Withdraw', transactions: `${walletData?.wallet?.totalWithdraw || 0} $` },
+        { name: 'Today Income', transactions: `${formatAmount(walletData?.wallet?.todayIncome || 0)} $` },
+        { name: 'Total Income', transactions: `${formatAmount(walletData?.wallet?.balance || 0)} $` },
+        { name: 'Total Deposit', transactions: `${formatAmount(walletData?.wallet?.totalDeposit || 0)} $` },
+        { name: 'Total Withdraw', transactions: `${formatAmount(walletData?.wallet?.totalWithdraw || 0)} $` },
     ];
     console.log(walletData, 'walletDatawalletDatawalletData')
     /////////////////////////////////////////////////////////////////////////////
-    useEffect(() => {
-        const checkUserId = () => {
-            let id = getUserIdFromWallet();
-            if (!id) {
-                const urlId = searchParams?.get("userId");
-                if (urlId) {
-                    id = urlId;
-                    // save back to localStorage for future reads
-                    try {
-                        localStorage.setItem("userID", urlId);
-                    } catch (err) {
-                        console.warn("Couldn't write userID to localStorage", err);
-                    }
-                }
-            }
-            setUserId(id);
-        };
-
-        checkUserId(); // first time check        
-    }, []);
 
     useEffect(() => {
         // ✅ Ensure socket is always initialized here
-        initSocket(userId);
+        initSocket(userID);
         const socket = getSocket();
         if (!socket) {
             console.warn("⚠️ Socket not initialized yet");
@@ -151,7 +131,7 @@ const WalletData = () => {
         // ✅ Wait until socket is connected before attaching listeners
         const handleConnect = () => {
             console.log("🔌 Socket connected in CollectCoins, attaching wallet listener...");
-            if (userId) {
+            if (userID) {
                 socket.on('walletUpdated', (data: any) => {
                     console.log("💰 Wallet update received:", data);
                     setWalletData(data);
@@ -170,7 +150,7 @@ const WalletData = () => {
             socket.off('walletUpdated');
             socket.off('connect', handleConnect);
         };
-    }, [userId]);
+    }, [userID]);
 
     return (
         <>
@@ -200,7 +180,7 @@ const WalletData = () => {
                         {/* User Info */}
                         <div className="mb-4 text-[10px] sm:text-sm text-gray-300">
                             <p>
-                                User ID: <span>{walletData?.userId}</span>
+                                User ID: <span>{walletData?.userID}</span>
                             </p>
                             <p>
                                 Refer By: <span>{walletData?.referredBy || '-'}</span>

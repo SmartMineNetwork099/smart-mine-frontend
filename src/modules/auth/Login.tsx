@@ -3,7 +3,7 @@ import React, { useState, Suspense } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { getNonceApi, verifySignatureApi } from "@/apis/auth";
-import { connectWallet, checkAndSwitchNetwork, getUserIdFromWallet } from "@/utils/walletHelpers";
+import { connectWallet, checkAndSwitchNetwork } from "@/utils/walletHelpers";
 import ROUTES from "@/constants/routes";
 import { useSearchParams } from "next/navigation";
 
