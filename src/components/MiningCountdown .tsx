@@ -48,23 +48,6 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
     }, 1000);
     return () => clearInterval(interval);
   }, [user_Id]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
   // Progress Bar % (based on total cooldown)
   useEffect(() => {
     const percentage = timeLeft > 0
@@ -145,13 +128,14 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
         },
       },
     },
+    colors: ["#22c55e"],// ✅ PURE green start color (Tailwind green-500)
     fill: {
       type: "gradient",
       gradient: {
         shade: "dark",
         type: "horizontal",
         shadeIntensity: 0.5,
-        gradientToColors: ["#ABE5A1"],
+        gradientToColors: ["#22c55e"], // ✅ SAME green end color
         inverseColors: true,
         opacityFrom: 1,
         opacityTo: 1,
@@ -159,6 +143,13 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
       },
     },
     stroke: { lineCap: "round" },
+    states: {
+      hover: {
+        filter: {
+          type: "none", // ✅ Disable hover lighten effect
+        },
+      },
+    },
     labels: ["Mining"],
   };
 
