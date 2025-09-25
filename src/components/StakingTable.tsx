@@ -45,7 +45,7 @@ const StakingTable = ({ data, loading = true }: TableProps) => {
                         data?.map((row: any, rowIndex: number) => (
                             <tr
                                 key={rowIndex}
-                                className="text-center text-white bg-gray-600 odd:bg-gray-700 text-xs sm:text-sm"
+                                className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                             >
                                 <td className="px-4 py-2 whitespace-nowrap">{rowIndex + 1}</td>
                                 <td className="px-4 py-2 whitespace-nowrap">{row?._id ?? "-"}</td>

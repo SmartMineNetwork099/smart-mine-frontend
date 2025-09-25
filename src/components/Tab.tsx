@@ -39,10 +39,10 @@ const Tab: React.FC<TabProps> = ({ tabs, style, heading,defaultLink }) => {
                     <Button
                         key={tab?.label}
                         onClick={() => handleTabClick(tab?.link)}
-                        className={`${style} flex items-center justify-center gap-0.5 sm:gap-2 py-3 rounded-lg font-semibold text-xs sm:text-sm transition text-black cursor-pointer
+                        className={`${style} flex items-center justify-center gap-0.5 sm:gap-2 py-3 rounded-lg font-semibold text-xs sm:text-sm transition text-black cursor-pointer border-0
                         ${activeTab === tab?.link
-                                ? 'bg-yellow-300'
-                                : 'bg-white'
+                                ? 'bg-green-500'
+                                : 'bg-neutral-800 text-white'
                             }`}
                     >
                         {tab?.label}
