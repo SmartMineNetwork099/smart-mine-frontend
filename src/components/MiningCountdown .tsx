@@ -111,14 +111,14 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
 
         {/* Text inside circle */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-gray-500 font-semibold text-sm">Mining</span>
+          {/* <span className="text-gray-500 font-semibold text-sm">Mining</span> */}
           <span className="font-bold" style={{ fontSize }}>
             {isMining && timeLeft > 0
               ? `${Math.floor(timeLeft / 60)}m ${String(timeLeft % 60).padStart(
                   2,
                   "0"
                 )}s`
-              : "Claim Reward"}
+              : "Start Mining"}
           </span>
         </div>
       </div>
