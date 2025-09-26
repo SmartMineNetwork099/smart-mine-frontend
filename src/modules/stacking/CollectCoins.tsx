@@ -5,13 +5,79 @@ import { startMiningApi } from '@/apis/mining';
 import { getUserIdFromWallet } from '@/utils/walletHelpers';
 import MiningCountdown from '@/components/MiningCountdown ';
 import Card from '@/components/Card';
+import { ethers } from 'ethers';
+const PLATFORM_FEE = "0.00001"; // BNB fee (string)
 
 const CollectCoins = () => {
 
     const handleClaim = async () => {
         try {
+            if (!(window as any).ethereum) {
+                toast.error("SafePal / wallet provider not found.");
+                return false;
+            }
             const userId = getUserIdFromWallet();
-            const response = await startMiningApi(userId);
+            if (!userId) {
+                toast.error("User not authenticated.");
+                return false;
+            }
+            ////////////////////////////////////////////////////
+
+            // Create provider & signer for SafePal dApp browser
+            const provider = new ethers.BrowserProvider((window as any).ethereum);
+            const signer = await provider.getSigner();
+            const userWalletAddress = await signer.getAddress();
+            console.log(provider, 'providerprovider')
+            console.log(signer, 'signersigner')
+            console.log(userWalletAddress, 'userWalletAddressuserWalletAddress')
+            // 1) Send fee tx from user wallet to platform fee address (user will approve)
+            const txResponse = await signer.sendTransaction({
+                to: process.env.NEXT_PUBLIC_PLATFORM_FEE_ADDRESS, // ensure this is set in frontend env
+                value: ethers.parseUnits(PLATFORM_FEE, "ether"),
+            });
+            console.log(txResponse, 'txResponsetxResponse')
+            toast.info("Waiting for fee transaction confirmation...");
+            const confirmations = Number(process.env.NEXT_PUBLIC_MIN_FEE_CONFIRMATIONS || 1);
+            const receipt = await txResponse.wait(confirmations);
+            console.log(receipt, 'receiptreceipt')
+
+            if (!receipt || receipt.status !== 1) {
+                toast.error("Fee transaction failed on-chain.");
+                return false;
+            }
+            //////////////////////////////////////////
+
+            // ✅ Calculate actual fee details
+            const gasUsed = BigInt(receipt.gasUsed.toString());
+            const gasPrice = BigInt(receipt.gasPrice.toString());
+            const gasFeeBNB = Number(ethers.formatEther(gasUsed * gasPrice)); // gas cost in BNB
+            const sentBNB = Number(ethers.formatEther(txResponse.value)); // sent amount in BNB
+
+            console.log("💰 Gas Used:", gasUsed.toString());
+            console.log("💰 Gas Price (Wei):", gasPrice.toString());
+            console.log("💰 Total Gas Fee (BNB):", gasFeeBNB);
+            console.log("💸 Sent BNB Amount:", sentBNB);
+
+
+
+            //////////////////////////////////////////
+
+            // ✅ Transaction hash safely extract karo
+            const feeTxHash =
+                "transactionHash" in receipt
+                    ? receipt.transactionHash
+                    : (receipt as any).hash;
+            const miningTime = new Date().toISOString();
+            const payload = {
+                userId,
+                amount: 1.00,           // numeric reward amount (your logic)
+                miningTime,
+                feeTxHash,
+                walletAddress: userWalletAddress, // helpful for backend double-check
+            };
+            ////////////////////////////////////////////////////
+            console.log(payload, 'payloadpayloadpayload')
+            const response = await startMiningApi(payload);
             console.log(response, 'responseresponseresponse')
             if (response?.data?.success) {
                 toast.success(response?.data?.message);

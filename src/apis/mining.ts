@@ -1,11 +1,9 @@
 import axios, { AxiosError } from "axios";
-
 const API = process.env.NEXT_PUBLIC_API_BASE as string;
 
-export const startMiningApi = async (userId: string | null) => {
+export const startMiningApi = async (payload:any) => {
     try {
-        const miningTime = new Date().toISOString();
-        const res = await axios.post(`${API}/api/mining/mining-start`, { userId, amount: 1.0, miningTime });
+        const res = await axios.post(`${API}/api/mining/mining-start`,  payload );
         return { data: res?.data, error: null };
     } catch (err) {
         const error = err as AxiosError<{ message: string }>;
