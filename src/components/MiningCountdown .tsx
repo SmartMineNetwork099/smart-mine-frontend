@@ -2,11 +2,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { getUserIdFromWallet } from "@/utils/walletHelpers";
 import { toast } from "react-toastify";
-
 interface MiningCountdownProps {
   handleClaim?: () => Promise<boolean>;
 }
-
 const MINING_COOLDOWN_MINUTES = 1;
 const LAST_MINING_KEY = "lastMiningTimestamp";
 
@@ -14,22 +12,10 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [isMining, setIsMining] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [fontSize, setFontSize] = useState("20px");
   const user_Id = getUserIdFromWallet();
 
   const radius = 150; // circle radius
   const circumference = 2 * Math.PI * radius;
-
-  // resize font
-  const handleResize = useCallback(() => {
-    setFontSize(window.innerWidth <= 640 ? "20px" : "30px");
-  }, []);
-
-  useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [handleResize]);
 
   // countdown logic
   useEffect(() => {
@@ -110,13 +96,13 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
         </svg>
 
         {/* Text inside circle */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-xl sm:text-3xl font-bold">
           {loading ? (
-            <span className="text-green-600 font-bold" style={{ fontSize }}>
+            <span className="text-green-600">
               Processing...
             </span>
           ) : (
-            <span className="font-bold text-black" style={{ fontSize }}>
+            <span className="text-black">
               {isMining && timeLeft > 0
                 ? `${Math.floor(timeLeft / 60)}m ${String(timeLeft % 60).padStart(2, "0")}s`
                 : "Start Mining"}
@@ -127,5 +113,4 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
     </div>
   );
 };
-
 export default MiningCountdown;
