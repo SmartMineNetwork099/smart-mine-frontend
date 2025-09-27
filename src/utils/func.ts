@@ -1,10 +1,12 @@
-export const formatTime = (ms: number) => {
-  const totalSeconds = Math.floor(ms / 1000);
-  const h = Math.floor(totalSeconds / 3600);
-  const m = Math.floor((totalSeconds % 3600) / 60);
-  const s = totalSeconds % 60;
-  return `${h}h ${m}m ${s}s`;
+// function seconds to h:m:s format
+export const formatTime = (seconds: number) => {
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+
+  return `${hrs > 0 ? `${String(hrs).padStart(2, "0")}h : ` : ""}${String(mins).padStart(2, "0")}m : ${String(secs).padStart(2, "0")}s`;
 };
+
 export const formatAmount = (value: any) => {
   // Step 1: Handle undefined / null / NaN
   let num = Number(value ?? 0);
