@@ -52,13 +52,7 @@ const WalletData = () => {
             const user = res?.data?.user || {};
             setWalletData(user);
             setProfileImage(user?.image_url || null);
-            // sync to localStorage (optional, helpful for other pages)
-            try {
-                localStorage.setItem(`walletData_${id}`, JSON.stringify(user));
-            } catch (err) {
-                console.log(err, 'err')
-                // ignore storage errors
-            }
+            localStorage.setItem(`walletData_${id}`, JSON.stringify(user));
         } catch (err) {
             console.error("Failed to fetch user data:", err);
             toast.error("Failed to load user data");
@@ -117,7 +111,6 @@ const WalletData = () => {
         { name: 'Total Withdraw', transactions: `${formatAmount(walletData?.wallet?.totalWithdraw || 0)} $` },
     ];
     console.log(walletData, 'walletDatawalletDatawalletData')
-    /////////////////////////////////////////////////////////////////////////////
 
     useEffect(() => {
         // ✅ Ensure socket is always initialized here
@@ -135,13 +128,12 @@ const WalletData = () => {
                 socket.on('walletUpdated', (data: any) => {
                     console.log("💰 Wallet update received:", data);
                     setWalletData(data);
-                    // toast.info('Wallet updated instantly!');
                 });
             }
         };
 
         if (socket.connected) {
-            handleConnect(); // already connected → directly attach listener
+            handleConnect();
         } else {
             socket.on('connect', handleConnect);
         }
