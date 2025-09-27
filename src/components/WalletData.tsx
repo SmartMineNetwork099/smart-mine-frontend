@@ -192,10 +192,10 @@ const WalletData = () => {
                     </div>
                 </div>
 
-                <div className='shadow-2xl rounded py-2 px-0.5 flex flex-col gap-2'>
+                <div className='shadow-2xl rounded py-2 px-0.5 grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2'>
                     {walletInfo?.map((item, index) => (
                         <div key={index} className="flex items-center justify-between px-2 py-2.5 bg-black text-white rounded-lg">
-                            <div>
+                            <div className=''>
                                 <p className="font-medium text-gray-300 text-sm sm:text-base">
                                     {item.name}
                                 </p>
