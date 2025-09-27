@@ -26,8 +26,8 @@ export const verifySignatureApi = async (
         const res = await axios.post<{ token: string, message: string , userId:string }>(`${API}/api/auth/verify`, {
             walletAddress,
             signature,
-            nonce,
-            ref,
+            // nonce,
+            // ref,
         });
         return { data: res?.data, error: null };
     } catch (err) {
