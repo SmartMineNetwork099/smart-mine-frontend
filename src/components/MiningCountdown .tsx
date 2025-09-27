@@ -69,16 +69,11 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
       return;
     }
     const success = await handleClaim?.();
-    if (!success) {
-      setLoading(false);
-      return;
-    }
+    if (!success) return setLoading(false);
     setLoading(false);
     setIsMining(true);
     setTimeLeft(MINING_COOLDOWN_MINUTES * 60);
     localStorage.setItem(`${LAST_MINING_KEY}_${user_Id}`, Date.now().toString());
-
-    toast.success("Mining Started! ✅");
   };
 
   return (

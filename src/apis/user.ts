@@ -1,13 +1,10 @@
 import axios, { AxiosError } from "axios";
-
 const API = process.env.NEXT_PUBLIC_API_BASE as string;
-
 export interface Wallet {
     balance: number;
     miningEarnings: number;
     referralEarnings: number;
 }
-
 export interface User {
     _id: string;
     walletAddress: string;
@@ -20,7 +17,6 @@ export interface User {
     __v: number;
     wallet: Wallet;
 }
-
 
 export const getReferralsAtLevel = async (
     walletAddress: string,
@@ -102,4 +98,3 @@ export const getTeamStats = async (walletAddress: string) => {
         };
     }
 };
-

@@ -26,15 +26,8 @@ const WalletData = () => {
             const imageUrl = URL.createObjectURL(file);
             setProfileImage(imageUrl);
             const imageUrl1 = await uploadToCloudinary(file);
-            if (!imageUrl1) {
-                toast.error("Image upload failed. Please try again.");
-                return;
-            }
-
-            if (!userID) {
-                toast.error("User not found. Please login again.");
-                return;
-            }
+            if (!imageUrl1) return toast.error("Image upload failed. Please try again.");
+            if (!userID) return toast.error("User not found. Please login again.");
             const imageSaveInDB = await updateUserImage(userID, imageUrl1);
             toast.success("Image uploaded successfully!");
             setProfileImage(imageSaveInDB?.data?.image_url || imageUrl);
