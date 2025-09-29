@@ -1,14 +1,15 @@
 import React from 'react'
-import PlansTable from '@/components/tables/PlansTable';
+import PlansCarousel from '@/components/tables/PlansCarousel';
+import Card from '@/components/Card';
 const RankBonus = () => {
     return (
         <>
-            <div className='mt-6 mb-2'>
-                <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>Rank <span className='text-green-500'>Bonus</span></p>
-            </div>
-
-            <PlansTable />
-
+            <Card className='mt-8'>
+                <div className=''>
+                    <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>Choose <span className='text-green-500'>Plans</span></p>
+                </div>
+                <PlansCarousel />
+            </Card>
         </>
     )
 }
