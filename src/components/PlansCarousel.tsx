@@ -76,7 +76,7 @@ const PlansCarousel = () => {
                                 Total Price : ${totalAmount}
                             </p>
                             <button onClick={handleModelOpen} className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl text-lg font-bold w-[80%] sm:w-[60%]">
-                                Buy It
+                                Upgrade
                             </button>
                         </div>
                     )}
