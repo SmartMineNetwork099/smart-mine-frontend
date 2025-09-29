@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import StakingTable from '@/components/StakingTable';
+import StakingTable from '@/components/tables/StakingTable';
 import { getReferralsAtLevel } from '@/apis/user';
 import Pagination from '@/components/Pagination';
 import { getSocket, initSocket } from "@/utils/socket";

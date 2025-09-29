@@ -1,51 +1,16 @@
 'use client';
-import Card from '@/components/Card';
 import React from 'react';
-// import { IoGiftOutline } from 'react-icons/io5';
-import { LiaUsersSolid } from 'react-icons/lia';
-// import { PiHandDeposit } from 'react-icons/pi';
-import { RiTeamLine } from 'react-icons/ri';
-
-const summeryData: {
-    name: string;
-    number?: string;
-    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-}[] = [
-        { name: 'Direct Referrals', number: '0', icon: RiTeamLine },
-        { name: 'My Community size', number: '234', icon: LiaUsersSolid },
-    ];
+import TeamStats from '@/components/TeamStats';
 
 const Summery = () => {
+    let summeryData = {
+        directTeam: 0,
+        communitySize: 0
+    }
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-            {summeryData.map((item, index) => {
-                const Icon = item.icon;
-
-                const value = item.number ?? '0';
-                const numericValue = parseFloat(value);
-                const valueColorClass =
-                    numericValue <= 0 ? 'text-red-500' : 'text-green-500';
-
-                return (
-                    <Card
-                        key={index}
-                        className="flex gap-2 items-center justify-between text-white px-3 sm:px-6 py-3"
-                    >
-                        <div>
-                            <p className="font-semibold text-sm sm:text-base mb-1 text-yellow-400">
-                                {item?.name}
-                            </p>
-                            <p className={`font-semibold text-sm ${valueColorClass}`}>
-                                {item?.number && <>{item?.number}</>}
-                            </p>
-                        </div>
-                        <div>
-                            <Icon className="text-4xl" />
-                        </div>
-                    </Card>
-                );
-            })}
-        </div>
+        <>
+            <TeamStats data={summeryData} />
+        </>
     );
 };
 
