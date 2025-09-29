@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react'
 import StakingTable from '@/components/tables/StakingTable';
 import { getReferralsAtLevel } from '@/apis/user';
 import Pagination from '@/components/Pagination';
-import { getSocket, initSocket } from "@/utils/socket";
+// import { getSocket, initSocket } from "@/utils/socket";
 import { getUserIdFromWallet } from '@/utils/walletHelpers';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 
 const YourCommunity = () => {
@@ -19,7 +19,7 @@ const YourCommunity = () => {
         const walletDataString = localStorage.getItem(`walletData_${userID}`);
         const referralLink = walletDataString ? JSON.parse(walletDataString) : null;
         setWalletAddress(referralLink?.walletAddress)
-    }, []);
+    }, [userID]);
 
     const getLevelData = async (LevelNumber: number = 1) => {
         if (!walletAddress) return;

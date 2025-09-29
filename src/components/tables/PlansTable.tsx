@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const data = [
     { rank: 'Beginner 5', teamMembers: '2', totalIncome: '10', directMembers: 0 },

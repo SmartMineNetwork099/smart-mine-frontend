@@ -6,6 +6,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+   images: {
+    domains: ["res.cloudinary.com"], 
+  },
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

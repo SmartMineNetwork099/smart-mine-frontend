@@ -14,6 +14,6 @@ export default function Home() {
         } else {
             router.replace(ROUTES?.AUTH?.LOGIN);
         }
-    }, []);
+    }, [router, userID]);
     return null;
 }

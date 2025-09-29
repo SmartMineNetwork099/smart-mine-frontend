@@ -30,17 +30,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [tokken, setTokken] = useState<string | null>(null);
   const userID = getUserIdFromWallet()
 
- useEffect(() => {
+  useEffect(() => {
     if (userID) {
       initSocket(userID);
     }
-  }, [userID]);
-  useEffect(() => {
     const token = typeof window !== "undefined" ? localStorage.getItem(`token_${userID}`) : null;
     if (token) {
       setTokken(token);
     }
-  }, []);
+  }, [userID]);
+
 
   const pathname = usePathname();
   const isBinaryPage = pathname.includes('/binary');

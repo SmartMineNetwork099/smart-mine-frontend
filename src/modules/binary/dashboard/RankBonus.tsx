@@ -1,5 +1,4 @@
 import React from 'react'
-import { DEFAULT_CURRENCY } from "@/constants/currency";
 import PlansTable from '@/components/tables/PlansTable';
 const RankBonus = () => {
     return (

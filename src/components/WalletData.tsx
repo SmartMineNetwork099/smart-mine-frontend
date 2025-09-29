@@ -10,13 +10,13 @@ import { FaRegUser } from "react-icons/fa6";
 import { useSearchParams } from 'next/navigation';
 import { getSocket, initSocket } from '@/utils/socket';
 import { formatAmount } from '@/utils/func';
+import Image from 'next/image';
 
 const WalletData = () => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
     const [walletData, setWalletData] = useState<any>([]);
     const [isMobile, setIsMobile] = useState(false);
     const [userID, setUserID] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
     const searchParams = useSearchParams();
 
     // Handle Image Upload
@@ -39,7 +39,6 @@ const WalletData = () => {
     const handleWalletDataFetch = async (idParam?: string | null) => {
         const id = idParam ?? userID;
         if (!id) return;
-        setLoading(true);
         try {
             const res = await getUserData(id);
             const user = res?.data?.user || {};
@@ -49,8 +48,6 @@ const WalletData = () => {
         } catch (err) {
             console.error("Failed to fetch user data:", err);
             toast.error("Failed to load user data");
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -146,10 +143,12 @@ const WalletData = () => {
                         <div className="flex justify-center">
                             <label className="cursor-pointer relative">
                                 {profileImage ? (
-                                    <img
+                                    <Image
                                         src={profileImage || "/default-avatar.png"}
                                         alt="User"
-                                        className="w-12 sm:w-16 h-12 sm:h-16 rounded-full border-2 border-gray-500 hover:opacity-80 transition"
+                                        className="rounded-full border-2 border-gray-500 hover:opacity-80 transition h-[56px] w-[56px]"
+                                        width={56}
+                                        height={64}
                                     />
                                 ) : (
                                     <FaRegUser className="w-12 sm:w-16 h-12 sm:h-16 rounded-full border-2 border-gray-500 p-1 hover:opacity-80 transition" />
@@ -163,7 +162,7 @@ const WalletData = () => {
                             </label>
                         </div>
                         {/* User Info */}
-                        <div className="mb-4 text-[10px] sm:text-sm text-gray-300">
+                        <div className="text-[10px] sm:text-sm text-gray-300 flex flex-col justify-center">
                             <p>
                                 User ID: <span>{walletData?.userId}</span>
                             </p>
@@ -177,7 +176,7 @@ const WalletData = () => {
                     </div>
                 </div>
 
-                <div className='shadow-2xl rounded py-2 px-0.5 grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2'>
+                <div className='shadow-2xl rounded py-2 px-0.5 grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mt-4'>
                     {walletInfo?.map((item, index) => (
                         <div key={index} className="flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-4 bg-black text-white rounded-lg">
                             <div className=''>

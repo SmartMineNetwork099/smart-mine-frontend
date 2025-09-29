@@ -41,10 +41,10 @@ const CollectCoins = () => {
             }
 
             // ✅ Calculate actual fee details
-            const gasUsed = BigInt(receipt.gasUsed.toString());
-            const gasPrice = BigInt(receipt.gasPrice.toString());
-            const gasFeeBNB = Number(ethers.formatEther(gasUsed * gasPrice)); // gas cost in BNB
-            const sentBNB = Number(ethers.formatEther(txResponse.value)); // sent amount in BNB
+            // const gasUsed = BigInt(receipt.gasUsed.toString());
+            // const gasPrice = BigInt(receipt.gasPrice.toString());
+            // const gasFeeBNB = Number(ethers.formatEther(gasUsed * gasPrice)); // gas cost in BNB
+            // const sentBNB = Number(ethers.formatEther(txResponse.value)); // sent amount in BNB
 
             // ✅ Transaction hash safely extract karo
             const feeTxHash =

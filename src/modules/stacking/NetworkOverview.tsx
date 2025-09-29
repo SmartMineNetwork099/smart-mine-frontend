@@ -1,6 +1,5 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import Card from '@/components/Card'
 import { getTeamStats } from "@/apis/user";
 import { getUserWalletAddress } from "@/utils/walletHelpers";
 import TeamStats from "@/components/TeamStats";

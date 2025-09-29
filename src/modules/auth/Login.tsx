@@ -38,7 +38,7 @@ const LoginContent: React.FC = () => {
             const signature = await wallet.signer.signMessage(message);
 
             // ✅ Step 5: Verify
-            const verifyRes = await verifySignatureApi(wallet.address, signature, nonce);
+            const verifyRes = await verifySignatureApi(wallet.address, signature);
             if (verifyRes?.error) {
                 toast.error(verifyRes?.error);
                 return;
