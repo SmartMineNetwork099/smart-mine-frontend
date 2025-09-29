@@ -19,43 +19,46 @@ const data = [
     { rank: 'Creator 81,920', teamMembers: '32,768', totalIncome: '2,684,354,560', directMembers: 40 },
 ];
 
-
 const PlansTable = () => {
-    const [responsiveColspan, setResponsiveColspan] = useState<number>(2)
-    // Handle Responsive 
-    useEffect(() => {
-        const handleResize = () => {
-            setResponsiveColspan(window.innerWidth <= 640 ? 2 : 6);
-        };
-        handleResize();
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
+    const getRankParts = (rank: string) => {
+        const parts = rank.split(" ");
+        const name = parts.slice(0, parts.length - 1).join(" ");
+        const amount = parts[parts.length - 1];
+        return { name, amount };
+    };
+
     return (
-        <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden border border-red-500">
+        <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden">
             <table className="w-full text-sm border-collapse">
                 <thead className="sticky top-0 z-10 bg-green-500 text-black">
                     <tr className="bg-green-500 text-black font-bold text-center">
-                        <th className="px-4 py-2 border border-red-500">Rank</th>
-                        <th className="px-4 py-2 border border-red-500">Team Members</th>
-                        <th className="px-4 py-2 border border-red-500">Total Income</th>
-                        <th className="px-4 py-2 border border-red-500">Direct Members</th>
+                        <th className="px-4 py-2">Rank</th>
+                        <th className="px-4 py-2">Team Members</th>
+                        <th className="px-4 py-2">Total Income</th>
+                        <th className="px-4 py-2">Direct Members</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        data?.map((row: any, rowIndex: number) => (
-                            <tr
-                                key={rowIndex}
-                                className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
-                            >
-                                <td className="px-4 py-2 whitespace-nowrap border border-red-500">{row?.rank}</td>
-                                <td className="px-4 py-2 whitespace-nowrap border border-red-500">{row?.teamMembers}</td>
-                                <td className="px-4 py-2 text-end whitespace-nowrap border border-red-500">{row?.totalIncome} $</td>
-                                <td className="px-4 py-2 whitespace-nowrap border border-red-500">{row?.directMembers}</td>
-
-                            </tr>
-                        ))
+                        data?.map((row: any, rowIndex: number) => {
+                            const { name, amount } = getRankParts(row?.rank);
+                            return (
+                                <tr
+                                    key={rowIndex}
+                                    className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
+                                >
+                                    <td className="px-4 py-2 whitespace-nowrap">
+                                        {name}{" "}
+                                        <span className="px-1 text-green-500 font-bold ">
+                                            {amount} $
+                                        </span>
+                                    </td>
+                                    <td className="px-4 py-2 whitespace-nowrap">{row?.teamMembers}</td>
+                                    <td className="px-4 py-2 text-end whitespace-nowrap">{row?.totalIncome} $</td>
+                                    <td className="px-4 py-2 whitespace-nowrap">{row?.directMembers}</td>
+                                </tr>
+                            )
+                        })
                     }
                 </tbody>
             </table>
