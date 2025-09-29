@@ -47,7 +47,7 @@ const PlansTable = () => {
                                     key={rowIndex}
                                     className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                                 >
-                                    <td className="px-4 py-2 whitespace-nowrap">
+                                    <td className="px-4 py-2 whitespace-nowrap text-left">
                                         {name}{" "}
                                         <span className="px-1 text-green-500 font-bold ">
                                             {amount} $
