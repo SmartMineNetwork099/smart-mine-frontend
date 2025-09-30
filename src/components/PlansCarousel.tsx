@@ -56,11 +56,11 @@ const PlansCarousel = () => {
                             return (
                                 <div
                                     key={i}
-                                    className={`min-w-[100px] sm:min-w-[180px] bg-white rounded-full shadow-md p-3 sm:p-8 flex flex-col items-center gap-1 sm:gap-2 cursor-pointer border-2 sm:border-5 ${isSelected ? ' border-green-500' : ' border-white'}`}
+                                    className={`min-w-[100px] sm:min-w-[180px] rounded-full shadow-md p-3 sm:p-8 flex flex-col items-center gap-1 sm:gap-2 cursor-pointer bg-neutral-700`}
                                     onClick={() => togglePlan(plan)}
                                 >
-                                    <p className=" sm:text-2xl font-bold text-gray-900">${plan.amount}</p>
-                                    <button className="text-xs sm:text-xl font-semibold flex items-center gap-0.5 sm:gap-2 text-green-500 -mt-1 sm:mt-0">{plan.rank}
+                                    <p className=" sm:text-2xl font-bold text-white">${plan.amount}</p>
+                                    <button className={`text-xs sm:text-xl font-semibold flex items-center gap-0.5 sm:gap-2 text-green-500 -mt-1 sm:mt-0`}>{plan.rank}
                                           {isSelected && <FaCheck />}
                                           </button>
                                     <SiTether className="text-xl sm:text-3xl text-green-500" />
