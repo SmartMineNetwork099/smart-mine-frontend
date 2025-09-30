@@ -106,15 +106,15 @@ const RecentBonus = () => {
                     </thead>
                     <tbody>
                         {employees.map((employee, index) => (
-                            <tr key={index} className="text-center text-white bg-gray-600">
-                                <td className="px-4 py-2">{employee?.from}</td>
-                                <td className="px-4 py-2 text-green-500">
+                            <tr key={index} className="text-center text-white bg-neutral-800 odd:bg-neutral-900">
+                                <td className="p-4">{employee?.from}</td>
+                                <td className="p-4 text-green-500">
                                     {employee?.amount} <span className="font-semibold">{DEFAULT_CURRENCY}</span>
                                 </td>
-                                <td className="px-4 py-2">{employee?.incomeType}</td>
-                                <td className="px-4 py-2">{employee?.rankLevel}</td>
-                                <td className="px-4 py-2">{employee?.layer}</td>
-                                <td className="px-4 py-2">{employee?.time}</td>
+                                <td className="p-4">{employee?.incomeType}</td>
+                                <td className="p-4">{employee?.rankLevel}</td>
+                                <td className="p-4">{employee?.layer}</td>
+                                <td className="p-4">{employee?.time}</td>
                             </tr>
                         ))}
                     </tbody>

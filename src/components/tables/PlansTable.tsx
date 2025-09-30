@@ -40,10 +40,10 @@ const PlansTable = () => {
                                 key={rowIndex}
                                 className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                             >
-                                <td className="px-4 py-4 whitespace-nowrap text-center">{row?.rank}</td>
-                                <td className="px-4 py-4 whitespace-nowrap">{row?.teamMembers}</td>
-                                <td className="px-4 py-4 text-end whitespace-nowrap">{row?.totalIncome} $</td>
-                                <td className="px-4 py-4 whitespace-nowrap">{row?.directMembers}</td>
+                                <td className="p-4 whitespace-nowrap text-center">{row?.rank}</td>
+                                <td className="p-4 whitespace-nowrap">{row?.teamMembers}</td>
+                                <td className="p-4 text-end whitespace-nowrap">{row?.totalIncome} $</td>
+                                <td className="p-4 whitespace-nowrap">{row?.directMembers}</td>
                             </tr>
                         );
                     })}
