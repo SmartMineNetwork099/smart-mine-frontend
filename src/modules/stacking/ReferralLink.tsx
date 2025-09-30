@@ -19,7 +19,7 @@ const ReferralLink = () => {
     useEffect(() => {
         const walletDataString = localStorage.getItem(`walletData_${userID}`);
         const walletData = walletDataString ? JSON.parse(walletDataString) : null;
-        setReferralLink(walletData?.referralLink);
+        setReferralLink(walletData?.referralLink ?? "");
     }, [userID]);
 
     return (
@@ -32,7 +32,7 @@ const ReferralLink = () => {
                 <Input
                     className='w-11/12 border-e-2 border-green-500 text-gray-300 px-2 focus:outline-none'
                     inputClassName='border-none'
-                    value={referralLink}
+                    value={referralLink || " "}
                     readOnly
                     variant="text"
                 />
