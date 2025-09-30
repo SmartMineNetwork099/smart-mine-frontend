@@ -29,7 +29,7 @@ const PlansTable = () => {
                     <tr className="bg-green-500 text-black font-bold text-center">
                         <th className="px-4 py-2">Rank</th>
                         <th className="px-4 py-2">Team Members</th>
-                        <th className="px-4 py-2">Total Income</th>
+                        <th className="px-4 py-2 text-end">Total Income</th>
                         <th className="px-4 py-2">Direct Members</th>
                     </tr>
                 </thead>
@@ -40,7 +40,7 @@ const PlansTable = () => {
                                 key={rowIndex}
                                 className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                             >
-                                <td className="px-4 py-4 whitespace-nowrap text-left">{row?.rank}</td>
+                                <td className="px-4 py-4 whitespace-nowrap text-center">{row?.rank}</td>
                                 <td className="px-4 py-4 whitespace-nowrap">{row?.teamMembers}</td>
                                 <td className="px-4 py-4 text-end whitespace-nowrap">{row?.totalIncome} $</td>
                                 <td className="px-4 py-4 whitespace-nowrap">{row?.directMembers}</td>
