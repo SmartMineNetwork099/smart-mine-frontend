@@ -72,7 +72,7 @@ export const getUserData = async (
 export const getTeamStats = async (walletAddress: string) => {
     try {
         // Send walletAddress in the body
-        const res = await axios.post(`${API}/api/auth/getTeamStats`, {
+        const res = await axios.post(`${API}/api/stacking/getTeamStats`, {
             walletAddress,
         });
 

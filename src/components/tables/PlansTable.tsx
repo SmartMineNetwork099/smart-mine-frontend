@@ -1,22 +1,22 @@
 'use client'
 import React from "react";
 
-const data = [
-    { rank: 'Beginner', teamMembers: '2', totalIncome: '10', upgrade: '10', netProfit: '0', loss: '0', directMembers: 0 },
-    { rank: 'Influencer', teamMembers: '4', totalIncome: '40', upgrade: '20', netProfit: '20', loss: '0', directMembers: 1 },
-    { rank: 'Achiever', teamMembers: '8', totalIncome: '160', upgrade: '40', netProfit: '120', loss: '0', directMembers: 5 },
-    { rank: 'Ambassador', teamMembers: '16', totalIncome: '640', upgrade: '80', netProfit: '560', loss: '0', directMembers: 10 },
-    { rank: 'Pioneer', teamMembers: '32', totalIncome: '2,560', upgrade: '160', netProfit: '2,400', loss: '0', directMembers: 10 },
-    { rank: 'Mentor', teamMembers: '64', totalIncome: '10,240', upgrade: '320', netProfit: '9,920', loss: '0', directMembers: 20 },
-    { rank: 'Champion', teamMembers: '128', totalIncome: '40,960', upgrade: '640', netProfit: '40,320', loss: '0', directMembers: 20 },
-    { rank: 'Director', teamMembers: '256', totalIncome: '163,840', upgrade: '1,280', netProfit: '162,560', loss: '0', directMembers: 20 },
-    { rank: 'Titan', teamMembers: '512', totalIncome: '655,360', upgrade: '2,560', netProfit: '652,800', loss: '0', directMembers: 20 },
-    { rank: 'Icon', teamMembers: '1,024', totalIncome: '2,621,440', upgrade: '5,120', netProfit: '2,616,320', loss: '0', directMembers: 20 },
-    { rank: 'Legend', teamMembers: '2,048', totalIncome: '10,485,760', upgrade: '10,240', netProfit: '10,475,520', loss: '0', directMembers: 40 },
-    { rank: 'Emperor', teamMembers: '4,096', totalIncome: '41,943,040', upgrade: '20,480', netProfit: '41,922,560', loss: '0', directMembers: 40 },
-    { rank: 'Conqueror', teamMembers: '8,192', totalIncome: '167,772,160', upgrade: '40,960', netProfit: '167,731,200', loss: '0', directMembers: 40 },
-    { rank: 'Chancellor', teamMembers: '16,384', totalIncome: '671,088,640', upgrade: '81,920', netProfit: '671,006,720', loss: '0', directMembers: 40 },
-    { rank: 'Creator', teamMembers: '32,768', totalIncome: '2,684,354,560', upgrade: '163,840', netProfit: '2,684,190,720', loss: '0', directMembers: 40 },
+const plans = [
+    { name: 'Beginner', teamMembers: '2', totalIncome: '10', upgrade: '10', netProfit: '0', loss: '0', directMembers: 0 },
+    { name: 'Influencer', teamMembers: '4', totalIncome: '40', upgrade: '20', netProfit: '20', loss: '0', directMembers: 1 },
+    { name: 'Achiever', teamMembers: '8', totalIncome: '160', upgrade: '40', netProfit: '120', loss: '0', directMembers: 5 },
+    { name: 'Ambassador', teamMembers: '16', totalIncome: '640', upgrade: '80', netProfit: '560', loss: '0', directMembers: 10 },
+    { name: 'Pioneer', teamMembers: '32', totalIncome: '2,560', upgrade: '160', netProfit: '2,400', loss: '0', directMembers: 10 },
+    { name: 'Mentor', teamMembers: '64', totalIncome: '10,240', upgrade: '320', netProfit: '9,920', loss: '0', directMembers: 20 },
+    { name: 'Champion', teamMembers: '128', totalIncome: '40,960', upgrade: '640', netProfit: '40,320', loss: '0', directMembers: 20 },
+    { name: 'Director', teamMembers: '256', totalIncome: '163,840', upgrade: '1,280', netProfit: '162,560', loss: '0', directMembers: 20 },
+    { name: 'Titan', teamMembers: '512', totalIncome: '655,360', upgrade: '2,560', netProfit: '652,800', loss: '0', directMembers: 20 },
+    { name: 'Icon', teamMembers: '1,024', totalIncome: '2,621,440', upgrade: '5,120', netProfit: '2,616,320', loss: '0', directMembers: 20 },
+    { name: 'Legend', teamMembers: '2,048', totalIncome: '10,485,760', upgrade: '10,240', netProfit: '10,475,520', loss: '0', directMembers: 40 },
+    { name: 'Emperor', teamMembers: '4,096', totalIncome: '41,943,040', upgrade: '20,480', netProfit: '41,922,560', loss: '0', directMembers: 40 },
+    { name: 'Conqueror', teamMembers: '8,192', totalIncome: '167,772,160', upgrade: '40,960', netProfit: '167,731,200', loss: '0', directMembers: 40 },
+    { name: 'Chancellor', teamMembers: '16,384', totalIncome: '671,088,640', upgrade: '81,920', netProfit: '671,006,720', loss: '0', directMembers: 40 },
+    { name: 'Creator', teamMembers: '32,768', totalIncome: '2,684,354,560', upgrade: '163,840', netProfit: '2,684,190,720', loss: '0', directMembers: 40 },
 ];
 
 
@@ -39,13 +39,13 @@ const PlansTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data?.map((row: any, rowIndex: number) => {
+                    {plans?.map((row: any, rowIndex: number) => {
                         return (
                             <tr
                                 key={rowIndex}
                                 className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                             >
-                                <td className="p-4 whitespace-nowrap text-center">{row?.rank}</td>
+                                <td className="p-4 whitespace-nowrap text-center">{row?.name}</td>
                                 <td className="p-4 whitespace-nowrap">{row?.teamMembers}</td>
                                 <td className="p-4 text-end whitespace-nowrap">{row?.totalIncome} $</td>
                                 <td className="p-4 text-end whitespace-nowrap">{row?.upgrade} $</td>
