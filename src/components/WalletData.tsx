@@ -38,6 +38,7 @@ const WalletData = () => {
     // Fetch user data by id (idParam overrides current state userID)
     const handleWalletDataFetch = async (idParam?: string | null) => {
         const id = idParam ?? userID;
+        console.log(id, 'ididididid')
         if (!id) return;
         try {
             const res = await getUserData(id);
