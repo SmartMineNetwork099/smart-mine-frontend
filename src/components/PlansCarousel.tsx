@@ -92,15 +92,32 @@ const PlansCarousel = ({ plans, loading }: any) => {
                                         return (
                                             <div
                                                 key={i}
-                                                className={`min-w-[100px] sm:min-w-[180px] rounded-full shadow-md p-3 sm:p-8 flex flex-col items-center gap-1 sm:gap-2 cursor-pointer bg-neutral-700`}
-                                                onClick={() => togglePlan(plan)}
+                                                className={`min-w-[100px] sm:min-w-[180px] rounded-full shadow-md p-3 sm:p-8 flex flex-col items-center gap-1 sm:gap-2 
+    ${plan.isPurchased ? 'bg-gray-500 opacity-60 cursor-not-allowed' : 'bg-neutral-700 cursor-pointer'}
+  `}
+                                                onClick={() => !plan.isPurchased && togglePlan(plan)}  // disable click if purchased
                                             >
-                                                <p className=" sm:text-2xl font-bold text-white">${plan.amount}</p>
-                                                <button className={`text-xs sm:text-xl font-semibold flex items-center gap-0.5 sm:gap-2 text-green-500 -mt-1 sm:mt-0`}>{plan.name}
-                                                    {isSelected && <FaCheck />}
+                                                <p className="sm:text-2xl font-bold text-white">${plan.amount}</p>
+
+                                                <button
+                                                    className={`text-xs sm:text-xl font-semibold flex items-center gap-0.5 sm:gap-2 
+      ${plan.isPurchased ? 'text-yellow-400' : 'text-green-500'}
+    `}
+                                                >
+                                                    {plan.name}
+                                                    {/* Purchased → show double tick, Selected → single tick */}
+                                                    {plan.isPurchased ? (
+                                                        <>
+                                                            <FaCheck /><FaCheck />
+                                                        </>
+                                                    ) : (
+                                                        isSelected && <FaCheck />
+                                                    )}
                                                 </button>
+
                                                 <SiTether className="text-xl sm:text-3xl text-green-500" />
                                             </div>
+
                                         );
                                     })
 

@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 const API = process.env.NEXT_PUBLIC_API_BASE as string;
 
-export const getPlans = async () => {
+export const getPlans = async (userId:any) => {
     try {
-        const res = await axios.get<any>(`${API}/api/binary/plans/getAllPlans`);
+        const res = await axios.get<any>(`${API}/api/binary/plans/getAllPlans/${userId}`);
         console.log(res, 'resresres11111232')
         return { data: res?.data, error: null };
     }

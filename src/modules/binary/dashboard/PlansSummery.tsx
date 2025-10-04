@@ -4,6 +4,7 @@ import Card from '@/components/Card';
 import PlansTable from '@/components/tables/PlansTable';
 import { toast } from 'react-toastify';
 import { getPlans } from '@/apis/plans';
+import { getUserIdFromWallet } from '@/utils/walletHelpers';
 const PlansSummery = () => {
     const [plans, setPlans] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -16,7 +17,8 @@ const PlansSummery = () => {
     const getAllPlans = async () => {
         setLoading(true);
         try {
-            const { data, error } = await getPlans();
+            const id = getUserIdFromWallet()
+            const { data, error } = await getPlans(id);
 
             if (error) {
                 setPlans([]);
