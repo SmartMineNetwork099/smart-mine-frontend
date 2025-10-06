@@ -93,8 +93,6 @@ const WalletData = () => {
             ? `${walletData.walletAddress.slice(0, 8)}......${walletData.walletAddress.slice(-8)}`
             : walletData.walletAddress
         : "";
-
-
     const walletInfo = [
         { name: 'Today Income', transactions: `${formatAmount(walletData?.wallet?.todayIncome || 0)} $` },
         { name: 'Total Income', transactions: `${formatAmount(walletData?.wallet?.balance || 0)} $` },
