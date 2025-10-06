@@ -6,6 +6,8 @@ import Model from "@/components/Model";
 import SingleUserData from "@/modules/binary/communityTree/SingleUserData";
 import { getBinaryTree } from "@/apis/binaryApis";
 import { getUserIdFromWallet } from "@/utils/walletHelpers";
+import { toast } from "react-toastify";
+import Loading from "@/components/Loading";
 
 interface TreeNode {
   id: string;
@@ -38,7 +40,7 @@ const UserNode = ({ id, onClickModel, onClickTree }: { id: string; onClickModel?
   return (
     <>
       <div className="flex flex-col items-center cursor-pointer" >
-        <div className="w-5 sm:w-10 h-5 sm:h-10 sm:w-12 sm:h-12 rounded-full bg-gray-900 border-4 border-yellow-400 flex items-center justify-center z-10">
+        <div className="w-5 sm:w-12 h-5 sm:h-12 rounded-full bg-gray-900 border-4 border-yellow-400 flex items-center justify-center z-10">
           <svg
             onClick={onClickModel ? onClickModel : () => setModelOpen(true)}
             xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +64,7 @@ const UserNode = ({ id, onClickModel, onClickTree }: { id: string; onClickModel?
   )
 };
 
-// 539 Level 2 Nodes
+// Level 2 Nodes
 const LevelTwoNode = ({ data, onNodeClick }: { data?: TreeNode[]; onNodeClick: (node: TreeNode) => void }) => (
   <div className="flex justify-center space-x-8 sm:space-x-16 relative">
     <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[4.6rem] sm:w-[7.1rem] h-0.5 bg-green-500 z-0" />
@@ -75,7 +77,7 @@ const LevelTwoNode = ({ data, onNodeClick }: { data?: TreeNode[]; onNodeClick: (
   </div>
 );
 
-// 539 Level 1 Nodes
+// Level 1 Nodes
 const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeClick: (node: TreeNode) => void }) => {
   // Defensive: if node is null/undefined, render nothing (prevents reading `.id` of null)
   if (!node) return null;
@@ -112,12 +114,14 @@ const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeCli
 // 🔹 Main Tree
 const BinaryTree = () => {
   const [rootNode, setRootNode] = useState<TreeNode | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const handleNodeClick = (node: TreeNode) => {
     setRootNode(node); // Show only clicked node's subtree
   };
 
   const getBinaryTreeData = async ( ) =>{
+    setLoading(true)
     const userId = getUserIdFromWallet()
     const data = await getBinaryTree(userId || '');
     console.log(data?.data?.success, 'tree_successsuccesssuccess')
@@ -125,6 +129,11 @@ const BinaryTree = () => {
     if(data?.data?.success){
       setRootNode(data?.data?.tree || null)
     }
+    if(data?.error){
+      setRootNode(null)
+      toast.error(data?.error)
+    }
+    setLoading(false)
   }
   useEffect(() => {
     getBinaryTreeData()
@@ -134,8 +143,16 @@ const BinaryTree = () => {
   return (
     <div className="min-h-screen p-6 flex flex-col items-center">
       <h1 className="text-xl sm:text-2xl text-green-500 font-bold mb-4">Community Tree</h1>
-      {/* Render the top-level node only when we have data */}
-      {rootNode ? <LevelOneNode node={rootNode} onNodeClick={handleNodeClick} /> : <p className="text-sm text-gray-400">Loading tree...</p>}
+      {/* Render tree, loader, or empty message */}
+      {loading ? (
+        <div>
+          <Loading />
+        </div>
+      ) : rootNode ? (
+        <LevelOneNode node={rootNode} onNodeClick={handleNodeClick} />
+      ) : (
+        <p className="text-gray-400">No data available.</p>
+      )}
     </div>
   );
 };
