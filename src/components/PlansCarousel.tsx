@@ -146,7 +146,7 @@ const PlansCarousel = ({ plans, loading }: any) => {
                     {modelOpen && (
                         <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`Confirm Purchase`} className="!bg-gray-200">
                             <div>
-                                <p className="text-black text-center">Are you sure want to purshase </p>
+                                <p className="text-white text-center">Are you sure want to purshase </p>
                                 <div className="flex justify-center gap-4 mt-6">
                                     <button onClick={handleBuyPlan} className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl text-lg font-bold">
                                         Buy

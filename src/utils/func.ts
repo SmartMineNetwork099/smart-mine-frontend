@@ -1,3 +1,5 @@
+import moment from "moment";
+
 // function seconds to h:m:s format
 export const formatTime = (seconds: number) => {
   const hrs = Math.floor(seconds / 3600);
@@ -18,3 +20,16 @@ export const formatAmount = (value: any) => {
   // Step 4: Always return as string with 2 decimals
   return num.toFixed(2);
 }
+
+ export const formatWalletAddress = (addr: any) => {
+    if (!addr) return 'N/A';
+    const s = String(addr);
+    if (s.length <= 10) return s;
+    return `${s.slice(0, 6)}....${s.slice(-6)}`;
+  };
+
+  export const formatDate = (dateString: string | Date | undefined): string => {
+    console.log(dateString, 'datestringggg')
+  if (!dateString) return 'N/A';
+  return moment(dateString).format("DD-MMMM-YYYY hh:mm A");
+};

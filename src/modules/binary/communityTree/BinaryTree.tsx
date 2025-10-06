@@ -55,8 +55,8 @@ const UserNode = ({ id, onClickModel, onClickTree }: { id: string; onClickModel?
         <Button className="flex items-center justify-center gap-1 text-black bg-green-500 border-0 !py-1 !px-2 mt-2" onClick={onClickTree}> <IoIosArrowDown /></Button>
       </div>
       {modelOpen && (
-        <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`User Detail`} className="!bg-gray-200">
-          <SingleUserData />
+        <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`User Detail`} className="" size='lg'>
+          <SingleUserData id={id}/>
         </Model>
       )}
 
