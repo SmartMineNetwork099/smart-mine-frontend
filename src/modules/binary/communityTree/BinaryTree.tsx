@@ -8,10 +8,20 @@ import { getBinaryTree } from "@/apis/binaryApis";
 import { getUserIdFromWallet } from "@/utils/walletHelpers";
 import { toast } from "react-toastify";
 import Loading from "@/components/Loading";
+import { FaAngleLeft } from "react-icons/fa6";
 
 interface TreeNode {
   id: string;
   children: TreeNode[];
+}
+
+// ensure exactly two slots for binary layout (fills missing with null)
+const ensureTwoSlots = (arr?: TreeNode[] | null) => {
+  const slots: (TreeNode | null)[] = [];
+  if (!arr || arr.length === 0) return [null, null];
+  slots.push(arr[0] ?? null);
+  slots.push(arr[1] ?? null);
+  return slots;
 }
 // const sampleData: TreeNode = {
 //   id: "752058",
@@ -35,24 +45,30 @@ interface TreeNode {
 
 // 🔹 Reusable Node
 
-const UserNode = ({ id, onClickModel, onClickTree }: { id: string; onClickModel?: () => void; onClickTree?: () => void }) => {
+const UserNode = ({ id, onClickModel, onClickTree, disabled = false }: { id?: string | null; onClickModel?: () => void; onClickTree?: () => void; disabled?: boolean }) => {
   const [modelOpen, setModelOpen] = useState(false);
   return (
     <>
-      <div className="flex flex-col items-center cursor-pointer" >
-        <div className="w-5 sm:w-12 h-5 sm:h-12 rounded-full bg-gray-900 border-4 border-yellow-400 flex items-center justify-center z-10">
+      <div className={`flex flex-col items-center ${disabled ? 'cursor-default' : 'cursor-pointer'}`} >
+        <div className={`w-5 sm:w-12 h-5 sm:h-12 rounded-full flex items-center justify-center z-10 ${disabled ? 'bg-gray-700 border-2 border-gray-500' : 'bg-gray-900 border-4 border-yellow-400'}`}>
           <svg
-            onClick={onClickModel ? onClickModel : () => setModelOpen(true)}
+            onClick={!disabled ? (onClickModel ? onClickModel : () => setModelOpen(true)) : undefined}
             xmlns="http://www.w3.org/2000/svg"
-            className="w-4 sm:w-6 h-4 sm:h-6 text-yellow-300"
+            className={`w-4 sm:w-6 h-4 sm:h-6 ${disabled ? 'text-gray-400' : 'text-yellow-300'}`}
             fill="currentColor"
             viewBox="0 0 24 24"
           >
             <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26z" />
           </svg>
         </div>
-        <p className="text-cyan-400 mt-1 text-xs sm:text-sm font-mono font-semibold"> {id ? id.slice(-4) : "----"}</p>
-        <Button className="flex items-center justify-center gap-1 text-black bg-green-500 border-0 !py-1 !px-2 mt-2" onClick={onClickTree}> <IoIosArrowDown /></Button>
+        <p className={`mt-1 text-xs sm:text-sm font-mono font-semibold ${disabled ? 'text-gray-400' : 'text-cyan-400'}`}> {id ? id.slice(-4) : "----------"}</p>
+        <Button
+          className={`flex items-center justify-center gap-1 text-black bg-green-500 border-0 !py-1 !px-2 mt-2 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}
+          onClick={!disabled ? onClickTree : undefined}
+          aria-disabled={disabled}
+        >
+          <IoIosArrowDown />
+        </Button>
       </div>
       {modelOpen && (
         <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`User Detail`} className="" size='lg'>
@@ -65,48 +81,72 @@ const UserNode = ({ id, onClickModel, onClickTree }: { id: string; onClickModel?
 };
 
 // Level 2 Nodes
-const LevelTwoNode = ({ data, onNodeClick }: { data?: TreeNode[]; onNodeClick: (node: TreeNode) => void }) => (
-  <div className="flex justify-center space-x-8 sm:space-x-16 relative">
-    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[4.6rem] sm:w-[7.1rem] h-0.5 bg-green-500 z-0" />
-    {data?.map((child) => (
-      <div key={child.id} className="flex flex-col items-center relative">
-        <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
-        <UserNode id={child.id} onClickTree={() => onNodeClick(child)} />
-      </div>
-    ))}
-  </div>
-);
+const LevelTwoNode = ({ data, onNodeClick }: { data?: TreeNode[] | null; onNodeClick: (node: TreeNode) => void }) => {
+  // always ensure exactly two slots so layout doesn't break when children are missing
+  const slots = ensureTwoSlots(data);
+  return (
+    <div className="flex justify-center space-x-8 sm:space-x-16 relative">
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[4.6rem] sm:w-[7.1rem] h-0.5 bg-green-500 z-0" />
+      {slots.map((child, idx) => (
+        <div key={idx} className="flex flex-col items-center relative">
+          <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
+          {/* render placeholder nodes when child is null; arrow is disabled in that case */}
+          <UserNode id={child?.id} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
+        </div>
+      ))}
+    </div>
+  )
+};
 
 // Level 1 Nodes
 const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeClick: (node: TreeNode) => void }) => {
-  // Defensive: if node is null/undefined, render nothing (prevents reading `.id` of null)
-  if (!node) return null;
-
-  return (
-    <div className="flex flex-col items-center">
-      <UserNode id={node.id} onClickTree={() => onNodeClick(node)} />
-      {
-        node?.children?.length > 0 &&
+  // If node is null, still render placeholders to keep layout consistent
+  if (!node) {
+    // render a placeholder center with two empty children
+    return (
+      <div className="flex flex-col items-center">
+        <UserNode id={undefined} disabled={true} />
         <>
           <div className="h-6 w-0.5 bg-red-500 z-10"></div>
           <div className="flex justify-center space-x-4 sm:space-x-20 relative">
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[130px] sm:w-[240px] h-0.5 bg-green-500 z-0" />
-            {node.children?.map((child) => (
-              <div key={child.id} className="flex flex-col items-center relative">
+            {ensureTwoSlots([]).map((child, idx) => (
+              <div key={idx} className="flex flex-col items-center relative">
                 <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
-                <UserNode id={child.id} onClickTree={() => onNodeClick(child)} />
-                {
-                  child.children?.length > 0 &&
-                  <>
-                    <div className="h-6 w-0.5 bg-red-500 z-10"></div>
-                    <LevelTwoNode data={child.children} onNodeClick={onNodeClick} />
-                  </>
-                }
+                <UserNode id={child?.id} disabled={!child} />
               </div>
             ))}
           </div>
         </>
-      }
+      </div>
+    )
+  }
+
+  const slots = ensureTwoSlots(node.children);
+
+  return (
+    <div className="flex flex-col items-center">
+      <UserNode id={node.id} onClickTree={() => onNodeClick(node)} />
+      <>
+        <div className="h-6 w-0.5 bg-red-500 z-10"></div>
+        <div className="flex justify-center space-x-4 sm:space-x-20 relative">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[130px] sm:w-[240px] h-0.5 bg-green-500 z-0" />
+          {slots.map((child, idx) => (
+            <div key={idx} className="flex flex-col items-center relative">
+              <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
+              <UserNode id={child?.id} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
+              {
+                // always render LevelTwoNode even if child exists but has no grandchildren
+                // LevelTwoNode will render placeholders when necessary
+                <>
+                  <div className="h-6 w-0.5 bg-red-500 z-10"></div>
+                  <LevelTwoNode data={child?.children || []} onNodeClick={onNodeClick} />
+                </>
+              }
+            </div>
+          ))}
+        </div>
+      </>
     </div>
   )
 };
@@ -114,9 +154,13 @@ const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeCli
 // 🔹 Main Tree
 const BinaryTree = () => {
   const [rootNode, setRootNode] = useState<TreeNode | null>(null);
+  // stack to keep track of previous roots for "back" navigation
+  const [historyStack, setHistoryStack] = useState<TreeNode[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const handleNodeClick = (node: TreeNode) => {
+    // push current root onto history stack so user can go back
+    setHistoryStack(prev => (rootNode ? [...prev, rootNode] : prev));
     setRootNode(node); // Show only clicked node's subtree
   };
 
@@ -128,6 +172,8 @@ const BinaryTree = () => {
     console.log(data?.data?.tree, 'tree_dataaaaaaa123321')
     if(data?.data?.success){
       setRootNode(data?.data?.tree || null)
+      // reset history when loading fresh tree
+      setHistoryStack([])
     }
     if(data?.error){
       setRootNode(null)
@@ -143,6 +189,25 @@ const BinaryTree = () => {
   return (
     <div className="min-h-screen p-6 flex flex-col items-center">
       <h1 className="text-xl sm:text-2xl text-green-500 font-bold mb-4">Community Tree</h1>
+      {/* Back button shown when there is history to go back to */}
+      {historyStack.length > 0 && (
+        <div className="w-full flex justify-start mb-4">
+          <button
+            onClick={() => {
+              // pop the last root from history and set it as current
+              setHistoryStack(prev => {
+                const copy = [...prev];
+                const last = copy.pop();
+                if (last) setRootNode(last);
+                return copy;
+              });
+            }}
+            className="flex items-center gap-2 text-sm text-black bg-yellow-400 border-0 px-3 py-1 rounded"
+          >
+            <FaAngleLeft  /> Back
+          </button>
+        </div>
+      )}
       {/* Render tree, loader, or empty message */}
       {loading ? (
         <div>
