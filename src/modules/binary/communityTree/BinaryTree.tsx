@@ -1,9 +1,11 @@
 'use client';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { Button } from "rizzui/button";
 import Model from "@/components/Model";
 import SingleUserData from "@/modules/binary/communityTree/SingleUserData";
+import { getBinaryTree } from "@/apis/binaryApis";
+import { getUserIdFromWallet } from "@/utils/walletHelpers";
 
 interface TreeNode {
   id: string;
@@ -109,6 +111,16 @@ const BinaryTree = () => {
   const handleNodeClick = (node: TreeNode) => {
     setRootNode(node); // Show only clicked node's subtree
   };
+
+  const getBinaryTreeData = async ( ) =>{
+    const userId = getUserIdFromWallet()
+    const data = await getBinaryTree(userId || '');
+    console.log(data, 'tree_dataaaaaaa123321')
+  }
+  useEffect(() => {
+    getBinaryTreeData()
+  }, [])
+  console.log(rootNode, 'rootNoderootNode')
 
   return (
     <div className="min-h-screen p-6 flex flex-col items-center">
