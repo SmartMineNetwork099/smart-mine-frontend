@@ -7,7 +7,7 @@ import { connectWallet, checkAndSwitchNetwork } from "@/utils/walletHelpers";
 import ROUTES from "@/constants/routes";
 import { useSearchParams } from "next/navigation";
 
-const LoginContent: React.FC = () => {
+const LoginContent: React.FC = () => {   
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const searchParams = useSearchParams();
