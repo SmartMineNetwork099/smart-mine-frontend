@@ -9,7 +9,7 @@ import { getUserIdFromWallet } from '@/utils/walletHelpers';
 import { FaRegUser } from "react-icons/fa6";
 import { useSearchParams } from 'next/navigation';
 import { getSocket, initSocket } from '@/utils/socket';
-import { formatAmount } from '@/utils/func';
+import { formatAmount, formatWalletAddress } from '@/utils/func';
 import Image from 'next/image';
 
 const WalletData = () => {
@@ -90,7 +90,7 @@ const WalletData = () => {
     // Generate display address
     const displayAddress = walletData?.walletAddress
         ? isMobile
-            ? `${walletData.walletAddress.slice(0, 8)}......${walletData.walletAddress.slice(-8)}`
+            ? formatWalletAddress(walletData?.walletAddress)
             : walletData.walletAddress
         : "";
     const walletInfo = [
@@ -176,7 +176,7 @@ const WalletData = () => {
                     </div>
                 </div>
 
-                <div className='shadow-2xl rounded py-2 px-0.5 grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mt-4'>
+                <div className='shadow-2xl rounded py-2 px-0.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mt-4'>
                     {walletInfo?.map((item, index) => (
                         <div key={index} className="flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-4 bg-black text-white rounded-lg">
                             <div className=''>
