@@ -8,6 +8,8 @@ import { buyPlans } from "@/apis/plans";
 import Loading from "@/components/Loading";
 import { toast } from "react-toastify";
 import { getUserIdFromWallet } from "@/utils/walletHelpers";
+import { Loader } from "rizzui";
+
 
 
 // const plans = [
@@ -31,6 +33,7 @@ import { getUserIdFromWallet } from "@/utils/walletHelpers";
 const PlansCarousel = ({ plans, loading }: any) => {
     const [selectedPlans, setSelectedPlans] = useState([]);
     const [modelOpen, setModelOpen] = useState(false);
+    const [loadingBuy, setLoadingBuy] = useState(false);
 
 
     const togglePlan = (plan: any) => {
@@ -55,6 +58,7 @@ const PlansCarousel = ({ plans, loading }: any) => {
         }
         console.log('Buying plans:', selectedPlans);
         try {
+            setLoadingBuy(true);
             const userId = getUserIdFromWallet();
             const plansToBuy = selectedPlans?.map((p: any) => ({
                 planId: p?._id,
@@ -74,6 +78,9 @@ const PlansCarousel = ({ plans, loading }: any) => {
         } catch (err) {
             console.error(err);
             toast.error("Something went wrong. Try again.");
+        }
+        finally{
+            setLoadingBuy(false);
         }
         // const buyPlan = await buyPlans('643b8f4f3b4e2c001f6e4b9a')
         // console.log(buyPlan, 'buyPlanbuyPlan')
@@ -148,12 +155,22 @@ const PlansCarousel = ({ plans, loading }: any) => {
                             <div>
                                 <p className="text-white text-center">Are you sure want to purshase </p>
                                 <div className="flex justify-center gap-4 mt-6">
-                                    <button onClick={handleBuyPlan} className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl text-lg font-bold">
-                                        Buy
-                                    </button>
+                                  <button
+  onClick={handleBuyPlan}
+  disabled={loadingBuy}
+  className={`flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl text-lg font-bold ${
+    loadingBuy ? 'opacity-70 cursor-not-allowed' : ''
+  }`}
+>
+  Buy
+  {loadingBuy && <Loader size="sm" className="text-white" />}
+</button>
                                     <button
+                                      disabled={loadingBuy}
                                         onClick={() => setModelOpen(false)}
-                                        className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-xl text-lg font-bold"
+                                        className={`bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-xl text-lg font-bold ${
+    loadingBuy ? 'opacity-70 cursor-not-allowed' : ''
+  }`}
                                     >
                                         Cancel
                                     </button>
