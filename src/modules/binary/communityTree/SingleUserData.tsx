@@ -26,6 +26,9 @@ const SingleUserData = ({id}) => {
     useEffect(() => {
     if (id) getUserInfo();
   }, []); 
+ 
+  const userLavel = userData?.plans?.length > 0 ? userData?.plans[userData?.plans?.length-1]?.planDetails?.level : 'N/A';
+  console.log(userLavel, 'userLaveluserLaveluserLavel')
     const walletInfo = [
     {
         name: 'ID',
@@ -37,7 +40,7 @@ const SingleUserData = ({id}) => {
     },
     {
         name: 'Rank',
-        transactions: '-----',
+        transactions: String(userLavel || 'N/A'),
     },
    {
       name: 'Activation Date',
