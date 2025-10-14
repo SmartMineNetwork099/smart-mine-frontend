@@ -67,11 +67,11 @@ const PlansTable = ({ plans, loading }: any) => {
                             >
                                 <td className="p-4 whitespace-nowrap text-center">{row?.name}</td>
                                 <td className="p-4 whitespace-nowrap">{row?.teamMembers}</td>
-                                <td className="p-4 text-end whitespace-nowrap">{row?.totalIncome} $</td>
-                                <td className="p-4 text-end whitespace-nowrap">{row?.upgrade} $</td>
+                                <td className="p-4 text-end whitespace-nowrap">{row?.maxIncome} $</td>
+                                <td className="p-4 text-end whitespace-nowrap">{row?.upgradeAmount} $</td>
                                 <td className="p-4 text-end whitespace-nowrap">{row?.netProfit} $</td>
-                                <td className="p-4 whitespace-nowrap">{row?.directMembers}</td>
-                                <td className="p-4 whitespace-nowrap text-end text-red-500 font-bold">{row?.loss} $</td>
+                                <td className="p-4 whitespace-nowrap">{row?.teamMembers}</td>
+                                <td className="p-4 whitespace-nowrap text-end text-red-500 font-bold">{row?.loss || 0} $</td>
                             </tr>
                         ))
                     ) : (

@@ -50,7 +50,7 @@ const PlansCarousel = ({ plans, loading }: any) => {
         setModelOpen(true);
     }
 
-    const totalAmount = selectedPlans.reduce((sum: any, p: any) => sum + p.singleUserUpgradeAmount, 0);
+    const totalAmount = selectedPlans.reduce((sum: any, p: any) => sum + p.price, 0);
     const handleBuyPlan = async () => {
         if (selectedPlans.length === 0) {
             toast.error("Please select at least one plan to buy.");
@@ -62,7 +62,7 @@ const PlansCarousel = ({ plans, loading }: any) => {
             const userId = getUserIdFromWallet();
             const plansToBuy = selectedPlans?.map((p: any) => ({
                 planId: p?._id,
-                clientAmount: p?.singleUserUpgradeAmount,
+                clientAmount: p?.price,
             }));
 
             const { data, error } = await buyPlans(userId, plansToBuy);
@@ -104,7 +104,7 @@ const PlansCarousel = ({ plans, loading }: any) => {
   `}
                                                 onClick={() => !plan.isPurchased && togglePlan(plan)}  // disable click if purchased
                                             >
-                                                <p className="sm:text-2xl font-bold text-white">${plan?.singleUserUpgradeAmount}</p>
+                                                <p className="sm:text-2xl font-bold text-white">${plan?.price}</p>
 
                                                 <button
                                                     className={`text-xs sm:text-xl font-semibold flex items-center gap-0.5 sm:gap-2 
