@@ -43,7 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   const pathname = usePathname();
   const isBinaryPage = pathname.includes('/binary');
-  const isNotGamingPage = !pathname.includes('/gaming');
+const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/binary'));
   const isAuthRoute = pathname.includes(ROUTES?.AUTH?.LOGIN);
   return (
     <html lang="en">
@@ -68,11 +68,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </>
               )}
 
-              {isBinaryPage && (
+              {/* {isBinaryPage && (
                 <div className="w-full p-4">
                   <Tab tabs={tabs2} style='min-w-40 sm:min-w-44' defaultLink={ROUTES?.BINARY?.DASHBOARD} />
                 </div>
-              )}
+              )} */}
             </>
           )}
 
