@@ -91,7 +91,7 @@ const StakingPlansTable = ({ data, loading = false }: TableProps) => {
                                 <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.investment} $</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.totalEarning} $</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.earned} $</td>
-                                <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.lossAmount} $</td>
+                                <td className="px-4 py-2 text-end whitespace-nowrap text-red-500">{row?.lossAmount} $</td>
 <td className="px-4 py-2 whitespace-nowrap ">
   <span
     className={`px-2 py-1 rounded-full text-xs font-semibold ${
