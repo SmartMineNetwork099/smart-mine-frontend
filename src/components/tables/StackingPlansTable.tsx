@@ -6,35 +6,14 @@ import { Button } from "rizzui/button";
 import Model from "@/components/Model";
 import { Loader } from "rizzui/loader";
 import Card from "@/components/Card";
+import { getUserIdFromWallet } from "@/utils/walletHelpers";
+import { getAllStackingPlans } from "@/apis/stackingApis";
 
-
-type TableProps = {
-    data?: any[];
-    loading?: boolean;
-};
- const plans = [
-  { levelName: "Starter", level: 1, investment: 5, totalEarning: 10, earned: 2.5, lossAmount: 0.5, status: "Active" },
-  { levelName: "Basic", level: 2, investment: 10, totalEarning: 20, earned: 5, lossAmount: 1, status: "Not Active" },
-  { levelName: "Silver", level: 3, investment: 15, totalEarning: 30, earned: 10, lossAmount: 1.5, status: "Active" },
-  { levelName: "Gold", level: 4, investment: 20, totalEarning: 40, earned: 12, lossAmount: 2, status: "Not Active" },
-  { levelName: "Platinum", level: 5, investment: 25, totalEarning: 50, earned: 20, lossAmount: 2.5, status: "Active" },
-  { levelName: "Diamond", level: 6, investment: 30, totalEarning: 60, earned: 18, lossAmount: 3, status: "Not Active" },
-  { levelName: "Elite", level: 7, investment: 35, totalEarning: 70, earned: 25, lossAmount: 3.5, status: "Active" },
-  { levelName: "Pro", level: 8, investment: 40, totalEarning: 80, earned: 30, lossAmount: 4, status: "Not Active" },
-  { levelName: "Premium", level: 9, investment: 45, totalEarning: 90, earned: 35, lossAmount: 4.5, status: "Active" },
-  { levelName: "Master", level: 10, investment: 50, totalEarning: 100, earned: 40, lossAmount: 5, status: "Not Active" },
-  { levelName: "Legend", level: 11, investment: 55, totalEarning: 110, earned: 50, lossAmount: 5.5, status: "Active" },
-  { levelName: "Royal", level: 12, investment: 60, totalEarning: 120, earned: 45, lossAmount: 6, status: "Not Active" },
-  { levelName: "Supreme", level: 13, investment: 65, totalEarning: 130, earned: 60, lossAmount: 6.5, status: "Active" },
-  { levelName: "Ultimate", level: 14, investment: 70, totalEarning: 140, earned: 50, lossAmount: 7, status: "Not Active" },
-  { levelName: "Infinity", level: 15, investment: 75, totalEarning: 150, earned: 75, lossAmount: 7.5, status: "Active" },
-];
-
-
-
-const StakingPlansTable = ({ data, loading = false }: TableProps) => {
+const StakingPlansTable = () => {
     const [responsiveColspan, setResponsiveColspan] = useState<number>(2)
         const [modelOpen, setModelOpen] = useState(false);
+        const [plans, setPlans] = useState<any[]>([]);
+            const [loading, setLoading] = useState(true);
             const [loadingBuy, setLoadingBuy] = useState(false);
         const handleModelOpen = () => {
         setModelOpen(true);
@@ -42,8 +21,17 @@ const StakingPlansTable = ({ data, loading = false }: TableProps) => {
      const handleBuyPlan = async () => {
 
      }
+     const getStackingPlans = async () => {
+        setLoading(true);
+        const id = getUserIdFromWallet()
+     const plans = await getAllStackingPlans(id);
+     console.log(plans?.data, 'plansplansplansplans')
+      setPlans(plans?.data || []);
+     setLoading(false);
+     }
     // Handle Responsive 
     useEffect(() => {
+        getStackingPlans();
         const handleResize = () => {
             setResponsiveColspan(window.innerWidth <= 640 ? 2 : 6);
         };
@@ -61,14 +49,14 @@ const StakingPlansTable = ({ data, loading = false }: TableProps) => {
             <table className="min-w-[500px] w-full text-sm border-collapse">
                 <thead className="sticky top-0 z-10 bg-green-500 text-black">
                     <tr className="bg-green-500 text-black font-bold text-center">
-                        <th className="px-4 py-2 w-[70px] sm:w-[100px] ">Sno.</th>
+                        {/* <th className="px-4 py-2 w-[70px] sm:w-[100px] ">Sno.</th> */}
                         <th className="px-4 py-2 w-[140px] sm:w-[150px] ">Level</th>
-                        <th className="px-4 py-2 w-[140px] text-end ">Staking</th>
+                        {/* <th className="px-4 py-2 w-[140px] text-end ">Staking</th> */}
+                        <th className="px-4 py-2 w-[140px]">Action</th>
                         <th className="px-4 py-2 w-[140px] text-end ">Income</th>
                         <th className="px-4 py-2 w-[140px] text-end ">Earned</th>
                         <th className="px-4 py-2 w-[140px] text-end ">Loss</th>
                         <th className="px-4 py-2 w-[140px] ">Status</th>
-                        <th className="px-4 py-2 w-[140px]">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,16 +74,23 @@ const StakingPlansTable = ({ data, loading = false }: TableProps) => {
                                 key={rowIndex}
                                 className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                             >
-                                <td className="px-4 py-2 whitespace-nowrap ">{rowIndex + 1}</td>
-                                <td className="px-4 py-2 whitespace-nowrap ">{row?.levelName ?? "-"}</td>
-                                <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.investment} $</td>
+                                <td className="px-4 py-2 whitespace-nowrap ">{row?.level}</td>
+                                {/* <td className="px-4 py-2 whitespace-nowrap ">{row?.levelName ?? "-"}</td> */}
+                                {/* <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.investment} $</td> */}
+                                <td className="px-4 py-2 whitespace-nowrap ">
+    <Button onClick={handleModelOpen} className={` ${
+      row?.status === 'active'
+        ? 'cursor-not-allowed opacity-40'
+        : 'cursor-pointer'
+    }  bg-green-500 text-black font-bold border-0`}>Buy {row?.investment}</Button>
+</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.totalEarning} $</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.earned} $</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap text-red-500">{row?.lossAmount} $</td>
 <td className="px-4 py-2 whitespace-nowrap ">
   <span
     className={`px-2 py-1 rounded-full text-xs font-semibold ${
-      row?.status === 'Active'
+      row?.status === 'active'
         ? 'bg-green-500 text-white'
         : 'bg-red-500 text-white'
     }`}
@@ -103,13 +98,7 @@ const StakingPlansTable = ({ data, loading = false }: TableProps) => {
     {row?.status}
   </span>
 </td>
-<td className="px-4 py-2 whitespace-nowrap ">
-    <Button onClick={handleModelOpen} className={` ${
-      row?.status === 'Active'
-        ? 'cursor-not-allowed opacity-40'
-        : 'cursor-pointer'
-    }  bg-green-500 text-black font-bold border-0`}>Buy</Button>
-</td>
+
                             </tr>
                         ))
                     ) : (
