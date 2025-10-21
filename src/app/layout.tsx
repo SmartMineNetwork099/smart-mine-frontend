@@ -62,7 +62,7 @@ const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/bi
               {isNotGamingPage && (
                 <>
 
-                  <div className="w-full p-4 pt-0">
+                  <div className="w-full px-4">
                     <WalletData />
                   </div>
                 </>
