@@ -38,9 +38,9 @@ const PlansCarousel = ({ plans, loading }: any) => {
 
     const togglePlan = (plan: any) => {
         setSelectedPlans((prev: any) => {
-            const exists = prev.find((p: any) => p.name === plan.name);
+            const exists = prev.find((p: any) => p._id === plan._id);
             if (exists) {
-                return prev.filter((p: any) => p.name !== plan.name);
+                return prev.filter((p: any) => p._id !== plan._id);
             } else {
                 return [...prev, plan];
             }
@@ -50,7 +50,7 @@ const PlansCarousel = ({ plans, loading }: any) => {
         setModelOpen(true);
     }
 
-    const totalAmount = selectedPlans.reduce((sum: any, p: any) => sum + p.price, 0);
+    const totalAmount = selectedPlans.reduce((sum: any, p: any) => sum + p.singleUserUpgradeAmount, 0);
     const handleBuyPlan = async () => {
         if (selectedPlans.length === 0) {
             toast.error("Please select at least one plan to buy.");
@@ -60,12 +60,13 @@ const PlansCarousel = ({ plans, loading }: any) => {
         try {
             setLoadingBuy(true);
             const userId = getUserIdFromWallet();
-            const plansToBuy = selectedPlans?.map((p: any) => ({
-                planId: p?._id,
-                clientAmount: p?.price,
-            }));
+            // const plansToBuy = selectedPlans?.map((p: any) => ({
+            //     planId: p?._id,
+            //     clientAmount: p?.price,
+            // }));
+              const planId = selectedPlans?.map((p: any) => p?._id);
 
-            const { data, error } = await buyPlans(userId, plansToBuy);
+            const { data, error } = await buyPlans(userId, planId);
 
             if (error) {
                 toast.error(error);
@@ -95,7 +96,7 @@ const PlansCarousel = ({ plans, loading }: any) => {
                             <div className="flex gap-2 sm:gap-4 overflow-x-auto scrollbar-hidden">
                                 {
                                     plans?.map((plan: any, i: any) => {
-                                        const isSelected = selectedPlans.some((p: any) => p.name === plan.name);
+                                        const isSelected = selectedPlans.some((p: any) => p._id === plan._id);
                                         return (
                                             <div
                                                 key={i}
@@ -104,14 +105,14 @@ const PlansCarousel = ({ plans, loading }: any) => {
   `}
                                                 onClick={() => !plan.isPurchased && togglePlan(plan)}  // disable click if purchased
                                             >
-                                                <p className="sm:text-2xl font-bold text-white">${plan?.price}</p>
+                                                <p className="sm:text-2xl font-bold text-white">${plan?.singleUserUpgradeAmount}</p>
 
                                                 <button
                                                     className={`text-xs sm:text-xl font-semibold flex items-center gap-0.5 sm:gap-2 
       ${plan.isPurchased ? 'text-yellow-400' : 'text-green-500'}
     `}
                                                 >
-                                                    {plan.name}
+                                                    {plan.planName}
                                                     {/* Purchased → show double tick, Selected → single tick */}
                                                     {plan.isPurchased ? (
                                                         <>

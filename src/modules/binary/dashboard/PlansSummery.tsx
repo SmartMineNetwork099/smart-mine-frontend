@@ -19,12 +19,13 @@ const PlansSummery = () => {
         try {
             const id = getUserIdFromWallet()
             const { data, error } = await getPlans(id);
+            console.log(data, 'data1234567plansplans')
 
             if (error) {
                 setPlans([]);
                 toast.error(error);
             } else {
-                setPlans(data?.plans || []);
+                setPlans(data || []);
             }
         } catch (err) {
             console.error(err);

@@ -65,9 +65,9 @@ const PlansTable = ({ plans, loading }: any) => {
                                 key={i}
                                 className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                             >
-                                <td className="p-4 whitespace-nowrap text-center">{row?.name}</td>
+                                <td className="p-4 whitespace-nowrap text-center">{row?.planName}</td>
                                 <td className="p-4 whitespace-nowrap">{row?.teamMembers}</td>
-                                <td className="p-4 text-end whitespace-nowrap">{row?.maxIncome} $</td>
+                                <td className="p-4 text-end whitespace-nowrap">{row?.totalIncome} $</td>
                                 <td className="p-4 text-end whitespace-nowrap">{row?.upgradeAmount} $</td>
                                 <td className="p-4 text-end whitespace-nowrap">{row?.netProfit} $</td>
                                 <td className="p-4 whitespace-nowrap">{row?.teamMembers}</td>
