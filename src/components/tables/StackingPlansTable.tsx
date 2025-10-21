@@ -13,22 +13,23 @@ type TableProps = {
     loading?: boolean;
 };
  const plans = [
-  { levelName: "Starter", level: 1, investment: 5, totalEarning: 10, lossAmount: 0.5, status: "Active" },
-  { levelName: "Basic", level: 2, investment: 10, totalEarning: 20, lossAmount: 1, status: "Not Active" },
-  { levelName: "Silver", level: 3, investment: 15, totalEarning: 30, lossAmount: 1.5, status: "Active" },
-  { levelName: "Gold", level: 4, investment: 20, totalEarning: 40, lossAmount: 2, status: "Not Active" },
-  { levelName: "Platinum", level: 5, investment: 25, totalEarning: 50, lossAmount: 2.5, status: "Active" },
-  { levelName: "Diamond", level: 6, investment: 30, totalEarning: 60, lossAmount: 3, status: "Not Active" },
-  { levelName: "Elite", level: 7, investment: 35, totalEarning: 70, lossAmount: 3.5, status: "Active" },
-  { levelName: "Pro", level: 8, investment: 40, totalEarning: 80, lossAmount: 4, status: "Not Active" },
-  { levelName: "Premium", level: 9, investment: 45, totalEarning: 90, lossAmount: 4.5, status: "Active" },
-  { levelName: "Master", level: 10, investment: 50, totalEarning: 100, lossAmount: 5, status: "Not Active" },
-  { levelName: "Legend", level: 11, investment: 55, totalEarning: 110, lossAmount: 5.5, status: "Active" },
-  { levelName: "Royal", level: 12, investment: 60, totalEarning: 120, lossAmount: 6, status: "Not Active" },
-  { levelName: "Supreme", level: 13, investment: 65, totalEarning: 130, lossAmount: 6.5, status: "Active" },
-  { levelName: "Ultimate", level: 14, investment: 70, totalEarning: 140, lossAmount: 7, status: "Not Active" },
-  { levelName: "Infinity", level: 15, investment: 75, totalEarning: 150, lossAmount: 7.5, status: "Active" },
+  { levelName: "Starter", level: 1, investment: 5, totalEarning: 10, earned: 2.5, lossAmount: 0.5, status: "Active" },
+  { levelName: "Basic", level: 2, investment: 10, totalEarning: 20, earned: 5, lossAmount: 1, status: "Not Active" },
+  { levelName: "Silver", level: 3, investment: 15, totalEarning: 30, earned: 10, lossAmount: 1.5, status: "Active" },
+  { levelName: "Gold", level: 4, investment: 20, totalEarning: 40, earned: 12, lossAmount: 2, status: "Not Active" },
+  { levelName: "Platinum", level: 5, investment: 25, totalEarning: 50, earned: 20, lossAmount: 2.5, status: "Active" },
+  { levelName: "Diamond", level: 6, investment: 30, totalEarning: 60, earned: 18, lossAmount: 3, status: "Not Active" },
+  { levelName: "Elite", level: 7, investment: 35, totalEarning: 70, earned: 25, lossAmount: 3.5, status: "Active" },
+  { levelName: "Pro", level: 8, investment: 40, totalEarning: 80, earned: 30, lossAmount: 4, status: "Not Active" },
+  { levelName: "Premium", level: 9, investment: 45, totalEarning: 90, earned: 35, lossAmount: 4.5, status: "Active" },
+  { levelName: "Master", level: 10, investment: 50, totalEarning: 100, earned: 40, lossAmount: 5, status: "Not Active" },
+  { levelName: "Legend", level: 11, investment: 55, totalEarning: 110, earned: 50, lossAmount: 5.5, status: "Active" },
+  { levelName: "Royal", level: 12, investment: 60, totalEarning: 120, earned: 45, lossAmount: 6, status: "Not Active" },
+  { levelName: "Supreme", level: 13, investment: 65, totalEarning: 130, earned: 60, lossAmount: 6.5, status: "Active" },
+  { levelName: "Ultimate", level: 14, investment: 70, totalEarning: 140, earned: 50, lossAmount: 7, status: "Not Active" },
+  { levelName: "Infinity", level: 15, investment: 75, totalEarning: 150, earned: 75, lossAmount: 7.5, status: "Active" },
 ];
+
 
 
 const StakingPlansTable = ({ data, loading = false }: TableProps) => {
@@ -64,6 +65,7 @@ const StakingPlansTable = ({ data, loading = false }: TableProps) => {
                         <th className="px-4 py-2 w-[140px] sm:w-[150px] ">Level</th>
                         <th className="px-4 py-2 w-[140px] text-end ">Staking</th>
                         <th className="px-4 py-2 w-[140px] text-end ">Income</th>
+                        <th className="px-4 py-2 w-[140px] text-end ">Earned</th>
                         <th className="px-4 py-2 w-[140px] text-end ">Loss</th>
                         <th className="px-4 py-2 w-[140px] ">Status</th>
                         <th className="px-4 py-2 w-[140px]">Action</th>
@@ -88,6 +90,7 @@ const StakingPlansTable = ({ data, loading = false }: TableProps) => {
                                 <td className="px-4 py-2 whitespace-nowrap ">{row?.levelName ?? "-"}</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.investment} $</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.totalEarning} $</td>
+                                <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.earned} $</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.lossAmount} $</td>
 <td className="px-4 py-2 whitespace-nowrap ">
   <span
