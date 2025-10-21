@@ -5,6 +5,7 @@ import ReferralLink from '@/modules/stacking/ReferralLink'
 import YourCommunity from '@/modules/stacking/YourCommunity'
 import NetworkOverview from '@/modules/stacking/NetworkOverview'
 import WalletActions from '@/components/WalletActions'
+import StakingPlansTable from '@/components/tables/StackingPlansTable'
 const index = () => {
     return (
         <>
@@ -14,6 +15,9 @@ const index = () => {
          </div>
             <CollectCoins />
             <ReferralLink />
+            <div className='my-4'>
+              <StakingPlansTable/>
+         </div>
             <NetworkOverview />
             <YourCommunity />
             </Suspense>
