@@ -6,7 +6,7 @@ import { Button } from "rizzui/button";
 import Model from "@/components/Model";
 import Card from "@/components/Card";
 import { getUserIdFromWallet, getUserWalletAddress } from "@/utils/walletHelpers";
-import { getAllStackingPlansWithTeamData } from "@/apis/stackingApis";
+import { buyStackingPlans, getAllStackingPlansWithTeamData } from "@/apis/stackingApis";
 import SpinnerLoader from "@/components/SpinnerLoader";
 
 
@@ -17,18 +17,21 @@ const StakingPlansTable = () => {
         const [plans, setPlans] = useState<any[]>([]);
             const [loading, setLoading] = useState(true);
             const [loadingBuy, setLoadingBuy] = useState(false);
+            const userId = getUserIdFromWallet()
+        const walletAddress = getUserWalletAddress();
         const handleModelOpen = () => {
         setModelOpen(true);
     }
      const handleBuyPlan = async () => {
         setLoadingBuy(true);
+        const buyPlanApi = await buyStackingPlans({userId , levels: 1 , paymentTxHash: '0x1234567890abcdef'});
+        console.log(buyPlanApi, 'buyPlanApibuyPlanApi')
+        setLoadingBuy(false);   
 
      }
     //  const getUserId
      const getStackingPlans = async () => {
         setLoading(true);
-        const userId = getUserIdFromWallet()
-        const walletAddress = getUserWalletAddress();
      const plans = await getAllStackingPlansWithTeamData(userId , walletAddress);
      console.log(plans?.data, 'plansplansplansplans')
       setPlans(plans?.data || []);

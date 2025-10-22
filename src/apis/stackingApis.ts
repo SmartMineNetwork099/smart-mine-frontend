@@ -19,3 +19,20 @@ export const getAllStackingPlansWithTeamData = async (userId:any , walletAddress
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
+export const buyStackingPlans = async ({userId , levels , paymentTxHash}:any) => {
+    try {
+        const res = await axios.post<any>(`${API}/api/stacking/buyStackingPlans`,{
+            userId , levels , paymentTxHash
+        });
+        console.log(res, 'resresres11111232buyStackingPlansbuyStackingPlans')
+        if(res?.data?.success){
+        return { data: res?.data?.data , error: null };
+        }else{
+            return { data: null, error: "error try again." };
+        }
+    }
+    catch (err) {
+        const error = err as AxiosError<{ message: string }>;
+        return { data: null, error: error.response?.data?.message ?? "error try again." };
+    }
+};
