@@ -1,10 +1,11 @@
+import { getUserWalletAddress } from "@/utils/walletHelpers";
 import axios, { AxiosError } from "axios";
 const API = process.env.NEXT_PUBLIC_API_BASE as string;
 
-export const getAllStackingPlans = async (userId:any) => {
+export const getAllStackingPlansWithTeamData = async (userId:any , walletAddress:any) => {
     try {
-        const res = await axios.post<any>(`${API}/api/stacking/getAllStackingPlans`,{
-            userId
+        const res = await axios.post<any>(`${API}/api/stacking/getAllStackingPlansWithTeamData`,{
+            userId , walletAddress
         });
         console.log(res, 'resresres11111232getAllStackingPlansgetAllStackingPlans')
         if(res?.data?.success){

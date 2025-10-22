@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
 import { Button } from "rizzui/button";
 import Model from "@/components/Model";
-import { Loader } from "rizzui/loader";
 import Card from "@/components/Card";
-import { getUserIdFromWallet } from "@/utils/walletHelpers";
-import { getAllStackingPlans } from "@/apis/stackingApis";
+import { getUserIdFromWallet, getUserWalletAddress } from "@/utils/walletHelpers";
+import { getAllStackingPlansWithTeamData } from "@/apis/stackingApis";
+import { Loader } from "rizzui/loader";
+
 
 const StakingPlansTable = () => {
     const [responsiveColspan, setResponsiveColspan] = useState<number>(2)
@@ -19,12 +20,15 @@ const StakingPlansTable = () => {
         setModelOpen(true);
     }
      const handleBuyPlan = async () => {
+        setLoadingBuy(true);
 
      }
+    //  const getUserId
      const getStackingPlans = async () => {
         setLoading(true);
-        const id = getUserIdFromWallet()
-     const plans = await getAllStackingPlans(id);
+        const userId = getUserIdFromWallet()
+        const walletAddress = getUserWalletAddress();
+     const plans = await getAllStackingPlansWithTeamData(userId , walletAddress);
      console.log(plans?.data, 'plansplansplansplans')
       setPlans(plans?.data || []);
      setLoading(false);
@@ -33,7 +37,7 @@ const StakingPlansTable = () => {
     useEffect(() => {
         getStackingPlans();
         const handleResize = () => {
-            setResponsiveColspan(window.innerWidth <= 640 ? 2 : 6);
+            setResponsiveColspan(window.innerWidth <= 640 ? 2 : 7);
         };
         handleResize();
         window.addEventListener("resize", handleResize);
@@ -52,21 +56,23 @@ const StakingPlansTable = () => {
                         {/* <th className="px-4 py-2 w-[70px] sm:w-[100px] ">Sno.</th> */}
                         <th className="px-4 py-2 w-[140px] sm:w-[150px] ">Level</th>
                         {/* <th className="px-4 py-2 w-[140px] text-end ">Staking</th> */}
-                        <th className="px-4 py-2 w-[140px]">Action</th>
+                        <th className="px-4 py-2 w-[140px]">Team</th>
                         <th className="px-4 py-2 w-[140px] text-end ">Income</th>
                         <th className="px-4 py-2 w-[140px] text-end ">Earned</th>
                         <th className="px-4 py-2 w-[140px] text-end ">Loss</th>
                         <th className="px-4 py-2 w-[140px] ">Status</th>
+                        <th className="px-4 py-2 w-[140px] ">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {loading ? (
                         <tr>
-                            <td colSpan={responsiveColspan} className="!text-center py-6">
-                                <div className="flex justify-center items-center">
-                                    <Loading />
-                                </div>
-                            </td>
+                           <td colSpan={responsiveColspan} className="!text-center py-6">
+        <div className="flex justify-center items-center">
+          <Loading />
+        </div>
+      </td>
+
                         </tr>
                     ) : plans && plans.length > 0 ? (
                         plans?.map((row: any, rowIndex: number) => (
@@ -77,13 +83,7 @@ const StakingPlansTable = () => {
                                 <td className="px-4 py-2 whitespace-nowrap ">{row?.level}</td>
                                 {/* <td className="px-4 py-2 whitespace-nowrap ">{row?.levelName ?? "-"}</td> */}
                                 {/* <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.investment} $</td> */}
-                                <td className="px-4 py-2 whitespace-nowrap ">
-    <Button onClick={handleModelOpen} className={` ${
-      row?.status === 'active'
-        ? 'cursor-not-allowed opacity-40'
-        : 'cursor-pointer'
-    }  bg-green-500 text-black font-bold border-0`}>Buy {row?.investment}</Button>
-</td>
+                                <td className="px-4 py-2 whitespace-nowrap ">{row?.teamSize}</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.totalEarning} $</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.earned} $</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap text-red-500">{row?.lossAmount} $</td>
@@ -97,6 +97,14 @@ const StakingPlansTable = () => {
   >
     {row?.status}
   </span>
+</td>
+
+<td className="px-4 py-2 whitespace-nowrap ">
+    <Button onClick={handleModelOpen} disabled={row?.status=== 'active'} className={` ${
+      row?.status === 'active'
+        ? 'cursor-not-allowed opacity-40'
+        : 'cursor-pointer'
+    }  bg-green-500 text-black font-bold border-0`}>Buy {row?.investment}</Button>
 </td>
 
                             </tr>
@@ -117,7 +125,7 @@ const StakingPlansTable = () => {
                     )}
                 </tbody>
             </table>
-               {modelOpen && (
+                {modelOpen && (
                         <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`Confirm Purchase`} className="!bg-gray-200">
                             <div>
                                 <p className="text-white text-center">Are you sure want to purshase </p>
@@ -130,7 +138,7 @@ const StakingPlansTable = () => {
   }`}
 >
   Buy
-  {loadingBuy && <Loader size="sm" className="text-white" />}
+  {loadingBuy && <Loader size="sm"  className="text-white" />}
 </button>
                                     <button
                                       disabled={loadingBuy}
@@ -144,7 +152,7 @@ const StakingPlansTable = () => {
                                 </div>
                             </div>
                         </Model>
-                    )}
+                    )} 
         </div>
         </Card>
         </>
