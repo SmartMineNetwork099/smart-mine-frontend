@@ -1,13 +1,14 @@
 'use client'
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import Loading from "@/components/Loading";
+import HashLoader from "@/components/HashLoader";
 import { Button } from "rizzui/button";
 import Model from "@/components/Model";
 import Card from "@/components/Card";
 import { getUserIdFromWallet, getUserWalletAddress } from "@/utils/walletHelpers";
 import { getAllStackingPlansWithTeamData } from "@/apis/stackingApis";
-import { Loader } from "rizzui/loader";
+import SpinnerLoader from "@/components/SpinnerLoader";
+
 
 
 const StakingPlansTable = () => {
@@ -69,7 +70,7 @@ const StakingPlansTable = () => {
                         <tr>
                            <td colSpan={responsiveColspan} className="!text-center py-6">
         <div className="flex justify-center items-center">
-          <Loading />
+          <HashLoader />
         </div>
       </td>
 
@@ -138,7 +139,7 @@ const StakingPlansTable = () => {
   }`}
 >
   Buy
-  {loadingBuy && <Loader size="sm"  className="text-white" />}
+  {loadingBuy && <SpinnerLoader />}
 </button>
                                     <button
                                       disabled={loadingBuy}

@@ -1,7 +1,7 @@
 'use client'
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import Loading from "@/components/Loading";
+import HashLoader from "@/components/HashLoader";
 
 type TableProps = {
     data: any[];
@@ -37,7 +37,7 @@ const StakingTable = ({ data, loading = true }: TableProps) => {
                         <tr>
                             <td colSpan={responsiveColspan} className="!text-center py-6">
                                 <div className="flex justify-center items-center">
-                                    <Loading />
+                                    <HashLoader />
                                 </div>
                             </td>
                         </tr>

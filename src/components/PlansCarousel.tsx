@@ -5,10 +5,10 @@ import { SiTether } from "react-icons/si";
 import { FaCheck } from "react-icons/fa";
 import Model from "@/components/Model";
 import { buyPlans } from "@/apis/plans";
-import Loading from "@/components/Loading";
+import HashLoader from "@/components/HashLoader";
+import SpinnerLoader from "@/components/SpinnerLoader";
 import { toast } from "react-toastify";
 import { getUserIdFromWallet } from "@/utils/walletHelpers";
-import { Loader } from "rizzui";
 
 
 
@@ -134,7 +134,7 @@ const PlansCarousel = ({ plans, loading }: any) => {
                             :
                             loading && (
                                 <div className="flex justify-center items-center">
-                                    <Loading />
+                                    <HashLoader />
                                 </div>
                             )
                     }
@@ -164,7 +164,7 @@ const PlansCarousel = ({ plans, loading }: any) => {
   }`}
 >
   Buy
-  {loadingBuy && <Loader size="sm" className="text-white" />}
+  {loadingBuy && <SpinnerLoader />}
 </button>
                                     <button
                                       disabled={loadingBuy}

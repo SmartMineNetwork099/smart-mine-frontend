@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from "react";
-import Loading from "@/components/Loading";
+import HashLoader from "@/components/HashLoader";
 import Image from "next/image";
 
 // const plans = [
@@ -55,7 +55,7 @@ const PlansTable = ({ plans, loading }: any) => {
                         <tr>
                             <td colSpan={responsiveColspan} className="text-center py-6">
                                 <div className="flex justify-center items-center">
-                                    <Loading />
+                                    <HashLoader />
                                 </div>
                             </td>
                         </tr>

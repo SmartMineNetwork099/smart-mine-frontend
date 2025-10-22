@@ -7,7 +7,7 @@ import SingleUserData from "@/modules/binary/communityTree/SingleUserData";
 import { getBinaryTree } from "@/apis/binaryApis";
 import { getUserIdFromWallet } from "@/utils/walletHelpers";
 import { toast } from "react-toastify";
-import Loading from "@/components/Loading";
+import HashLoader from "@/components/HashLoader";
 import { FaAngleLeft } from "react-icons/fa6";
 
 interface TreeNode {
@@ -211,7 +211,7 @@ const BinaryTree = () => {
       {/* Render tree, loader, or empty message */}
       {loading ? (
         <div>
-          <Loading />
+          <HashLoader />
         </div>
       ) : rootNode ? (
         <LevelOneNode node={rootNode} onNodeClick={handleNodeClick} />

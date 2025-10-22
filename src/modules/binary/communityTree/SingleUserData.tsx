@@ -3,7 +3,7 @@ import { DEFAULT_CURRENCY } from '@/constants/currency';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { formatDate, formatWalletAddress } from '@/utils/func';
-import Loading from '@/components/Loading';
+import HashLoader from '@/components/HashLoader';
 
 
 const SingleUserData = ({id}) => {
@@ -59,7 +59,7 @@ const SingleUserData = ({id}) => {
     return (
         <>
         {
-            loading ? <div className='flex items-center justify-center'><Loading/></div>
+            loading ? <div className='flex items-center justify-center'><HashLoader/></div>
              :
             <div className='flex flex-col gap-4'>
                 {walletInfo?.map((item: { name: string; transactions: string }, index: number) => (
