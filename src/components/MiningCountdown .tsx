@@ -8,6 +8,11 @@ interface MiningCountdownProps {
   handleClaim?: () => Promise<boolean>;
 }
 
+interface WalletData {
+  status?: string;
+  // Add other wallet data properties here if needed
+}
+
 const MINING_COOLDOWN_MINUTES = 2; // ✅ Example: 130 min = 2h 10m
 const LAST_MINING_KEY = "lastMiningTimestamp";
 
@@ -16,6 +21,8 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
   const [isMining, setIsMining] = useState(false);
   const [loading, setLoading] = useState(false);
   const user_Id = getUserIdFromWallet();
+  const [walletData, setWalletData] = useState<WalletData | null>(null)
+  
 
   const radius = 150;
   const circumference = 2 * Math.PI * radius;
@@ -24,6 +31,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       const lastMining = localStorage.getItem(`${LAST_MINING_KEY}_${user_Id}`);
+      
       if (lastMining) {
         const lastTime = parseInt(lastMining, 10);
         const nextAvailable = lastTime + MINING_COOLDOWN_MINUTES * 60 * 1000;
@@ -42,6 +50,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
       }
     }, 1000);
     return () => clearInterval(interval);
+ 
   }, [user_Id]);
 
 
@@ -70,7 +79,12 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
     localStorage.setItem(`${LAST_MINING_KEY}_${user_Id}`, Date.now().toString());
   };
 
-
+   useEffect(() => {
+    const data = localStorage.getItem(`walletData_${user_Id}`);
+    const userWalletData = data ? JSON.parse(data) : null;
+    setWalletData(userWalletData)
+    console.log(userWalletData, 'walletDatawalletDatawalletDatawalletData');
+  }, [user_Id]);
   return (
     <div className="flex flex-col items-center space-y-4">
       <div
@@ -113,6 +127,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
               {isMining && timeLeft > 0 ? formatTime(timeLeft) : "Start Mining"}
             </span>
           )}
+          {walletData?.status && <p className="text-black text-sm">{walletData.status}</p>}
         </div>
       </div>
     </div>
