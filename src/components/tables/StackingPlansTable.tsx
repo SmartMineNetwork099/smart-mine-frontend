@@ -122,7 +122,7 @@ const StakingPlansTable = () => {
 
                     <td className="px-4 py-2 whitespace-nowrap ">
                       <Button
-                        onClick={() => handleModelOpen(row?.level)} // ✅ send dynamic level
+                        onClick={() => handleModelOpen(row?.level)}
                         disabled={row?.status === 'active'}
                         className={`${
                           row?.status === 'active'
@@ -130,7 +130,7 @@ const StakingPlansTable = () => {
                             : 'cursor-pointer'
                         } bg-green-500 text-black font-bold border-0`}
                       >
-                        Buy {row?.investment}
+                        Buy {row?.investment} $
                       </Button>
                     </td>
                   </tr>

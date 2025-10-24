@@ -8,7 +8,7 @@ interface MiningCountdownProps {
   handleClaim?: () => Promise<boolean>;
 }
 
-const MINING_COOLDOWN_MINUTES = 1; // ✅ Example: 130 min = 2h 10m
+const MINING_COOLDOWN_MINUTES = 2; // ✅ Example: 130 min = 2h 10m
 const LAST_MINING_KEY = "lastMiningTimestamp";
 
 const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
@@ -61,6 +61,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
     }
 
     const success = await handleClaim?.();
+    console.log(success, 'successsuccesssuccess');
     if (!success) return setLoading(false);
 
     setLoading(false);

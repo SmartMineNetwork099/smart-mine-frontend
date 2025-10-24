@@ -27,39 +27,47 @@ const CollectCoins = () => {
             const signer = await provider.getSigner();
             const userWalletAddress = await signer.getAddress();
             // 1) Send fee tx from user wallet to platform fee address (user will approve)
-            const txResponse = await signer.sendTransaction({
-                to: process.env.NEXT_PUBLIC_PLATFORM_FEE_ADDRESS, // ensure this is set in frontend env
-                value: ethers.parseUnits(PLATFORM_FEE, "ether"),
-            });
+            // const txResponse = await signer.sendTransaction({
+            //     to: process.env.NEXT_PUBLIC_PLATFORM_FEE_ADDRESS, // ensure this is set in frontend env
+            //     value: ethers.parseUnits(PLATFORM_FEE, "ether"),
+            // });
             toast.info("Waiting for fee transaction confirmation...");
-            const confirmations = Number(process.env.NEXT_PUBLIC_MIN_FEE_CONFIRMATIONS || 1);
-            const receipt = await txResponse.wait(confirmations);
+            // const confirmations = Number(process.env.NEXT_PUBLIC_MIN_FEE_CONFIRMATIONS || 1);
+            // const receipt = await txResponse.wait(confirmations);
 
-            if (!receipt || receipt.status !== 1) {
-                toast.error("Fee transaction failed on-chain.");
-                return false;
-            }
-
+            // if (!receipt || receipt.status !== 1) {
+            //     toast.error("Fee transaction failed on-chain.");
+            //     return false;
+            // }
+/////////////////////////////////////////////////////////////////////////
             // ✅ Calculate actual fee details
             // const gasUsed = BigInt(receipt.gasUsed.toString());
             // const gasPrice = BigInt(receipt.gasPrice.toString());
             // const gasFeeBNB = Number(ethers.formatEther(gasUsed * gasPrice)); // gas cost in BNB
             // const sentBNB = Number(ethers.formatEther(txResponse.value)); // sent amount in BNB
-
+//////////////////////////////////////////////////////////////////////////
             // ✅ Transaction hash safely extract karo
-            const feeTxHash =
-                "transactionHash" in receipt
-                    ? receipt.transactionHash
-                    : (receipt as any).hash;
+            // const feeTxHash =
+            //     "transactionHash" in receipt
+            //         ? receipt.transactionHash
+            //         : (receipt as any).hash;
             const miningTime = new Date().toISOString();
             const payload = {
                 userId,
                 amount: 1.00,           // numeric reward amount (your logic)
                 miningTime,
-                feeTxHash,
+                // feeTxHash,
                 walletAddress: userWalletAddress, // helpful for backend double-check
             };
+            // const payload = {
+            //     userId,
+            //     amount: 1.00,           // numeric reward amount (your logic)
+            //     miningTime,
+            //     feeTxHash,
+            //     walletAddress: userWalletAddress, // helpful for backend double-check
+            // };
             const response = await startMiningApi(payload);
+            console.log(response,'responseminingresponse')
             if (response?.data?.success) {
                 toast.success(response?.data?.message);
                 return true;
