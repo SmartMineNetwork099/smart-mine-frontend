@@ -118,6 +118,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
           />
         </svg>
 
+
         {/* Text inside circle */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-xl sm:text-3xl font-bold">
           {loading ? (
