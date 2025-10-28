@@ -13,7 +13,7 @@ interface WalletData {
   // Add other wallet data properties here if needed
 }
 
-const MINING_COOLDOWN_MINUTES = 2; // ✅ Example: 130 min = 2h 10m
+const MINING_COOLDOWN_MINUTES = 5; // ✅ Example: 130 min = 2h 10m
 const LAST_MINING_KEY = "lastMiningTimestamp";
 
 const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
