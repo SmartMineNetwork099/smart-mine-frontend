@@ -72,7 +72,7 @@ const CollectCoins = () => {
                 toast.success(response?.data?.message);
                 return true;
             } else {
-                toast.error(response?.data?.message || "Failed to start mining");
+                toast.error(response?.error || "Failed to start mining");
                 return false;
             }
         } catch (error: any) {
