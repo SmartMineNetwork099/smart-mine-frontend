@@ -96,7 +96,7 @@ const WalletData = () => {
     const walletInfo = [
         { name: 'Today Income', transactions: `${formatAmount(walletData?.wallet?.todayIncome || 0)} $` },
         { name: 'Total Income', transactions: `${formatAmount(walletData?.wallet?.balance || 0)} $` },
-        { name: 'Binary Income', transactions: `${formatAmount(walletData?.wallet?.binaryIncome || 0)} $` },
+        // { name: 'Binary Income', transactions: `${formatAmount(walletData?.wallet?.binaryIncome || 0)} $` },
         { name: 'Stacking Income', transactions: `${formatAmount(walletData?.wallet?.miningEarnings || 0)} $` },
         { name: 'Total Deposit', transactions: `${formatAmount(walletData?.wallet?.totalDeposit || 0)} $` },
         { name: 'Total Withdraw', transactions: `${formatAmount(walletData?.wallet?.totalWithdraw || 0)} $` },
