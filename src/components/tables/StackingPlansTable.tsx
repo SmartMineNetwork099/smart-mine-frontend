@@ -76,16 +76,15 @@ const StakingPlansTable = () => {
           Plans <span className="text-green-500">Summery</span>
         </p>
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden mt-4">
-          <table className="min-w-[500px] w-full text-sm border-collapse">
-            <thead className="sticky top-0 z-10 bg-green-500 text-black">
-              <tr className="bg-green-500 text-black font-bold text-center">
-                <th className="px-4 py-2 w-[140px] sm:w-[150px] ">Level</th>
-                <th className="px-4 py-2 w-[140px]">Team</th>
-                <th className="px-4 py-2 w-[140px] text-end ">Income</th>
-                <th className="px-4 py-2 w-[140px] text-end ">Earned</th>
-                <th className="px-4 py-2 w-[140px] text-end ">Loss</th>
-                <th className="px-4 py-2 w-[140px] ">Status</th>
-                <th className="px-4 py-2 w-[140px] ">Action</th>
+          <table className="min-w-[380px] w-full text-sm border-collapse">
+            <thead className="sticky top-0 z-10">
+              <tr className="bg-green-500 text-black font-bold text-xs sm:text-base text-center">
+                <th className="px-1 sm:px-4 py-2 w-[40px] sm:w-[150px] ">Level</th>
+                <th className="px-2 sm:px-4 py-2 w-[100px] sm:w-[140px]">Team</th>
+                <th className="px-2 sm:px-4 py-2 w-[90px] sm:w-[150px] text-end ">Earn 2x</th>
+                <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[140px] text-end ">Loss</th>
+                <th className="px-2 sm:px-4 py-2 w-[60px] sm:w-[140px] ">Status</th>
+                <th className="px-2 sm:px-4 py-2 w-[70px] sm:w-[140px] ">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -103,28 +102,27 @@ const StakingPlansTable = () => {
                     key={rowIndex}
                     className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                   >
-                    <td className="px-4 py-2 whitespace-nowrap ">{row?.level}</td>
-                    <td className="px-4 py-2 whitespace-nowrap ">{row?.teamSize}</td>
-                    <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.totalEarning} $</td>
-                    <td className="px-4 py-2 text-end whitespace-nowrap ">{row?.earned} $</td>
-                    <td className="px-4 py-2 text-end whitespace-nowrap text-red-500">{row?.lossAmount} $</td>
-                    <td className="px-4 py-2 whitespace-nowrap ">
+                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">{row?.level}</td>
+                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">{row?.teamSize}</td>
+                    <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap ">{row?.earned} $ </td>
+                    <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap text-red-500 ">{row?.lossAmount} $</td>
+                    <td className="">
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                        className={`px-1 py-1 text-white rounded-full text-[10px] sm:text-xs font-semibold ${
                           row?.status === 'active'
-                            ? 'bg-green-500 text-white'
-                            : 'bg-red-500 text-white'
+                            ? 'bg-green-500'
+                            : 'bg-red-500'
                         }`}
                       >
                         {row?.status}
                       </span>
                     </td>
 
-                    <td className="px-4 py-2 whitespace-nowrap ">
+                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">
                       <Button
                         onClick={() => handleModelOpen(row?.level)}
                         disabled={row?.status === 'active'}
-                        className={`${
+                        className={`px-2 py-1 text-[10px] sm:text-sm rounded-3xl ${
                           row?.status === 'active'
                             ? 'cursor-not-allowed opacity-40'
                             : 'cursor-pointer'
