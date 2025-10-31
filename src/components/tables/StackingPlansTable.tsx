@@ -122,7 +122,7 @@ const StakingPlansTable = () => {
                       <Button
                         onClick={() => handleModelOpen(row?.level)}
                         disabled={row?.status === 'active'}
-                        className={`px-2 py-1 text-[10px] sm:text-sm rounded-3xl ${
+                        className={`px-2 py-1 text-[10px] sm:text-sm rounded-md ${
                           row?.status === 'active'
                             ? 'cursor-not-allowed opacity-40'
                             : 'cursor-pointer'
