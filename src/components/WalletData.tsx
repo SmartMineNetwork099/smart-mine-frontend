@@ -96,12 +96,13 @@ const WalletData = () => {
             : walletData.walletAddress
         : "";
     const walletInfo = [
-        { name: 'Today Commission Earning', transactions: `${formatAmount(walletData?.wallet?.todayMiningCommissionEarning || 0)} $` },
+        { name: 'Today Refreal Earning', transactions: `${formatAmount(walletData?.wallet?.todayMiningCommissionEarning || 0)} $` },
         { name: 'Total Income', transactions: `${formatAmount(walletData?.wallet?.balance || 0)} $` },
         // { name: 'Binary Income', transactions: `${formatAmount(walletData?.wallet?.binaryIncome || 0)} $` },
         { name: 'Stacking Income', transactions: `${formatAmount(walletData?.wallet?.miningEarnings || 0)} $` },
         { name: 'Total Deposit', transactions: `${formatAmount(walletData?.wallet?.totalDeposit || 0)} $` },
         { name: 'Total Withdraw', transactions: `${formatAmount(walletData?.wallet?.totalWithdraw || 0)} $` },
+        { name: 'YesterDay Refreal Loss', transactions: `${formatAmount(walletData?.wallet?.yesterdayMiningCommissionLoss || 0)} $` },
     ];
     console.log(walletData, 'walletDatawalletDatawalletData')
 
@@ -183,7 +184,7 @@ const WalletData = () => {
                     {walletInfo?.map((item, index) => (
                         <div key={index} className="flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-4 bg-black text-white rounded-lg">
                             <div className=''>
-                                <p className="font-medium text-gray-300 text-sm sm:text-base">
+                                <p className="font-medium text-gray-300 text-xs sm:text-base">
                                     {item.name}
                                 </p>
                             </div>
