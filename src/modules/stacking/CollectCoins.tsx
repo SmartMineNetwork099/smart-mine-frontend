@@ -1,32 +1,32 @@
-'use client';
-import React from 'react';
-import { toast } from 'react-toastify';
-import { startMiningApi } from '@/apis/mining';
-import { getUserIdFromWallet } from '@/utils/walletHelpers';
-import MiningCountdown from '@/components/MiningCountdown ';
-import Card from '@/components/Card';
-import { ethers } from 'ethers';
+"use client";
+import React from "react";
+import { toast } from "react-toastify";
+import { startMiningApi } from "@/apis/mining";
+import { getUserIdFromWallet } from "@/utils/walletHelpers";
+import MiningCountdown from "@/components/MiningCountdown ";
+import Card from "@/components/Card";
+import { ethers } from "ethers";
 const PLATFORM_FEE = "0.00001"; // BNB fee (string)
 
 const CollectCoins = () => {
+  const handleClaim = async () => {
+    try {
+      if (!(window as any).ethereum) {
+        toast.error("SafePal / Wallet provider not found.");
+        return false;
+      }
 
-    const handleClaim = async () => {
-        try {
-            if (!(window as any).ethereum) {
-                toast.error("SafePal / wallet provider not found.");
-                return false;
-            }
-            const userId = getUserIdFromWallet();
-            if (!userId) {
-                toast.error("User not authenticated.");
-                return false;
-            }
-
+      const userId = getUserIdFromWallet();
+      if (!userId) {
+        toast.error("User not authenticated.");
+        return false;
+      }
             // Create provider & signer for SafePal dApp browser
-            const provider = new ethers.BrowserProvider((window as any).ethereum);
-            const signer = await provider.getSigner();
-            const userWalletAddress = await signer.getAddress();
-            // 1) Send fee tx from user wallet to platform fee address (user will approve)
+
+      const provider = new ethers.BrowserProvider((window as any).ethereum);
+      const signer = await provider.getSigner();
+      const userWalletAddress = await signer.getAddress();
+         // 1) Send fee tx from user wallet to platform fee address (user will approve)
             // const txResponse = await signer.sendTransaction({
             //     to: process.env.NEXT_PUBLIC_PLATFORM_FEE_ADDRESS, // ensure this is set in frontend env
             //     value: ethers.parseUnits(PLATFORM_FEE, "ether"),
@@ -51,43 +51,39 @@ const CollectCoins = () => {
             //     "transactionHash" in receipt
             //         ? receipt.transactionHash
             //         : (receipt as any).hash;
-            const miningTime = new Date().toISOString();
-            const payload = {
-                userId,
-                amount: 1.00,           // numeric reward amount (your logic)
-                miningTime,
-                // feeTxHash,
-                walletAddress: userWalletAddress, // helpful for backend double-check
-            };
-            // const payload = {
-            //     userId,
-            //     amount: 1.00,           // numeric reward amount (your logic)
-            //     miningTime,
-            //     feeTxHash,
-            //     walletAddress: userWalletAddress, // helpful for backend double-check
-            // };
-            const response = await startMiningApi(payload);
-            console.log(response,'responseminingresponse')
-            if (response?.data?.success) {
-                toast.success(response?.data?.message);
-                return true;
-            } else {
-                toast.error(response?.error || "Failed to start mining");
-                return false;
-            }
-        } catch (error: any) {
-            toast.error(error?.message || "Something went wrong!");
-            return false;
-        }
-    };
-    return (
-        <Card>
-            <p className="font-semibold sm:font-bold text-xl sm:text-3xl text-white">
-                Claim <span className="text-green-500">Reward</span>
-            </p>
-            <MiningCountdown handleClaim={handleClaim} />
-        </Card>
-    );
+
+    const miningTime = new Date().toISOString();
+
+      const payload = {
+        userId,
+        amount: 1.00,
+        miningTime,
+        // feeTxHash,
+        walletAddress: userWalletAddress,
+      };
+
+      const response = await startMiningApi(payload);
+      if (response?.data?.success) {
+        toast.success(response.data.message);
+        return true;
+      } else {
+        toast.error(response?.data?.message || "Failed to start mining");
+        return false;
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Something went wrong!");
+      return false;
+    }
+  };
+
+  return (
+    <Card>
+      <p className="font-semibold sm:font-bold text-xl sm:text-3xl text-white">
+        Claim <span className="text-green-500">Reward</span>
+      </p>
+      <MiningCountdown handleClaim={handleClaim} />
+    </Card>
+  );
 };
 
 export default CollectCoins;

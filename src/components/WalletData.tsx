@@ -32,6 +32,7 @@ const WalletData = () => {
             toast.success("Image uploaded successfully!");
             setProfileImage(imageSaveInDB?.data?.image_url || imageUrl);
             const getUser = await getUserData(userID);
+            console.log(getUser,'getUsergetUsergetUsergetUsergetUser')
             localStorage.setItem(`walletData_${userID}`, JSON.stringify(getUser?.data?.user));
         }
     };
@@ -43,6 +44,7 @@ const WalletData = () => {
         try {
             const res = await getUserData(id);
             const user = res?.data?.user || {};
+            console.log(user,'uuussseer')
             setWalletData(user);
             setProfileImage(user?.image_url || null);
             localStorage.setItem(`walletData_${id}`, JSON.stringify(user));
@@ -94,7 +96,7 @@ const WalletData = () => {
             : walletData.walletAddress
         : "";
     const walletInfo = [
-        { name: 'Today Income', transactions: `${formatAmount(walletData?.wallet?.todayIncome || 0)} $` },
+        { name: 'Today Commission Earning', transactions: `${formatAmount(walletData?.wallet?.todayMiningCommissionEarning || 0)} $` },
         { name: 'Total Income', transactions: `${formatAmount(walletData?.wallet?.balance || 0)} $` },
         // { name: 'Binary Income', transactions: `${formatAmount(walletData?.wallet?.binaryIncome || 0)} $` },
         { name: 'Stacking Income', transactions: `${formatAmount(walletData?.wallet?.miningEarnings || 0)} $` },

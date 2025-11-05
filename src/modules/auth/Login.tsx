@@ -46,6 +46,7 @@ const LoginContent: React.FC = () => {
             console.log("verifyRes", verifyRes);
             // ✅ Step 6: Save token
             if (verifyRes?.data) {
+                console.log(verifyRes?.data, 'verifyRes?.data');
                 const userID = verifyRes.data.userId;
                 localStorage.setItem(`userID`, userID);
                 localStorage.setItem(`token_${userID}`, verifyRes.data.token);
