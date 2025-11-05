@@ -8,6 +8,7 @@ import Card from "@/components/Card";
 import { getUserIdFromWallet, getUserWalletAddress } from "@/utils/walletHelpers";
 import { buyStackingPlans, getAllStackingPlansWithTeamData } from "@/apis/stackingApis";
 import SpinnerLoader from "@/components/SpinnerLoader";
+import { formatAmount } from "@/utils/func";
 
 const StakingPlansTable = () => {
   const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
@@ -104,8 +105,8 @@ const StakingPlansTable = () => {
                   >
                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">{row?.level}</td>
                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">{row?.teamSize}</td>
-                    <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap ">{row?.earned} $ </td>
-                    <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap text-red-500 ">{row?.lossAmount} $</td>
+                    <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap ">{formatAmount(row?.earned)} $ </td>
+                    <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap text-red-500 "> {formatAmount(row?.lossAmount)} $</td>
                     <td className="">
                       <span
                         className={`px-1 py-1 text-white rounded-full text-[10px] sm:text-xs font-semibold ${
