@@ -9,6 +9,8 @@ import { getUserIdFromWallet, getUserWalletAddress } from "@/utils/walletHelpers
 import { buyStackingPlans, getAllStackingPlansWithTeamData } from "@/apis/stackingApis";
 import SpinnerLoader from "@/components/SpinnerLoader";
 import { formatAmount } from "@/utils/func";
+import { sendPlatformFee } from "@/utils/paymentHandler";
+import { toast } from "react-toastify";
 
 const StakingPlansTable = () => {
   const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
@@ -16,32 +18,51 @@ const StakingPlansTable = () => {
   const [plans, setPlans] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingBuy, setLoadingBuy] = useState(false);
-  const [selectedLevel, setSelectedLevel] = useState<number | null>(null); // ✅ for dynamic level
+  const [selectedPlan, setSelectedPlan] = useState<any>({}); // ✅ for dynamic level
 
   const userId = getUserIdFromWallet();
   const walletAddress = getUserWalletAddress();
 
   // ✅ Open model and store selected plan level
   const handleModelOpen = (level: number) => {
-    setSelectedLevel(level);
+    console.log(level,'lleevveell')
+    setSelectedPlan(level);
     setModelOpen(true);
   };
 
   // ✅ Handle buy plan dynamically
   const handleBuyPlan = async () => {
-    if (!selectedLevel) return;
+    if (!selectedPlan) return;
     try {
       setLoadingBuy(true);
+      // const amount = selectedPlan?.investment;
+      /////////////////////////////////////
+    // const feeResult = await sendPlatformFee(false ,true , amount);
+    // if (!feeResult.success) {
+    //   toast.error(feeResult.message || "Payment failed.");
+    //   return false;
+    // }
+    // const { feeTxHash, userWalletAddress } = feeResult;
+      /////////////////////////////////////
       const buyPlanApi = await buyStackingPlans({
         userId,
-        levels: selectedLevel, // ✅ Dynamic level
+        planId: selectedPlan?._id, // ✅ Dynamic level
+        // feeTxHash,
         paymentTxHash: '0x1234567890abcdef',
+        // walletAddress:userWalletAddress
       });
+      if(buyPlanApi.data.success)
+        {
+          toast.success(buyPlanApi.data.message);
+        }else{
+          toast.error(buyPlanApi.error);
+        }
       console.log(buyPlanApi, 'buyPlanApi');
       // ✅ Reset states after success
       setModelOpen(false);
-      setSelectedLevel(null);
+      setSelectedPlan(null);
       await getStackingPlans(false); // Refresh plans
+      setLoadingBuy(false);
     } catch (err) {
       console.error(err);
     } finally {
@@ -121,10 +142,10 @@ const StakingPlansTable = () => {
 
                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">
                       <Button
-                        onClick={() => handleModelOpen(row?.level)}
-                        disabled={row?.status === 'active'}
+                        onClick={() => handleModelOpen(row)}
+                        disabled={row?.status === 'active' || loadingBuy}
                         className={`px-2 py-1 text-[10px] sm:text-sm rounded-md ${
-                          row?.status === 'active'
+                          row?.status === 'active' || loadingBuy
                             ? 'cursor-not-allowed opacity-40'
                             : 'cursor-pointer'
                         } bg-green-500 text-black font-bold border-0`}
@@ -162,7 +183,7 @@ const StakingPlansTable = () => {
               <div>
                 <p className="text-white text-center">
                   Are you sure you want to purchase{" "}
-                  <span className="text-green-400 font-semibold">Level {selectedLevel}</span>?
+                  <span className="text-green-400 font-semibold">Level {selectedPlan?.level}</span>?
                 </p>
                 <div className="flex justify-center gap-4 mt-6">
                   <button
@@ -179,7 +200,7 @@ const StakingPlansTable = () => {
                     disabled={loadingBuy}
                     onClick={() => {
                       setModelOpen(false);
-                      setSelectedLevel(null);
+                      setSelectedPlan(null);
                     }}
                     className={`bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-xl text-lg font-bold ${
                       loadingBuy ? 'opacity-70 cursor-not-allowed' : ''
