@@ -65,7 +65,7 @@ const PlansCarousel = ({ plans, loading }: any) => {
             //     clientAmount: p?.price,
             // }));
               const planId = selectedPlans?.map((p: any) => p?._id);
-
+              console.log(planId, 'planIdplanIdplanId')
             const { data, error } = await buyPlans(userId, planId);
 
             if (error) {
@@ -105,14 +105,14 @@ const PlansCarousel = ({ plans, loading }: any) => {
   `}
                                                 onClick={() => !plan.isPurchased && togglePlan(plan)}  // disable click if purchased
                                             >
-                                                <p className="sm:text-2xl font-bold text-white">${plan?.singleUserUpgradeAmount}</p>
+                                                <p className="sm:text-2xl font-bold text-white">${plan?.price}</p>
 
                                                 <button
                                                     className={`text-xs sm:text-xl font-semibold flex items-center gap-0.5 sm:gap-2 
       ${plan.isPurchased ? 'text-yellow-400' : 'text-green-500'}
     `}
                                                 >
-                                                    {plan.planName}
+                                                    {plan.name}
                                                     {/* Purchased → show double tick, Selected → single tick */}
                                                     {plan.isPurchased ? (
                                                         <>

@@ -68,11 +68,11 @@ const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/bi
                 </>
               )}
 
-              {/* {isBinaryPage && (
+              {isBinaryPage && (
                 <div className="w-full p-4">
                   <Tab tabs={tabs2} style='min-w-40 sm:min-w-44' defaultLink={ROUTES?.BINARY?.DASHBOARD} />
                 </div>
-              )} */}
+              )}
             </>
           )}
 
