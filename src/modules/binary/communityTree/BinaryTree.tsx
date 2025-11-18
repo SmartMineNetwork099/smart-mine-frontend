@@ -45,8 +45,9 @@ const ensureTwoSlots = (arr?: TreeNode[] | null) => {
 
 // 🔹 Reusable Node
 
-const UserNode = ({ id, onClickModel, onClickTree, disabled = false }: { id?: string | null; onClickModel?: () => void; onClickTree?: () => void; disabled?: boolean }) => {
+const UserNode = ({ child , id, onClickModel, onClickTree, disabled = false }:any) => {
   const [modelOpen, setModelOpen] = useState(false);
+  console.log(child, 'childchildchild')
   return (
     <>
       <div className={`flex flex-col items-center ${disabled ? 'cursor-default' : 'cursor-pointer'}`} >
@@ -61,7 +62,7 @@ const UserNode = ({ id, onClickModel, onClickTree, disabled = false }: { id?: st
             <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26z" />
           </svg>
         </div>
-        <p className={`mt-1 text-xs sm:text-sm font-mono font-semibold ${disabled ? 'text-gray-400' : 'text-cyan-400'}`}> {id ? id.slice(-4) : "----------"}</p>
+        <p className={`mt-1 text-xs sm:text-sm font-mono font-semibold ${disabled ? 'text-gray-400' : 'text-cyan-400'}`}> {child?.position ||  "----------"}</p>
         <Button
           className={`flex items-center justify-center gap-1 text-black bg-green-500 border-0 !py-1 !px-2 mt-2 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}
           onClick={!disabled ? onClickTree : undefined}
@@ -91,7 +92,7 @@ const LevelTwoNode = ({ data, onNodeClick }: { data?: TreeNode[] | null; onNodeC
         <div key={idx} className="flex flex-col items-center relative">
           <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
           {/* render placeholder nodes when child is null; arrow is disabled in that case */}
-          <UserNode id={child?.id} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
+          <UserNode child={child} id={child?.id} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
         </div>
       ))}
     </div>
@@ -105,15 +106,15 @@ const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeCli
     // render a placeholder center with two empty children
     return (
       <div className="flex flex-col items-center">
-        <UserNode id={undefined} disabled={true} />
+        <UserNode child={undefined} id={undefined} disabled={true} />
         <>
           <div className="h-6 w-0.5 bg-red-500 z-10"></div>
           <div className="flex justify-center space-x-4 sm:space-x-20 relative">
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[130px] sm:w-[240px] h-0.5 bg-green-500 z-0" />
-            {ensureTwoSlots([]).map((child, idx) => (
+            {ensureTwoSlots([])?.map((child, idx) => (
               <div key={idx} className="flex flex-col items-center relative">
                 <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
-                <UserNode id={child?.id} disabled={!child} />
+                <UserNode child={child} id={child?.id} disabled={!child} />
               </div>
             ))}
           </div>
@@ -126,7 +127,7 @@ const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeCli
 
   return (
     <div className="flex flex-col items-center">
-      <UserNode id={node.id} onClickTree={() => onNodeClick(node)} />
+      <UserNode child={node} id={node.id} onClickTree={() => onNodeClick(node)} />
       <>
         <div className="h-6 w-0.5 bg-red-500 z-10"></div>
         <div className="flex justify-center space-x-4 sm:space-x-20 relative">
@@ -134,7 +135,7 @@ const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeCli
           {slots.map((child, idx) => (
             <div key={idx} className="flex flex-col items-center relative">
               <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
-              <UserNode id={child?.id} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
+              <UserNode child={child} id={child?.id} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
               {
                 // always render LevelTwoNode even if child exists but has no grandchildren
                 // LevelTwoNode will render placeholders when necessary

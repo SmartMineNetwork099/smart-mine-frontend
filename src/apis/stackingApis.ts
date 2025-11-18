@@ -21,7 +21,7 @@ export const getAllStackingPlansWithTeamData = async (userId:any , walletAddress
 };
 export const buyStackingPlans = async ({userId , planId , feeTxHash ,walletAddress}:any) => {
     try {
-        const res = await axios.post<any>(`${API}/api/stacking/buyStackingPlans`,{
+        const res = await axios.post<any>(`${API}/api/stacking/buyStackingPlan`,{
             userId , planId , feeTxHash ,walletAddress
         });
         console.log(res, 'resresres11111232buyStackingPlansbuyStackingPlans')
