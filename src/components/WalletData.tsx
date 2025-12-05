@@ -103,6 +103,7 @@ const WalletData = () => {
         { name: 'Total Deposit', transactions: `${formatAmount(walletData?.wallet?.totalDeposit || 0)} $` },
         { name: 'Total Withdraw', transactions: `${formatAmount(walletData?.wallet?.totalWithdraw || 0)} $` },
         { name: 'YesterDay Refreal Loss', transactions: `${formatAmount(walletData?.wallet?.yesterdayMiningCommissionLoss || 0)} $` },
+        { name: 'Loss Income', transactions: `${formatAmount(walletData?.wallet?.lossIncome || 0)} $` },
     ];
     console.log(walletData, 'walletDatawalletDatawalletData')
 
