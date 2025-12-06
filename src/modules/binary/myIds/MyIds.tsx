@@ -13,6 +13,9 @@ const MyIds = () => {
     const [totalNumberOfNodes, setTotalNumberOfNodes] = useState<number>(0);
     const [walletAddress, setWalletAddress] = useState('');
     const [page, setPage] = useState(1);
+    const [paginationCurrentPage, setPaginationCurrentPage] = useState <any>(0);
+    const [totalPaginationPages , setTotalPaginationPages ] = useState(1);
+    const [totalNumberOfNodesAtCurrentLevel , setTotalNumberOfNodesAtCurrentLevel ] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);
     const userID = getUserIdFromWallet();
 
@@ -22,16 +25,18 @@ const MyIds = () => {
         setWalletAddress(referralLink?.walletAddress)
     }, [userID]);
 
-    const getLevelData = async (LevelNumber: number = 1) => {
+    const getLevelData = async () => {
         if (!walletAddress) return;
         try {
             setLoading(true);
             console.log("userIDuserIDuserIDuserID", userID);
             console.log("pagepagepagepage", page);
 
-            const response = await getBinaryMyIds({ userId: userID, currentLevel: page });
+            const response = await getBinaryMyIds({ userId: userID, currentLevel: page , paginationCurrentPage});
             setTableData(Array.isArray(response?.data?.nodes) ? response?.data?.nodes : []);
             setTotalNumberOfNodes(response?.data?.totalNumberOfNodes || 0);
+            setTotalPaginationPages(response?.data?.totalPages)
+            setTotalNumberOfNodesAtCurrentLevel(response?.data?.totalNumberOfNodesAtCurrentLevel || 0);
             console.log(response?.data?.nodes, "referrals__data");
         } catch (error) {
             console.error("Error fetching referrals:", error);
@@ -42,9 +47,9 @@ const MyIds = () => {
 
     useEffect(() => {
         if (walletAddress) {
-            getLevelData(page);
+            getLevelData();
         }
-    }, [walletAddress, page]);
+    }, [walletAddress, page,paginationCurrentPage]);
 
 
     return (
@@ -55,7 +60,7 @@ const MyIds = () => {
             <div className='my-2'>
                 <Pagination currentPage={page} onPageChange={setPage} pages={10}/>
             </div>
-            <BinaryMyIdsTable data={tableData} loading={loading} currentPage={page}/>
+            <BinaryMyIdsTable data={tableData} loading={loading} currentPage={page} totalPaginationPages ={totalPaginationPages } paginationCurrentPage={paginationCurrentPage} setPaginationCurrentPage={setPaginationCurrentPage} totalNumberOfNodesAtCurrentLevel={totalNumberOfNodesAtCurrentLevel}/>
         </div>
     );
 }

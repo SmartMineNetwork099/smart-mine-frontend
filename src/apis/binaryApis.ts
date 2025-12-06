@@ -16,11 +16,11 @@ export const getBinaryTree = async (userId:any) => {
 
 
 ///////////////////////////////////////
-export const getBinaryMyIds = async ({userId , currentLevel }:any) => {
+export const getBinaryMyIds = async ({userId , currentLevel ,paginationCurrentPage }:any) => {
     console.log(userId , currentLevel , 'userIdplanLeveluserIdplanLevelgetBinaryMyIds')
     try {
         const res = await axios.post<any>(`${API}/api/binary/getBinaryMyIds`,{
-            userId , currentLevel 
+            userId , currentLevel , paginationCurrentPage
         },
     {
     headers: {

@@ -3,17 +3,24 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import HashLoader from "@/components/HashLoader";
 import { Button } from "rizzui";
+import Pagination2 from "@/components/Pagination2";
 
 type TableProps = {
     data: any[];
     loading?: boolean;
     currentPage?: number;
+    totalPaginationPages ?: number;
+    paginationCurrentPage ?: number;
+    totalNumberOfNodesAtCurrentLevel ?: number;
+    setPaginationCurrentPage ?: any;
 };
 
-const BinaryMyIdsTable = ({ data, loading = true , currentPage  }: TableProps) => {
+const BinaryMyIdsTable = ({ data, loading = true , currentPage,totalPaginationPages =1,paginationCurrentPage = 0 , setPaginationCurrentPage=1,totalNumberOfNodesAtCurrentLevel  }: TableProps) => {
     const [selected, setSelected] = useState<any>("All");
     const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
+    
 console.log("data in table", data);
+console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
     const options = [
         { label: "All", color: "bg-blue-500" },
         { label: "Complete", color: "bg-green-600" },
@@ -38,6 +45,9 @@ console.log("data in table", data);
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+    useEffect(() => {
+     setPaginationCurrentPage(1)
+    }, [currentPage]);
 
     return (
         <>
@@ -69,7 +79,7 @@ console.log("data in table", data);
                 <table className="min-w-[700px] w-full text-sm border-collapse">
                     <thead className="sticky top-0 z-10 bg-green-500 text-black">
                         <tr className="bg-green-500 text-black font-bold text-center">
-                            <th className="px-4 py-2 w-[70px] sm:w-[100px]">Sno. <span className="font-extrabold">({filteredData?.length || 0})</span></th>
+                            <th className="px-4 py-2 w-[70px] sm:w-[100px]">Sno. <span className="font-extrabold">({totalNumberOfNodesAtCurrentLevel || 0})</span></th>
                             <th className="px-4 py-2 w-[200px] sm:w-[230px]">UserID</th>
                             <th className="px-4 py-2 w-[200px] sm:w-[230px]">Position</th>
                             <th className="px-4 py-2 w-[100px] text-end">Staking</th>
@@ -138,6 +148,15 @@ console.log("data in table", data);
                     </tbody>
                 </table>
             </div>
+
+              {/* PAGINATION */}
+      {totalPaginationPages > 1 && (
+        <Pagination2
+          currentPage={paginationCurrentPage}
+          totalPages={totalPaginationPages}
+          onPageChange={setPaginationCurrentPage}
+        />
+      )}
         </>
     );
 };

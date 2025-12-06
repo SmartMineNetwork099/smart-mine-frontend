@@ -51,7 +51,7 @@ const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/bi
   return (
     <html lang="en">
       <body className="bg-gray-200">
-        <div className='w-full bg-black h-screen'>
+        <div className='w-full bg-black min-h-screen'>
 
           {/* ✅ Show only when tokken exists */}
           {tokken && !isAuthRoute && (
