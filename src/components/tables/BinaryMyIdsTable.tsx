@@ -48,7 +48,7 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
     useEffect(() => {
      setPaginationCurrentPage(1)
     }, [currentPage]);
-
+    
     return (
         <>
             <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden max-h-[400px] md:max-h-[500px]">
@@ -99,12 +99,17 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                 </td>
                             </tr>
                         ) : filteredData && filteredData.length > 0 ? (
-                            filteredData?.map((row: any, rowIndex: number) => (
+                            filteredData?.map((row: any, rowIndex: number) =>
+                            {
+                                const pageSize = 50; // Assuming 50 items per page
+                               return (
                                 <tr
                                     key={rowIndex}
                                     className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                                 >
-                                    <td className="px-4 py-2 whitespace-nowrap">{rowIndex + 1}</td>
+                                    <td className="px-4 py-2 whitespace-nowrap">
+                                         {(paginationCurrentPage - 1) * pageSize + rowIndex + 1}
+                                    </td>
                                     <td className="px-4 py-2 whitespace-nowrap">{row?.userId ?? "-"}</td>
                                     <td className="px-4 py-2 whitespace-nowrap">{row?.position ?? "-"}</td>
                                     <td className="px-4 py-2 text-end whitespace-nowrap">
@@ -130,7 +135,7 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                         {row?.directTeam?.length ?? 0}
                                     </td>
                                 </tr>
-                            ))
+                            )})
                         ) : (
                             <tr>
                                 <td colSpan={responsiveColspan} className="text-center py-6">
