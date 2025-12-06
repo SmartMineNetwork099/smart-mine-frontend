@@ -48,7 +48,7 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
     useEffect(() => {
      setPaginationCurrentPage(1)
     }, [currentPage]);
-    
+
     return (
         <>
             <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden max-h-[400px] md:max-h-[500px]">
@@ -80,7 +80,7 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                     <thead className="sticky top-0 z-10 bg-green-500 text-black">
                         <tr className="bg-green-500 text-black font-bold text-center">
                             <th className="px-4 py-2 w-[70px] sm:w-[100px]">Sno. <span className="font-extrabold">({totalNumberOfNodesAtCurrentLevel || 0})</span></th>
-                            <th className="px-4 py-2 w-[200px] sm:w-[230px]">UserID</th>
+                            <th className="px-4 py-2 w-[200px] sm:w-[230px]">NodeID</th>
                             <th className="px-4 py-2 w-[200px] sm:w-[230px]">Position</th>
                             <th className="px-4 py-2 w-[100px] text-end">Staking</th>
                             <th className="px-4 py-2 w-[100px]">Level</th>
@@ -110,7 +110,7 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                     <td className="px-4 py-2 whitespace-nowrap">
                                          {(paginationCurrentPage - 1) * pageSize + rowIndex + 1}
                                     </td>
-                                    <td className="px-4 py-2 whitespace-nowrap">{row?.userId ?? "-"}</td>
+                                    <td className="px-4 py-2 whitespace-nowrap">{row?._id ?? "-"}</td>
                                     <td className="px-4 py-2 whitespace-nowrap">{row?.position ?? "-"}</td>
                                     <td className="px-4 py-2 text-end whitespace-nowrap">
                                         {row?.packageAmount} $
