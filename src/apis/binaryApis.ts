@@ -12,3 +12,30 @@ export const getBinaryTree = async (userId:any) => {
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
+
+
+
+///////////////////////////////////////
+export const getBinaryMyIds = async ({userId , currentLevel }:any) => {
+    console.log(userId , currentLevel , 'userIdplanLeveluserIdplanLevelgetBinaryMyIds')
+    try {
+        const res = await axios.post<any>(`${API}/api/binary/getBinaryMyIds`,{
+            userId , currentLevel 
+        },
+    {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+        console.log(res, 'resresres11111232getBinaryMyIdsgetBinaryMyIdsgetBinaryMyIds')
+        if(res?.data?.success){
+        return { data: res?.data , error: null };
+        }else{
+            return { data: null, error:res?.data?.message || "error try again." };
+        }
+    }
+    catch (err) {
+        const error = err as AxiosError<{ message: string }>;
+        return { data: null, error: error.response?.data?.message ?? "error try again." };
+    }
+};

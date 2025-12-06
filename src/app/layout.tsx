@@ -10,6 +10,8 @@ import { TbBinaryTree } from "react-icons/tb";
 import { LiaDonateSolid } from "react-icons/lia";
 import { usePathname } from 'next/navigation';
 import { RiDashboardHorizontalLine } from "react-icons/ri";
+import { RiTeamLine } from 'react-icons/ri';
+
 import { MdOutlineInfo } from "react-icons/md";
 import WalletData from '@/components/WalletData';
 import ROUTES from '@/constants/routes';
@@ -22,6 +24,7 @@ const tabs = [
 ];
 const tabs2 = [
   { label: 'Dashboard', icon: RiDashboardHorizontalLine, link: ROUTES?.BINARY?.DASHBOARD },
+  { label: 'MY IDS', icon: RiTeamLine, link: ROUTES?.BINARY?.MY_IDS },
   { label: 'Community Tree', icon: TbBinaryTree, link: ROUTES?.BINARY?.COMMUNITY_TREE },
   { label: 'Community Info', icon: MdOutlineInfo, link: ROUTES?.BINARY?.COMMUNITY_INFO },
 ];
@@ -48,7 +51,7 @@ const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/bi
   return (
     <html lang="en">
       <body className="bg-gray-200">
-        <div className='w-full bg-black'>
+        <div className='w-full bg-black h-screen'>
 
           {/* ✅ Show only when tokken exists */}
           {tokken && !isAuthRoute && (

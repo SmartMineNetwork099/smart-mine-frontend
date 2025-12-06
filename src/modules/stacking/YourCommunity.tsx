@@ -95,7 +95,7 @@ const YourCommunity = () => {
                 Your <span className='text-green-500'>Community</span>
             </p>
             <div className='my-2'>
-                <Pagination currentPage={page} onPageChange={setPage} />
+                <Pagination currentPage={page} onPageChange={setPage} pages={15}/>
             </div>
             <StakingTable data={tableData} loading={loading} />
         </div>

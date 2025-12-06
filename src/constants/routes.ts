@@ -5,6 +5,7 @@ const ROUTES = {
     },
     BINARY: {
         DASHBOARD: "/binary/dashboard",
+        MY_IDS: "/binary/myIds",
         COMMUNITY_TREE: "/binary/communityTree",
         COMMUNITY_INFO: "/binary/communityInfo",
     },
