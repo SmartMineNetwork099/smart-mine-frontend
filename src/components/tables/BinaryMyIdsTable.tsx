@@ -76,13 +76,12 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
 
 
                 {/* Table */}
-                <table className="min-w-[700px] w-full text-sm border-collapse">
+                <table className="min-w-[800px] w-full text-sm border-collapse">
                     <thead className="sticky top-0 z-10 bg-green-500 text-black">
                         <tr className="bg-green-500 text-black font-bold text-center">
-                            <th className="px-4 py-2 w-[70px] sm:w-[100px]">Sno. <span className="font-extrabold">({totalNumberOfNodesAtCurrentLevel || 0})</span></th>
-                            <th className="px-4 py-2 w-[200px] sm:w-[230px]">NodeID</th>
-                            <th className="px-4 py-2 w-[200px] sm:w-[230px]">Position</th>
-                            <th className="px-4 py-2 w-[100px] text-end">Staking</th>
+                            <th className="px-4 py-2 w-[95px] sm:w-[170px]">Sno. <span className="font-extrabold">({totalNumberOfNodesAtCurrentLevel || 0})</span></th>
+                            <th className="px-4 py-2 w-[170px] sm:w-[230px] ">ID</th>
+                            <th className="px-4 py-2 w-[80px] sm:w-[120px] ">Position</th>
                             <th className="px-4 py-2 w-[100px]">Level</th>
                             <th className="px-4 py-2 w-[100px]">Status</th>
                             <th className="px-4 py-2 w-[110px] sm:w-[130px]">Direct Team</th>
@@ -112,9 +111,6 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                     </td>
                                     <td className="px-4 py-2 whitespace-nowrap">{row?._id ?? "-"}</td>
                                     <td className="px-4 py-2 whitespace-nowrap">{row?.position ?? "-"}</td>
-                                    <td className="px-4 py-2 text-end whitespace-nowrap">
-                                        {row?.packageAmount} $
-                                    </td>
                                     <td className="px-4 py-2 whitespace-nowrap">Beginer</td>
 
                                     {/* Status Badge */}
