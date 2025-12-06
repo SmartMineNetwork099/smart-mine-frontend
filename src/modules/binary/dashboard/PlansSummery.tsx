@@ -37,6 +37,8 @@ const PlansSummery = () => {
     };
     return (
         <>
+
+        
             {/* <Card className='mt-8'>
                 <div className=''>
                     <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>Choose <span className='text-green-500'>Plans</span></p>
