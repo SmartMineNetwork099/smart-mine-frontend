@@ -21,7 +21,7 @@ import Image from "next/image";
 //     { name: 'Creator', teamMembers: '32,768', totalIncome: '2,684,354,560', upgrade: '163,840', netProfit: '2,684,190,720', loss: '0', directMembers: 40 },
 // ];
 
-const PlansTable = ({ plans, loading }: any) => {
+const PlansTable = ({ plans, loading=true }: any) => {
 
     const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
 
