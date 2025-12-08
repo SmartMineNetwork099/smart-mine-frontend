@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import PlansCarousel from '@/components/PlansCarousel';
+// import PlansCarousel from '@/components/PlansCarousel';
 import Card from '@/components/Card';
 import PlansTable from '@/components/tables/PlansTable';
 import { toast } from 'react-toastify';
@@ -38,7 +38,7 @@ const PlansSummery = () => {
     return (
         <>
 
-        
+
             {/* <Card className='mt-8'>
                 <div className=''>
                     <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>Choose <span className='text-green-500'>Plans</span></p>

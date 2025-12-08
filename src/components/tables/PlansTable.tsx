@@ -38,16 +38,16 @@ const PlansTable = ({ plans, loading }: any) => {
 
     return (
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden">
-            <table className="w-full text-sm border-collapse">
+            <table className="min-w-[950px]  w-full text-sm border-collapse">
                 <thead className="sticky top-0 z-10 bg-green-500 text-black">
                     <tr className="font-bold text-center">
-                        <th className="px-4 py-2">Rank</th>
-                        <th className="px-4 py-2">Team Members</th>
-                        <th className="px-4 py-2 text-end">Total Income</th>
-                        <th className="px-4 py-2 text-end">Upgrade</th>
-                        <th className="px-4 py-2 text-end">Net Profit</th>
-                        <th className="px-4 py-2">Direct Members</th>
-                        <th className="px-4 py-2">Loss</th>
+                        <th className="px-4 py-2 w-[40px] sm:w-[80px] ">Sr.no</th>
+                        <th className="px-4 py-2 w-[95px] sm:w-[150px]">Rank</th>
+                        <th className="px-4 py-2 w-[100px] sm:w-[110px] ">Team Members</th>
+                        <th className="px-4 py-2 w-[90px] sm:w-[100px] text-end ">Plan Price</th>
+                        <th className="px-4 py-2 w-[120px] sm:w-[130px] text-end  ">Next Plan Price</th>
+                        <th className="px-4 py-2 w-[120px] sm:w-[100px] text-end">Total Income</th>
+                        <th className="px-4 py-2 w-[110px] sm:w-[100px] text-end">Net Profit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,13 +65,13 @@ const PlansTable = ({ plans, loading }: any) => {
                                 key={i}
                                 className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                             >
+                                <td className="p-4 whitespace-nowrap text-center">{i + 1}</td>
                                 <td className="p-4 whitespace-nowrap text-center">{row?.name}</td>
                                 <td className="p-4 whitespace-nowrap">{row?.teamMembers}</td>
+                                <td className="p-4 text-end whitespace-nowrap">{row?.price} $</td>
+                                <td className="p-4 text-end whitespace-nowrap">{row?.nextPlanPrice} $</td>
                                 <td className="p-4 text-end whitespace-nowrap">{row?.maxIncome} $</td>
-                                <td className="p-4 text-end whitespace-nowrap">{row?.upgradeAmount} $</td>
                                 <td className="p-4 text-end whitespace-nowrap">{row?.netProfit} $</td>
-                                <td className="p-4 whitespace-nowrap">{row?.teamMembers}</td>
-                                <td className="p-4 whitespace-nowrap text-end text-red-500 font-bold">{row?.loss || 0} $</td>
                             </tr>
                         ))
                     ) : (
