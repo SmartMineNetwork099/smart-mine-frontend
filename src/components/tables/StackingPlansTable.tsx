@@ -101,7 +101,7 @@ const StakingPlansTable = () => {
           <table className="min-w-[380px] w-full text-sm border-collapse">
             <thead className="sticky top-0 z-10">
               <tr className="bg-green-500 text-black font-bold text-xs sm:text-base text-center">
-                <th className="px-1 sm:px-4 py-2 w-[40px] sm:w-[150px] ">Level</th>
+                <th className="px-1 sm:px-4 py-2 w-[40px] sm:w-[150px] ">Plan</th>
                 <th className="px-2 sm:px-4 py-2 w-[100px] sm:w-[140px]">Team</th>
                 <th className="px-2 sm:px-4 py-2 w-[90px] sm:w-[150px] text-end ">Earn 2x</th>
                 <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[140px] text-end ">Loss</th>

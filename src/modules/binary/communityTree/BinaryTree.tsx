@@ -12,6 +12,7 @@ import { FaAngleLeft } from "react-icons/fa6";
 
 interface TreeNode {
   id: string;
+  userId: string;
   children: TreeNode[];
 }
 
@@ -92,7 +93,7 @@ const LevelTwoNode = ({ data, onNodeClick }: { data?: TreeNode[] | null; onNodeC
         <div key={idx} className="flex flex-col items-center relative">
           <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
           {/* render placeholder nodes when child is null; arrow is disabled in that case */}
-          <UserNode child={child} id={child?.id} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
+          <UserNode child={child} id={child?.userId} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
         </div>
       ))}
     </div>
@@ -102,6 +103,7 @@ const LevelTwoNode = ({ data, onNodeClick }: { data?: TreeNode[] | null; onNodeC
 // Level 1 Nodes
 const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeClick: (node: TreeNode) => void }) => {
   // If node is null, still render placeholders to keep layout consistent
+  console.log(node, 'nodenodenodenode')
   if (!node) {
     // render a placeholder center with two empty children
     return (
@@ -114,7 +116,7 @@ const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeCli
             {ensureTwoSlots([])?.map((child, idx) => (
               <div key={idx} className="flex flex-col items-center relative">
                 <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
-                <UserNode child={child} id={child?.id} disabled={!child} />
+                <UserNode child={child} id={child?.userId} disabled={!child} />
               </div>
             ))}
           </div>
@@ -127,7 +129,7 @@ const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeCli
 
   return (
     <div className="flex flex-col items-center">
-      <UserNode child={node} id={node.id} onClickTree={() => onNodeClick(node)} />
+      <UserNode child={node} id={node?.userId} onClickTree={() => onNodeClick(node)} />
       <>
         <div className="h-6 w-0.5 bg-red-500 z-10"></div>
         <div className="flex justify-center space-x-4 sm:space-x-20 relative">
@@ -135,7 +137,7 @@ const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeCli
           {slots.map((child, idx) => (
             <div key={idx} className="flex flex-col items-center relative">
               <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
-              <UserNode child={child} id={child?.id} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
+              <UserNode child={child} id={child?.userId} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
               {
                 // always render LevelTwoNode even if child exists but has no grandchildren
                 // LevelTwoNode will render placeholders when necessary
@@ -158,6 +160,9 @@ const BinaryTree = () => {
   // stack to keep track of previous roots for "back" navigation
   const [historyStack, setHistoryStack] = useState<TreeNode[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+   // New states for search
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchMode, setSearchMode] = useState(false);
 
   const handleNodeClick = (node: TreeNode) => {
     // push current root onto history stack so user can go back
@@ -165,10 +170,10 @@ const BinaryTree = () => {
     setRootNode(node); // Show only clicked node's subtree
   };
 
-  const getBinaryTreeData = async ( ) =>{
+  const getBinaryTreeData = async (userId?: string ) =>{
     setLoading(true)
-    const userId = getUserIdFromWallet()
-    const data = await getBinaryTree(userId || '');
+    const id = getUserIdFromWallet()
+    const data = await getBinaryTree(id || '');
     console.log(data?.data?.success, 'tree_successsuccesssuccess')
     console.log(data?.data?.tree, 'tree_dataaaaaaa123321')
     if(data?.data?.success){
@@ -185,11 +190,38 @@ const BinaryTree = () => {
   useEffect(() => {
     getBinaryTreeData()
   }, [])
+   // Search handler
+  const handleSearch = () => {
+    if (!searchValue.trim()) {
+      setSearchMode(false);
+      getBinaryTreeData();
+    } else {
+      setSearchMode(true);
+      getBinaryTreeData(searchValue.trim());
+    }
+  }
   console.log(rootNode, 'rootNoderootNode')
 
   return (
     <div className="min-h-screen p-6 flex flex-col items-center">
       <h1 className="text-xl sm:text-2xl text-green-500 font-bold mb-4">Community Tree</h1>
+       {/* Search input added */}
+      <div className="flex gap-2 mb-4 w-full max-w-sm">
+        <input
+          type="number"
+          placeholder="Enter User ID"
+          value={searchValue}
+          onChange={e => setSearchValue(e.target.value)}
+          className="flex-grow px-3 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 text-white"
+        />
+        <button
+          onClick={handleSearch}
+          className="bg-green-500 text-black px-4 py-2 rounded hover:bg-green-600 transition"
+        >
+          Search
+        </button>
+      </div>
+
       {/* Back button shown when there is history to go back to */}
       {historyStack.length > 0 && (
         <div className="w-full flex justify-start mb-4">
@@ -216,8 +248,10 @@ const BinaryTree = () => {
         </div>
       ) : rootNode ? (
         <LevelOneNode node={rootNode} onNodeClick={handleNodeClick} />
+      ) : searchMode ? (
+        <p className="text-gray-400 font-semibold">Tree Not Available for entered User ID</p>
       ) : (
-        <p className="text-gray-400">No data available.</p>
+        <p className="text-gray-400 font-semibold">No data available.</p>
       )}
     </div>
   );

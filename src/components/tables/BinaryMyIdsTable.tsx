@@ -83,7 +83,10 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                             <th className="px-4 py-2 w-[170px] sm:w-[230px] ">ID</th>
                             <th className="px-4 py-2 w-[80px] sm:w-[120px] ">Position</th>
                             <th className="px-4 py-2 w-[100px]">Level</th>
+                            <th className="px-4 py-2 w-[100px]">Income</th>
+                            {currentPage === 10 && 
                             <th className="px-4 py-2 w-[100px]">Status</th>
+                            }
                             <th className="px-4 py-2 w-[110px] sm:w-[130px]">Direct Team</th>
                         </tr>
                     </thead>
@@ -111,9 +114,9 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                     </td>
                                     <td className="px-4 py-2 whitespace-nowrap">{row?._id ?? "-"}</td>
                                     <td className="px-4 py-2 whitespace-nowrap">{row?.position ?? "-"}</td>
-                                    <td className="px-4 py-2 whitespace-nowrap">Beginer</td>
-
-                                    {/* Status Badge */}
+                                    <td className="px-4 py-2 whitespace-nowrap">{row?.planName ?? 'N/A'}</td>
+                                    <td className="px-4 py-2 whitespace-nowrap">{'income'}</td>
+                                     {currentPage === 10 && (
                                     <td className="px-4 py-2 whitespace-nowrap">
                                         <span
                                             className={`
@@ -126,6 +129,8 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                             {row?.completeUpgraded ? "Complete" : "InComplete"}
                                         </span>
                                     </td>
+                                      )
+                                    }
 
                                     <td className="px-4 py-2 whitespace-nowrap">
                                         {row?.directTeam?.length ?? 0}
