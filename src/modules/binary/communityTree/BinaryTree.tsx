@@ -210,21 +210,24 @@ const BinaryTree = () => {
     <div className="min-h-screen p-6 flex flex-col items-center">
       <h1 className="text-xl sm:text-2xl text-green-500 font-bold mb-4">Community Tree</h1>
        {/* Search input added */}
-      <div className="flex gap-2 mb-4 w-full max-w-sm">
-        <input
-          type="number"
-          placeholder="Enter User ID"
-          value={searchValue}
-          onChange={e => setSearchValue(e.target.value)}
-          className="flex-grow px-3 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 text-white"
-        />
-        <button
-          onClick={handleSearch}
-          className="bg-green-500 text-black px-4 py-2 rounded hover:bg-green-600 transition"
-        >
-          Search
-        </button>
-      </div>
+       <div className="mb-3">
+    <div className="border-2 border-neutral-800 rounded-lg overflow-hidden focus-within:border-green-500">
+  <input
+    type="text"
+    placeholder="Enter ID"
+    value={searchValue}
+    onChange={e => setSearchValue(e.target.value)}
+    className="w-[70%] px-3 py-2 rounded-lg text-green-500 font-bold bg-transparent focus:outline-none"
+  />
+  <button
+    onClick={handleSearch}
+    className="w-[30%] bg-green-500 text-black px-2 sm:px-4 py-2 hover:bg-green-600 transition font-bold"
+  >
+    Search
+  </button>
+</div>
+
+       </div>
 
       {/* Back button shown when there is history to go back to */}
       {historyStack.length > 0 && (
