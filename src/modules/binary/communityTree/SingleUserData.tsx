@@ -41,7 +41,7 @@ const SingleUserData = ({id ,base36NodeId}) => {
     },
     {
         name: 'Position',
-        transactions: String(base36NodeId) || 'N/A',
+        transactions: userData?.base36NodeId || 'N/A',
     },
     {
         name: 'Rank',

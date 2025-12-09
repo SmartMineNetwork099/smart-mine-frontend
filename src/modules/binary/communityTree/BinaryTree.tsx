@@ -88,8 +88,8 @@ const LevelTwoNode = ({ data, onNodeClick }: { data?: TreeNode[] | null; onNodeC
   // always ensure exactly two slots so layout doesn't break when children are missing
   const slots = ensureTwoSlots(data);
   return (
-    <div className="flex justify-center space-x-8 sm:space-x-16 relative">
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[4.6rem] sm:w-[7.1rem] h-0.5 bg-green-500 z-0" />
+    <div className="flex justify-center space-x-13 sm:space-x-16 relative">
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[5.2rem] sm:w-[7.1rem] h-0.5 bg-green-500 z-0" />
       {slots.map((child, idx) => (
         <div key={idx} className="flex flex-col items-center relative">
           <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
@@ -133,8 +133,8 @@ const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeCli
       <UserNode child={node} id={node?.nodeId} onClickTree={() => onNodeClick(node)} />
       <>
         <div className="h-6 w-0.5 bg-red-500 z-10"></div>
-        <div className="flex justify-center space-x-4 sm:space-x-20 relative">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[130px] sm:w-[240px] h-0.5 bg-green-500 z-0" />
+        <div className="flex justify-center space-x-15 sm:space-x-20 relative">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[173px] sm:w-[240px] h-0.5 bg-green-500 z-0" />
           {slots.map((child, idx) => {
             console.log(child, 'childchildchildchild1111')
             return(
