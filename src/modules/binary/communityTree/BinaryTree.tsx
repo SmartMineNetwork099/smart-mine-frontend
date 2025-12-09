@@ -64,7 +64,7 @@ const UserNode = ({ child , id, onClickModel, onClickTree, disabled = false }:an
             <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26z" />
           </svg>
         </div>
-        <p className={`mt-1 text-xs sm:text-sm font-mono font-semibold ${disabled ? 'text-gray-400' : 'text-cyan-400'}`}> {child?.position ||  "----------"}</p>
+        <p className={`mt-1 text-xs sm:text-sm font-mono font-semibold ${disabled ? 'text-gray-400' : 'text-cyan-400'}`}> {child?.base36NodeId ||  "----------"}</p>
         <Button
           className={`flex items-center justify-center gap-1 text-black bg-green-500 border-0 !py-1 !px-2 mt-2 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}
           onClick={!disabled ? onClickTree : undefined}
@@ -75,7 +75,7 @@ const UserNode = ({ child , id, onClickModel, onClickTree, disabled = false }:an
       </div>
       {modelOpen && (
         <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`User Detail`} className="" size='lg'>
-          <SingleUserData id={id} position={child?.position}/>
+          <SingleUserData id={id} base36NodeId={child?.base36NodeId}/>
         </Model>
       )}
 

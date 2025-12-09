@@ -8,7 +8,7 @@ import { getUserByIDAndPosition } from '@/apis/binaryApis';
 import { getUserWalletAddress } from '@/utils/walletHelpers';
 
 
-const SingleUserData = ({id ,position}) => {
+const SingleUserData = ({id ,base36NodeId}) => {
     const nodeID = id ;
     console.log(id,'ididididididiididididid')
     const [userData, setUserData] = useState<any>(null);
@@ -41,7 +41,7 @@ const SingleUserData = ({id ,position}) => {
     },
     {
         name: 'Position',
-        transactions: String(position) || 'N/A',
+        transactions: String(base36NodeId) || 'N/A',
     },
     {
         name: 'Rank',
