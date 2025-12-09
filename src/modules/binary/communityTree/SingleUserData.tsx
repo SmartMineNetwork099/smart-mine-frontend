@@ -1,22 +1,28 @@
-import { getUserData } from '@/apis/user';
+'use client'
 import { DEFAULT_CURRENCY } from '@/constants/currency';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
-import { formatDate, formatWalletAddress } from '@/utils/func';
+import { formatDate } from '@/utils/func';
 import HashLoader from '@/components/HashLoader';
+import { getUserByIDAndPosition } from '@/apis/binaryApis';
+import { getUserWalletAddress } from '@/utils/walletHelpers';
 
 
-const SingleUserData = ({id}) => {
+const SingleUserData = ({id ,position}) => {
+    const nodeID = id ;
     console.log(id,'ididididididiididididid')
     const [userData, setUserData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
-    console.log(id, 'singleuserdataaaaaaa1111')
+    const walletAddress = getUserWalletAddress()
+    console.log(walletAddress, 'walletAddresswalletAddresswalletAddresswalletAddressdsfdsf') 
+    console.log(id, 'singleuserdataaaaaaa1111') 
     const getUserInfo = async()=>{
-        setLoading(true)
-     const data = await getUserData(id);
-     console.log(data, 'singleuserdataaaaaaa')
-     if(data?.data?.user){
-     setUserData(data?.data?.user || null)
+    setLoading(true)
+     const data = await getUserByIDAndPosition(walletAddress ,nodeID );
+    //  const data = await getUserData(id);
+     console.log(data, 'singleuserdataaaaaaa21edsew32')
+     if(data?.data){
+     setUserData(data?.data || null)
      }
      if(data?.error){
         toast.error(data?.error)
@@ -27,21 +33,19 @@ const SingleUserData = ({id}) => {
     useEffect(() => {
     if (id) getUserInfo();
   }, []); 
- 
-  const userLavel = userData?.plans?.length > 0 ? userData?.plans[userData?.plans?.length-1]?.planDetails?.level : 'N/A';
-  console.log(userLavel, 'userLaveluserLaveluserLavel')
+   console.log(userData, 'userDatauserDatauserDatauserDatauserData')
     const walletInfo = [
     {
         name: 'ID',
-        transactions: userData?._id || 'N/A',
+        transactions: userData?.nodeID || 'N/A',
     },
-    // {
-    //     name: 'Address',
-    //     transactions: formatWalletAddress(userData?.walletAddress)|| 'N/A',
-    // },
+    {
+        name: 'Position',
+        transactions: String(position) || 'N/A',
+    },
     {
         name: 'Rank',
-        transactions: String(userLavel || 'N/A'),
+        transactions: userData?.planName || 'N/A',
     },
    {
       name: 'Activation Date',
@@ -53,7 +57,7 @@ const SingleUserData = ({id}) => {
     },
     {
         name: 'Community Size',
-        transactions: '-----',
+        transactions: String(userData?.communitySize) || 'N/A',
     },
 
 ];
@@ -63,7 +67,7 @@ const SingleUserData = ({id}) => {
             loading ? <div className='flex items-center justify-center'><HashLoader/></div>
              :
             <div className='flex flex-col gap-4'>
-                {walletInfo?.map((item: { name: string; transactions: string }, index: number) => (
+                {walletInfo?.map((item: { name: string; transactions: any }, index: number) => (
                     <div key={index} className="flex items-center justify-between">
                         <div className='w-1/3 sm:w-5/12 '>
                             <p className="font-medium p-1 text-white text-[11px] sm:text-base">

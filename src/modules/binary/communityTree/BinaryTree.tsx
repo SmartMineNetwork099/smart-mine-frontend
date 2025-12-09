@@ -12,7 +12,7 @@ import { FaAngleLeft } from "react-icons/fa6";
 
 interface TreeNode {
   id: string;
-  userId: string;
+  nodeId: string;
   children: TreeNode[];
 }
 
@@ -49,6 +49,7 @@ const ensureTwoSlots = (arr?: TreeNode[] | null) => {
 const UserNode = ({ child , id, onClickModel, onClickTree, disabled = false }:any) => {
   const [modelOpen, setModelOpen] = useState(false);
   console.log(child, 'childchildchild')
+  console.log(id, 'ididididididididididid')
   return (
     <>
       <div className={`flex flex-col items-center ${disabled ? 'cursor-default' : 'cursor-pointer'}`} >
@@ -74,7 +75,7 @@ const UserNode = ({ child , id, onClickModel, onClickTree, disabled = false }:an
       </div>
       {modelOpen && (
         <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`User Detail`} className="" size='lg'>
-          <SingleUserData id={id}/>
+          <SingleUserData id={id} position={child?.position}/>
         </Model>
       )}
 
@@ -93,7 +94,7 @@ const LevelTwoNode = ({ data, onNodeClick }: { data?: TreeNode[] | null; onNodeC
         <div key={idx} className="flex flex-col items-center relative">
           <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
           {/* render placeholder nodes when child is null; arrow is disabled in that case */}
-          <UserNode child={child} id={child?.userId} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
+          <UserNode child={child} id={child?.nodeId} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
         </div>
       ))}
     </div>
@@ -116,7 +117,7 @@ const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeCli
             {ensureTwoSlots([])?.map((child, idx) => (
               <div key={idx} className="flex flex-col items-center relative">
                 <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
-                <UserNode child={child} id={child?.userId} disabled={!child} />
+                <UserNode child={child} id={child?.nodeId} disabled={!child} />
               </div>
             ))}
           </div>
@@ -129,15 +130,17 @@ const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeCli
 
   return (
     <div className="flex flex-col items-center">
-      <UserNode child={node} id={node?.userId} onClickTree={() => onNodeClick(node)} />
+      <UserNode child={node} id={node?.nodeId} onClickTree={() => onNodeClick(node)} />
       <>
         <div className="h-6 w-0.5 bg-red-500 z-10"></div>
         <div className="flex justify-center space-x-4 sm:space-x-20 relative">
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[130px] sm:w-[240px] h-0.5 bg-green-500 z-0" />
-          {slots.map((child, idx) => (
+          {slots.map((child, idx) => {
+            console.log(child, 'childchildchildchild1111')
+            return(
             <div key={idx} className="flex flex-col items-center relative">
               <div className="h-6 w-0.5 bg-green-500 mb-1 z-10"></div>
-              <UserNode child={child} id={child?.userId} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
+              <UserNode child={child} id={child?.nodeId} onClickTree={child ? () => onNodeClick(child) : undefined} disabled={!child} />
               {
                 // always render LevelTwoNode even if child exists but has no grandchildren
                 // LevelTwoNode will render placeholders when necessary
@@ -147,7 +150,8 @@ const LevelOneNode = ({ node, onNodeClick }: { node?: TreeNode | null; onNodeCli
                 </>
               }
             </div>
-          ))}
+          )}
+          )}
         </div>
       </>
     </div>
