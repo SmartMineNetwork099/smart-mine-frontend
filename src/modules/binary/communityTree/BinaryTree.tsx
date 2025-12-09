@@ -9,6 +9,7 @@ import { getUserIdFromWallet } from "@/utils/walletHelpers";
 import { toast } from "react-toastify";
 import HashLoader from "@/components/HashLoader";
 import { FaAngleLeft } from "react-icons/fa6";
+import { Input } from "rizzui/input";
 
 interface TreeNode {
   id: string;
@@ -174,10 +175,15 @@ const BinaryTree = () => {
     setRootNode(node); // Show only clicked node's subtree
   };
 
-  const getBinaryTreeData = async (userId?: string ) =>{
+  const getBinaryTreeData = async (searchId?: string ) =>{
     setLoading(true)
-    const id = getUserIdFromWallet()
-    const data = await getBinaryTree(id || '');
+  const defaultUserId = getUserIdFromWallet();
+
+  // decide what to send in payload
+  const payload = searchId
+    ? { base36NodeId: searchId }
+    : { userId: defaultUserId };
+    const data = await getBinaryTree(payload);
     console.log(data?.data?.success, 'tree_successsuccesssuccess')
     console.log(data?.data?.tree, 'tree_dataaaaaaa123321')
     if(data?.data?.success){
@@ -196,12 +202,13 @@ const BinaryTree = () => {
   }, [])
    // Search handler
   const handleSearch = () => {
-    if (!searchValue.trim()) {
+     const trimmed = searchValue.trim();
+    if (!trimmed) {
       setSearchMode(false);
       getBinaryTreeData();
     } else {
       setSearchMode(true);
-      getBinaryTreeData(searchValue.trim());
+      getBinaryTreeData(trimmed);
     }
   }
   console.log(rootNode, 'rootNoderootNode')
@@ -211,13 +218,16 @@ const BinaryTree = () => {
       <h1 className="text-xl sm:text-2xl text-green-500 font-bold mb-4">Community Tree</h1>
        {/* Search input added */}
        <div className="mb-3">
-    <div className="border-2 border-neutral-800 rounded-lg overflow-hidden focus-within:border-green-500">
-  <input
+    <div className="flex border-2 border-neutral-800 rounded-lg overflow-hidden focus-within:border-green-500">
+  <Input
     type="text"
     placeholder="Enter ID"
     value={searchValue}
     onChange={e => setSearchValue(e.target.value)}
-    className="w-[70%] px-3 py-2 rounded-lg text-green-500 font-bold bg-transparent focus:outline-none"
+    onClear={() => setSearchValue('')}
+    clearable
+    inputClassName="!bg-transparent !border-none !ring-0 px-2"
+    className="w-[70%] rounded-lg text-green-500 font-bold bg-transparent focus:outline-none"
   />
   <button
     onClick={handleSearch}
