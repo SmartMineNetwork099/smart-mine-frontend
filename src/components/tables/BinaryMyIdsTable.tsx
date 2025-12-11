@@ -112,10 +112,10 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                     <td className="px-4 py-2 whitespace-nowrap">
                                          {(paginationCurrentPage - 1) * pageSize + rowIndex + 1}
                                     </td>
-                                    <td className="px-4 py-2 whitespace-nowrap">{row?._id ?? "-"}</td>
+                                    <td className="px-4 py-2 whitespace-nowrap">{row?.base36NodeId ?? "-"}</td>
                                     <td className="px-4 py-2 whitespace-nowrap">{row?.position ?? "-"}</td>
                                     <td className="px-4 py-2 whitespace-nowrap">{row?.planName ?? 'N/A'}</td>
-                                    <td className="px-4 py-2 whitespace-nowrap">{'income'}</td>
+                                    <td className="px-4 py-2 whitespace-nowrap">{Number(row?.earnedIncome) ?? 0}</td>
                                      {currentPage === 10 && (
                                     <td className="px-4 py-2 whitespace-nowrap">
                                         <span
