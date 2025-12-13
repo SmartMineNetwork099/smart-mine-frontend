@@ -61,3 +61,26 @@ export const getUserByIDAndPosition = async (walletAddress : any , nodeID :any) 
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
+export const getNodesByPositionAndLevel = async (level:any , position:any , paginationCurrentPage:any) => {
+    console.log(level , 'userIdplanLeveluserIdplanLevelgetBinaryMyIds')
+    try {
+        const res = await axios.post<any>(`${API}/api/binary/getNodesByPositionAndLevel`,{
+            level , position , paginationCurrentPage
+        },
+    {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+        console.log(res, 'resgetNodesByPositionAndLevelgetSubtreeCount')
+        if(res?.data?.success){
+        return { data: res?.data , error: null };
+        }else{
+            return { data: null, error:res?.data?.message || "error try again." };
+        }
+    }
+    catch (err) {
+        const error = err as AxiosError<{ message: string }>;
+        return { data: null, error: error.response?.data?.message ?? "error try again." };
+    }
+};

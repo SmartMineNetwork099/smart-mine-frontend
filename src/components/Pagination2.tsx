@@ -51,7 +51,7 @@ const SlidingPagination = ({
       <button
         onClick={() => onPageChange(Math.max(1, currentPage - 1))}
         disabled={currentPage === 1}
-        className={`px-3 py-1 rounded-md text-sm font-semibold transition ${
+        className={`px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-semibold transition ${
           currentPage === 1
             ? "bg-gray-700 text-gray-400 cursor-not-allowed"
             : "bg-neutral-800 text-white hover:bg-neutral-700"
@@ -70,7 +70,7 @@ const SlidingPagination = ({
           <button
             key={idx}
             onClick={() => onPageChange(Number(page))}
-            className={`px-3 py-1 rounded-md text-sm font-semibold transition ${
+            className={`px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-semibold transition ${
               currentPage === page
                 ? "bg-green-600 text-white shadow-md scale-105"
                 : "bg-neutral-800 text-gray-300 hover:bg-neutral-700"
@@ -85,7 +85,7 @@ const SlidingPagination = ({
       <button
         onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
         disabled={currentPage === totalPages}
-        className={`px-3 py-1 rounded-md text-sm font-semibold transition ${
+        className={`px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-semibold transition ${
           currentPage === totalPages
             ? "bg-gray-700 text-gray-400 cursor-not-allowed"
             : "bg-neutral-800 text-white hover:bg-neutral-700"

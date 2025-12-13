@@ -4,12 +4,9 @@ import React, { useEffect, useState } from "react";
 import HashLoader from "@/components/HashLoader";
 import { Button } from "rizzui";
 import Pagination2 from "@/components/Pagination2";
-import Model from "@/components/Model";
-import MyIdsDetail from "@/modules/binary/myIds/MyIdsDetail";
-
 
 type TableProps = {
-    data: any[];
+    data?: any[];
     loading?: boolean;
     currentPage?: number;
     totalPaginationPages ?: number;
@@ -18,17 +15,12 @@ type TableProps = {
     setPaginationCurrentPage ?: any;
 };
 
-const BinaryMyIdsTable = ({ data, loading = false , currentPage,totalPaginationPages =0,paginationCurrentPage = 0 , setPaginationCurrentPage=1,totalNumberOfNodesAtCurrentLevel  }: TableProps) => {
+const BinaryMyIdsDetailTable = ({ data=[], loading = true , currentPage=1,totalPaginationPages =0,paginationCurrentPage = 0 , setPaginationCurrentPage=1,totalNumberOfNodesAtCurrentLevel=1  }: TableProps) => {
     const [selected, setSelected] = useState<any>("All");
     const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
-    const [modelOpen, setModelOpen] = useState(false);
-    const [userID, setUserID] = useState('');
-    const [nodeID, setNodeID] = useState('');
-    const [position, setPosition] = useState(null);
-
-    
     
 console.log("data in table", data);
+// console.log("currentPagecurrentPagecurrentPage", currentPage);
 console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
     const options = [
         { label: "All", color: "bg-blue-500" },
@@ -57,22 +49,13 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
     useEffect(() => {
      setPaginationCurrentPage(1)
     }, [currentPage]);
-     const handleModelOpen = (userID:any , nodeID:any , position:any ) => {
-        console.log("userIDnodeIDuserIDnodeID", userID , nodeID);
-        setUserID(userID);
-        setNodeID(nodeID);
-        setPosition(position);
-        setModelOpen(true);
-    }
-
-    /////////////////////////////////////////////////////////////
 
     return (
         <>
             <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden max-h-[400px] md:max-h-[500px]">
 
                {/* Show Filters ONLY when currentPage === 10 */}
-                {currentPage === 10 && filteredData?.length>=1 && (
+                {/* {currentPage === 10 && filteredData?.length>=1 && (
                     <div className="flex flex-wrap gap-2 my-3">
                         {options.map((opt) => (
                             <Button
@@ -90,22 +73,22 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                             </Button>
                         ))}
                     </div>
-                )}
+                )} */}
 
 
                 {/* Table */}
-                <table className={`${currentPage === 10 ? 'min-w-[520px]' : 'min-w-[450px]'} w-full text-sm border-collaps`}>
+                <table className="min-w-[400px] w-full text-sm border-collapse">
                     <thead className="sticky top-0 z-10 bg-green-500 text-black">
-                        <tr className="bg-green-500 text-black text-xs sm:text-base font-bold text-center">
-                            <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[100px]">Sno. <span className="font-bold sm:font-extrabold text-white">({totalNumberOfNodesAtCurrentLevel || 0})</span></th>
+                        <tr className="bg-green-500 text-black font-bold text-center text-[11px] sm:text-base">
+                            <th className="px-2 sm:px-4 py-2 w-[45px] sm:w-[100px]">Sno. <span className="sm:font-extrabold text-white">({totalNumberOfNodesAtCurrentLevel || 0})</span></th>
                             <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[130px]">ID</th>
                             {/* <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[120px] ">Position</th> */}
-                            <th className="px-2 sm:px-4 py-2 w-[60px] sm:w-[100px]">Level</th>
-                            <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[150px]">Income</th>
-                            {currentPage === 10 && 
-                            <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[100px]">Status</th>
-                            }
-                            <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[160px]">Cumminity Size</th>
+                            <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[100px]">Level</th>
+                            <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[150px] text-end">Income</th>
+                            {/* {currentPage === 10 && 
+                            <th className="px-2 sm:px-4 py-2 w-[100px]">Status</th>
+                            } */}
+                            <th className="px-2 sm:px-4 py-2 w-[70px] sm:w-[160px]">Cumminity Size</th>
                         </tr>
                     </thead>
                     <tbody className="">
@@ -122,12 +105,10 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                             filteredData?.map((row: any, rowIndex: number) =>
                             {
                                 const pageSize = 50; // Assuming 50 items per page
-                               console.log("row data", row);
-                                return (
+                               return (
                                 <tr
                                     key={rowIndex}
-                                    onClick={() => handleModelOpen(row?.userId , row?._id , row?.position)}
-                                    className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
+                                    className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-[10px] sm:text-sm"
                                 >
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
                                          {(paginationCurrentPage - 1) * pageSize + rowIndex + 1}
@@ -136,7 +117,7 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                     {/* <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.position ?? "-"}</td> */}
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.planName ?? 'N/A'}</td>
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-end">{Number(row?.earnedIncome) ?? 0}</td>
-                                     {currentPage === 10 && (
+                                     {/* {currentPage === 10 && (
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
                                         <span
                                             className={`
@@ -150,7 +131,7 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                         </span>
                                     </td>
                                       )
-                                    }
+                                    } */}
 
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
                                         {row?.belowTotalNodes ?? 0}
@@ -175,23 +156,6 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                 </table>
             </div>
 
-
-
-
-                  {/* Model Summary (Show for confirmation) */}
-                    {modelOpen && (
-                        <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`ID Details`} className="!bg-gray-200"  size = "xl">
-                           <MyIdsDetail userID={userID}  nodeID={nodeID} position={position}/>
-                        </Model>
-                    )}
-
-
-
-
-
-
-
-
               {/* PAGINATION */}
       {totalPaginationPages > 1 && !loading && (
         <Pagination2
@@ -204,4 +168,4 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
     );
 };
 
-export default BinaryMyIdsTable;
+export default BinaryMyIdsDetailTable;
