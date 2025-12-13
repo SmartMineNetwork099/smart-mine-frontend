@@ -135,7 +135,7 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.base36NodeId ?? "-"}</td>
                                     {/* <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.position ?? "-"}</td> */}
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.planName ?? 'N/A'}</td>
-                                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-end">{Number(row?.earnedIncome) ?? 0}</td>
+                                    <td className={`px-2 sm:px-4 py-2 whitespace-nowrap ${responsiveColspan===2 && 'text-end'}`}>{Number(row?.earnedIncome) ?? 0}</td>
                                      {currentPage === 10 && (
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
                                         <span
