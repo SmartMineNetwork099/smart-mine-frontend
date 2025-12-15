@@ -11,10 +11,6 @@ export const getBinaryTree = async (payload:any) => {
     return { data: null, error: err.response?.data?.error ?? "Error, try again." };
   }
 };
-
-
-
-///////////////////////////////////////
 export const getBinaryMyIds = async ({walletAddress , currentLevel ,paginationCurrentPage }:any) => {
     console.log(walletAddress , currentLevel , 'walletAddresswalletAddresswalletAddresscurrentLevelcurrentLevel')
     try {
