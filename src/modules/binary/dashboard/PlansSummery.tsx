@@ -4,21 +4,27 @@ import Card from '@/components/Card';
 import PlansTable from '@/components/tables/PlansTable';
 import { toast } from 'react-toastify';
 import { getPlans } from '@/apis/plans';
-import { getUserIdFromWallet } from '@/utils/walletHelpers';
+import { useWalletAddress } from '@/hooks/useWallet';
 const PlansSummery = () => {
     const [plans, setPlans] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const walletAddress = useWalletAddress();
     // ✅ useEffect for fetching + resize
     useEffect(() => {
-        getAllPlans();
-    }, []);
+        if (walletAddress){
+            getAllPlans();
+        } 
+    }, [walletAddress]);
 
     // ✅ Move getAllPlans above useEffect for clarity
     const getAllPlans = async () => {
+        if(!walletAddress){
+            toast.error("Please wait while fetching walletAddress.");
+            return;
+        }
         setLoading(true);
         try {
-            const id = getUserIdFromWallet()
-            const { data, error } = await getPlans(id);
+            const { data, error } = await getPlans(walletAddress);
             console.log(data, 'data1234567plansplans')
 
             if (error) {

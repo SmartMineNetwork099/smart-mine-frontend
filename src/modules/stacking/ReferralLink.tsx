@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Input } from "rizzui";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";
 import Card from '@/components/Card';
-import { getUserIdFromWallet } from '@/utils/walletHelpers';
+import { useWalletAddress } from '@/hooks/useWallet';
 
 const ReferralLink = () => {
     const [referralLink, setReferralLink] = useState('');
     const [copied, setCopied] = useState(false);
-    const userID = getUserIdFromWallet();
+        const walletAddress = useWalletAddress();
+    
 
     const handleCopy = () => {
         navigator.clipboard.writeText(referralLink);
@@ -17,10 +18,11 @@ const ReferralLink = () => {
     };
 
     useEffect(() => {
-        const walletDataString = localStorage.getItem(`walletData_${userID}`);
+        if(!walletAddress) return;
+        const walletDataString = localStorage.getItem(`walletData_${walletAddress}`);
         const walletData = walletDataString ? JSON.parse(walletDataString) : null;
         setReferralLink(walletData?.referralLink ?? "");
-    }, [userID]);
+    }, [walletAddress]);
 
     return (
         <Card className='mt-4'>

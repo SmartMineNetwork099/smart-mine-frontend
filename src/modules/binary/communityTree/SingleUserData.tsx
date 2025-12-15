@@ -5,21 +5,22 @@ import { toast } from 'react-toastify';
 import { formatDate } from '@/utils/func';
 import HashLoader from '@/components/HashLoader';
 import { getUserByIDAndPosition } from '@/apis/binaryApis';
-import { getUserWalletAddress } from '@/utils/walletHelpers';
+import { useWalletAddress } from '@/hooks/useWallet';
 
 
-const SingleUserData = ({id ,base36NodeId}) => {
+const SingleUserData = ({id }) => {
     const nodeID = id ;
     console.log(id,'ididididididiididididid')
     const [userData, setUserData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
-    const walletAddress = getUserWalletAddress()
-    console.log(walletAddress, 'walletAddresswalletAddresswalletAddresswalletAddressdsfdsf') 
+   
     console.log(id, 'singleuserdataaaaaaa1111') 
+    const walletAddress = useWalletAddress();
     const getUserInfo = async()=>{
+        if(!walletAddress) return;
     setLoading(true)
      const data = await getUserByIDAndPosition(walletAddress ,nodeID );
-    //  const data = await getUserData(id);
+    //  const data = await getUserData(walletAddress);
      console.log(data, 'singleuserdataaaaaaa21edsew32')
      if(data?.data){
      setUserData(data?.data || null)
@@ -31,8 +32,8 @@ const SingleUserData = ({id ,base36NodeId}) => {
         setLoading(false)
     }
     useEffect(() => {
-    if (id) getUserInfo();
-  }, []); 
+    if (id && walletAddress) getUserInfo();
+  }, [id, walletAddress]); 
    console.log(userData, 'userDatauserDatauserDatauserDatauserData')
     const walletInfo = [
     {
@@ -64,7 +65,7 @@ const SingleUserData = ({id ,base36NodeId}) => {
     return (
         <>
         {
-            loading ? <div className='flex items-center justify-center'><HashLoader/></div>
+            loading || !walletAddress ? <div className='flex items-center justify-center'><HashLoader/></div>
              :
             <div className='flex flex-col gap-4'>
                 {walletInfo?.map((item: { name: string; transactions: any }, index: number) => (

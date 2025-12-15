@@ -1,11 +1,10 @@
-import { getUserWalletAddress } from "@/utils/walletHelpers";
 import axios, { AxiosError } from "axios";
 const API = process.env.NEXT_PUBLIC_API_BASE as string;
 
-export const getAllStackingPlansWithTeamData = async (userId:any , walletAddress:any) => {
+export const getAllStackingPlansWithTeamData = async ( walletAddress:any) => {
     try {
         const res = await axios.post<any>(`${API}/api/stacking/getAllStackingPlansWithTeamData`,{
-            userId , walletAddress
+              walletAddress
         });
         console.log(res, 'resresres11111232getAllStackingPlansgetAllStackingPlans')
         if(res?.data?.success){
@@ -19,10 +18,10 @@ export const getAllStackingPlansWithTeamData = async (userId:any , walletAddress
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
-export const buyStackingPlans = async ({userId , planId , feeTxHash ,walletAddress}:any) => {
+export const buyStackingPlans = async ({ planId , feeTxHash ,walletAddress}:any) => {
     try {
         const res = await axios.post<any>(`${API}/api/stacking/buyStackingPlan`,{
-            userId , planId , feeTxHash ,walletAddress
+             planId , feeTxHash ,walletAddress
         });
         console.log(res, 'resresres11111232buyStackingPlansbuyStackingPlans')
         if(res?.data?.success){

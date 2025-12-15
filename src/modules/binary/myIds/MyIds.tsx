@@ -3,36 +3,29 @@ import React, { useEffect, useState } from 'react'
 import BinaryMyIdsTable from '@/components/tables/BinaryMyIdsTable';
 import Pagination from '@/components/Pagination';
 // import { getSocket, initSocket } from "@/utils/socket";
-import { getUserIdFromWallet } from '@/utils/walletHelpers';
 import { getBinaryMyIds } from '@/apis/binaryApis';
+import { useWalletAddress } from '@/hooks/useWallet';
 // import { toast } from 'react-toastify';
 
 
 const MyIds = () => {
     const [tableData, setTableData] = useState<any>([]);
     const [totalNumberOfNodes, setTotalNumberOfNodes] = useState<number>(0);
-    const [walletAddress, setWalletAddress] = useState('');
     const [page, setPage] = useState(1);
     const [paginationCurrentPage, setPaginationCurrentPage] = useState <any>(0);
     const [totalPaginationPages , setTotalPaginationPages ] = useState(1);
     const [totalNumberOfNodesAtCurrentLevel , setTotalNumberOfNodesAtCurrentLevel ] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);
-    const userID = getUserIdFromWallet();
-
-    useEffect(() => {
-        const walletDataString = localStorage.getItem(`walletData_${userID}`);
-        const referralLink = walletDataString ? JSON.parse(walletDataString) : null;
-        setWalletAddress(referralLink?.walletAddress)
-    }, [userID]);
+    const walletAddress = useWalletAddress();
+    
 
     const getLevelData = async () => {
         if (!walletAddress) return;
         try {
             setLoading(true);
-            console.log("userIDuserIDuserIDuserID", userID);
             console.log("pagepagepagepage", page);
 
-            const response = await getBinaryMyIds({ userId: userID, currentLevel: page , paginationCurrentPage});
+            const response = await getBinaryMyIds({ walletAddress, currentLevel: page , paginationCurrentPage});
             setTableData(Array.isArray(response?.data?.nodes) ? response?.data?.nodes : []);
             setTotalNumberOfNodes(response?.data?.totalNumberOfNodes || 0);
             setTotalPaginationPages(response?.data?.totalPages)

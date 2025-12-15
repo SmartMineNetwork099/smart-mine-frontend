@@ -3,17 +3,18 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import ROUTES from "@/constants/routes";
-import { getUserIdFromWallet } from "@/utils/walletHelpers";
+import { useWalletAddress } from "@/hooks/useWallet";
 export default function Home() {
     const router = useRouter();
-    const userID = getUserIdFromWallet()
+    const walletAddress = useWalletAddress()
     useEffect(() => {
-        const token = typeof window !== "undefined" ? localStorage.getItem(`token_${userID}`) : null;
+        if(!walletAddress) return;
+        const token = typeof window !== "undefined" ? localStorage.getItem(`token_${walletAddress}`) : null;
         if (token) {
             router.replace(ROUTES?.STACKING?.DASHBOARD);
         } else {
             router.replace(ROUTES?.AUTH?.LOGIN);
         }
-    }, [router, userID]);
+    }, [router , walletAddress]);
     return null;
 }

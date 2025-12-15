@@ -34,12 +34,12 @@ export const getReferralsAtLevel = async (
     }
 };
 export const updateUserImage = async (
-    userID: string,
+    walletAddress: string,
     imageUrl: string,
 ) => {
     try {
         const res = await axios.post<{ token: string, message: string, image_url: string }>(`${API}/api/auth/update-image`, {
-            userID,
+            walletAddress,
             imageUrl,
         });
         console.log(res, 'resresres')
@@ -53,10 +53,10 @@ export const updateUserImage = async (
     }
 };
 export const getUserData = async (
-    id: string,
+    walletAddress: string,
 ) => {
     try {
-        const res = await axios.get<any>(`${API}/api/auth/getUserByID/${id}`);
+        const res = await axios.get<any>(`${API}/api/auth/getUserByWalletAddress/${walletAddress}`);
         console.log(res, 'resresres1111')
         if (res.status !== 200) {
             return { data: null, error: "Failed to fetch user data. Please try again." };

@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 
 let socket;
 
-export const initSocket = (userId) => {
+export const initSocket = (walletAddress) => {
   if (!socket) {
     socket = io(process.env.NEXT_PUBLIC_API_BASE, {
       transports: ["websocket"],
@@ -13,9 +13,9 @@ export const initSocket = (userId) => {
 
     socket.on("connect", () => {
       console.log("✅ Socket connected:", socket.id);
-      if (userId) {
-        socket.emit("join", userId);
-        console.log("📌 Joined room with userId:", userId);
+      if (walletAddress) {
+        socket.emit("join", walletAddress);
+        console.log("📌 Joined room with walletAddress:", walletAddress);
       }
     });
 
@@ -26,10 +26,10 @@ export const initSocket = (userId) => {
     socket.on("connect_error", (err) => {
       console.error("⚠️ Socket connection error:", err.message);
     });
-  } else if (userId) {
+  } else if (walletAddress) {
     // ⚠️ agar socket already bana hua hai to bhi join emit kara do
-    socket.emit("join", userId);
-    console.log("🔄 Re-joined room with userId:", userId);
+    socket.emit("join", walletAddress);
+    console.log("🔄 Re-joined room with walletAddress:", walletAddress);
   }
   return socket;
 };

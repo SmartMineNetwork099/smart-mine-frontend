@@ -4,15 +4,17 @@ import { useRouter } from 'next/navigation';
 import { Button } from 'rizzui'
 import { DEFAULT_CURRENCY } from "@/constants/currency";
 import ROUTES from '@/constants/routes';
-import { getUserIdFromWallet } from '@/utils/walletHelpers';
+import { useWalletAddress } from '@/hooks/useWallet';
 const Header = () => {
   const router = useRouter();
-  const userID = getUserIdFromWallet()
+  const walletAddress = useWalletAddress()
+  
   const goHomePage = () => {
     router.push(ROUTES?.STACKING?.DASHBOARD);
   }
   const handleLogout = () => {
-    [`walletData_${userID}`, `token_${userID}`].forEach(key => localStorage.removeItem(key));
+    if(!walletAddress) return;
+    [`walletData_${walletAddress}`, `token_${walletAddress}`].forEach(key => localStorage.removeItem(key));
     router.push(ROUTES?.AUTH?.LOGIN);
   }
   return (

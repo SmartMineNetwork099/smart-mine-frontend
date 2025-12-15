@@ -5,12 +5,12 @@ import HashLoader from "@/components/HashLoader";
 import { Button } from "rizzui/button";
 import Model from "@/components/Model";
 import Card from "@/components/Card";
-import { getUserIdFromWallet, getUserWalletAddress } from "@/utils/walletHelpers";
 import { buyStackingPlans, getAllStackingPlansWithTeamData } from "@/apis/stackingApis";
 import SpinnerLoader from "@/components/SpinnerLoader";
 import { formatAmount } from "@/utils/func";
 import { sendPlatformFee } from "@/utils/paymentHandler";
 import { toast } from "react-toastify";
+import { useWalletAddress } from "@/hooks/useWallet";
 
 const StakingPlansTable = () => {
   const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
@@ -20,8 +20,7 @@ const StakingPlansTable = () => {
   const [loadingBuy, setLoadingBuy] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>({}); // ✅ for dynamic level
 
-  const userId = getUserIdFromWallet();
-  const walletAddress = getUserWalletAddress();
+  const walletAddress = useWalletAddress();
 
   // ✅ Open model and store selected plan level
   const handleModelOpen = (level: number) => {
@@ -45,7 +44,7 @@ const StakingPlansTable = () => {
     // const { feeTxHash, userWalletAddress } = feeResult;
       /////////////////////////////////////
       const buyPlanApi = await buyStackingPlans({
-        userId,
+        walletAddress,
         planId: selectedPlan?._id, // ✅ Dynamic level
         // feeTxHash,
         paymentTxHash: '0x1234567890abcdef',
@@ -71,10 +70,11 @@ const StakingPlansTable = () => {
   };
 
   const getStackingPlans = async (loader = true) => {
+    if(!walletAddress) return;
     if(loader){
         setLoading(true);
     } 
-    const plans = await getAllStackingPlansWithTeamData(userId, walletAddress);
+    const plans = await getAllStackingPlansWithTeamData( walletAddress);
     console.log(plans?.data, 'plans data');
     setPlans(plans?.data || []);
     setLoading(false);
@@ -82,14 +82,16 @@ const StakingPlansTable = () => {
 
   // Handle Responsive 
   useEffect(() => {
-    getStackingPlans();
+    if(walletAddress){
+      getStackingPlans();
+    }
     const handleResize = () => {
       setResponsiveColspan(window.innerWidth <= 640 ? 2 : 7);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [walletAddress]);
 
   return (
     <>

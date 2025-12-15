@@ -5,19 +5,17 @@ import { DEFAULT_CURRENCY } from "@/constants/currency";
 import { uploadToCloudinary } from '@/utils/uploadToCloudinary ';
 import { getUserData, updateUserImage } from '@/apis/user';
 import { toast } from 'react-toastify';
-import { getUserIdFromWallet } from '@/utils/walletHelpers';
 import { FaRegUser } from "react-icons/fa6";
-import { useSearchParams } from 'next/navigation';
 import { getSocket, initSocket } from '@/utils/socket';
 import { formatAmount, formatWalletAddress } from '@/utils/func';
 import Image from 'next/image';
+import { useWalletAddress } from '@/hooks/useWallet';
 
 const WalletData = () => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
     const [walletData, setWalletData] = useState<any>([]);
     const [isMobile, setIsMobile] = useState(false);
-    const [userID, setUserID] = useState<string | null>(null);
-    const searchParams = useSearchParams();
+    const walletAddress = useWalletAddress();
 
     // Handle Image Upload
     const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -27,59 +25,41 @@ const WalletData = () => {
             setProfileImage(imageUrl);
             const imageUrl1 = await uploadToCloudinary(file);
             if (!imageUrl1) return toast.error("Image upload failed. Please try again.");
-            if (!userID) return toast.error("User not found. Please login again.");
-            const imageSaveInDB = await updateUserImage(userID, imageUrl1);
+            if (!walletAddress) return toast.error("walletAddress not found. Please try again.");
+            const imageSaveInDB = await updateUserImage(walletAddress, imageUrl1);
             toast.success("Image uploaded successfully!");
             setProfileImage(imageSaveInDB?.data?.image_url || imageUrl);
-            const getUser = await getUserData(userID);
+            const getUser = await getUserData(walletAddress);
             console.log(getUser,'getUsergetUsergetUsergetUsergetUser')
-            localStorage.setItem(`walletData_${userID}`, JSON.stringify(getUser?.data?.user));
+            localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(getUser?.data?.user));
         }
     };
-    // Fetch user data by id (idParam overrides current state userID)
-    const handleWalletDataFetch = async (idParam?: string | null) => {
-        const id = idParam ?? userID;
-        console.log(id, 'ididididid')
-        if (!id) return;
+    // Fetch user data
+    const handleWalletDataFetch = async () => {
+        if (!walletAddress) return;
         try {
-            const res = await getUserData(id);
+            const res = await getUserData(walletAddress);
             const user = res?.data?.user || {};
             console.log(user,'uuussseer')
             setWalletData(user);
             setProfileImage(user?.image_url || null);
-            localStorage.setItem(`walletData_${id}`, JSON.stringify(user));
+            localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(user));
         } catch (err) {
             console.error("Failed to fetch user data:", err);
             toast.error("Failed to load user data");
         }
     };
 
-    // Init: prefer localStorage, fallback to URL param; listen to storage events
     useEffect(() => {
+       
         const init = async () => {
-            let id = getUserIdFromWallet();
-
-            if (!id) {
-                const urlId = searchParams?.get("userId");
-                if (urlId) {
-                    id = urlId;
-                    // save back to localStorage for future reads
-                    try {
-                        localStorage.setItem("userID", urlId);
-                    } catch (err) {
-                        console.warn("Couldn't write userID to localStorage", err);
-                    }
-                }
-            }
-
-            setUserID(id);
-            if (id) {
-                await handleWalletDataFetch(id);
+            if (walletAddress) {
+                await handleWalletDataFetch();
             }
         };
 
         init();
-    }, []);
+    }, [walletAddress]);
 
     // Detect mobile screen for short address
     useEffect(() => {
@@ -109,7 +89,7 @@ const WalletData = () => {
 
     useEffect(() => {
         // ✅ Ensure socket is always initialized here
-        initSocket(userID);
+        initSocket(walletAddress);
         const socket = getSocket();
         if (!socket) {
             console.warn("⚠️ Socket not initialized yet");
@@ -119,7 +99,7 @@ const WalletData = () => {
         // ✅ Wait until socket is connected before attaching listeners
         const handleConnect = () => {
             console.log("🔌 Socket connected in CollectCoins, attaching wallet listener...");
-            if (userID) {
+            if (walletAddress) {
                 socket.on('walletUpdated', (data: any) => {
                     console.log("💰 Wallet update received:", data);
                     setWalletData(data);
@@ -137,7 +117,7 @@ const WalletData = () => {
             socket.off('walletUpdated');
             socket.off('connect', handleConnect);
         };
-    }, [userID]);
+    }, [walletAddress]);
 
     return (
         <>

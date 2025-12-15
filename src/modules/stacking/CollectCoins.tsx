@@ -2,19 +2,18 @@
 import React from "react";
 import { toast } from "react-toastify";
 import { startMiningApi } from "@/apis/mining";
-import { getUserIdFromWallet, getUserWalletAddress } from "@/utils/walletHelpers";
 import MiningCountdown from "@/components/MiningCountdown ";
 import Card from "@/components/Card";
 import {sendPlatformFee} from "@/utils/paymentHandler";
+import { useWalletAddress } from "@/hooks/useWallet";
+import HashLoader from "@/components/HashLoader";
 
 const CollectCoins = () => {
+    const walletAddress = useWalletAddress();
   const handleClaim = async () => {
     try {
-      const userId = getUserIdFromWallet();
-    //   this wallet address is temporary actual given from sendPlatformFee
-      const userWalletAddress = getUserWalletAddress();
-      if (!userId) {
-        toast.error("User not authenticated.");
+      if(!walletAddress) {
+        toast.error("Wallet address not found.");
         return false;
       }
     // const feeResult = await sendPlatformFee(true);
@@ -26,11 +25,10 @@ const CollectCoins = () => {
     const miningTime = new Date().toISOString();
 
       const payload = {
-        userId,
         amount: 1.00,
         miningTime,
         // feeTxHash,
-        walletAddress: userWalletAddress,
+        walletAddress,
       };
 
       const response = await startMiningApi(payload);
@@ -52,7 +50,13 @@ const CollectCoins = () => {
       <p className="font-semibold sm:font-bold text-xl sm:text-3xl text-white">
         Claim <span className="text-green-500">Reward</span>
       </p>
-      <MiningCountdown handleClaim={handleClaim} />
+    {walletAddress ? (
+  <MiningCountdown
+    handleClaim={handleClaim}
+    walletAddress={walletAddress}
+  />
+) : <HashLoader/>}
+
     </Card>
   );
 };

@@ -8,7 +8,7 @@ import { buyPlans } from "@/apis/plans";
 import HashLoader from "@/components/HashLoader";
 import SpinnerLoader from "@/components/SpinnerLoader";
 import { toast } from "react-toastify";
-import { getUserIdFromWallet } from "@/utils/walletHelpers";
+import { useWalletAddress } from "@/hooks/useWallet";
 
 
 
@@ -34,6 +34,7 @@ const PlansCarousel = ({ plans, loading }: any) => {
     const [selectedPlans, setSelectedPlans] = useState([]);
     const [modelOpen, setModelOpen] = useState(false);
     const [loadingBuy, setLoadingBuy] = useState(false);
+    const walletAddress = useWalletAddress()
 
 
     const togglePlan = (plan: any) => {
@@ -56,17 +57,16 @@ const PlansCarousel = ({ plans, loading }: any) => {
             toast.error("Please select at least one plan to buy.");
             return;
         }
+        if(!walletAddress){
+             toast.error("Please wait while fetching walletAddress.");
+            return;
+        }
         console.log('Buying plans:', selectedPlans);
         try {
             setLoadingBuy(true);
-            const userId = getUserIdFromWallet();
-            // const plansToBuy = selectedPlans?.map((p: any) => ({
-            //     planId: p?._id,
-            //     clientAmount: p?.price,
-            // }));
               const planId = selectedPlans?.map((p: any) => p?._id);
               console.log(planId, 'planIdplanIdplanId')
-            const { data, error } = await buyPlans(userId, planId);
+            const { data, error } = await buyPlans(walletAddress, planId);
 
             if (error) {
                 toast.error(error);

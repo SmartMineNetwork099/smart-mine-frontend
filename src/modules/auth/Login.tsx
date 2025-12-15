@@ -48,9 +48,11 @@ const LoginContent: React.FC = () => {
             if (verifyRes?.data) {
                 console.log(verifyRes?.data, 'verifyRes?.data');
                 const userID = verifyRes.data.userId;
+                const walletAddress = verifyRes?.data?.walletAddress;
                 localStorage.setItem(`userID`, userID);
-                localStorage.setItem(`token_${userID}`, verifyRes.data.token);
-                localStorage.setItem(`walletData_${userID}`, JSON.stringify(verifyRes?.data));
+                localStorage.setItem(`walletAddress`, walletAddress);
+                localStorage.setItem(`token_${walletAddress}`, verifyRes.data.token);
+                localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(verifyRes?.data));
                 router.replace(`${ROUTES?.STACKING?.DASHBOARD}?userId=${userID}`);
                 toast.success(verifyRes?.data?.message);
             }

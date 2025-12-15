@@ -16,7 +16,7 @@ import { MdOutlineInfo } from "react-icons/md";
 import WalletData from '@/components/WalletData';
 import ROUTES from '@/constants/routes';
 import { initSocket } from "@/utils/socket";
-import { getUserIdFromWallet } from '@/utils/walletHelpers';
+import { useWalletAddress } from '@/hooks/useWallet';
 const tabs = [
   { label: 'Stacking', icon: LiaDonateSolid, link: ROUTES?.STACKING?.DASHBOARD },
   { label: 'Binary', icon: TbBinaryTree, link: ROUTES?.BINARY?.DASHBOARD },
@@ -31,17 +31,16 @@ const tabs2 = [
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [tokken, setTokken] = useState<string | null>(null);
-  const userID = getUserIdFromWallet()
+  const walletAddress = useWalletAddress()
 
   useEffect(() => {
-    if (userID) {
-      initSocket(userID);
-    }
-    const token = typeof window !== "undefined" ? localStorage.getItem(`token_${userID}`) : null;
+    if(!walletAddress) return;
+    initSocket(walletAddress);
+    const token = typeof window !== "undefined" ? localStorage.getItem(`token_${walletAddress}`) : null;
     if (token) {
       setTokken(token);
     }
-  }, [userID]);
+  }, [ walletAddress]);
 
 
   const pathname = usePathname();

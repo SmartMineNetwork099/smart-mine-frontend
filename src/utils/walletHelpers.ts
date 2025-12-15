@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { toast } from "react-toastify";
 
+
 // ✅ opBNB Mainnet Chain Info
 export const OPBNB_CHAIN_ID_HEX = "0xcc"; // 204 in hex
 export const OPBNB_CHAIN_ID_DEC = 204;
@@ -119,50 +120,78 @@ export const checkAndSwitchNetwork = async (
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // utils/walletHelpers.ts
-export const getUserIdFromWallet = (): string | null => {
+// export const getUserIdFromWallet = (): string | null => {
+//   try {
+//     if (typeof window === "undefined") return null; // 🛡️ SSR Guard
+//     // 1️⃣ Try from localStorage
+//     const userID = localStorage.getItem("userID");
+
+//     if (userID) {
+//       const walletData = JSON.parse(localStorage.getItem(`walletData_${userID}`) || "{}");
+//       return walletData?.userId || userID; // prefer walletData.userId but fallback to raw
+//     }
+
+//     // 2️⃣ If not in localStorage, fallback to URL param
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const urlUserId = urlParams.get("userId");
+//     console.log("urlUserId", urlUserId);
+//     if (urlUserId) {
+//       try {
+//         localStorage.setItem("userID", urlUserId);
+//       } catch (e) {
+//         console.warn("Could not save userID to localStorage", e);
+//       }
+//       const walletData = JSON.parse(localStorage.getItem(`walletData_${urlUserId}`) || "{}");
+//       return walletData?.userId || urlUserId;
+//     }
+
+//     return null;
+//   } catch (error) {
+//     console.error("getUserIdFromWallet error:", error);
+//     return null;
+//   }
+// };
+
+
+export const getUserWalletAddress = async() => {
   try {
-    if (typeof window === "undefined") return null; // 🛡️ SSR Guard
-    // 1️⃣ Try from localStorage
-    const userID = localStorage.getItem("userID");
-
-    if (userID) {
-      const walletData = JSON.parse(localStorage.getItem(`walletData_${userID}`) || "{}");
-      return walletData?.userId || userID; // prefer walletData.userId but fallback to raw
-    }
-
-    // 2️⃣ If not in localStorage, fallback to URL param
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlUserId = urlParams.get("userId");
-    console.log("urlUserId", urlUserId);
-    if (urlUserId) {
-      try {
-        localStorage.setItem("userID", urlUserId);
-      } catch (e) {
-        console.warn("Could not save userID to localStorage", e);
-      }
-      const walletData = JSON.parse(localStorage.getItem(`walletData_${urlUserId}`) || "{}");
-      return walletData?.userId || urlUserId;
-    }
-
-    return null;
-  } catch (error) {
-    console.error("getUserIdFromWallet error:", error);
-    return null;
-  }
+     if (!window.ethereum) {
+          return { success: false, message: "Wallet provider not found." };
+        }
+    
+        // Initialize provider and signer
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+    
+        // Get connected wallet address
+        const userWalletAddress = await signer.getAddress();
+        if(!userWalletAddress) {
+          return { success: false, message: "Unable to get wallet address." };
+        }
+         return {
+      success: true,
+      userWalletAddress
+    };
+  } catch (error:any) {
+     return {
+      success: false,
+      message: error.message || "Something went wrong"
+  };
+}
 };
 
-export const getUserWalletAddress = (): string | null => {
-  try {
-    if (typeof window === "undefined") return null; // 🛡️ SSR Guard
-    // 1️⃣ Get userId first (use above function so fallback works automatically)
-    const userID = getUserIdFromWallet();
-    if (!userID) return null;
+// export const getUserWalletAddress2 = (): string | null => {
+//   try {
+//     if (typeof window === "undefined") return null; // 🛡️ SSR Guard
+//     // 1️⃣ Get userId first (use above function so fallback works automatically)
+//     const userID = getUserIdFromWallet();
+//     if (!userID) return null;
 
-    // 2️⃣ Read walletData from storage
-    const walletData = JSON.parse(localStorage.getItem(`walletData_${userID}`) || "{}");
-    return walletData?.walletAddress || null;
-  } catch (error) {
-    console.error("getUserWalletAddress error:", error);
-    return null;
-  }
-};
+//     // 2️⃣ Read walletData from storage
+//     const walletData = JSON.parse(localStorage.getItem(`walletData_${userID}`) || "{}");
+//     return walletData?.walletAddress || null;
+//   } catch (error) {
+//     console.error("getUserWalletAddress error:", error);
+//     return null;
+//   }
+// };

@@ -4,22 +4,15 @@ import StakingTable from '@/components/tables/StakingTable';
 import { getReferralsAtLevel } from '@/apis/user';
 import Pagination from '@/components/Pagination';
 // import { getSocket, initSocket } from "@/utils/socket";
-import { getUserIdFromWallet } from '@/utils/walletHelpers';
+import { useWalletAddress } from '@/hooks/useWallet';
 // import { toast } from 'react-toastify';
 
 
 const YourCommunity = () => {
     const [tableData, setTableData] = useState<any>([]);
-    const [walletAddress, setWalletAddress] = useState('');
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);
-    const userID = getUserIdFromWallet();
-
-    useEffect(() => {
-        const walletDataString = localStorage.getItem(`walletData_${userID}`);
-        const referralLink = walletDataString ? JSON.parse(walletDataString) : null;
-        setWalletAddress(referralLink?.walletAddress)
-    }, [userID]);
+    const walletAddress = useWalletAddress();
 
     const getLevelData = async (LevelNumber: number = 1) => {
         if (!walletAddress) return;
@@ -43,12 +36,12 @@ const YourCommunity = () => {
 
     // 👇 Unified real-time listener for wallet + status updates
     // useEffect(() => {
-    //     if (!userID) {
-    //         toast.warn('userID not find.....')
+    //     if (!walletAddress) {
+    //         toast.warn('walletAddress not find.....')
     //         return;
     //     }
     //     // ✅ Ensure socket is always initialized here
-    //     initSocket(userID);
+    //     initSocket(walletAddress);
     //     const socket = getSocket();
     //     if (!socket) {
     //         console.warn("⚠️ Socket not initialized yet");
@@ -69,7 +62,7 @@ const YourCommunity = () => {
     //         );
 
     //         // 📝 Optional: update localStorage walletData if current user matches
-    //         const walletDataString = localStorage.getItem(`walletData_${userID}`);
+    //         const walletDataString = localStorage.getItem(`walletData_${walletAddress}`);
     //         if (walletDataString) {
     //             const parsed = JSON.parse(walletDataString);
     //             if (parsed._id === data.userId || parsed._id === data._id) {
@@ -79,7 +72,7 @@ const YourCommunity = () => {
     //                     status: data.status ?? parsed.status,
     //                     miningTime: data.miningTime ?? parsed.miningTime
     //                 };
-    //                 localStorage.setItem(`walletData_${userID}`, JSON.stringify(updated));
+    //                 localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(updated));
     //             }
     //         }
     //     });

@@ -5,11 +5,11 @@ import { Button } from "rizzui/button";
 import Model from "@/components/Model";
 import SingleUserData from "@/modules/binary/communityTree/SingleUserData";
 import { getBinaryTree } from "@/apis/binaryApis";
-import { getUserIdFromWallet } from "@/utils/walletHelpers";
 import { toast } from "react-toastify";
 import HashLoader from "@/components/HashLoader";
 import { FaAngleLeft } from "react-icons/fa6";
 import { Input } from "rizzui/input";
+import { useWalletAddress } from "@/hooks/useWallet";
 
 interface TreeNode {
   id: string;
@@ -76,7 +76,7 @@ const UserNode = ({ child , id, onClickModel, onClickTree, disabled = false }:an
       </div>
       {modelOpen && (
         <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`User Detail`} className="" size='lg'>
-          <SingleUserData id={id} base36NodeId={child?.base36NodeId}/>
+          <SingleUserData id={id}/>
         </Model>
       )}
 
@@ -168,6 +168,7 @@ const BinaryTree = () => {
    // New states for search
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchMode, setSearchMode] = useState(false);
+  const walletAddress = useWalletAddress();
 
   const handleNodeClick = (node: TreeNode) => {
     // push current root onto history stack so user can go back
@@ -176,13 +177,17 @@ const BinaryTree = () => {
   };
 
   const getBinaryTreeData = async (searchId?: string ) =>{
+    if (!walletAddress){
+      toast.error("Please wait while fetching walletAddress.");
+      return;
+    }
+
     setLoading(true)
-  const defaultUserId = getUserIdFromWallet();
 
   // decide what to send in payload
   const payload = searchId
     ? { base36NodeId: searchId }
-    : { userId: defaultUserId };
+    : {  walletAddress };
     const data = await getBinaryTree(payload);
     console.log(data?.data?.success, 'tree_successsuccesssuccess')
     console.log(data?.data?.tree, 'tree_dataaaaaaa123321')
@@ -199,7 +204,7 @@ const BinaryTree = () => {
   }
   useEffect(() => {
     getBinaryTreeData()
-  }, [])
+  }, [walletAddress])
    // Search handler
   const handleSearch = () => {
      const trimmed = searchValue.trim();

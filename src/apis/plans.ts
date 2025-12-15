@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 const API = process.env.NEXT_PUBLIC_API_BASE as string;
 
-export const getPlans = async (userId:any) => {
+export const getPlans = async (walletAddress:any) => {
     try {
-        const res = await axios.get<any>(`${API}/api/binary/plans/getAllPlans/${userId}`);
+        const res = await axios.get<any>(`${API}/api/binary/plans/getAllPlans/${walletAddress}`);
         console.log(res, 'resresres11111232getAllPlansgetAllPlans')
         if(res?.data?.success){
         return { data: res?.data?.plans , error: null };
@@ -16,18 +16,14 @@ export const getPlans = async (userId:any) => {
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
-export const buyPlans = async (userId: any, planId: any) => {
+export const buyPlans = async (walletAddress: any, planId: any) => {
     try {
-        const token = typeof window !== "undefined" ? localStorage.getItem(`token_${userId}`) : null;
+        const token = typeof window !== "undefined" ? localStorage.getItem(`token_${walletAddress}`) : null;
         if (!token) {
             return { data: null, error: "User is not authenticated." };
         }
-        // const payload = {
-        //  userId,
-        //  levels,
-        // };
-        const res = await axios.post<any>(`${API}/api/binary/plans/buy/${userId}`,
-           planId,
+        const res = await axios.post<any>(`${API}/api/binary/plans/buy/${walletAddress}`,
+            planId,
             { headers: { Authorization: `Bearer ${token}` } }
 
         );

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import { getUserIdFromWallet } from "@/utils/walletHelpers";
 import { toast } from "react-toastify";
 import { formatTime } from "@/utils/func";
 import { MiningTimeApi } from "@/apis/mining";
@@ -10,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 
 interface MiningCountdownProps {
   handleClaim?: () => Promise<boolean>;
+  walletAddress?: string;
 }
 
 interface WalletData {
@@ -18,25 +18,25 @@ interface WalletData {
 
 const NEXT_CYCLE_KEY = "nextCycleTime";
 
-const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
-  // ✅ Single consistent userId (instant from localStorage)
-  const [userId, setUserId] = useState<string | null>(() => getUserIdFromWallet());
+const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim , walletAddress='' }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [isMining, setIsMining] = useState(false);
   const [loading, setLoading] = useState(false);
   const [walletData, setWalletData] = useState<WalletData | null>(null);
   const searchParams = useSearchParams();
+  
 
   const radius = 150;
   const circumference = 2 * Math.PI * radius;
+  
 
   // ✅ Fetch next cycle time from backend
   const fetchNextCycle = async () => {
     try {
       console.log("📡 Fetching next cycle time...");
       const res = await MiningTimeApi();
-      if (userId) {
-        localStorage.setItem(`${NEXT_CYCLE_KEY}_${userId}`, res?.data?.nextCycle);
+      if (walletAddress) {
+        localStorage.setItem(`${NEXT_CYCLE_KEY}_${walletAddress}`, res?.data?.nextCycle);
       }
       return res?.data?.nextCycle;
     } catch (err) {
@@ -44,33 +44,17 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
     }
   };
 
-  // ✅ Ensure userId available (from localStorage or URL param)
-  useEffect(() => {
-    if (!userId) {
-      const urlId = searchParams?.get("userId");
-      if (urlId) {
-        setUserId(urlId);
-        try {
-          localStorage.setItem("userID", urlId);
-        } catch (err) {
-          console.warn("⚠️ Couldn't write userID to localStorage", err);
-        }
-      }
-    }
-  }, [userId, searchParams]);
-
   // ✅ Timer setup
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
     const initTimer = async () => {
-      if (!userId) {
-        console.warn("⚠️ User ID not ready yet — skipping timer init");
+      if (!walletAddress) {
+        console.warn("⚠️ walletAddress not ready yet — skipping timer init");
         return;
       }
 
-      let nextCycle = localStorage.getItem(`${NEXT_CYCLE_KEY}_${userId}`);
-      console.log("👤 userId:", userId);
+      let nextCycle = localStorage.getItem(`${NEXT_CYCLE_KEY}_${walletAddress}`);
       console.log("⏱️ Next Cycle from localStorage:", nextCycle);
 
       if (!nextCycle) {
@@ -85,7 +69,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
 
         if (diff <= 0) {
           clearInterval(timer);
-          localStorage.removeItem(`${NEXT_CYCLE_KEY}_${userId}`);
+          localStorage.removeItem(`${NEXT_CYCLE_KEY}_${walletAddress}`);
           nextCycle = await fetchNextCycle();
           setTimeLeft(0);
           setIsMining(false);
@@ -99,7 +83,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
 
     initTimer();
     return () => clearInterval(timer);
-  }, [userId]);
+  }, [ walletAddress]);
 
   // ✅ Calculate progress
   const percentage =
@@ -108,6 +92,10 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
 
   // ✅ Mining start logic
   const startMining = async () => {
+    if(!walletAddress) {
+      toast.error("Please wait fetching Wallet Address.");
+      return;
+    }
     setLoading(true);
 
     if (walletData?.status === "active") {
@@ -133,17 +121,17 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
 
   // ✅ Load wallet data
   useEffect(() => {
-    if (!userId) return;
-    const data = localStorage.getItem(`walletData_${userId}`);
+    if (!walletAddress) return;
+    const data = localStorage.getItem(`walletData_${walletAddress}`);
     const userWalletData = data ? JSON.parse(data) : null;
     setWalletData(userWalletData);
-  }, [userId]);
+  }, [walletAddress]);
 
   // ✅ Setup socket listener
   useEffect(() => {
-    if (!userId) return;
+    if (!walletAddress) return;
 
-    initSocket(userId);
+    initSocket(walletAddress);
     const socket = getSocket();
     if (!socket) {
       console.warn("⚠️ Socket not initialized yet");
@@ -165,7 +153,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
       socket.off("walletUpdated");
       socket.off("connect", handleConnect);
     };
-  }, [userId]);
+  }, [walletAddress]);
 
   // ✅ UI
   return (
@@ -177,7 +165,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim }) => {
             : "cursor-pointer"
         }`}
         onClick={() => {
-          if (!loading && walletData?.status?.toLowerCase() !== "active")
+          if (!loading && walletData?.status?.toLowerCase() !== "active" && !walletAddress)
             startMining();
         }}
       >
