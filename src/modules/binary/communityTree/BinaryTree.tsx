@@ -203,7 +203,9 @@ const BinaryTree = () => {
     setLoading(false)
   }
   useEffect(() => {
-    getBinaryTreeData()
+    if(walletAddress){
+      getBinaryTreeData()
+    }
   }, [walletAddress])
    // Search handler
   const handleSearch = () => {
