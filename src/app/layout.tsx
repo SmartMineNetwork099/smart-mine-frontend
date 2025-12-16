@@ -37,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     if(!walletAddress) return;
     initSocket(walletAddress);
     const token = typeof window !== "undefined" ? localStorage.getItem(`token_${walletAddress}`) : null;
+
     if (token) {
       setTokken(token);
     }
@@ -53,7 +54,7 @@ const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/bi
         <div className='w-full bg-black min-h-screen'>
 
           {/* ✅ Show only when tokken exists */}
-          {tokken && !isAuthRoute && (
+          { !isAuthRoute && (
             <>
               <Header />
 
