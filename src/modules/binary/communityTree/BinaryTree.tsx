@@ -189,12 +189,18 @@ const BinaryTree = () => {
     ? { base36NodeId: searchId }
     : {  walletAddress };
     const data = await getBinaryTree(payload);
+    console.log(data?.data, 'tree_datatatat')
     console.log(data?.data?.success, 'tree_successsuccesssuccess')
     console.log(data?.data?.tree, 'tree_dataaaaaaa123321')
     if(data?.data?.success){
       setRootNode(data?.data?.tree || null)
+      toast.success(data?.data?.message);
       // reset history when loading fresh tree
       setHistoryStack([])
+    }
+    if(data?.data?.success === false){
+      setRootNode(null)
+      toast.error(data?.data?.message);
     }
     if(data?.error){
       setRootNode(null)

@@ -11,12 +11,12 @@ import { LiaDonateSolid } from "react-icons/lia";
 import { usePathname } from 'next/navigation';
 import { RiDashboardHorizontalLine } from "react-icons/ri";
 import { RiTeamLine } from 'react-icons/ri';
-
 import { MdOutlineInfo } from "react-icons/md";
 import WalletData from '@/components/WalletData';
 import ROUTES from '@/constants/routes';
 import { initSocket } from "@/utils/socket";
 import { useWalletAddress } from '@/hooks/useWallet';
+import { silentLogin } from '@/apis/auth';
 const tabs = [
   { label: 'Stacking', icon: LiaDonateSolid, link: ROUTES?.STACKING?.DASHBOARD },
   { label: 'Binary', icon: TbBinaryTree, link: ROUTES?.BINARY?.DASHBOARD },
@@ -30,18 +30,57 @@ const tabs2 = [
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [tokken, setTokken] = useState<string | null>(null);
+  const [accessToken ,  setAccessToken] = useState<string | null>(null);
   const walletAddress = useWalletAddress()
 
-  useEffect(() => {
-    if(!walletAddress) return;
-    initSocket(walletAddress);
-    const token = typeof window !== "undefined" ? localStorage.getItem(`token_${walletAddress}`) : null;
+useEffect(() => {
+  if (!walletAddress) return;
 
-    if (token) {
-      setTokken(token);
+  const ethereum = typeof window !== "undefined" ? (window as any).ethereum : null;
+
+  // 🔹 Init socket
+  initSocket(walletAddress);
+
+  // 🔹 Get accessToken_ from localStorage
+  const accessToken=
+    typeof window !== "undefined"
+      ? localStorage.getItem(`accessToken_${walletAddress}`)
+      : null;
+
+  if (accessToken) {
+    setAccessToken(accessToken);
+  }
+
+  // 🔹 Silent login (initial)
+  // const init = async () => {
+  //   if (!ethereum) return;
+  //   await silentLogin(walletAddress);
+  // };
+
+  // init();
+
+  // 🔹 Wallet switch listener
+  const handleAccountsChanged = async (accounts: string[]) => {
+    const newWallet = accounts?.[0];
+    const currentWallet = localStorage.getItem("activeWallet");
+
+    if (newWallet && newWallet !== currentWallet) {
+      await silentLogin(newWallet);
     }
-  }, [ walletAddress]);
+  };
+
+  if (ethereum) {
+    ethereum.on("accountsChanged", handleAccountsChanged);
+  }
+
+  // 🔹 Cleanup
+  return () => {
+    if (ethereum) {
+      ethereum.removeListener("accountsChanged", handleAccountsChanged);
+    }
+  };
+}, [walletAddress]);
+
 
 
   const pathname = usePathname();

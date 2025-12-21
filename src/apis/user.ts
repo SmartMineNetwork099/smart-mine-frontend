@@ -1,5 +1,5 @@
-import axios, { AxiosError } from "axios";
-const API = process.env.NEXT_PUBLIC_API_BASE as string;
+import  { AxiosError } from "axios";
+import api from "./axios.js"
 export interface Wallet {
     balance: number;
     miningEarnings: number;
@@ -23,7 +23,7 @@ export const getReferralsAtLevel = async (
     level: number,
 ) => {
     try {
-        const res = await axios.post<{ token: string, message: string }>(`${API}/api/auth/referrals-level`, {
+        const res = await api.post<{ accessToken_: string, message: string }>(`/api/auth/referrals-level`, {
             walletAddress,
             level,
         });
@@ -38,7 +38,7 @@ export const updateUserImage = async (
     imageUrl: string,
 ) => {
     try {
-        const res = await axios.post<{ token: string, message: string, image_url: string }>(`${API}/api/auth/update-image`, {
+        const res = await api.post<{ accessToken_: string, message: string, image_url: string }>(`/api/auth/update-image`, {
             walletAddress,
             imageUrl,
         });
@@ -56,7 +56,7 @@ export const getUserData = async (
     walletAddress: string,
 ) => {
     try {
-        const res = await axios.get<any>(`${API}/api/auth/getUserByWalletAddress/${walletAddress}`);
+        const res = await api.get<any>(`/api/auth/getUserByWalletAddress/${walletAddress}`);
         console.log(res, 'resresres1111')
         if (res.status !== 200) {
             return { data: null, error: "Failed to fetch user data. Please try again." };
@@ -72,7 +72,7 @@ export const getUserData = async (
 export const getTeamStats = async (walletAddress: string) => {
     try {
         // Send walletAddress in the body
-        const res = await axios.post(`${API}/api/stacking/getTeamStats`, {
+        const res = await api.post(`/api/stacking/getTeamStats`, {
             walletAddress,
         });
 

@@ -9,12 +9,13 @@ export default function Home() {
     const walletAddress = useWalletAddress()
     useEffect(() => {
         if(!walletAddress) return;
-        const token = typeof window !== "undefined" ? localStorage.getItem(`token_${walletAddress}`) : null;
-        if (token) {
+        const accessToken = typeof window !== "undefined" ? localStorage.getItem(`accessToken_${walletAddress}`) : null;
+        if (accessToken) {
             router.replace(ROUTES?.STACKING?.DASHBOARD);
-        } else {
-            router.replace(ROUTES?.AUTH?.LOGIN);
         }
+        //  else {
+            // router.replace(ROUTES?.AUTH?.LOGIN);
+        // }
     }, [router , walletAddress]);
     return null;
 }

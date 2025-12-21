@@ -5,6 +5,8 @@ import { Button } from 'rizzui'
 import { DEFAULT_CURRENCY } from "@/constants/currency";
 import ROUTES from '@/constants/routes';
 import { useWalletAddress } from '@/hooks/useWallet';
+import { logout } from '@/apis/auth';
+import { toast } from 'react-toastify';
 const Header = () => {
   const router = useRouter();
   const walletAddress = useWalletAddress()
@@ -12,10 +14,20 @@ const Header = () => {
   const goHomePage = () => {
     router.push(ROUTES?.STACKING?.DASHBOARD);
   }
-  const handleLogout = () => {
+  const handleLogout = async() => {
     if(!walletAddress) return;
-    [`walletData_${walletAddress}`, `token_${walletAddress}`].forEach(key => localStorage.removeItem(key));
-    router.push(ROUTES?.AUTH?.LOGIN);
+    try {
+      const res =await logout();
+      console.log("logout res", res);
+      toast.success(res?.message || "Logged out successfully");
+    } catch (error) {
+      console.log("logout error", error);
+    }finally{
+      [`walletData_${walletAddress}`, `accessToken_${walletAddress}` , 'activeWallet'].forEach(key => localStorage.removeItem(key));
+      router.push(ROUTES?.AUTH?.LOGIN);
+
+    }
+   
   }
   return (
     <>

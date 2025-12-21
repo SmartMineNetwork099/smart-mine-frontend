@@ -1,9 +1,9 @@
-import axios, { AxiosError } from "axios";
-const API = process.env.NEXT_PUBLIC_API_BASE as string;
+import  { AxiosError } from "axios";
+import api from "./axios.js"
 
 export const getAllStackingPlansWithTeamData = async ( walletAddress:any) => {
     try {
-        const res = await axios.post<any>(`${API}/api/stacking/getAllStackingPlansWithTeamData`,{
+        const res = await api.post<any>(`/api/stacking/getAllStackingPlansWithTeamData`,{
               walletAddress
         });
         console.log(res, 'resresres11111232getAllStackingPlansgetAllStackingPlans')
@@ -20,7 +20,7 @@ export const getAllStackingPlansWithTeamData = async ( walletAddress:any) => {
 };
 export const buyStackingPlans = async ({ planId , feeTxHash ,walletAddress}:any) => {
     try {
-        const res = await axios.post<any>(`${API}/api/stacking/buyStackingPlan`,{
+        const res = await api.post<any>(`/api/stacking/buyStackingPlan`,{
              planId , feeTxHash ,walletAddress
         });
         console.log(res, 'resresres11111232buyStackingPlansbuyStackingPlans')

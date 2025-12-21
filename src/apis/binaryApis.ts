@@ -1,10 +1,10 @@
-import axios, { AxiosError } from "axios";
-const API = process.env.NEXT_PUBLIC_API_BASE as string;
+import { AxiosError } from "axios";
+import api from "./axios.js"
 
 export const getBinaryTree = async (payload:any) => {
     console.log(payload, 'payloadpayloadpayloadpayload')
   try {
-    const res = await axios.post<any>(`${API}/api/binary/tree`, payload);
+    const res = await api.post<any>(`/api/binary/tree`, payload);
     return { data: res?.data, error: null };
   } catch (err:any) {
     console.error('Error in getBinaryTree:', err);
@@ -14,7 +14,7 @@ export const getBinaryTree = async (payload:any) => {
 export const getBinaryMyIds = async ({walletAddress , currentLevel ,paginationCurrentPage }:any) => {
     console.log(walletAddress , currentLevel , 'walletAddresswalletAddresswalletAddresscurrentLevelcurrentLevel')
     try {
-        const res = await axios.post<any>(`${API}/api/binary/getBinaryMyIds`,{
+        const res = await api.post<any>(`/api/binary/getBinaryMyIds`,{
             walletAddress , currentLevel , paginationCurrentPage
         },
     {
@@ -37,7 +37,7 @@ export const getBinaryMyIds = async ({walletAddress , currentLevel ,paginationCu
 export const getUserByIDAndPosition = async (walletAddress : any , nodeID :any) => {
     console.log(walletAddress , nodeID , 'userIdplanLeveluserIdplanLevelgetBinaryMyIds')
     try {
-        const res = await axios.post<any>(`${API}/api/binary/getUserByIDAndPosition`,{
+        const res = await api.post<any>(`/api/binary/getUserByIDAndPosition`,{
             walletAddress , nodeID 
         },
     {
@@ -60,7 +60,7 @@ export const getUserByIDAndPosition = async (walletAddress : any , nodeID :any) 
 export const getNodesByPositionAndLevel = async (level:any , position:any , paginationCurrentPage:any) => {
     console.log(level , 'userIdplanLeveluserIdplanLevelgetBinaryMyIds')
     try {
-        const res = await axios.post<any>(`${API}/api/binary/getNodesByPositionAndLevel`,{
+        const res = await api.post<any>(`/api/binary/getNodesByPositionAndLevel`,{
             level , position , paginationCurrentPage
         },
     {

@@ -7,7 +7,11 @@ export const useWalletAddress = () => {
 
   useEffect(() => {
     getUserWalletAddress().then(res => {
-      if (res?.success) setWallet(res?.userWalletAddress || null);
+      if (res?.success){
+        const walletAddress = res?.userWalletAddress || null;
+        setWallet(walletAddress);
+        localStorage.setItem("activeWallet", walletAddress || "");
+      } 
     });
   }, []);
 

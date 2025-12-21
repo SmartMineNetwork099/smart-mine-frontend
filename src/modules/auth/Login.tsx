@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 
 const LoginContent: React.FC = () => {   
     const [loading, setLoading] = useState<boolean>(false);
-    const [token, setToken] = useState<any>(null);
+    const [accessToken, setAccessToken] = useState<any>(null);
     const router = useRouter();
     const searchParams = useSearchParams();
     const ref = searchParams.get("ref");
@@ -45,17 +45,18 @@ const LoginContent: React.FC = () => {
                 return;
             }
             console.log("verifyRes", verifyRes);
-            // ✅ Step 6: Save token
+            // ✅ Step 6: Save accessToken
             if (verifyRes?.data) {
                 console.log(verifyRes?.data, 'verifyRes?.data');
                 const userID = verifyRes.data.userId;
                 const walletAddress = verifyRes?.data?.walletAddress;
-                const token = verifyRes.data.token;
+                const accessToken = verifyRes.data.accessToken;
                 localStorage.setItem(`userID`, userID);
                 localStorage.setItem(`walletAddress`, walletAddress);
-                localStorage.setItem(`token_${walletAddress}`, token);
+                localStorage.setItem(`accessToken_${walletAddress}`, accessToken);
+                localStorage.setItem(`activeWallet`, walletAddress);
                 localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(verifyRes?.data));
-                setToken(token);
+                setAccessToken(accessToken);
                 router.replace(`${ROUTES?.STACKING?.DASHBOARD}?userId=${userID}`);
                 toast.success(verifyRes?.data?.message);
             }
