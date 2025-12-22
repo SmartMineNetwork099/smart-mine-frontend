@@ -15,7 +15,7 @@ type TableProps = {
     setPaginationCurrentPage ?: any;
 };
 
-const BinaryMyIdsDetailTable = ({ data=[], loading = true , currentPage=1,totalPaginationPages =0,paginationCurrentPage = 0 , setPaginationCurrentPage=1,totalNumberOfNodesAtCurrentLevel=1  }: TableProps) => {
+const BinaryMyIdsDetailTable = ({ data=[], loading = true , currentPage=1,totalPaginationPages =0,paginationCurrentPage = 1 , setPaginationCurrentPage=1,totalNumberOfNodesAtCurrentLevel=1  }: TableProps) => {
     const [selected, setSelected] = useState<any>("All");
     const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
     

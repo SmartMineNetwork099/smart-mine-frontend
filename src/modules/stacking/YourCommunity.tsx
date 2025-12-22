@@ -80,7 +80,7 @@ const YourCommunity = () => {
     //     return () => {
     //         socket.off("statusUpdated");
     //     };
-    // }, []);
+    // }, [walletAddress]);
 
     return (
         <div className='p-4'>

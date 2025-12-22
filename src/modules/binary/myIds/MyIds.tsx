@@ -12,7 +12,7 @@ const MyIds = () => {
     const [tableData, setTableData] = useState<any>([]);
     const [totalNumberOfNodes, setTotalNumberOfNodes] = useState<number>(0);
     const [page, setPage] = useState(1);
-    const [paginationCurrentPage, setPaginationCurrentPage] = useState <any>(0);
+    const [paginationCurrentPage, setPaginationCurrentPage] = useState <any>(1);
     const [totalPaginationPages , setTotalPaginationPages ] = useState(1);
     const [totalNumberOfNodesAtCurrentLevel , setTotalNumberOfNodesAtCurrentLevel ] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);

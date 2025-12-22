@@ -7,7 +7,7 @@ const MyIdsDetail = ({userID , nodeID , position}) => {
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [tableData, setTableData] = useState([]);
-    const [paginationCurrentPage, setPaginationCurrentPage] = useState(0);
+    const [paginationCurrentPage, setPaginationCurrentPage] = useState(1);
     const [totalPaginationPages , setTotalPaginationPages ] = useState(1);
     const [totalNumberOfNodesAtCurrentLevel , setTotalNumberOfNodesAtCurrentLevel ] = useState(1);
 

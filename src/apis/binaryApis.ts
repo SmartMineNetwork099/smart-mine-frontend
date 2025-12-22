@@ -11,7 +11,7 @@ export const getBinaryTree = async (payload:any) => {
     return { data: null, error: err.response?.data?.error ?? "Error, try again." };
   }
 };
-export const getBinaryMyIds = async ({walletAddress , currentLevel ,paginationCurrentPage }:any) => {
+export const getBinaryMyIds = async ({walletAddress , currentLevel ,paginationCurrentPage=1 }:any) => {
     console.log(walletAddress , currentLevel , 'walletAddresswalletAddresswalletAddresscurrentLevelcurrentLevel')
     try {
         const res = await api.post<any>(`/api/binary/getBinaryMyIds`,{
@@ -57,7 +57,7 @@ export const getUserByIDAndPosition = async (walletAddress : any , nodeID :any) 
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
-export const getNodesByPositionAndLevel = async (level:any , position:any , paginationCurrentPage:any) => {
+export const getNodesByPositionAndLevel = async (level:any , position:any , paginationCurrentPage:any =1) => {
     console.log(level , 'userIdplanLeveluserIdplanLevelgetBinaryMyIds')
     try {
         const res = await api.post<any>(`/api/binary/getNodesByPositionAndLevel`,{
