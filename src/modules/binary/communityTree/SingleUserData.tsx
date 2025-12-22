@@ -58,7 +58,7 @@ const SingleUserData = ({id }) => {
     },
     {
         name: 'Community Size',
-        transactions: String(userData?.communitySize) || 'N/A',
+        transactions: String(userData?.belowTotalNodes) || '0',
     },
 
 ];
