@@ -101,7 +101,8 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                             <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[130px]">ID</th>
                             {/* <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[120px] ">Position</th> */}
                             <th className="px-2 sm:px-4 py-2 w-[60px] sm:w-[100px]">Level</th>
-                            <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[150px]">Income</th>
+                            {/* <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[150px]">Total Income</th> */}
+                            <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[150px]">Net Profit</th>
                             {currentPage === 10 && 
                             <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[100px]">Status</th>
                             }
@@ -135,7 +136,8 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.base36NodeId ?? "-"}</td>
                                     {/* <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.position ?? "-"}</td> */}
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.planName ?? 'N/A'}</td>
-                                    <td className={`px-2 sm:px-4 py-2 whitespace-nowrap ${responsiveColspan===2 && 'text-end'}`}>{Number(row?.earnedIncome) ?? 0}</td>
+                                    {/* <td className={`px-2 sm:px-4 py-2 whitespace-nowrap ${responsiveColspan===2 && 'text-end'}`}>{Number(row?.earnedIncome) ?? 0}$</td> */}
+                                    <td className={`px-2 sm:px-4 py-2 whitespace-nowrap ${responsiveColspan===2 && 'text-end'}`}>{Number(row?.netEarnedIncome) ?? 0}$</td>
                                      {currentPage === 10 && (
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
                                         <span

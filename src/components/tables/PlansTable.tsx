@@ -45,7 +45,7 @@ const PlansTable = ({ plans, loading=true }: any) => {
                         <th className="px-4 py-2 w-[95px] sm:w-[150px]">Rank</th>
                         <th className="px-4 py-2 w-[100px] sm:w-[110px] ">Team Members</th>
                         <th className="px-4 py-2 w-[90px] sm:w-[100px] text-end ">Plan Price</th>
-                        <th className="px-4 py-2 w-[120px] sm:w-[130px] text-end  ">Next Plan Price</th>
+                        <th className="px-4 py-2 w-[120px] sm:w-[130px] text-end  ">Upgrade</th>
                         <th className="px-4 py-2 w-[120px] sm:w-[100px] text-end">Total Income</th>
                         <th className="px-4 py-2 w-[110px] sm:w-[100px] text-end">Net Profit</th>
                     </tr>
