@@ -6,6 +6,7 @@ import { formatTime } from "@/utils/func";
 import { MiningTimeApi } from "@/apis/mining";
 import { getSocket, initSocket } from "@/utils/socket";
 import { useSearchParams } from "next/navigation";
+import Messages from "@/constants/messages";
 
 interface MiningCountdownProps {
   handleClaim?: () => Promise<boolean>;
@@ -93,26 +94,26 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim , walletA
   // ✅ Mining start logic
   const startMining = async () => {
     if(!walletAddress) {
-      toast.error("Please wait fetching Wallet Address.");
+      toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address'));
       return;
     }
     setLoading(true);
 
     if (walletData?.status === "active") {
-      toast.error("⚠️ You have already mined today. Try again after reset!");
+      toast.error(Messages?.ALREADY_MESSAGE("mined today. Try again after reset!"));
       setLoading(false);
       return;
     }
 
     if (timeLeft <= 0) {
-      toast.error("⏳ Please wait for the next cycle to start.");
+      toast.error(Messages?.WAIT_MESSAGE('for the next cycle to start.'));
       setLoading(false);
       return;
     }
 
     const success = await handleClaim?.();
     if (success) {
-      toast.success("✅ Mining started successfully!");
+      toast.success(Messages?.SUCCESSFULLY_MESSAGE("✅ Mining started"));
       setIsMining(true);
     }
 

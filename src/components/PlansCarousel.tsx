@@ -9,6 +9,7 @@ import HashLoader from "@/components/HashLoader";
 import SpinnerLoader from "@/components/SpinnerLoader";
 import { toast } from "react-toastify";
 import { useWalletAddress } from "@/hooks/useWallet";
+import Messages from "@/constants/messages";
 
 
 
@@ -54,11 +55,11 @@ const PlansCarousel = ({ plans, loading }: any) => {
     const totalAmount = selectedPlans.reduce((sum: any, p: any) => sum + p.singleUserUpgradeAmount, 0);
     const handleBuyPlan = async () => {
         if (selectedPlans.length === 0) {
-            toast.error("Please select at least one plan to buy.");
+            toast.error(Messages?.SELECT_ATLEST_MESSAGE(" one plan to buy."));
             return;
         }
         if(!walletAddress){
-             toast.error("Please wait while fetching walletAddress.");
+            toast.error(Messages?.WAIT_MESSAGE("while fetching walletAddress"));
             return;
         }
         console.log('Buying plans:', selectedPlans);
@@ -71,14 +72,14 @@ const PlansCarousel = ({ plans, loading }: any) => {
             if (error) {
                 toast.error(error);
             } else {
-                toast.success("Plan(s) purchased successfully!");
+                toast.success(Messages?.SUCCESSFULLY_MESSAGE("Plan(s) purchased"));
                 console.log("✅ Response:", data);
                 setSelectedPlans([]);
                 setModelOpen(false);
             }
         } catch (err) {
             console.error(err);
-            toast.error("Something went wrong. Try again.");
+            toast.error(Messages?.SOME_THING_WRONG);
         }
         finally{
             setLoadingBuy(false);

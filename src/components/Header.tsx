@@ -7,6 +7,7 @@ import ROUTES from '@/constants/routes';
 import { useWalletAddress } from '@/hooks/useWallet';
 import { logout } from '@/apis/auth';
 import { toast } from 'react-toastify';
+import Messages from '@/constants/messages'
 const Header = () => {
   const router = useRouter();
   const walletAddress = useWalletAddress()
@@ -19,7 +20,7 @@ const Header = () => {
     try {
       const res =await logout();
       console.log("logout res", res);
-      toast.success(res?.message || "Logged out successfully");
+      toast.success(res?.message || Messages?.SUCCESSFULLY_MESSAGE('logout'));
     } catch (error) {
       console.log("logout error", error);
     }finally{

@@ -1,3 +1,4 @@
+import Messages from "@/constants/messages";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
@@ -38,7 +39,7 @@ export const sendPlatformFee = async (miningFee=false , miningPlanBuy=false , mi
     }
 
     // Notify user
-    toast.info("Waiting for confirmations...");
+    toast.info(Messages?.WAIT_MESSAGE("for confirmations"));
     const receipt = await txResponse.wait(CONFIRMATIONS);
 
     if (!receipt || receipt.status !== 1) {

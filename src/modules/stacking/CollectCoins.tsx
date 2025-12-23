@@ -7,13 +7,14 @@ import Card from "@/components/Card";
 import {sendPlatformFee} from "@/utils/paymentHandler";
 import { useWalletAddress } from "@/hooks/useWallet";
 import HashLoader from "@/components/HashLoader";
+import Messages from "@/constants/messages";
 
 const CollectCoins = () => {
     const walletAddress = useWalletAddress();
   const handleClaim = async () => {
     try {
       if(!walletAddress) {
-        toast.error("Wallet address not found.");
+        toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
         return false;
       }
     // const feeResult = await sendPlatformFee(true);
@@ -36,11 +37,11 @@ const CollectCoins = () => {
         toast.success(response.data.message);
         return true;
       } else {
-        toast.error(response?.data?.message || "Failed to start mining");
+        toast.error(response?.data?.message || Messages?.SOME_THING_WRONG);
         return false;
       }
     } catch (error: any) {
-      toast.error(error?.message || "Something went wrong!");
+      toast.error(error?.message || Messages?.SOME_THING_WRONG);
       return false;
     }
   };

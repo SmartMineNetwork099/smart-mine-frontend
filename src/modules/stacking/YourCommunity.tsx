@@ -5,6 +5,7 @@ import { getReferralsAtLevel } from '@/apis/user';
 import Pagination from '@/components/Pagination';
 // import { getSocket, initSocket } from "@/utils/socket";
 import { useWalletAddress } from '@/hooks/useWallet';
+// import Messages from '@/constants/messages';
 // import { toast } from 'react-toastify';
 
 
@@ -37,7 +38,7 @@ const YourCommunity = () => {
     // 👇 Unified real-time listener for wallet + status updates
     // useEffect(() => {
     //     if (!walletAddress) {
-    //         toast.warn('walletAddress not find.....')
+            // toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address'));
     //         return;
     //     }
     //     // ✅ Ensure socket is always initialized here

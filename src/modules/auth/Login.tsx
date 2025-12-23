@@ -6,6 +6,7 @@ import { getNonceApi, verifySignatureApi } from "@/apis/auth";
 import { connectWallet, checkAndSwitchNetwork } from "@/utils/walletHelpers";
 import ROUTES from "@/constants/routes";
 import { useSearchParams } from "next/navigation";
+import Messages from "@/constants/messages";
 
 const LoginContent: React.FC = () => {   
     const [loading, setLoading] = useState<boolean>(false);
@@ -62,7 +63,7 @@ const LoginContent: React.FC = () => {
             }
         } catch (err) {
             console.error("Login failed:", err);
-            toast.error("❌ Login failed");
+            toast.error(Messages?.FAILED_MESSAGE("❌ Login"));
         } finally {
             setLoading(false);
         }

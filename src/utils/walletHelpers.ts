@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { toast } from "react-toastify";
+import Messages from "@/constants/messages";
 
 
 // ✅ opBNB Mainnet Chain Info
@@ -37,7 +38,7 @@ export const connectWallet = async (): Promise<WalletConnectResult | null> => {
     // ✅ SafePal Extension
     if (ethProvider) {
       if (!ethProvider.isSafePal) {
-        toast.error("❌ Only SafePal extension is allowed.");
+        toast.error(Messages?.ONLY_ALLOW_MESSAGE("❌ Only SafePal extension"));
         return null;
       }
 
@@ -58,7 +59,8 @@ export const connectWallet = async (): Promise<WalletConnectResult | null> => {
       const session = wcProvider.session;
       const walletName: string = session?.peer?.metadata?.name ?? "";
       if (!walletName.toLowerCase().includes("safepal")) {
-        toast.error("❌ Only SafePal Wallet is allowed via WalletConnect.");
+        toast.error(Messages?.ONLY_ALLOW_MESSAGE("❌ Only SafePal Wallet"));
+
         return null;
       }
 
@@ -73,7 +75,7 @@ export const connectWallet = async (): Promise<WalletConnectResult | null> => {
     return { provider, signer, address: walletAddress, type };
   } catch (err: unknown) {
     console.error("Wallet connection failed:", err);
-    toast.error("❌ Wallet connection failed");
+    toast.error(Messages?.SOME_THING_WRONG);
     return null;
   }
 };
@@ -104,7 +106,7 @@ export const checkAndSwitchNetwork = async (
             },
           ]);
         } else {
-          toast.error("❌ Please switch to opBNB network (204).");
+          toast.error(Messages?.SWITCH_MESSAGE(" to opBNB network (204)."));
           return false;
         }
       }
@@ -112,7 +114,7 @@ export const checkAndSwitchNetwork = async (
     return true;
   } catch (err: unknown) {
     console.error("Network check failed:", err);
-    toast.error("❌ Network check failed");
+    toast.error(Messages?.SOME_THING_WRONG);
     return false;
   }
 };

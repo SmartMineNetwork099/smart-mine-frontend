@@ -5,6 +5,7 @@ import PlansTable from '@/components/tables/PlansTable';
 import { toast } from 'react-toastify';
 import { getPlans } from '@/apis/plans';
 import { useWalletAddress } from '@/hooks/useWallet';
+import Messages from '@/constants/messages';
 const PlansSummery = () => {
     const [plans, setPlans] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -19,7 +20,7 @@ const PlansSummery = () => {
     // ✅ Move getAllPlans above useEffect for clarity
     const getAllPlans = async () => {
         if(!walletAddress){
-            toast.error("Please wait while fetching walletAddress.");
+             toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address'));
             return;
         }
         setLoading(true);
@@ -35,7 +36,7 @@ const PlansSummery = () => {
             }
         } catch (err) {
             console.error(err);
-            toast.error("Something went wrong fetching plans.");
+            toast.error(Messages?.SOME_THING_WRONG);
             setPlans([]);
         } finally {
             setLoading(false);

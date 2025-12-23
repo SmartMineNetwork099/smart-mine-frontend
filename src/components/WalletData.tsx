@@ -10,6 +10,7 @@ import { getSocket, initSocket } from '@/utils/socket';
 import { formatAmount, formatWalletAddress } from '@/utils/func';
 import Image from 'next/image';
 import { useWalletAddress } from '@/hooks/useWallet';
+import Messages from '@/constants/messages';
 
 const WalletData = () => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -24,10 +25,12 @@ const WalletData = () => {
             const imageUrl = URL.createObjectURL(file);
             setProfileImage(imageUrl);
             const imageUrl1 = await uploadToCloudinary(file);
-            if (!imageUrl1) return toast.error("Image upload failed. Please try again.");
-            if (!walletAddress) return toast.error("walletAddress not found. Please try again.");
+            if (!imageUrl1) return toast.error(Messages?.FAILED_MESSAGE("Image upload"));
+            if (!walletAddress) return toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address'));
+                  
+
             const imageSaveInDB = await updateUserImage(walletAddress, imageUrl1);
-            toast.success("Image uploaded successfully!");
+            toast.success(Messages?.SUCCESSFULLY_MESSAGE("Image uploaded"));
             setProfileImage(imageSaveInDB?.data?.image_url || imageUrl);
             const getUser = await getUserData(walletAddress);
             console.log(getUser,'getUsergetUsergetUsergetUsergetUser')
@@ -46,7 +49,7 @@ const WalletData = () => {
             localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(user));
         } catch (err) {
             console.error("Failed to fetch user data:", err);
-            toast.error("Failed to load user data");
+            toast.error(Messages?.SOME_THING_WRONG);
         }
     };
 

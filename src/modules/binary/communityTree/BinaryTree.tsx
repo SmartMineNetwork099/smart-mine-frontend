@@ -10,6 +10,7 @@ import HashLoader from "@/components/HashLoader";
 import { FaAngleLeft } from "react-icons/fa6";
 import { Input } from "rizzui/input";
 import { useWalletAddress } from "@/hooks/useWallet";
+import Messages from "@/constants/messages";
 
 interface TreeNode {
   id: string;
@@ -178,7 +179,7 @@ const BinaryTree = () => {
 
   const getBinaryTreeData = async (searchId?: string ) =>{
     if (!walletAddress){
-      toast.error("Please wait while fetching walletAddress.");
+     toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address'));
       return;
     }
 
