@@ -1,10 +1,10 @@
 import React from 'react'
-import Dashboard from '@/modules/binary/dashboard/index'
+// import Dashboard from '@/modules/binary/dashboard/index'
 
 const page = () => {
     return (
         <>
-            <Dashboard />
+            {/* <Dashboard /> */}
         </>
     )
 }

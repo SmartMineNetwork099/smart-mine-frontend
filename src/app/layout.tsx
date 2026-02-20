@@ -6,6 +6,7 @@ import './globals.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IoGameControllerOutline } from "react-icons/io5";
+import { BiMoneyWithdraw } from "react-icons/bi";
 import { TbBinaryTree } from "react-icons/tb";
 import { LiaDonateSolid } from "react-icons/lia";
 import { usePathname } from 'next/navigation';
@@ -19,8 +20,9 @@ import { useWalletAddress } from '@/hooks/useWallet';
 import { silentLogin } from '@/apis/auth';
 const tabs = [
   { label: 'Stacking', icon: LiaDonateSolid, link: ROUTES?.STACKING?.DASHBOARD },
-  { label: 'Binary', icon: TbBinaryTree, link: ROUTES?.BINARY?.DASHBOARD },
-  { label: 'Gaming', icon: IoGameControllerOutline, link: ROUTES?.GAMING?.HOME },
+  // { label: 'Binary', icon: TbBinaryTree, link: ROUTES?.BINARY?.DASHBOARD },
+  // { label: 'Gaming', icon: IoGameControllerOutline, link: ROUTES?.GAMING?.HOME },
+  { label: 'Withdraw', icon: BiMoneyWithdraw, link: ROUTES?.WITHDRAW?.HOME },
 ];
 const tabs2 = [ 
   { label: 'Dashboard', icon: RiDashboardHorizontalLine, link: ROUTES?.BINARY?.DASHBOARD },
@@ -84,7 +86,7 @@ useEffect(() => {
 
 
   const pathname = usePathname();
-  const isBinaryPage = pathname.includes('/binary');
+  // const isBinaryPage = pathname.includes('/binary');
 const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/binary'));
   const isAuthRoute = pathname.includes(ROUTES?.AUTH?.LOGIN);
   return (
@@ -110,11 +112,11 @@ const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/bi
                 </>
               )}
 
-              {isBinaryPage && (
+              {/* {isBinaryPage && (
                 <div className="w-full p-4">
                   <Tab tabs={tabs2} style='min-w-36 sm:min-w-44' defaultLink={ROUTES?.BINARY?.DASHBOARD} />
                 </div>
-              )}
+              )} */}
             </>
           )}
 

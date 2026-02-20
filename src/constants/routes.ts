@@ -12,6 +12,9 @@ const ROUTES = {
     GAMING: {
         HOME: "/gaming",
     },
+    WITHDRAW: {
+        HOME: "/withdraw",
+    },
     AUTH: {
         LOGIN: "/auth/login",
     },

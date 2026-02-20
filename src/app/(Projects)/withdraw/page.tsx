@@ -1,10 +1,9 @@
 import React from 'react'
-// import MYIDS from '@/modules/binary/myIds/index'
-
+import Index from '@/modules/withdraw/index'
 const page = () => {
     return (
         <>
-            {/* <MYIDS /> */}
+            <Index />
         </>
     )
 }
