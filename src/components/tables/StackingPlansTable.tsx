@@ -5,7 +5,7 @@ import HashLoader from "@/components/HashLoader";
 import { Button } from "rizzui/button";
 import Model from "@/components/Model";
 import Card from "@/components/Card";
-import { buyStackingPlans, getAllStackingPlansWithTeamData } from "@/apis/stackingApis";
+import { buyStackingPlans, getUserStackingPlans } from "@/apis/stackingApis";
 import SpinnerLoader from "@/components/SpinnerLoader";
 import { formatAmount } from "@/utils/func";
 import { sendPlatformFee } from "@/utils/paymentHandler";
@@ -74,7 +74,7 @@ const StakingPlansTable = () => {
     if(loader){
         setLoading(true);
     } 
-    const plans = await getAllStackingPlansWithTeamData( walletAddress);
+    const plans = await getUserStackingPlans( walletAddress);
     console.log(plans?.data, 'plans data');
     setPlans(plans?.data || []);
     setLoading(false);
@@ -104,7 +104,6 @@ const StakingPlansTable = () => {
             <thead className="sticky top-0 z-10">
               <tr className="bg-green-500 text-black font-bold text-xs sm:text-base text-center">
                 <th className="px-1 sm:px-4 py-2 w-[40px] sm:w-[150px] ">Plan</th>
-                <th className="px-2 sm:px-4 py-2 w-[100px] sm:w-[140px]">Team</th>
                 <th className="px-2 sm:px-4 py-2 w-[90px] sm:w-[150px] text-end ">Earn 2x</th>
                 <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[140px] text-end ">Loss</th>
                 <th className="px-2 sm:px-4 py-2 w-[60px] sm:w-[140px] ">Status</th>
@@ -120,14 +119,13 @@ const StakingPlansTable = () => {
                     </div>
                   </td>
                 </tr>
-              ) : plans && plans.length > 0 ? (
-                plans.map((row: any, rowIndex: number) => (
+              ) : plans && plans?.length > 0 ? (
+                plans?.map((row: any, rowIndex: number) => (
                   <tr
                     key={rowIndex}
                     className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                   >
                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">{row?.level}</td>
-                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">{row?.teamSize}</td>
                     <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap ">{formatAmount(row?.earned)} $ </td>
                     <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap text-red-500 "> {formatAmount(row?.lossAmount)} $</td>
                     <td className="">

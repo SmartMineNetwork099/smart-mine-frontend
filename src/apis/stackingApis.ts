@@ -1,9 +1,9 @@
 import  { AxiosError } from "axios";
 import api from "./axios.js"
 
-export const getAllStackingPlansWithTeamData = async ( walletAddress:any) => {
+export const getUserStackingPlans = async ( walletAddress:any) => {
     try {
-        const res = await api.post<any>(`/api/stacking/getAllStackingPlansWithTeamData`,{
+        const res = await api.post<any>(`/api/stacking/getUserStackingPlans`,{
               walletAddress
         });
         console.log(res, 'resresres11111232getAllStackingPlansgetAllStackingPlans')
