@@ -14,10 +14,10 @@ const index = () => {
          </div>
             <CollectCoins />
             <ReferralLink />
+            <NetworkOverview />
             <div className='my-4'>
               <StakingPlansTable/>
          </div>
-            <NetworkOverview />
             </Suspense>
         </>
     )
