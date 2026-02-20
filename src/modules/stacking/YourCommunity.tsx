@@ -5,6 +5,9 @@ import { getReferralsAtLevel } from '@/apis/user';
 import Pagination from '@/components/Pagination';
 // import { getSocket, initSocket } from "@/utils/socket";
 import { useWalletAddress } from '@/hooks/useWallet';
+import { IoMdArrowRoundBack } from 'react-icons/io';
+import ROUTES from '@/constants/routes';
+import { useRouter } from 'next/navigation';
 // import Messages from '@/constants/messages';
 // import { toast } from 'react-toastify';
 
@@ -14,13 +17,15 @@ const YourCommunity = () => {
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);
     const walletAddress = useWalletAddress();
+    const router = useRouter();
+    
 
     const getLevelData = async (LevelNumber: number = 1) => {
         if (!walletAddress) return;
         try {
             setLoading(true);
             const response = await getReferralsAtLevel(walletAddress, LevelNumber);
-            setTableData(Array.isArray(response?.data) ? response.data : []);
+            setTableData(Array.isArray(response?.data) ? response?.data : []);
             console.log(response?.data, "referrals data");
         } catch (error) {
             console.error("Error fetching referrals:", error);
@@ -82,14 +87,21 @@ const YourCommunity = () => {
     //         socket.off("statusUpdated");
     //     };
     // }, [walletAddress]);
+      const handleBack = () => {
+    console.log('Back button clicked');
+    router.push(ROUTES?.STACKING?.DASHBOARD)
+  }
 
     return (
         <div className='p-4'>
-            <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white mb-4'>
+            <div className='flex gap-2 items-center mb-4'>
+            <IoMdArrowRoundBack className='cursor-pointer text-4xl' onClick={handleBack}/>
+            <p className='font-semibold sm:font-bold text-xl sm:text-3xl text-white'>
                 Your <span className='text-green-500'>Community</span>
             </p>
+            </div>
             <div className='my-2'>
-                <Pagination currentPage={page} onPageChange={setPage} pages={15}/>
+                <Pagination currentPage={page} onPageChange={setPage} pages={10}/>
             </div>
             <StakingTable data={tableData} loading={loading} />
         </div>

@@ -1,10 +1,15 @@
 import React, { useState } from 'react'
-import { FaArrowDown, FaArrowUp } from 'react-icons/fa6';
+import { FaArrowUp } from 'react-icons/fa6';
 import { Button } from 'rizzui/button'
+import { useRouter } from 'next/navigation';
+import ROUTES from '@/constants/routes';
+
 
 const WalletActions = () => {
         const [activeTab, setActiveTab] = useState();
+        const router = useRouter();
          const handleTabClick = (name?: any ) => {
+          router.push(ROUTES?.WITHDRAW?.HOME)
         setActiveTab(name);
     };
     

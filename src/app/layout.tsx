@@ -22,6 +22,7 @@ const tabs = [
   { label: 'Stacking', icon: LiaDonateSolid, link: ROUTES?.STACKING?.DASHBOARD },
   // { label: 'Binary', icon: TbBinaryTree, link: ROUTES?.BINARY?.DASHBOARD },
   // { label: 'Gaming', icon: IoGameControllerOutline, link: ROUTES?.GAMING?.HOME },
+  { label: 'Community', icon: BiMoneyWithdraw, link: ROUTES?.WITHDRAW?.HOME },
   { label: 'Withdraw', icon: BiMoneyWithdraw, link: ROUTES?.WITHDRAW?.HOME },
 ];
 const tabs2 = [ 
@@ -87,7 +88,7 @@ useEffect(() => {
 
   const pathname = usePathname();
   // const isBinaryPage = pathname.includes('/binary');
-const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/binary'));
+const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/binary') || pathname.includes('/stacking/community'));
   const isAuthRoute = pathname.includes(ROUTES?.AUTH?.LOGIN);
   return (
     <html lang="en">
@@ -99,9 +100,9 @@ const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/bi
             <>
               <Header />
 
-              <div className="w-full p-4">
+              {/* <div className="w-full p-4">
                 <Tab tabs={tabs} style='min-w-20 sm:w-32' defaultLink={ROUTES?.STACKING?.DASHBOARD} />
-              </div>
+              </div> */}
 
               {isNotGamingPage && (
                 <>

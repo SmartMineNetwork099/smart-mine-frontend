@@ -1,6 +1,7 @@
 const ROUTES = {
     STACKING: {
         DASHBOARD: "/stacking/dashboard",
+        COMMUNITY: "/stacking/community",
 
     },
     BINARY: {
