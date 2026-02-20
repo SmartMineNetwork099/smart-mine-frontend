@@ -29,6 +29,7 @@ const tabs2 = [
   { label: 'Community Info', icon: MdOutlineInfo, link: ROUTES?.BINARY?.COMMUNITY_INFO },
 ];
 
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [accessToken ,  setAccessToken] = useState<string | null>(null);
   const walletAddress = useWalletAddress()
