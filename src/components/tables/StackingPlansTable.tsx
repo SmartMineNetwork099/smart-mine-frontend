@@ -100,14 +100,13 @@ const StakingPlansTable = () => {
           Plans <span className="text-green-500">Summery</span>
         </p>
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden mt-4">
-          <table className="min-w-[380px] w-full text-sm border-collapse">
+          <table className="min-w-[400px] w-full text-sm border-collapse">
             <thead className="sticky top-0 z-10">
               <tr className="bg-green-500 text-black font-bold text-xs sm:text-base text-center">
-                <th className="px-1 sm:px-4 py-2 w-[40px] sm:w-[150px] ">Plan</th>
-                <th className="px-2 sm:px-4 py-2 w-[90px] sm:w-[150px] text-end ">Earn 2x</th>
-                <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[140px] text-end ">Loss</th>
-                <th className="px-2 sm:px-4 py-2 w-[60px] sm:w-[140px] ">Status</th>
-                <th className="px-2 sm:px-4 py-2 w-[70px] sm:w-[140px] ">Action</th>
+                <th className="px-2 sm:px-4 py-2 w-[25%]">Action</th>
+                <th className="px-2 sm:px-4 py-2 w-[25%] text-end">Earn 2x</th>
+                <th className="px-2 sm:px-4 py-2 w-[25%] text-end">Loss</th>
+                <th className="px-2 sm:px-4 py-2 w-[25%]">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -125,7 +124,19 @@ const StakingPlansTable = () => {
                     key={rowIndex}
                     className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                   >
-                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">{row?.level}</td>
+                      <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">
+                      <Button
+                        onClick={() => handleModelOpen(row)}
+                        disabled={row?.status === 'active' || loadingBuy}
+                        className={`px-2 py-1 text-[10px] sm:text-sm rounded-md ${
+                          row?.status === 'active' || loadingBuy
+                            ? 'cursor-not-allowed opacity-40'
+                            : 'cursor-pointer'
+                        } bg-green-500 text-black font-bold border-0`}
+                      >
+                        Buy {row?.investment} $
+                      </Button>
+                    </td>
                     <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap ">{formatAmount(row?.earned)} $ </td>
                     <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap text-red-500 "> {formatAmount(row?.lossAmount)} $</td>
                     <td className="">
@@ -140,19 +151,7 @@ const StakingPlansTable = () => {
                       </span>
                     </td>
 
-                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">
-                      <Button
-                        onClick={() => handleModelOpen(row)}
-                        disabled={row?.status === 'active' || loadingBuy}
-                        className={`px-2 py-1 text-[10px] sm:text-sm rounded-md ${
-                          row?.status === 'active' || loadingBuy
-                            ? 'cursor-not-allowed opacity-40'
-                            : 'cursor-pointer'
-                        } bg-green-500 text-black font-bold border-0`}
-                      >
-                        Buy {row?.investment} $
-                      </Button>
-                    </td>
+                  
                   </tr>
                 ))
               ) : (

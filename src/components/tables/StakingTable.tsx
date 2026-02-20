@@ -27,7 +27,6 @@ const StakingTable = ({ data, loading = true }: TableProps) => {
                         <th className="px-4 py-2 w-[70px] sm:w-[100px]">Sno.</th>
                         <th className="px-4 py-2 w-[200px] sm:w-[230px]">UserID</th>
                         <th className="px-4 py-2 w-[100px] text-end">Staking</th>
-                        <th className="px-4 py-2 w-[100px]">Level</th>
                         <th className="px-4 py-2 w-[100px]">Status</th>
                         <th className="px-4 py-2 w-[110px] sm:w-[130px]">Direct Team</th>
                     </tr>
@@ -52,7 +51,6 @@ const StakingTable = ({ data, loading = true }: TableProps) => {
                                 <td className="px-4 py-2 text-end whitespace-nowrap">
                                     {row?.wallet?.stakingAmount} $
                                 </td>
-                                <td className="px-4 py-2 whitespace-nowrap">Beginer</td>
                                 <td className="px-4 py-2 whitespace-nowrap">{row?.status}</td>
                                 <td className="px-4 py-2 whitespace-nowrap">
                                     {row?.directTeam?.length ?? 0}
