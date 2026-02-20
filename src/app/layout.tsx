@@ -22,7 +22,7 @@ const tabs = [
   { label: 'Binary', icon: TbBinaryTree, link: ROUTES?.BINARY?.DASHBOARD },
   { label: 'Gaming', icon: IoGameControllerOutline, link: ROUTES?.GAMING?.HOME },
 ];
-const tabs2 = [
+const tabs2 = [ 
   { label: 'Dashboard', icon: RiDashboardHorizontalLine, link: ROUTES?.BINARY?.DASHBOARD },
   { label: 'MY IDS', icon: RiTeamLine, link: ROUTES?.BINARY?.MY_IDS },
   { label: 'Community Tree', icon: TbBinaryTree, link: ROUTES?.BINARY?.COMMUNITY_TREE },
