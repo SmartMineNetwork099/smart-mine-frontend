@@ -79,14 +79,18 @@ const WalletData = () => {
             : walletData.walletAddress
         : "";
     const walletInfo = [
-        { name: 'Today Refreal Earning', transactions: `${formatAmount(walletData?.wallet?.todayMiningCommissionEarning || 0)} $` },
+        { name: 'Today Income', transactions: `${formatAmount(walletData?.wallet?.todayMiningCommissionEarning || 0)} $` },
+        // { name: 'Today Refreal Earning', transactions: `${formatAmount(walletData?.wallet?.todayMiningCommissionEarning || 0)} $` },
+
+
+
+
         { name: 'Total Income', transactions: `${formatAmount(walletData?.wallet?.balance || 0)} $` },
-        // { name: 'Binary Income', transactions: `${formatAmount(walletData?.wallet?.binaryIncome || 0)} $` },
-        { name: 'Stacking Income', transactions: `${formatAmount(walletData?.wallet?.miningEarnings || 0)} $` },
-        { name: 'Total Deposit', transactions: `${formatAmount(walletData?.wallet?.totalDeposit || 0)} $` },
+        // { name: 'Stacking Income', transactions: `${formatAmount(walletData?.wallet?.miningEarnings || 0)} $` },
+        // { name: 'Total Deposit', transactions: `${formatAmount(walletData?.wallet?.totalDeposit || 0)} $` },
         { name: 'Total Withdraw', transactions: `${formatAmount(walletData?.wallet?.totalWithdraw || 0)} $` },
-        { name: 'YesterDay Refreal Loss', transactions: `${formatAmount(walletData?.wallet?.yesterdayMiningCommissionLoss || 0)} $` },
-        { name: 'Loss Income', transactions: `${formatAmount(walletData?.wallet?.lossIncome || 0)} $` },
+        // { name: 'YesterDay Refreal Loss', transactions: `${formatAmount(walletData?.wallet?.yesterdayMiningCommissionLoss || 0)} $` },
+        { name: 'Total Loss', transactions: `${formatAmount(walletData?.wallet?.lossIncome || 0)} $` },
     ];
     console.log(walletData, 'walletDatawalletDatawalletData')
 
@@ -164,24 +168,19 @@ const WalletData = () => {
                     </div>
                 </div>
 
-                <div className='shadow-2xl rounded py-2 px-0.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mt-4'>
+                <div className='shadow-2xl rounded py-2 px-0.5 grid grid-cols-2 lg:grid-cols-4 gap-2 mt-4'>
                     {walletInfo?.map((item, index) => (
-                        <div key={index} className="flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-4 bg-black text-white rounded-lg">
+                        <div key={index} className={`flex gap-2 sm:gap-0 flex-col justify-between py-3 sm:py-4 px-2 ${item?.name.includes('Loss')?'bg-red-500':'bg-black'} text-white rounded-lg`}>
                             <div className=''>
-                                <p className="font-medium text-gray-300 text-xs sm:text-base">
-                                    {item.name}
+                                <p className={`font-bold ${item?.name.includes('Loss')?'text-black':'text-gray-300'} text-base`}>
+                                    {item?.name}
                                 </p>
                             </div>
                             <div className="sm:w-auto">
-                                <p className="font-bold text-green-500 rounded-lg text-sm sm:text-base inline sm:block">
-                                    {item.transactions.includes(DEFAULT_CURRENCY) ? (
-                                        <>
-                                            {item.transactions.replace(DEFAULT_CURRENCY, '')}{' '}
-                                            <span className="font-bold">{DEFAULT_CURRENCY}</span>
-                                        </>
-                                    ) : (
-                                        item.transactions
-                                    )}
+                                <p className={`font-bold ${item?.name.includes('Loss')?'text-black':'text-green-500'}  rounded-lg text-sm sm:text-base inline sm:block`}>
+                                    {
+                                        item?.transactions
+                                    }
                                 </p>
                             </div>
                         </div>

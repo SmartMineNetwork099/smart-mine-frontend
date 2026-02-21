@@ -107,7 +107,7 @@ const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/bi
               {isNotGamingPage && (
                 <>
 
-                  <div className="w-full px-4">
+                  <div className="w-full px-3">
                     <WalletData />
                   </div>
                 </>
@@ -121,7 +121,7 @@ const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/bi
             </>
           )}
 
-          <main className="p-4">
+          <main className="p-3">
             {children}
             <ToastContainer />
           </main>
