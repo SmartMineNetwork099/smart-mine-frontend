@@ -25,6 +25,7 @@ const TeamStats = ({ data }) => {
 
                     const value = item?.number ?? '0';
                     const valueColorClass = Number(value) <= 0 ? 'text-red-500' : 'text-green-500';
+                    
                     const handleCardClick = (item:any) => {
                         console.log(item , 'iitteemm')
                         if(item?.type === 'community'){
