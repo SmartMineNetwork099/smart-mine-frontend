@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { toast } from "react-toastify";
 import Messages from "@/constants/messages";
+import { normalizeWalletAddress } from "./func";
 
 
 // ✅ opBNB Mainnet Chain Info
@@ -71,6 +72,7 @@ export const connectWallet = async (): Promise<WalletConnectResult | null> => {
       walletAddress = await signer.getAddress();
       type = "walletconnect";
     }
+    walletAddress = normalizeWalletAddress(walletAddress) || '';
 
     return { provider, signer, address: walletAddress, type };
   } catch (err: unknown) {

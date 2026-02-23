@@ -21,6 +21,7 @@ const ReferralLink = () => {
         if(!walletAddress) return;
         const walletDataString = localStorage.getItem(`walletData_${walletAddress}`);
         const walletData = walletDataString ? JSON.parse(walletDataString) : null;
+        console.log(walletData,'walletData in referral link')
         setReferralLink(walletData?.referralLink ?? "");
     }, [walletAddress]);
 

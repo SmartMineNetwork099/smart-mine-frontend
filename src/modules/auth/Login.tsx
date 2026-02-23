@@ -7,6 +7,7 @@ import { connectWallet, checkAndSwitchNetwork } from "@/utils/walletHelpers";
 import ROUTES from "@/constants/routes";
 import { useSearchParams } from "next/navigation";
 import Messages from "@/constants/messages";
+import { normalizeWalletAddress } from "@/utils/func";
 
 const LoginContent: React.FC = () => {   
     const [loading, setLoading] = useState<boolean>(false);
@@ -51,12 +52,13 @@ const LoginContent: React.FC = () => {
                 console.log(verifyRes?.data, 'verifyRes?.data');
                 const userID = verifyRes.data.userId;
                 const walletAddress = verifyRes?.data?.walletAddress;
+                const normalizedWalletAddress = normalizeWalletAddress(walletAddress) || '';
                 const accessToken = verifyRes.data.accessToken;
                 localStorage.setItem(`userID`, userID);
-                localStorage.setItem(`walletAddress`, walletAddress);
-                localStorage.setItem(`accessToken_${walletAddress}`, accessToken);
-                localStorage.setItem(`activeWallet`, walletAddress);
-                localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(verifyRes?.data));
+                localStorage.setItem(`walletAddress`, normalizedWalletAddress);
+                localStorage.setItem(`accessToken_${normalizedWalletAddress}`, accessToken);
+                localStorage.setItem(`activeWallet`, normalizedWalletAddress);
+                localStorage.setItem(`walletData_${normalizedWalletAddress}`, JSON.stringify(verifyRes?.data));
                 setAccessToken(accessToken);
                 router.replace(`${ROUTES?.STACKING?.DASHBOARD}?userId=${userID}`);
                 toast.success(verifyRes?.data?.message);

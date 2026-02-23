@@ -1,8 +1,10 @@
 import { io } from "socket.io-client";
+import { normalizeWalletAddress } from "./func";
 
 let socket;
 
 export const initSocket = (walletAddress) => {
+  walletAddress = normalizeWalletAddress(walletAddress) || '';
   if (!socket) {
     socket = io(process.env.NEXT_PUBLIC_API_BASE, {
       transports: ["websocket"],

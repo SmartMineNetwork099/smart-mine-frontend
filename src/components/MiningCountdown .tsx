@@ -13,9 +13,6 @@ interface MiningCountdownProps {
   walletAddress?: string;
 }
 
-interface WalletData {
-  status?: string;
-}
 
 const NEXT_CYCLE_KEY = "nextCycleTime";
 
@@ -23,7 +20,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim , walletA
   const [timeLeft, setTimeLeft] = useState(0);
   const [isMining, setIsMining] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [walletData, setWalletData] = useState<WalletData | null>(null);
+  const [status, setStatus] = useState<string>('');
   const searchParams = useSearchParams();
   
 
@@ -93,25 +90,27 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim , walletA
 
   // ✅ Mining start logic
   const startMining = async () => {
+    console.log("⛏️ Attempting to start mining...");
     if(!walletAddress) {
       toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address'));
       return;
     }
     setLoading(true);
 
-    if (walletData?.status === "active") {
+    if (status === "active") {
       toast.error(Messages?.ALREADY_MESSAGE("mined today. Try again after reset!"));
       setLoading(false);
       return;
     }
 
-    if (timeLeft <= 0) {
-      toast.error(Messages?.WAIT_MESSAGE('for the next cycle to start.'));
-      setLoading(false);
-      return;
-    }
-
+    // if (timeLeft <= 0) {
+    //   toast.error(Messages?.WAIT_MESSAGE('for the next cycle to start.'));
+    //   setLoading(false);
+    //   return;
+    // }
+    console.log("⛏️ Starting mining process...");
     const success = await handleClaim?.();
+    console.log("⛏️ Mining process result:", success);
     if (success) {
       toast.success(Messages?.SUCCESSFULLY_MESSAGE("✅ Mining started"));
       setIsMining(true);
@@ -124,8 +123,10 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim , walletA
   useEffect(() => {
     if (!walletAddress) return;
     const data = localStorage.getItem(`walletData_${walletAddress}`);
+    console.log("📂 Loading wallet data from localStorage for address:", data);
     const userWalletData = data ? JSON.parse(data) : null;
-    setWalletData(userWalletData);
+    console.log("📂 Loaded wallet data from localStorage:", userWalletData);
+    setStatus(userWalletData?.status || '');
   }, [walletAddress]);
 
   // ✅ Setup socket listener
@@ -143,7 +144,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim , walletA
       console.log("🔌 Socket connected, listening for wallet updates...");
       socket.on("walletUpdated", (data: any) => {
         console.log("💰 Wallet update received:", data);
-        setWalletData(data);
+        setStatus(data?.status || '');
       });
     };
 
@@ -155,18 +156,21 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim , walletA
       socket.off("connect", handleConnect);
     };
   }, [walletAddress]);
+  console.log(loading,'loadingloading')
+  console.log(status,'statusstatus')
+  console.log(walletAddress,'walletAddresswalletAddress')
 
   // ✅ UI
   return (
     <div className="flex flex-col items-center space-y-4">
       <div
         className={`relative w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] ${
-          loading || walletData?.status?.toLowerCase() === "active"
+          loading || status?.toLowerCase() === "active"
             ? "opacity-50 cursor-not-allowed"
             : "cursor-pointer"
         }`}
         onClick={() => {
-          if (!loading && walletData?.status?.toLowerCase() !== "active" && !walletAddress)
+          if (!loading && status?.toLowerCase() !== "active" && walletAddress)
             startMining();
         }}
       >
@@ -201,13 +205,13 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim , walletA
           ) : (
             <p className="text-center text-black">{formatTime(timeLeft)}</p>
           )}
-          {walletData?.status && (
+          {status && (
             <p
               className={`text-white ${
-                walletData?.status === "active" ? "bg-green-500" : "bg-red-500"
+                status === "active" ? "bg-green-500" : "bg-red-500"
               } text-sm sm:text-base px-2 py-0.5 rounded`}
             >
-              {walletData.status}
+              {status}
             </p>
           )}
         </div>

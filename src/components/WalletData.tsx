@@ -79,12 +79,7 @@ const WalletData = () => {
             : walletData.walletAddress
         : "";
     const walletInfo = [
-        { name: 'Today Income', transactions: `${formatAmount(walletData?.wallet?.todayMiningCommissionEarning || 0)} $` },
-        // { name: 'Today Refreal Earning', transactions: `${formatAmount(walletData?.wallet?.todayMiningCommissionEarning || 0)} $` },
-
-
-
-
+        { name: 'Today Income', transactions: `${formatAmount(walletData?.wallet?.todayIncome || 0)} $` },
         { name: 'Total Income', transactions: `${formatAmount(walletData?.wallet?.balance || 0)} $` },
         // { name: 'Stacking Income', transactions: `${formatAmount(walletData?.wallet?.miningEarnings || 0)} $` },
         // { name: 'Total Deposit', transactions: `${formatAmount(walletData?.wallet?.totalDeposit || 0)} $` },

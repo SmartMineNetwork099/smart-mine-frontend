@@ -1,6 +1,7 @@
 // src/hooks/useWallet.ts
 import { useEffect, useState } from "react";
 import { getUserWalletAddress } from "@/utils/walletHelpers";
+import { normalizeWalletAddress } from "@/utils/func";
 
 export const useWalletAddress = () => {
   const [wallet, setWallet] = useState<string | null>(null);
@@ -9,8 +10,9 @@ export const useWalletAddress = () => {
     getUserWalletAddress().then(res => {
       if (res?.success){
         const walletAddress = res?.userWalletAddress || null;
-        setWallet(walletAddress);
-        localStorage.setItem("activeWallet", walletAddress || "");
+        const normalizedWalletAddress = normalizeWalletAddress(walletAddress);
+        setWallet(normalizedWalletAddress);
+        localStorage.setItem("activeWallet", normalizedWalletAddress || "");
       } 
     });
   }, []);
