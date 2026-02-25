@@ -86,6 +86,8 @@ const WalletData = () => {
         { name: 'Total Withdraw', transactions: `${formatAmount(walletData?.wallet?.totalWithdraw || 0)} $` },
         // { name: 'YesterDay Refreal Loss', transactions: `${formatAmount(walletData?.wallet?.yesterdayMiningCommissionLoss || 0)} $` },
         { name: 'Total Loss', transactions: `${formatAmount(walletData?.wallet?.lossIncome || 0)} $` },
+        { name: 'Pending Income', transactions: `${formatAmount(walletData?.wallet?.pendingBonus || 0)} $` },
+        { name: 'Collectable Income', transactions: `${formatAmount(walletData?.wallet?.collectableBonus || 0)} $` },
     ];
     console.log(walletData, 'walletDatawalletDatawalletData')
 
