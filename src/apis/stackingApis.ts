@@ -35,3 +35,20 @@ export const buyStackingPlans = async ({ planId , feeTxHash ,walletAddress}:any)
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
+export const collectBonusApi = async ({walletAddress}:any) => {
+    try {
+        const res = await api.post<any>(`/api/stacking/collectBonus`,{
+             walletAddress
+        });
+        console.log(res, 'resresres11111232buyStackingPlansbuyStackingPlans')
+        if(res?.data?.success){
+        return { data: res?.data , error: null };
+        }else{
+            return { data: null, error:res?.data?.message || "error try again." };
+        }
+    }
+    catch (err) {
+        const error = err as AxiosError<{ message: string }>;
+        return { data: null, error: error.response?.data?.message ?? "error try again." };
+    }
+};

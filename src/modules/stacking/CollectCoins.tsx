@@ -8,6 +8,8 @@ import {sendPlatformFee} from "@/utils/paymentHandler";
 import { useWalletAddress } from "@/hooks/useWallet";
 import HashLoader from "@/components/HashLoader";
 import Messages from "@/constants/messages";
+import { Button } from "rizzui/button";
+import { collectBonusApi } from "@/apis/stackingApis";
 
 const CollectCoins = () => {
     const walletAddress = useWalletAddress();
@@ -45,6 +47,29 @@ const CollectCoins = () => {
       return false;
     }
   };
+  const collectBonus = async () => {
+    try {
+      if(!walletAddress) {
+        toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
+        return false;
+      }
+      const payload = {
+        walletAddress,
+      };
+
+      const response = await collectBonusApi(payload);
+      if (response?.data?.success) {
+        toast.success(response.data.message);
+        return true;
+      } else {
+        toast.error(response?.data?.message || Messages?.SOME_THING_WRONG);
+        return false;
+      }
+    } catch (error: any) {
+      toast.error(error?.message || Messages?.SOME_THING_WRONG);
+      return false;
+    }
+  }
 
   return (
     <Card>
@@ -57,6 +82,9 @@ const CollectCoins = () => {
     walletAddress={walletAddress}
   />
 ) : <HashLoader/>}
+<div>
+  <Button onClick={collectBonus} className="w-full bg-green-500 border-0 font-bold text-xl cursor-pointer">Claim Coins</Button>
+</div>
 
     </Card>
   );
