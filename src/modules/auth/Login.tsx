@@ -56,7 +56,6 @@ const LoginContent: React.FC = () => {
                 const walletAddress = verifyRes?.data?.walletAddress;
                 const normalizedWalletAddress = normalizeWalletAddress(walletAddress) || '';
                 const accessToken = verifyRes.data.accessToken;
-                localStorage.setItem(`userID`, userID);
                 localStorage.setItem(`walletAddress`, normalizedWalletAddress);
                 localStorage.setItem(`accessToken_${normalizedWalletAddress}`, accessToken);
                 localStorage.setItem(`activeWallet`, normalizedWalletAddress);

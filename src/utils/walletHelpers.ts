@@ -141,7 +141,7 @@ export const checkAndSwitchNetwork = async (
 //     console.log("urlUserId", urlUserId);
 //     if (urlUserId) {
 //       try {
-//         localStorage.setItem("userID", urlUserId);
+//         
 //       } catch (e) {
 //         console.warn("Could not save userID to localStorage", e);
 //       }
