@@ -25,11 +25,11 @@ const CollectCoins = () => {
     //   return false;
     // }
     // const { feeTxHash, userWalletAddress } = feeResult;
-    const miningTime = new Date().toISOString();
+    // const miningTime = new Date().toISOString();
 
       const payload = {
         amount: 1.00,
-        miningTime,
+        // miningTime,
         // feeTxHash,
         walletAddress,
       };

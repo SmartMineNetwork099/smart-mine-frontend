@@ -3,7 +3,7 @@ import React, { useState, ChangeEvent, useEffect } from 'react'
 import Card from '@/components/Card';
 import { DEFAULT_CURRENCY } from "@/constants/currency";
 import { uploadToCloudinary } from '@/utils/uploadToCloudinary ';
-import { getUserData, updateUserImage } from '@/apis/user';
+import { getUserDataApi, updateUserImage } from '@/apis/user';
 import { toast } from 'react-toastify';
 import { FaRegUser } from "react-icons/fa6";
 import { getSocket, initSocket } from '@/utils/socket';
@@ -11,6 +11,7 @@ import { formatAmount, formatWalletAddress } from '@/utils/func';
 import Image from 'next/image';
 import { useWalletAddress } from '@/hooks/useWallet';
 import Messages from '@/constants/messages';
+import { getUserData } from '@/db/getData';
 
 const WalletData = () => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -32,7 +33,7 @@ const WalletData = () => {
             const imageSaveInDB = await updateUserImage(walletAddress, imageUrl1);
             toast.success(Messages?.SUCCESSFULLY_MESSAGE("Image uploaded"));
             setProfileImage(imageSaveInDB?.data?.image_url || imageUrl);
-            const getUser = await getUserData(walletAddress);
+            const getUser = await getUserDataApi(walletAddress);
             console.log(getUser,'getUsergetUsergetUsergetUsergetUser')
             localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(getUser?.data?.user));
         }
@@ -41,7 +42,10 @@ const WalletData = () => {
     const handleWalletDataFetch = async () => {
         if (!walletAddress) return;
         try {
-            const res = await getUserData(walletAddress);
+            const userData = await getUserData(walletAddress);
+            setWalletData(userData || {});
+            console.log(userData,'userDatauserDatauserDatammmmmmmmm')
+            const res = await getUserDataApi(walletAddress);
             const user = res?.data?.user || {};
             console.log(user,'uuussseer')
             setWalletData(user);

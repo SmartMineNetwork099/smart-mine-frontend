@@ -52,7 +52,7 @@ export const updateUserImage = async (
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
-export const getUserData = async (
+export const getUserDataApi = async (
     walletAddress: string,
 ) => {
     try {

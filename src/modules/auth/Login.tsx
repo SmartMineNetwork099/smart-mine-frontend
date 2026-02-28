@@ -8,6 +8,8 @@ import ROUTES from "@/constants/routes";
 import { useSearchParams } from "next/navigation";
 import Messages from "@/constants/messages";
 import { normalizeWalletAddress } from "@/utils/func";
+import { saveUserData } from "@/db/saveData";
+import { STORES_NAME } from "@/config/dbConfig";
 
 const LoginContent: React.FC = () => {   
     const [loading, setLoading] = useState<boolean>(false);
@@ -59,6 +61,7 @@ const LoginContent: React.FC = () => {
                 localStorage.setItem(`accessToken_${normalizedWalletAddress}`, accessToken);
                 localStorage.setItem(`activeWallet`, normalizedWalletAddress);
                 localStorage.setItem(`walletData_${normalizedWalletAddress}`, JSON.stringify(verifyRes?.data));
+                await saveUserData(normalizedWalletAddress, verifyRes?.data);
                 setAccessToken(accessToken);
                 router.replace(`${ROUTES?.STACKING?.DASHBOARD}?userId=${userID}`);
                 toast.success(verifyRes?.data?.message);
