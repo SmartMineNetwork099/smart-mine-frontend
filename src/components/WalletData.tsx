@@ -94,6 +94,7 @@ const WalletData = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  
   // ✅ Socket wallet updates
   useEffect(() => {
     initSocket(walletAddress);
