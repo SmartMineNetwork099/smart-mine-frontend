@@ -23,7 +23,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
   const [loading, setLoading] = useState(false);
 
   // status boolean (true/false)
-  const [status, setStatus] = useState<boolean>(false);
+  const [status, setStatus] = useState<string>('inactive');
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const nextCycleRef = useRef<string | null>(null);
@@ -100,7 +100,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
   const fetchStatus = async () => {
     if (!walletAddress) return;
     const userData: any = await getUserData(walletAddress);
-    setStatus(Boolean(userData?.status));
+    setStatus(userData?.status);
   };
 
   useEffect(() => {
@@ -134,7 +134,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
 
     if (loading) return;
 
-    if (status === true) {
+    if (status === "active") {
       toast.error("You already mined today. Try again after Dubai 12:00 AM reset.");
       return;
     }
@@ -143,8 +143,8 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
     try {
       const success = await handleClaim?.();
       if (success) {
-        toast.success("✅ Mining started");
-        setStatus(true); // instant UI update
+
+        setStatus("active"); // instant UI update
         // optional: fetchStatus() to confirm from backend
       }
     } finally {
@@ -152,7 +152,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
     }
   };
 
-  const isDisabled = loading || status === true;
+  const isDisabled = loading || status === "active";
 
   return (
     <div className="flex flex-col items-center space-y-4">
@@ -187,8 +187,8 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
             <p className="text-center text-black">{formatTime(timeLeft)}</p>
           )}
 
-          <p className={`text-white ${status ? "bg-green-500" : "bg-red-500"} text-sm sm:text-base px-2 py-0.5 rounded`}>
-            {status ? "active" : "inactive"}
+          <p className={`text-white ${status === "active" ? "bg-green-500" : "bg-red-500"} text-sm sm:text-base px-2 py-0.5 rounded`}>
+            {status === "active" ? "active" : "inactive"}
           </p>
         </div>
       </div>

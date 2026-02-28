@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { useWalletAddress } from '@/hooks/useWallet';
 import Messages from '@/constants/messages';
 import { getUserData } from '@/db/getData';
+import { upsertUserData } from '@/db/saveData';
 
 const WalletData = () => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -48,6 +49,8 @@ const WalletData = () => {
             const res = await getUserDataApi(walletAddress);
             const user = res?.data?.user || {};
             console.log(user,'uuussseer')
+            await upsertUserData(walletAddress, user);
+            
             setWalletData(user);
             setProfileImage(user?.image_url || null);
             localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(user));

@@ -10,6 +10,7 @@ import HashLoader from "@/components/HashLoader";
 import Messages from "@/constants/messages";
 import { Button } from "rizzui/button";
 import { collectBonusApi } from "@/apis/stackingApis";
+import { upsertUserData } from "@/db/saveData";
 
 const CollectCoins = () => {
     const walletAddress = useWalletAddress();
@@ -35,11 +36,19 @@ const CollectCoins = () => {
       };
 
       const response = await startMiningApi(payload);
+      console.log("Mining response:", response);
       if (response?.data?.success) {
+      const updatedFields = {
+      //  wallet : response?.data?.wallet,
+       status : response?.data?.status,
+       lastMiningDate : response?.data?.lastMiningDate,
+       timezone : response?.data?.timezone, 
+      }
+      await upsertUserData(walletAddress, updatedFields);
         toast.success(response.data.message);
         return true;
       } else {
-        toast.error(response?.data?.message || Messages?.SOME_THING_WRONG);
+        toast.error(response?.error || Messages?.SOME_THING_WRONG);
         return false;
       }
     } catch (error: any) {
