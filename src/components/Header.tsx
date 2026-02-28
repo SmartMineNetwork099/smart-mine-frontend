@@ -24,7 +24,7 @@ const Header = () => {
     } catch (error) {
       console.log("logout error", error);
     }finally{
-      [`walletData_${walletAddress}`, `accessToken_${walletAddress}` , 'activeWallet'].forEach(key => localStorage.removeItem(key));
+      [ `accessToken_${walletAddress}` , 'activeWallet'].forEach(key => localStorage.removeItem(key));
       router.push(ROUTES?.AUTH?.LOGIN);
 
     }

@@ -60,7 +60,6 @@ const LoginContent: React.FC = () => {
                 localStorage.setItem(`walletAddress`, normalizedWalletAddress);
                 localStorage.setItem(`accessToken_${normalizedWalletAddress}`, accessToken);
                 localStorage.setItem(`activeWallet`, normalizedWalletAddress);
-                localStorage.setItem(`walletData_${normalizedWalletAddress}`, JSON.stringify(verifyRes?.data));
                 await upsertUserData(normalizedWalletAddress, verifyRes?.data);
                 setAccessToken(accessToken);
                 router.replace(`${ROUTES?.STACKING?.DASHBOARD}?userId=${userID}`);

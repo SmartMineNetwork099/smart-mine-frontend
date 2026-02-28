@@ -36,7 +36,6 @@ const WalletData = () => {
             setProfileImage(imageSaveInDB?.data?.image_url || imageUrl);
             const getUser = await getUserDataApi(walletAddress);
             console.log(getUser,'getUsergetUsergetUsergetUsergetUser')
-            localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(getUser?.data?.user));
         }
     };
     // Fetch user data
@@ -53,7 +52,6 @@ const WalletData = () => {
             
             setWalletData(user);
             setProfileImage(user?.image_url || null);
-            localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(user));
         } catch (err) {
             console.error("Failed to fetch user data:", err);
             toast.error(Messages?.SOME_THING_WRONG);

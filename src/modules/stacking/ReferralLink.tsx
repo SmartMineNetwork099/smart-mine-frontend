@@ -4,6 +4,7 @@ import { Input } from "rizzui";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";
 import Card from '@/components/Card';
 import { useWalletAddress } from '@/hooks/useWallet';
+import { getUserData } from '@/db/getData';
 
 const ReferralLink = () => {
     const [referralLink, setReferralLink] = useState('');
@@ -16,13 +17,14 @@ const ReferralLink = () => {
         setCopied(true);
         setTimeout(() => setCopied(false), 1500); // Auto hide after 1.5s
     };
-
+    const generateReferralLink = async (walletAddress: string) => {
+      const userData:any = await getUserData(walletAddress);
+      console.log(userData,'userData in referral link')
+        setReferralLink(userData?.referralLink ?? "");
+}
     useEffect(() => {
         if(!walletAddress) return;
-        const walletDataString = localStorage.getItem(`walletData_${walletAddress}`);
-        const walletData = walletDataString ? JSON.parse(walletDataString) : null;
-        console.log(walletData,'walletData in referral link')
-        setReferralLink(walletData?.referralLink ?? "");
+        generateReferralLink(walletAddress);
     }, [walletAddress]);
 
     return (

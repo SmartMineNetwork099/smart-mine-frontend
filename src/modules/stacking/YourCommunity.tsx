@@ -78,7 +78,6 @@ const YourCommunity = () => {
     //                     status: data.status ?? parsed.status,
     //                     miningTime: data.miningTime ?? parsed.miningTime
     //                 };
-    //                 localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(updated));
     //             }
     //         }
     //     });
