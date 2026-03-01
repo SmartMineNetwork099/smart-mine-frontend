@@ -127,9 +127,9 @@ const StakingPlansTable = () => {
                       <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">
                       <Button
                         onClick={() => handleModelOpen(row)}
-                        disabled={row?.status === 'active' || loadingBuy}
+                        disabled={row?.status === 'active' && row?.isPurchased === true || loadingBuy}
                         className={`px-2 py-1 text-[10px] sm:text-sm rounded-md ${
-                          row?.status === 'active' || loadingBuy
+                          row?.status === 'active' && row?.isPurchased === true || loadingBuy
                             ? 'cursor-not-allowed opacity-40'
                             : 'cursor-pointer'
                         } bg-green-500 text-black font-bold border-0`}
@@ -142,7 +142,7 @@ const StakingPlansTable = () => {
                     <td className="">
                       <span
                         className={`px-1 py-1 text-white rounded-full text-[10px] sm:text-xs font-semibold ${
-                          row?.status === 'active'
+                          row?.status === 'active' && row?.isPurchased === true
                             ? 'bg-green-500'
                             : 'bg-red-500'
                         }`}
