@@ -2,8 +2,6 @@ import  { AxiosError } from "axios";
 import api from "./axios.js"
 export interface Wallet {
     balance: number;
-    miningEarnings: number;
-    referralEarnings: number;
 }
 export interface User {
     _id: string;
