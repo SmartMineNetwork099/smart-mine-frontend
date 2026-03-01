@@ -157,6 +157,7 @@ const WalletData = () => {
       // ✅ Local save
       await upsertUserData(walletAddress, updatedUser);
       setWalletData(updatedUser);
+      handleIconClick(); // Close icon picker
 
       // ✅ Optional server save (uncomment after you add API)
       await updateUserImage(walletAddress, iconName);
@@ -180,7 +181,7 @@ const WalletData = () => {
             {/* Selected Avatar */}
             <div className="flex justify-center">
               <div onClick={handleIconClick} className="rounded-full p-1 hover:opacity-80 transition">
-                <SelectedIconComp className="w-10 sm:w-16 h-10 sm:h-16 text-black" />
+                <SelectedIconComp className="w-10 sm:w-16 h-10 sm:h-16 text-white" />
               </div>
             </div>
           </div>
