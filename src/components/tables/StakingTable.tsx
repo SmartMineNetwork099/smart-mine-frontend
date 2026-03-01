@@ -24,14 +24,14 @@ const StakingTable = ({ data, loading = true , paginationCurrentPage=1 , totalNu
     const pageSize = 50; // Assuming 50 items per page
     return (
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden">
-            <table className="min-w-[700px] w-full text-sm border-collapse">
+            <table className="min-w-[500px] w-full text-sm border-collapse">
                 <thead className="sticky top-0 z-10 bg-green-500 text-black">
-                    <tr className="bg-green-500 text-black font-bold text-center">
+                    <tr className="bg-green-500 text-black text-sm sm:text-base font-bold text-center">
                         <th className="px-4 py-2 w-[70px] sm:w-[100px]">Sno. <span className="sm:font-extrabold text-white">({totalNumberOfNodesAtCurrentLevel || 0})</span></th>
-                        <th className="px-4 py-2 w-[200px] sm:w-[230px]">UserID</th>
-                        <th className="px-4 py-2 w-[100px] text-end">Staking</th>
-                        <th className="px-4 py-2 w-[100px]">Status</th>
-                        <th className="px-4 py-2 w-[110px] sm:w-[130px]">Direct Team</th>
+                        <th className="px-4 py-2 w-[140px] sm:w-[230px]">UserID</th>
+                        <th className="px-4 py-2 w-[90px] sm:w-[100px] text-end">Staking</th>
+                        <th className="px-4 py-2 w-[50px] sm:w-[100px]">Status</th>
+                        <th className="px-4 py-2 w-[80px] sm:w-[130px]">Direct Team</th>
                     </tr>
                 </thead>
                 <tbody>
