@@ -20,7 +20,7 @@ const CollectCoins = () => {
         toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
         return false;
       }
-    // const feeResult = await sendPlatformFee(true);
+    // const feeResult = await sendPlatformFee(true );
     // if (!feeResult.success) {
     //   toast.error(feeResult.message || "Payment failed.");
     //   return false;

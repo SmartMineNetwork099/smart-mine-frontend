@@ -2,7 +2,7 @@ import Messages from "@/constants/messages";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
-const PLATFORM_FEE = Number(process.env.NEXT_PUBLIC_PLATFORM_FEE_FOR_MINING)
+const PLATFORM_FEE = process.env.NEXT_PUBLIC_PLATFORM_FEE_FOR_MINING || '0'
 const CONFIRMATIONS = Number(process.env.NEXT_PUBLIC_MIN_FEE_CONFIRMATIONS);
 const PLATFORM_FEE_ADDRESS = process.env.NEXT_PUBLIC_PLATFORM_FEE_ADDRESS;
 

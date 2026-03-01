@@ -34,7 +34,7 @@ const StakingPlansTable = () => {
     if (!selectedPlan) return;
     try {
       setLoadingBuy(true);
-      // const amount = selectedPlan?.investment;
+      // const amount = String(selectedPlan?.investment);
       /////////////////////////////////////
     // const feeResult = await sendPlatformFee(false ,true , amount);
     // if (!feeResult.success) {
