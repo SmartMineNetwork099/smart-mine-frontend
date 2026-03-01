@@ -19,11 +19,13 @@ export interface User {
 export const getReferralsAtLevel = async (
     walletAddress: string,
     level: number,
+    paginationCurrentPage: number,
 ) => {
     try {
-        const res = await api.post<{ accessToken_: string, message: string }>(`/api/auth/referrals-level`, {
+        const res = await api.post<any>(`/api/auth/referrals-level`, {
             walletAddress,
             level,
+            paginationCurrentPage,
         });
         return { data: res?.data, error: null };
     } catch (err) {

@@ -6,9 +6,11 @@ import HashLoader from "@/components/HashLoader";
 type TableProps = {
     data: any[];
     loading?: boolean;
+    paginationCurrentPage?: number;
+    totalNumberOfNodesAtCurrentLevel?: number;
 };
 
-const StakingTable = ({ data, loading = true }: TableProps) => {
+const StakingTable = ({ data, loading = true , paginationCurrentPage=1 , totalNumberOfNodesAtCurrentLevel=0 }: TableProps) => {
     const [responsiveColspan, setResponsiveColspan] = useState<number>(2)
     // Handle Responsive 
     useEffect(() => {
@@ -19,12 +21,13 @@ const StakingTable = ({ data, loading = true }: TableProps) => {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+    const pageSize = 50; // Assuming 50 items per page
     return (
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden">
             <table className="min-w-[700px] w-full text-sm border-collapse">
                 <thead className="sticky top-0 z-10 bg-green-500 text-black">
                     <tr className="bg-green-500 text-black font-bold text-center">
-                        <th className="px-4 py-2 w-[70px] sm:w-[100px]">Sno.</th>
+                        <th className="px-4 py-2 w-[70px] sm:w-[100px]">Sno. <span className="sm:font-extrabold text-white">({totalNumberOfNodesAtCurrentLevel || 0})</span></th>
                         <th className="px-4 py-2 w-[200px] sm:w-[230px]">UserID</th>
                         <th className="px-4 py-2 w-[100px] text-end">Staking</th>
                         <th className="px-4 py-2 w-[100px]">Status</th>
@@ -46,7 +49,9 @@ const StakingTable = ({ data, loading = true }: TableProps) => {
                                 key={rowIndex}
                                 className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
                             >
-                                <td className="px-4 py-2 whitespace-nowrap">{rowIndex + 1}</td>
+                                <td className="px-4 py-2 whitespace-nowrap">
+                                     {(paginationCurrentPage - 1) * pageSize + rowIndex + 1}
+                                </td>
                                 <td className="px-4 py-2 whitespace-nowrap">{row?._id ?? "-"}</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap">
                                     {row?.wallet?.stakingAmount} $

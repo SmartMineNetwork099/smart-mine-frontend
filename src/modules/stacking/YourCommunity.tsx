@@ -8,6 +8,8 @@ import { useWalletAddress } from '@/hooks/useWallet';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import ROUTES from '@/constants/routes';
 import { useRouter } from 'next/navigation';
+import Pagination2 from "@/components/Pagination2";
+
 // import Messages from '@/constants/messages';
 // import { toast } from 'react-toastify';
 
@@ -16,6 +18,11 @@ const YourCommunity = () => {
     const [tableData, setTableData] = useState<any>([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);
+    const [totalPaginationPages , setTotalPaginationPages ] = useState(1);
+    const [paginationCurrentPage, setPaginationCurrentPage] = useState(1);
+    const [totalNumberOfNodesAtCurrentLevel , setTotalNumberOfNodesAtCurrentLevel ] = useState(1);
+
+
     const walletAddress = useWalletAddress();
     const router = useRouter();
     
@@ -24,9 +31,15 @@ const YourCommunity = () => {
         if (!walletAddress) return;
         try {
             setLoading(true);
-            const response = await getReferralsAtLevel(walletAddress, LevelNumber);
-            setTableData(Array.isArray(response?.data) ? response?.data : []);
-            console.log(response?.data, "referrals data");
+            const {data , error} = await getReferralsAtLevel(walletAddress, LevelNumber , paginationCurrentPage);
+            if(error){
+                console.error("API Error:", error);
+                return;
+            }
+            setTableData(Array.isArray(data?.nodes) ? data?.nodes : []);
+            setTotalPaginationPages(data?.totalPages || 1);
+            setTotalNumberOfNodesAtCurrentLevel(data?.totalNumberOfNodesAtCurrentLevel || 1);
+            setPaginationCurrentPage(data?.currentPage || 1); // Reset to first page whenever level changes
         } catch (error) {
             console.error("Error fetching referrals:", error);
         } finally {
@@ -38,7 +51,7 @@ const YourCommunity = () => {
         if (walletAddress) {
             getLevelData(page);
         }
-    }, [walletAddress, page]);
+    }, [page , paginationCurrentPage]);
 
     // 👇 Unified real-time listener for wallet + status updates
     // useEffect(() => {
@@ -102,7 +115,17 @@ const YourCommunity = () => {
             <div className='my-2'>
                 <Pagination currentPage={page} onPageChange={setPage} pages={10}/>
             </div>
-            <StakingTable data={tableData} loading={loading} />
+            <StakingTable data={tableData} loading={loading} paginationCurrentPage={paginationCurrentPage} totalNumberOfNodesAtCurrentLevel={totalNumberOfNodesAtCurrentLevel}/>
+            <div>
+                  {/* PAGINATION */}
+      {totalPaginationPages > 1 && !loading && (
+        <Pagination2
+          currentPage={paginationCurrentPage}
+          totalPages={totalPaginationPages}
+          onPageChange={setPaginationCurrentPage}
+        />
+      )}
+            </div>
         </div>
     );
 }
