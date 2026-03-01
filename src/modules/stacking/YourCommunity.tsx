@@ -20,7 +20,7 @@ const YourCommunity = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [totalPaginationPages , setTotalPaginationPages ] = useState(1);
     const [paginationCurrentPage, setPaginationCurrentPage] = useState(1);
-    const [totalNumberOfNodesAtCurrentLevel , setTotalNumberOfNodesAtCurrentLevel ] = useState(1);
+    const [totalNumberOfNodesAtCurrentLevel , setTotalNumberOfNodesAtCurrentLevel ] = useState(0);
 
 
     const walletAddress = useWalletAddress();
@@ -38,7 +38,7 @@ const YourCommunity = () => {
             }
             setTableData(Array.isArray(data?.nodes) ? data?.nodes : []);
             setTotalPaginationPages(data?.totalPages || 1);
-            setTotalNumberOfNodesAtCurrentLevel(data?.totalNumberOfNodesAtCurrentLevel || 1);
+            setTotalNumberOfNodesAtCurrentLevel(data?.totalNumberOfNodesAtCurrentLevel || 0);
             setPaginationCurrentPage(data?.currentPage || 1); // Reset to first page whenever level changes
         } catch (error) {
             console.error("Error fetching referrals:", error);
@@ -51,7 +51,7 @@ const YourCommunity = () => {
         if (walletAddress) {
             getLevelData(page);
         }
-    }, [page , paginationCurrentPage]);
+    }, [walletAddress , page , paginationCurrentPage]);
 
     // 👇 Unified real-time listener for wallet + status updates
     // useEffect(() => {

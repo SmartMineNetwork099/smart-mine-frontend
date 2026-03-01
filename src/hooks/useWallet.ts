@@ -9,6 +9,7 @@ export const useWalletAddress = () => {
   useEffect(() => {
     getUserWalletAddress().then(res => {
       if (res?.success){
+        console.log("Fetched wallet address:", res?.userWalletAddress);
         const walletAddress = res?.userWalletAddress || null;
         const normalizedWalletAddress = normalizeWalletAddress(walletAddress);
         setWallet(normalizedWalletAddress);
