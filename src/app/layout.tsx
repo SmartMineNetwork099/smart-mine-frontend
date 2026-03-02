@@ -88,38 +88,23 @@ useEffect(() => {
 
   const pathname = usePathname();
   // const isBinaryPage = pathname.includes('/binary');
-const isNotGamingPage = !(pathname.includes('/withdraw') ||pathname.includes('/gaming') || pathname.includes('/binary') || pathname.includes('/stacking/community'));
-  const isAuthRoute = pathname.includes(ROUTES?.AUTH?.LOGIN);
+  const isNotShowHeader = !(pathname.includes(ROUTES?.AUTH?.LOGIN) || pathname.includes(ROUTES?.WITHDRAW?.HOME));
   return (
     <html lang="en">
       <body className="bg-gray-200">
         <div className='w-full bg-black min-h-screen'>
 
           {/* ✅ Show only when tokken exists */}
-          { !isAuthRoute && (
-            <>
-              <Header />
-
-              {/* <div className="w-full p-4">
-                <Tab tabs={tabs} style='min-w-20 sm:w-32' defaultLink={ROUTES?.STACKING?.DASHBOARD} />
-              </div> */}
-
-              {isNotGamingPage && (
-                <>
+          { isNotShowHeader && (
+          <>
+                  <Header />
 
                   <div className="w-full px-3">
                     <WalletData />
                   </div>
-                </>
-              )}
-
-              {/* {isBinaryPage && (
-                <div className="w-full p-4">
-                  <Tab tabs={tabs2} style='min-w-36 sm:min-w-44' defaultLink={ROUTES?.BINARY?.DASHBOARD} />
-                </div>
-              )} */}
-            </>
+          </>
           )}
+                
 
           <main className="p-3">
             {children}
