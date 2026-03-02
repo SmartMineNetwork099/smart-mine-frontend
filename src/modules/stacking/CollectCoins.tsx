@@ -20,12 +20,12 @@ const CollectCoins = () => {
         toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
         return false;
       }
-    // const feeResult = await sendPlatformFee(true );
-    // if (!feeResult.success) {
-    //   toast.error(feeResult.message || "Payment failed.");
+      // success: true, feeTxHash, userWalletAddress 
+    // const { success, message, feeTxHash, userWalletAddress } = await sendPlatformFee( {type:"mining"} );
+    // if (success===false) {
+    //   toast.error(message || "Payment failed.");
     //   return false;
     // }
-    // const { feeTxHash, userWalletAddress } = feeResult;
     // const miningTime = new Date().toISOString();
 
       const payload = {

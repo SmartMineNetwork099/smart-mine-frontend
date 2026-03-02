@@ -34,14 +34,15 @@ const StakingPlansTable = () => {
     if (!selectedPlan) return;
     try {
       setLoadingBuy(true);
-      // const amount = String(selectedPlan?.investment);
+  
+      const amount = String(selectedPlan?.investment);
+      const type = "buy_stacking_plan";
+      // const { success, message, feeTxHash, userWalletAddress } = await sendPlatformFee( {type , miningPlanBuyAmount: amount} );
       /////////////////////////////////////
-    // const feeResult = await sendPlatformFee(false ,true , amount);
-    // if (!feeResult.success) {
-    //   toast.error(feeResult.message || "Payment failed.");
+    // if (success === false) {
+    //   toast.error(message || "Payment failed.");
     //   return false;
     // }
-    // const { feeTxHash, userWalletAddress } = feeResult;
       /////////////////////////////////////
       const buyPlanApi = await buyStackingPlans({
         walletAddress,
