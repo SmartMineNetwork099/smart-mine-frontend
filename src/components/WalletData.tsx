@@ -69,11 +69,11 @@ const WalletData = () => {
       const res = await getUserDataApi(walletAddress);
       const user = res?.data?.user || {};
 
+      setWalletData(user);
+      setSelectedIcon(user?.image_url || localUser?.image_url || "FaRegUser");
       // 3) Upsert local
       await upsertUserData(walletAddress, user);
 
-      setWalletData(user);
-      setSelectedIcon(user?.image_url || localUser?.image_url || "FaRegUser");
     } catch (err) {
       console.error("Failed to fetch user data:", err);
       toast.error(Messages?.SOME_THING_WRONG);
