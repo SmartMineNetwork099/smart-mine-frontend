@@ -106,7 +106,26 @@ const CheckOut = () => {
     return loadingBalance || isInvalidAmountMy || isInsufficientMy;
   }, [loadingBalance, isInvalidAmountMy, isInsufficientMy]);
 
-  const handleWithdrawMy = () => {
+  const handleWithdrawMyIncome = () => {
+    const a = parseFloat(withdrawAmountMy);
+
+    if (!withdrawAmountMy || Number.isNaN(a) || a <= 0) {
+      alert("Please enter a valid amount.");
+      return;
+    }
+    if (a > balance.myIncome) {
+      alert("Insufficient balance.");
+      return;
+    }
+
+    setBalance((prev) => ({ ...prev, myIncome: prev.myIncome - a }));
+    setHistory((prev) => [
+      { date: new Date().toLocaleString(), amount: a, status: "Completed", type: "myIncome" },
+      ...prev,
+    ]);
+    setWithdrawAmountMy("");
+  };
+  const handleSendMyIncome = () => {
     const a = parseFloat(withdrawAmountMy);
 
     if (!withdrawAmountMy || Number.isNaN(a) || a <= 0) {
@@ -146,7 +165,26 @@ const CheckOut = () => {
     return loadingBalance || isInvalidAmountTeam || isInsufficientTeam;
   }, [loadingBalance, isInvalidAmountTeam, isInsufficientTeam]);
 
-  const handleWithdrawTeam = () => {
+  const handleWithdrawTeamIncome = () => {
+    const a = parseFloat(withdrawAmountTeam);
+
+    if (!withdrawAmountTeam || Number.isNaN(a) || a <= 0) {
+      alert("Please enter a valid amount.");
+      return;
+    }
+    if (a > balance.teamIncome) {
+      alert("Insufficient balance.");
+      return;
+    }
+
+    setBalance((prev) => ({ ...prev, teamIncome: prev.teamIncome - a }));
+    setHistory((prev) => [
+      { date: new Date().toLocaleString(), amount: a, status: "Completed", type: "teamIncome" },
+      ...prev,
+    ]);
+    setWithdrawAmountTeam("");
+  };
+  const handleSendTeamIncome = () => {
     const a = parseFloat(withdrawAmountTeam);
 
     if (!withdrawAmountTeam || Number.isNaN(a) || a <= 0) {
@@ -207,7 +245,7 @@ const CheckOut = () => {
                 {withdrawAmountMy && !Number.isNaN(amtMy) && amtMy > balance.myIncome && (
                   <p className="text-red-400 text-sm mt-2">Insufficient balance.</p>
                 )}
-
+                <div className="flex items-center gap-2">
                 <Button
                   disabled={isWithdrawDisabledMy}
                   className={`mt-4 w-full font-bold border-0 transition-all duration-200 ${
@@ -215,10 +253,23 @@ const CheckOut = () => {
                       ? "bg-green-300 text-green-900 cursor-not-allowed opacity-70"
                       : "bg-green-500 text-black hover:bg-green-600"
                   }`}
-                  onClick={handleWithdrawMy}
+                  onClick={handleWithdrawMyIncome}
                 >
                   Withdraw
                 </Button>
+                <Button
+                  disabled={isWithdrawDisabledMy}
+                  className={`mt-4 w-full font-bold border-0 transition-all duration-200 ${
+                    isWithdrawDisabledMy
+                      ? "bg-green-300 text-green-900 cursor-not-allowed opacity-70"
+                      : "bg-green-500 text-black hover:bg-green-600"
+                  }`}
+                  onClick={handleSendMyIncome}
+                >
+                  Send
+                </Button>
+
+                </div>
               </div>
             </div>
           </div>
@@ -255,17 +306,30 @@ const CheckOut = () => {
                   <p className="text-red-400 text-sm mt-2">Insufficient balance.</p>
                 )}
 
-                <Button
+               <div className="flex items-center gap-2">
+                 <Button
                   disabled={isWithdrawDisabledTeam}
                   className={`mt-4 w-full font-bold border-0 transition-all duration-200 ${
                     isWithdrawDisabledTeam
                       ? "bg-green-300 text-green-900 cursor-not-allowed opacity-70"
                       : "bg-green-500 text-black hover:bg-green-600"
                   }`}
-                  onClick={handleWithdrawTeam}
+                  onClick={handleWithdrawTeamIncome}
                 >
                   Withdraw
                 </Button>
+                 <Button
+                  disabled={isWithdrawDisabledTeam}
+                  className={`mt-4 w-full font-bold border-0 transition-all duration-200 ${
+                    isWithdrawDisabledTeam
+                      ? "bg-green-300 text-green-900 cursor-not-allowed opacity-70"
+                      : "bg-green-500 text-black hover:bg-green-600"
+                  }`}
+                  onClick={handleSendTeamIncome}
+                >
+                  Send
+                </Button>
+               </div>
               </div>
             </div>
           </div>
