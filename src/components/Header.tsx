@@ -8,6 +8,7 @@ import { useWalletAddress } from '@/hooks/useWallet';
 import { logout } from '@/apis/auth';
 import { toast } from 'react-toastify';
 import Messages from '@/constants/messages'
+import { deleteUserData } from '@/db/getData';
 const Header = () => {
   const router = useRouter();
   const walletAddress = useWalletAddress()
@@ -18,6 +19,7 @@ const Header = () => {
   const handleLogout = async() => {
     if(!walletAddress) return;
     try {
+      await deleteUserData(walletAddress); // ✅ delete local data on logout
       const res =await logout();
       console.log("logout res", res);
       toast.success(res?.message || Messages?.SUCCESSFULLY_MESSAGE('logout'));

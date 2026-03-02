@@ -25,3 +25,28 @@ export const getUserData = async (walletAddress:any) => {
     return null;
   }
 };
+
+export const deleteUserData = async (walletAddress:any) => {
+  try {
+    const db = await openDB();
+
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORES_NAME?.user, "readwrite");
+      const store = tx.objectStore(STORES_NAME?.user);
+
+      const normalizedWallet = walletAddress.toLowerCase();
+      const request = store.delete(normalizedWallet);
+
+      request.onsuccess = () => {
+        resolve(true);
+      };
+
+      request.onerror = () => {
+        reject(request.error);
+      };
+    });
+  } catch (error) {
+    console.error("Error deleting user data:", error);
+    return false;
+  }
+};
