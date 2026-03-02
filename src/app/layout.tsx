@@ -88,7 +88,7 @@ useEffect(() => {
 
   const pathname = usePathname();
   // const isBinaryPage = pathname.includes('/binary');
-const isNotGamingPage = !(pathname.includes('/gaming') || pathname.includes('/binary') || pathname.includes('/stacking/community'));
+const isNotGamingPage = !(pathname.includes('/withdraw') ||pathname.includes('/gaming') || pathname.includes('/binary') || pathname.includes('/stacking/community'));
   const isAuthRoute = pathname.includes(ROUTES?.AUTH?.LOGIN);
   return (
     <html lang="en">
