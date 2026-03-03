@@ -8,14 +8,7 @@ import { BiMoneyWithdraw } from "react-icons/bi";
 import { IoIosSend } from "react-icons/io";
 import { useForm, Controller } from "react-hook-form";
 
-export type ActionMode = "withdraw" | "send";
 
-export interface HistoryItem {
-  date: string;
-  amount: number;
-  status: string;
-  type: "myIncome" | "teamIncome" | "shareIncome";
-}
 
 const sanitizeDecimal4 = (value: string) => {
   let v = value;
@@ -34,57 +27,42 @@ const sanitizeDecimal4 = (value: string) => {
 };
 
 type FormValues = {
-  mode: ActionMode;
   userId: string;
   amount: string;
 };
 
 type Props = {
-  myIncome: number;
+  shareIncome: number;
   loadingBalance: boolean;
-  onWithdraw: (amount: number) => void;
   onSend: (payload: { amount: number; userId: string }) => void;
 };
 
-const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) => {
+const ShareIncomeCard = ({ shareIncome, loadingBalance, onSend }: Props) => {
   const {
     control,
     handleSubmit,
-    watch,
-    setValue,
     trigger,
-    clearErrors,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<FormValues>({
     mode: "onSubmit",
     defaultValues: {
-      mode: "withdraw",
       userId: "",
       amount: "",
     },
   });
 
-  const mode = watch("mode");
 
-  // when switching to withdraw => clear userId
-  useEffect(() => {
-    if (mode === "withdraw") {
-      setValue("userId", "");
-      clearErrors("userId");
-    }
-  }, [mode, setValue, clearErrors]);
 
   const onValid = (data: FormValues) => {
     const a = parseFloat(data.amount);
 
-    if (data.mode === "withdraw") {
-      onWithdraw(a);
-    } else {
+   
+   
       onSend({ amount: a, userId: data.userId.trim() });
-    }
+  
 
-    reset({ mode: data.mode, userId: "", amount: "" });
+    reset({ userId: "", amount: "" });
   };
 
   return (
@@ -92,54 +70,21 @@ const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) =
       <div className="flex items-center justify-center">
         <div className="w-[100%] sm:w-[60%]">
           <p className="text-white text-base sm:text-xl">
-            My Income :{" "}
-            <span className={`text-xl font-black ${myIncome <= 0 ? "text-red-500" : "text-green-500"}`}>
-              $ {loadingBalance ? "Loading..." : myIncome.toLocaleString()}
+            Share Income :{" "}
+            <span className={`text-xl font-black ${shareIncome <= 0 ? "text-red-500" : "text-green-500"}`}>
+              $ {loadingBalance ? "Loading..." : shareIncome.toLocaleString()}
             </span>
           </p>
 
-          {/* ✅ Radio-like Mode Toggle (RHF) */}
-          <Controller
-            control={control}
-            name="mode"
-            render={({ field }) => (
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => field.onChange("withdraw")}
-                  className={`p-4 rounded-xl border font-bold transition ${
-                    field.value === "withdraw"
-                      ? "border-black bg-white text-black"
-                      : "border-2 border-white/20 bg-transparent text-white"
-                  }`}
-                >
-                      Withdraw
-                   
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => field.onChange("send")}
-                  className={`p-4 rounded-xl border font-bold transition ${
-                    field.value === "send" ? "border-black bg-white text-black" : "border-2 border-white/20 bg-transparent text-white"
-                  }`}
-                >
-                      Send
-                </button>
-              </div>
-            )}
-          />
-
           <div className="mt-4">
             {/* ✅ UserId (only when send) */}
-            {mode === "send" && (
+            {(
               <>
                 <Controller
                   control={control}
                   name="userId"
                 rules={{
   validate: (v) => {
-    if (mode !== "send") return true;
 
     const value = v?.trim();
 
@@ -185,7 +130,7 @@ const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) =
 
                   if (!cleaned) return "Amount is required.";
                   if (Number.isNaN(a) || a <= 0) return "Please enter a valid amount.";
-                  if (a > myIncome) return "Insufficient balance.";
+                  if (a > shareIncome) return "Insufficient balance.";
                   return true;
                 },
               }}
@@ -216,15 +161,7 @@ const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) =
               }`}
               onClick={handleSubmit(onValid)}
             >
-              {mode === "withdraw" ? (
-                <>
-                  Withdraw <span className="text-xl"><BiMoneyWithdraw /></span>
-                </>
-              ) : (
-                <>
                   Send <span className="text-xl"><IoIosSend /></span>
-                </>
-              )}
             </Button>
           </div>
         </div>
@@ -233,4 +170,4 @@ const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) =
   );
 };
 
-export default MyIncomeCard;
+export default ShareIncomeCard;

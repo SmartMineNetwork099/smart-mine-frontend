@@ -9,15 +9,17 @@ import { getUserData } from "@/db/getData";
 
 import MyIncomeCard, { HistoryItem } from "./MyIncomeCard";
 import TeamIncomeCard from "./TeamIncomeCard";
+import ShareIncomeCard from "./ShareIncomeCard";
 import WithdrawHistory from "./WithdrawHistory";
 
 const CheckOut = () => {
   const router = useRouter();
   const walletAddress = useWalletAddress();
 
-  const [balance, setBalance] = useState<{ myIncome: number; teamIncome: number }>({
+  const [balance, setBalance] = useState<{ myIncome: number; teamIncome: number; shareIncome: number }>({
     myIncome: 0,
     teamIncome: 0,
+    shareIncome: 0,
   });
   const [loadingBalance, setLoadingBalance] = useState<boolean>(true);
 
@@ -35,18 +37,21 @@ const CheckOut = () => {
       const localUser: any = await getUserData(walletAddress);
       const my = Number(localUser?.wallet?.balance?.myIncome ?? 0);
       const team = Number(localUser?.wallet?.balance?.teamIncome ?? 0);
+      const share = Number(localUser?.wallet?.balance?.shareIncome ?? 0);
 
       setBalance({
         myIncome:  10,
         teamIncome: 10,
+        shareIncome:10,
       });
       // setBalance({
       //   myIncome: Number.isFinite(my) ? my : 0,
       //   teamIncome: Number.isFinite(team) ? team : 0,
+      //   shareIncome: Number.isFinite(share) ? share : 0,
       // });
     } catch (err) {
       console.error("Failed to fetch user data:", err);
-      setBalance({ myIncome: 0, teamIncome: 0 });
+      setBalance({ myIncome: 0, teamIncome: 0 , shareIncome: 0 });
     } finally {
       setLoadingBalance(false);
     }
@@ -91,10 +96,18 @@ const CheckOut = () => {
     ]);
   };
 
-  const onSendTeam = ({ amount, userId }: { amount: number; userId: string }) => {
+
+  const onSendTeamIncome = ({ amount, userId }: { amount: number; userId: string }) => {
     setBalance((prev) => ({ ...prev, teamIncome: prev.teamIncome - amount }));
     setHistory((prev) => [
       { date: new Date().toLocaleString(), amount, status: `Sent to ${userId}`, type: "teamIncome" },
+      ...prev,
+    ]);
+  };
+  const onSendShareIncome = ({ amount, userId }: { amount: number; userId: string }) => {
+    setBalance((prev) => ({ ...prev, shareIncome: prev.shareIncome - amount }));
+    setHistory((prev) => [
+      { date: new Date().toLocaleString(), amount, status: `Sent to ${userId}`, type: "shareIncome" },
       ...prev,
     ]);
   };
@@ -121,7 +134,13 @@ const CheckOut = () => {
           teamIncome={balance.teamIncome}
           loadingBalance={loadingBalance}
           onWithdraw={onWithdrawTeam}
-          onSend={onSendTeam}
+          onSend={onSendTeamIncome}
+        />
+
+        <ShareIncomeCard
+          shareIncome={balance.shareIncome}
+          loadingBalance={loadingBalance}
+          onSend={onSendShareIncome}
         />
 
         {/* optional history */}

@@ -143,6 +143,7 @@ const WalletData = () => {
     { name: "Total Loss", transactions: `${formatAmount(walletData?.wallet?.lossIncome || 0)} $` },
     { name: "Pending Income", transactions: `${formatAmount(walletData?.wallet?.pendingBonus || 0)} $` },
     { name: "Collectable Income", transactions: `${formatAmount(walletData?.wallet?.collectableBonus || 0)} $` },
+    { name: "Share Income", transactions: `${formatAmount(walletData?.wallet?.shareIncome || 0)} $` },
   ];
 
   // ✅ Icon select handler: save locally + (optional) server
