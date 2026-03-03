@@ -97,49 +97,23 @@ const TeamIncomeCard = ({ teamIncome, loadingBalance, onWithdraw, onSend }: Prop
                 <button
                   type="button"
                   onClick={() => field.onChange("withdraw")}
-                  className={`p-4 rounded-xl border text-left transition ${
+                  className={`p-4 rounded-xl border font-bold transition ${
                     field.value === "withdraw"
-                      ? "border-black bg-white"
-                      : "border-white/20 bg-transparent"
+                      ? "border-black bg-white text-black"
+                      : "border-white/20 bg-transparent text-white"
                   }`}
                 >
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`h-4 w-4 rounded-full border flex items-center justify-center ${
-                        field.value === "withdraw" ? "border-black" : "border-white/30"
-                      }`}
-                    >
-                      {field.value === "withdraw" ? (
-                        <span className="h-2 w-2 rounded-full bg-black" />
-                      ) : null}
-                    </span>
-                    <p className={`${field.value === "withdraw" ? "text-black" : "text-white"} font-semibold`}>
-                      Withdraw Income
-                    </p>
-                  </div>
+                      Withdraw
                 </button>
 
                 <button
                   type="button"
                   onClick={() => field.onChange("send")}
-                  className={`p-4 rounded-xl border text-left transition ${
-                    field.value === "send" ? "border-black bg-white" : "border-white/20 bg-transparent"
+                  className={`p-4 rounded-xl border font-bold transition ${
+                    field.value === "send" ? "border-black bg-white text-black" : "border-white/20 text-white bg-transparent"
                   }`}
                 >
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`h-4 w-4 rounded-full border flex items-center justify-center ${
-                        field.value === "send" ? "border-black" : "border-white/30"
-                      }`}
-                    >
-                      {field.value === "send" ? (
-                        <span className="h-2 w-2 rounded-full bg-black" />
-                      ) : null}
-                    </span>
-                    <p className={`${field.value === "send" ? "text-black" : "text-white"} font-semibold`}>
-                      Send Income
-                    </p>
-                  </div>
+                      Send
                 </button>
               </div>
             )}
@@ -182,7 +156,7 @@ const TeamIncomeCard = ({ teamIncome, loadingBalance, onWithdraw, onSend }: Prop
                 />
 
                 {errors.userId?.message && (
-                  <p className="text-red-400 text-sm mb-3">{errors.userId.message}</p>
+                  <p className="text-red-400 text-xs mb-3">{errors.userId.message}</p>
                 )}
               </>
             )}
@@ -217,7 +191,7 @@ const TeamIncomeCard = ({ teamIncome, loadingBalance, onWithdraw, onSend }: Prop
             />
 
             {errors.amount?.message && (
-              <p className="text-red-400 text-sm mt-2">{errors.amount.message}</p>
+              <p className="text-red-400 text-xs mt-2">{errors.amount.message}</p>
             )}
 
             <Button
