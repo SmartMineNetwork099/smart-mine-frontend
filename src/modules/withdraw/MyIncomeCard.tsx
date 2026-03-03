@@ -110,7 +110,7 @@ const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) =
                   className={`p-4 rounded-xl border font-bold transition ${
                     field.value === "withdraw"
                       ? "border-black bg-white text-black"
-                      : "border-white/20 bg-transparent text-white"
+                      : "border-2 border-white/20 bg-transparent text-white"
                   }`}
                 >
                       Withdraw
@@ -121,7 +121,7 @@ const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) =
                   type="button"
                   onClick={() => field.onChange("send")}
                   className={`p-4 rounded-xl border font-bold transition ${
-                    field.value === "send" ? "border-black bg-white text-black" : "border-white/20 bg-transparent text-white"
+                    field.value === "send" ? "border-black bg-white text-black" : "border-2 border-white/20 bg-transparent text-white"
                   }`}
                 >
                       Send
@@ -161,7 +161,7 @@ const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) =
                       onChange={(e) => field.onChange(e.target.value)}
                       onBlur={() => trigger("userId")}
                       placeholder="Enter User ID"
-                      className="bg-neutral-800 text-white ring-0 border-0 outline-none rounded-md mb-2"
+                      className="bg-neutral-900 text-white ring-0 border-0 outline-none rounded-md mb-2"
                       inputClassName="h-12 py-2 px-4 text-lg ring-0 border-0 outline-none"
                     />
                   )}
@@ -197,7 +197,7 @@ const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) =
                   onChange={(e) => field.onChange(sanitizeDecimal4(e.target.value))}
                   onBlur={() => trigger("amount")}
                   placeholder="0.0000"
-                  className="bg-neutral-800 text-green-500 ring-0 border-0 outline-none rounded-md"
+                  className="bg-neutral-900 text-green-500 ring-0 border-0 outline-none rounded-md"
                   inputClassName="h-12 py-2 px-4 text-lg ring-0 border-0 outline-none"
                 />
               )}
