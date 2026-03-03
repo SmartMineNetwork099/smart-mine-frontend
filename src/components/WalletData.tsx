@@ -25,6 +25,7 @@ import {
   FaUserMd,
 } from "react-icons/fa";
 import { FaUserSecret } from "react-icons/fa6";
+import { LuCopy, LuCopyCheck } from "react-icons/lu";
 
 type WalletDataType = any;
 
@@ -44,6 +45,8 @@ const WalletData = () => {
 
   const [walletData, setWalletData] = useState<WalletDataType>({});
   const [isMobile, setIsMobile] = useState(false);
+  const [copied, setCopied] = useState(false);
+  
 
   // ✅ avatar icon state
   const [selectedIcon, setSelectedIcon] = useState<string>("FaRegUser");
@@ -171,6 +174,11 @@ const WalletData = () => {
   const handleIconClick = () => {
     setClickIcon((prev) => !prev);
   };
+  const handleCopy = () => {
+        navigator.clipboard.writeText(walletData?.userId);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500); // Auto hide after 1.5s
+    };
 
   return (
     <Card className="flex flex-col flex-grow">
@@ -187,9 +195,25 @@ const WalletData = () => {
           </div>
 
           {/* User Info */}
-          <div className="text-[10px] sm:text-sm text-gray-300 flex flex-col justify-center">
-            <p>
-              User ID: <span>{walletData?.userId}</span>
+          <div className="text-[10px] sm:text-sm text-gray-300 flex flex-col justify-center  w-full">
+            <p className="relative flex items-center gap-2  w-full">
+               <span>User ID: {walletData?.userId}</span>
+               {/* Copy Button + Tooltip */}
+                              <div
+                                  className='cursor-pointer flex items-center justify-center text-white relative '
+                                  onClick={handleCopy}
+                              >
+                                  <span className=''>
+                                  {copied ? <LuCopyCheck /> : <LuCopy />}
+                                  </span>
+              
+                                  {/* ✅ Custom Tooltip */}
+                                  {copied && (
+                                      <span className="absolute -top-8 bg-gray-700 text-white text-xs px-2 py-1 rounded shadow-md">
+                                          Copied!
+                                      </span>
+                                   )} 
+                              </div>
             </p>
             <p>
               Refer By: <span>{walletData?.referredBy || "-"}</span>
