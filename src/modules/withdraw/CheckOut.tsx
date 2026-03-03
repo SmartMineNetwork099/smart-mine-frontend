@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
-import { IoMdArrowRoundBack } from "react-icons/io";
+import { IoIosSend, IoMdArrowRoundBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import ROUTES from "@/constants/routes";
 import Card from "@/components/Card";
@@ -8,6 +8,7 @@ import { Input } from "rizzui/input";
 import { Button } from "rizzui/button";
 import { useWalletAddress } from "@/hooks/useWallet";
 import { getUserData } from "@/db/getData";
+import { BiMoneyWithdraw } from "react-icons/bi";
 
 interface HistoryItem {
   date: string;
@@ -248,25 +249,25 @@ const CheckOut = () => {
                 <div className="flex items-center gap-2">
                 <Button
                   disabled={isWithdrawDisabledMy}
-                  className={`mt-4 w-full font-bold border-0 transition-all duration-200 ${
+                  className={`mt-4 flex items-center gap-2 w-full text-lg font-bold border-0 transition-all duration-200 ${
                     isWithdrawDisabledMy
                       ? "bg-green-300 text-green-900 cursor-not-allowed opacity-70"
                       : "bg-green-500 text-black hover:bg-green-600"
                   }`}
                   onClick={handleWithdrawMyIncome}
                 >
-                  Withdraw
+                  Withdraw <span className="text-xl"><BiMoneyWithdraw  /></span> 
                 </Button>
                 <Button
                   disabled={isWithdrawDisabledMy}
-                  className={`mt-4 w-full font-bold border-0 transition-all duration-200 ${
+                  className={`mt-4 w-full flex items-center gap-2 text-lg font-bold border-0 transition-all duration-200 ${
                     isWithdrawDisabledMy
                       ? "bg-green-300 text-green-900 cursor-not-allowed opacity-70"
                       : "bg-green-500 text-black hover:bg-green-600"
                   }`}
                   onClick={handleSendMyIncome}
                 >
-                  Send
+                 Send <span className="text-xl"><IoIosSend /></span> 
                 </Button>
 
                 </div>
@@ -309,25 +310,26 @@ const CheckOut = () => {
                <div className="flex items-center gap-2">
                  <Button
                   disabled={isWithdrawDisabledTeam}
-                  className={`mt-4 w-full font-bold border-0 transition-all duration-200 ${
+                  className={`mt-4 w-full flex items-center gap-2 text-lg font-bold border-0 transition-all duration-200 ${
                     isWithdrawDisabledTeam
                       ? "bg-green-300 text-green-900 cursor-not-allowed opacity-70"
                       : "bg-green-500 text-black hover:bg-green-600"
                   }`}
                   onClick={handleWithdrawTeamIncome}
                 >
-                  Withdraw
+              Withdraw  <span className="text-xl"><BiMoneyWithdraw  /></span> 
+                  
                 </Button>
                  <Button
                   disabled={isWithdrawDisabledTeam}
-                  className={`mt-4 w-full font-bold border-0 transition-all duration-200 ${
+                  className={`mt-4 w-full flex items-center gap-2 text-lg font-bold border-0 transition-all duration-200 ${
                     isWithdrawDisabledTeam
                       ? "bg-green-300 text-green-900 cursor-not-allowed opacity-70"
                       : "bg-green-500 text-black hover:bg-green-600"
                   }`}
                   onClick={handleSendTeamIncome}
                 >
-                  Send
+                 Send <span className="text-xl"><IoIosSend /></span> 
                 </Button>
                </div>
               </div>
