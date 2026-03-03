@@ -247,12 +247,12 @@ const WalletData = () => {
       </div>
 
       {/* Wallet Cards */}
-      <div className="shadow-2xl rounded py-2 px-0.5 grid grid-cols-2 lg:grid-cols-4 gap-2 mt-4">
+      <div className=" py-2 px-0.5 grid grid-cols-2 lg:grid-cols-4 gap-2 mt-4">
         {walletInfo?.map((item, index) => (
           <div
             key={index}
-            className={`flex flex-col justify-between py-3 sm:py-4 px-2 ${
-              item?.name.includes("Loss") ? "bg-red-500" : "bg-black"
+            className={`flex flex-col justify-between py-3 sm:py-4 px-2 backdrop-blur-sm ${
+              item?.name.includes("Loss") ? "bg-red-500" : " "
             } text-white rounded-lg`}
           >
             <div>

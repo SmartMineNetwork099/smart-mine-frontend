@@ -34,7 +34,7 @@ const Header = () => {
   }
   return (
     <>
-      <div className='flex items-center justify-between bg-black p-2'>
+      <div className='flex items-center justify-between p-2'>
         <div onClick={goHomePage}>
           <p className='cursor-pointer font-bold border-2 border-yellow-300 text-yellow-300 py-2 px-3 rounded-full text-center'>{DEFAULT_CURRENCY}</p>
         </div>

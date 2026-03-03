@@ -92,7 +92,7 @@ useEffect(() => {
   return (
     <html lang="en">
       <body className="bg-gray-200">
-        <div className='w-full bg-black min-h-screen'>
+        <div className='fixed-bg w-full min-h-screen'>
 
           {/* ✅ Show only when tokken exists */}
           { isNotShowHeader && (
