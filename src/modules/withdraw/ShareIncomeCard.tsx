@@ -89,7 +89,7 @@ const ShareIncomeCard = ({ shareIncome, loadingBalance, onSend }: Props) => {
     const value = v?.trim();
 
     if (!value) {
-      return "User ID is required for sending.";
+      return "User ID is required for sending income.";
     }
 
     if (!/^[a-f\d]{24}$/i.test(value)) {
