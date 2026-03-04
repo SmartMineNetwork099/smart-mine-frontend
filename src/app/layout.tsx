@@ -88,14 +88,14 @@ useEffect(() => {
 
   const pathname = usePathname();
   // const isBinaryPage = pathname.includes('/binary');
-  const isNotShowHeader = !(pathname.includes(ROUTES?.AUTH?.LOGIN) || pathname.includes(ROUTES?.WITHDRAW?.HOME));
+  const showHeader = pathname.includes('stacking/dashboard');
   return (
     <html lang="en">
       <body className="bg-gray-200">
         <div className='fixed-bg w-full min-h-screen'>
 
           {/* ✅ Show only when tokken exists */}
-          { isNotShowHeader && (
+          { showHeader && (
           <>
                   <Header />
 
