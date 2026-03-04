@@ -128,7 +128,7 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                 <tr
                                     key={rowIndex}
                                     onClick={() => handleModelOpen(row?.userId , row?._id , row?.position)}
-                                    className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
+                                    className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70 text-xs sm:text-sm"
                                 >
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
                                          {(paginationCurrentPage - 1) * pageSize + rowIndex + 1}

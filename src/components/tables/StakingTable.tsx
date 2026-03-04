@@ -47,7 +47,7 @@ const StakingTable = ({ data, loading = true , paginationCurrentPage=1 , totalNu
                         data?.map((row: any, rowIndex: number) => (
                             <tr
                                 key={rowIndex}
-                                className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
+                                className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70 text-xs sm:text-sm"
                             >
                                 <td className="px-4 py-2 whitespace-nowrap">
                                      {(paginationCurrentPage - 1) * pageSize + rowIndex + 1}

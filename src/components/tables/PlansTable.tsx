@@ -63,7 +63,7 @@ const PlansTable = ({ plans, loading=true }: any) => {
                         plans?.map((row: any, i: number) => (
                             <tr
                                 key={i}
-                                className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
+                                className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70 text-xs sm:text-sm"
                             >
                                 <td className="p-4 whitespace-nowrap text-center">{i + 1}</td>
                                 <td className="p-4 whitespace-nowrap text-center">{row?.name}</td>
