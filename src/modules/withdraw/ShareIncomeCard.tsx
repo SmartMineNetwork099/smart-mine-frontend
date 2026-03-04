@@ -1,12 +1,12 @@
 // ✅ File 1: app/(your-path)/checkout/components/MyIncomeCard.tsx
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import Card from "@/components/Card";
 import { Input } from "rizzui/input";
 import { Button } from "rizzui/button";
-import { BiMoneyWithdraw } from "react-icons/bi";
-import { IoIosSend } from "react-icons/io";
 import { useForm, Controller } from "react-hook-form";
+import { FiSend } from "react-icons/fi";
+
 
 
 
@@ -161,7 +161,7 @@ const ShareIncomeCard = ({ shareIncome, loadingBalance, onSend }: Props) => {
               }`}
               onClick={handleSubmit(onValid)}
             >
-                  Send <span className="text-xl"><IoIosSend /></span>
+                  Send <span className="text-xl"><FiSend /></span>
             </Button>
           </div>
         </div>

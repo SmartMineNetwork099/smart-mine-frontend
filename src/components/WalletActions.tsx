@@ -1,39 +1,38 @@
-import React, { useState } from 'react'
-import { FaArrowUp } from 'react-icons/fa6';
+"use client"
+import React from 'react'
 import { Button } from 'rizzui/button'
 import { useRouter } from 'next/navigation';
 import ROUTES from '@/constants/routes';
+import { MdOutlineWorkHistory } from 'react-icons/md';
+import { BiMoneyWithdraw } from 'react-icons/bi';
 
 
 const WalletActions = () => {
-        const [activeTab, setActiveTab] = useState();
         const router = useRouter();
          const handleTabClick = (name?: any ) => {
-          router.push(ROUTES?.WITHDRAW?.HOME)
-        setActiveTab(name);
+          if(name==='withdraw'){
+            router.push(ROUTES?.WITHDRAW?.HOME)
+          }
+          if(name==='history'){
+            router.push(ROUTES?.WITHDRAW?.HOME)
+          }
     };
     
   return (
     <>
     <div className='flex items-center justify-center gap-2'>
-         {/* <Button className={`w-1/2 flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-base transition text-black cursor-pointer border-0 
-          ${activeTab === 'invest'
-                                ? 'bg-green-500'
-                                : 'bg-neutral-800 text-white'
-                            }`}
-        onClick={() => handleTabClick('invest')}
-        >
-            Invest <FaArrowDown />
-
-         </Button> */}
-         <Button className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-base transition text-black cursor-pointer border-0
-          ${activeTab === 'withdraw'
-                                ? 'bg-green-500'
-                                : 'bg-neutral-800 text-white'
-                            }`}
+         <Button className={`w-full flex items-center justify-center gap-2 py-4 h-[50px] rounded-lg bg-green-500 font-bold text-sm sm:text-xl transition text-white cursor-pointer border-0`}
         onClick={() => handleTabClick('withdraw')}
         >
-            Withdraw <FaArrowUp />
+            Withdraw <BiMoneyWithdraw className='text-xl'/>
+         </Button>
+
+
+         <Button className={`w-full flex items-center justify-center gap-2 py-4 h-[50px] rounded-lg bg-green-500 font-bold text-sm sm:text-xl transition text-white cursor-pointer border-0`}
+        onClick={() => handleTabClick('history')}
+        >
+            View History   <MdOutlineWorkHistory className='text-xl'/>
+
          </Button>         
     </div>
     </>

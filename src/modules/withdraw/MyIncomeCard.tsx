@@ -5,7 +5,8 @@ import Card from "@/components/Card";
 import { Input } from "rizzui/input";
 import { Button } from "rizzui/button";
 import { BiMoneyWithdraw } from "react-icons/bi";
-import { IoIosSend } from "react-icons/io";
+import { FiSend } from "react-icons/fi";
+
 import { useForm, Controller } from "react-hook-form";
 
 export type ActionMode = "withdraw" | "send";
@@ -222,7 +223,7 @@ const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) =
                 </>
               ) : (
                 <>
-                  Send <span className="text-xl"><IoIosSend /></span>
+                  Send <span className="text-xl"><FiSend /></span>
                 </>
               )}
             </Button>
