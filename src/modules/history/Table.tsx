@@ -4,15 +4,22 @@ import ViewHistoryTable from '@/components/tables/ViewHistory'
 import { useRouter } from "next/navigation";
 import ROUTES from "@/constants/routes";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { Button } from "rizzui/button";
+import Tab from '@/components/Tab';
 
+const tabs = [
+  { label: 'My Income',value:'myIncome'  },
+  { label: ' Team Income', value:'teamIncome' },
+  { label: 'Loss', value:'loss' },
+  { label: 'Withdraw', value:'withdraw' },
+];
 const Table = () => {
     const [selectTab , setSelectTab] = useState('myIncome')
   const router = useRouter();
   const handleBack = () => router.push(ROUTES?.STACKING?.DASHBOARD);
-    const handleTabClick = (name?: any ) => {
-         setSelectTab(name)
+    const handleTabClick = (name?: string ) => {
+         setSelectTab(name||'')
     };
+    console.log(selectTab,'selectTabselectTabselectTabselectTab')
 
   return (
     <>
@@ -25,38 +32,8 @@ const Table = () => {
         </p>
       </div>
 
-      {/* buttons  */}
-      <div className="grid grid-cols-4 gap-1 sm:gap-5 my-4 w-full sm:w-[70%] border text-[10px] sm:text-sm font-semibold sm:font-bold">
-         <Button className={`h-[50px] rounded-lg bg-green-500 transition text-white cursor-pointer border-0
-         `}
-        onClick={() => handleTabClick('myIncome')}
-        >
-            My Income
-
-         </Button>  
-         <Button className={`h-[50px] rounded-lg bg-green-500 transition text-white cursor-pointer border-0
-         `}
-        onClick={() => handleTabClick('teamIncome')}
-        >
-            Team Income
-
-         </Button>  
-         <Button className={`h-[50px] rounded-lg bg-green-500 transition text-white cursor-pointer border-0
-         `}
-        onClick={() => handleTabClick('loss')}
-        >
-            Loss
-
-         </Button>  
-         <Button className={`h-[50px] rounded-lg bg-green-500 transition text-white cursor-pointer border-0
-         `}
-        onClick={() => handleTabClick('withdraw')}
-        >
-            Withdraw
-
-         </Button>  
-      </div>
-      <div>
+     <Tab tabs={tabs} onTabChange={handleTabClick} defaultTab="myIncome"/>
+      <div className="mt-3">
         <ViewHistoryTable/>
       </div>
     </>

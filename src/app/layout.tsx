@@ -1,36 +1,15 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import Tab from '@/components/Tab';
 import Header from '@/components/Header';
 import './globals.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { IoGameControllerOutline } from "react-icons/io5";
-import { BiMoneyWithdraw } from "react-icons/bi";
-import { TbBinaryTree } from "react-icons/tb";
-import { LiaDonateSolid } from "react-icons/lia";
 import { usePathname } from 'next/navigation';
-import { RiDashboardHorizontalLine } from "react-icons/ri";
-import { RiTeamLine } from 'react-icons/ri';
-import { MdOutlineInfo } from "react-icons/md";
 import WalletData from '@/components/WalletData';
-import ROUTES from '@/constants/routes';
 import { initSocket } from "@/utils/socket";
 import { useWalletAddress } from '@/hooks/useWallet';
 import { silentLogin } from '@/apis/auth';
-const tabs = [
-  { label: 'Stacking', icon: LiaDonateSolid, link: ROUTES?.STACKING?.DASHBOARD },
-  // { label: 'Binary', icon: TbBinaryTree, link: ROUTES?.BINARY?.DASHBOARD },
-  // { label: 'Gaming', icon: IoGameControllerOutline, link: ROUTES?.GAMING?.HOME },
-  { label: 'Community', icon: BiMoneyWithdraw, link: ROUTES?.WITHDRAW?.HOME },
-  { label: 'Withdraw', icon: BiMoneyWithdraw, link: ROUTES?.WITHDRAW?.HOME },
-];
-const tabs2 = [ 
-  { label: 'Dashboard', icon: RiDashboardHorizontalLine, link: ROUTES?.BINARY?.DASHBOARD },
-  { label: 'MY IDS', icon: RiTeamLine, link: ROUTES?.BINARY?.MY_IDS },
-  { label: 'Community Tree', icon: TbBinaryTree, link: ROUTES?.BINARY?.COMMUNITY_TREE },
-  { label: 'Community Info', icon: MdOutlineInfo, link: ROUTES?.BINARY?.COMMUNITY_INFO },
-];
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [accessToken ,  setAccessToken] = useState<string | null>(null);
