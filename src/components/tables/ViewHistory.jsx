@@ -57,9 +57,6 @@ const history = [
 { "userId":"478734","fromUserId":"478731","type":"loss","amount":0.31,"note":"loss","action":"debit","txHash":"0x0a6c38f7c2e4a48aa416d51b314e5eb158091a2b3c4d5e6f708192a3b4c5d6e","createdAt":"2023-10-01T12:47:00Z" },
 { "userId":"478735","fromUserId":"478735","type":"my_income","amount":0.00013,"note":"mining reward","action":"credit","txHash":"0x1b7d4908d3f5b59bb527e62c425f6fc2691a2b3c4d5e6f708192a3b4c5d6e7f","createdAt":"2023-10-01T12:48:00Z" },
 { "userId":"478736","fromUserId":"478734","type":"team_income","amount":0.00041,"note":"team bonus","action":"credit","txHash":"0x2c8e5a19e406c6acc638f73d53607fd37a2b3c4d5e6f708192a3b4c5d6e7f80","createdAt":"2023-10-01T12:49:00Z" }
-
-// … isi pattern me aage entries continue hoti hain …
-// total dataset ~300 items tak extend kiya ja sakta hai
 ]
 ;
 const ViewHistoryTable = () => {
@@ -69,25 +66,27 @@ const ViewHistoryTable = () => {
                 <table className="table-fixed min-w-[600px] sm:min-w-[900px] w-full text-sm">
                     <thead className="sticky top-0 z-10 bg-green-500 text-black">
                         <tr className="bg-green-500 text-black font-bold text-center">
-                            <th className="w-40 px-4 py-2">From</th>
-                            <th className="w-40 px-4 py-2">Amount</th>
-                            <th className="w-40 px-4 py-2">Income Type</th>
-                            <th className="w-40 px-4 py-2">Rank Level</th>
-                            <th className="w-40 px-4 py-2">Layer</th>
-                            <th className="w-40 px-4 py-2">Time</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Sn.</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">To</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">From</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Amount</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Income Type</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Action</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Note</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Time</th>
                         </tr>
                     </thead>
                     <tbody>
                         {history.map((his, index) => (
                             <tr key={index} className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70">
-                                <td className="p-4">{his?.from}</td>
-                                <td className="p-4 text-green-500">
-                                    {his?.amount} <span className="font-semibold">{DEFAULT_CURRENCY}</span>
-                                </td>
-                                <td className="p-4">{his?.incomeType}</td>
-                                <td className="p-4">{his?.rankLevel}</td>
-                                <td className="p-4">{his?.layer}</td>
-                                <td className="p-4">{his?.time}</td>
+                                <td className="p-4">{index+1}</td>
+                                <td className="p-4">{his?.userId}</td>
+                                <td className="p-4">{his?.fromUserId}</td>
+                                <td className="p-4">{his?.amount}</td>
+                                <td className="p-4">{his?.type}</td>
+                                <td className="p-4">{his?.action}</td>
+                                <td className="p-4">{his?.note}</td>
+                                <td className="p-4">{his?.createdAt}</td>
                             </tr>
                         ))}
                     </tbody>
