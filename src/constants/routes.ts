@@ -3,6 +3,7 @@ const ROUTES = {
         DASHBOARD: "/stacking/dashboard",
         COMMUNITY: "/stacking/community",
 
+
     },
     BINARY: {
         DASHBOARD: "/binary/dashboard",
@@ -15,6 +16,10 @@ const ROUTES = {
     },
     WITHDRAW: {
         HOME: "/withdraw",
+        HISTORY: "/history"
+    },
+    HISTORY: {
+        HOME: "/history",
     },
     AUTH: {
         LOGIN: "/auth/login",

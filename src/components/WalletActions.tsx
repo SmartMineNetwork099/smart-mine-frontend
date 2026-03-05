@@ -14,7 +14,7 @@ const WalletActions = () => {
             router.push(ROUTES?.WITHDRAW?.HOME)
           }
           if(name==='history'){
-            router.push(ROUTES?.WITHDRAW?.HOME)
+            router.push(ROUTES?.HISTORY?.HOME)
           }
     };
     
