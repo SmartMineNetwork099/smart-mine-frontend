@@ -42,7 +42,7 @@ const handleTabClick = (name: string) => {
                     <Button
                         key={tab?.label}
                         onClick={() => handleTabClick(tab?.value||'')}
-                        className={`${style} flex items-center justify-center gap-0.5 sm:gap-2 py-3 rounded-lg font-semibold text-xs sm:text-sm transition text-black cursor-pointer border-0
+                        className={`${style} flex items-center justify-center gap-0.5 sm:gap-2 py-3 rounded-lg font-semibold text-[10px] sm:text-sm transition text-black cursor-pointer border-0
                         ${activeTab === tab?.value
                                 ? 'bg-green-500'
                                 : 'bg-neutral-800 text-white'
