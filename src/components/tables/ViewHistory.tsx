@@ -8,7 +8,7 @@ const ViewHistoryTable = ({data=[] ,  loading=true , type='myIncome'}) => {
          // Handle Responsive 
     useEffect(() => {
         const handleResize = () => {
-            setResponsiveColspan(window.innerWidth <= 640 ? 5 : 8);
+            setResponsiveColspan(window.innerWidth <= 640 ? 5 : 5);
         };
         handleResize();
         window.addEventListener("resize", handleResize);
@@ -20,7 +20,7 @@ const ViewHistoryTable = ({data=[] ,  loading=true , type='myIncome'}) => {
     const formatDate = (date:any) => {
   return new Date(date).toLocaleDateString("en-GB");
 };
-const shortId = (id) => {
+const shortId = (id:any) => {
 if (!id) return "";
 return id.slice(-6);
 };

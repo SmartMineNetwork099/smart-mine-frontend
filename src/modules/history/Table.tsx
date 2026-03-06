@@ -29,7 +29,7 @@ const Table = () => {
     const walletAddress = useWalletAddress();
     const getUserTransactions = async () =>{
         setLoading(true)
-        const {data , error} = await getUserTransactionsApi()
+        const {data , error} = await getUserTransactionsApi({type:selectTab})
         if(data){
             setTransactions(data|| [])
             setLoading(false)
@@ -39,7 +39,7 @@ const Table = () => {
     useEffect(()=>{
          if (!walletAddress) return;
         getUserTransactions()
-    },[walletAddress])
+    },[walletAddress , selectTab])
 
   return (
     <>
