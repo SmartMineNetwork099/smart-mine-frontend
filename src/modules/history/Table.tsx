@@ -19,6 +19,10 @@ const Table = () => {
     const [selectTab , setSelectTab] = useState('myIncome')
     const [transactions , setTransactions] = useState([])
     const [loading , setLoading] = useState(true)
+    const [totalPaginationPages , setTotalPaginationPages ] = useState(1);
+    const [paginationCurrentPage, setPaginationCurrentPage] = useState <any>(1);
+    
+    
   const router = useRouter();
   const handleBack = () => router.push(ROUTES?.STACKING?.DASHBOARD);
     const handleTabClick = (name?: string ) => {
@@ -29,9 +33,11 @@ const Table = () => {
     const walletAddress = useWalletAddress();
     const getUserTransactions = async () =>{
         setLoading(true)
-        const {data , error} = await getUserTransactionsApi({type:selectTab})
+        const {data , error} = await getUserTransactionsApi({type:selectTab , paginationCurrentPage})
         if(data){
-            setTransactions(data|| [])
+            console.log(data,'ddaattahahshjs')
+            setTransactions(data?.userTransactions|| [])
+             setTotalPaginationPages(data?.totalPages)
             setLoading(false)
         }
         if(error){
@@ -57,7 +63,7 @@ const Table = () => {
 
      <Tab tabs={tabs} onTabChange={handleTabClick} defaultTab="myIncome"/>
       <div className="mt-3">
-        <ViewHistoryTable data={transactions} loading={loading} type={selectTab}/>
+        <ViewHistoryTable data={transactions} loading={loading} type={selectTab} totalPaginationPages={totalPaginationPages} paginationCurrentPage={paginationCurrentPage} setPaginationCurrentPage={setPaginationCurrentPage}/>
       </div>
     </>
   );

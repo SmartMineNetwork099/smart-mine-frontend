@@ -29,7 +29,6 @@ const BinaryMyIdsTable = ({ data, loading = false , currentPage,totalPaginationP
     
     
 console.log("data in table", data);
-console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
     const options = [
         { label: "All", color: "bg-blue-500" },
         { label: "Complete", color: "bg-green-600" },

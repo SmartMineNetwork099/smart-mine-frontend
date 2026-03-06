@@ -1,14 +1,14 @@
 import  { AxiosError } from "axios";
 import api from "./axios.js"
 
-export const getUserTransactionsApi = async ({type}) => {
+export const getUserTransactionsApi = async ({type , paginationCurrentPage}) => {
     try {
         const res = await api.post<any>(`/api/transaction/getUserTransactions`,{
-type
+type,paginationCurrentPage
         },);
         console.log(res, 'getUserTransactionsApigetUserTransactionsApigetUserTransactionsApi')
         if(res?.data?.success){
-        return { data: res?.data?.userTransactions , error: null };
+        return { data: res?.data , error: null };
         }else{
             return { data: null, error: "error try again." };
         }

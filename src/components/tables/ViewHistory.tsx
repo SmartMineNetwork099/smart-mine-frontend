@@ -1,8 +1,10 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import HashLoader from 'react-spinners/HashLoader';
+import Pagination2 from "@/components/Pagination2";
 
-const ViewHistoryTable = ({data=[] ,  loading=true , type='myIncome'}) => {
+
+const ViewHistoryTable = ({data=[] ,  loading=true , type='myIncome' , totalPaginationPages=1 , paginationCurrentPage=1 , setPaginationCurrentPage}) => {
         const [responsiveColspan, setResponsiveColspan] = useState(2)
 
          // Handle Responsive 
@@ -24,6 +26,7 @@ const shortId = (id:any) => {
 if (!id) return "";
 return id.slice(-6);
 };
+const pageSize = 50;
  
     return (
         <>
@@ -57,7 +60,9 @@ return id.slice(-6);
                     ) : data && data.length > 0 ? (
                          data?.map((his:any, index:number) => (
                             <tr key={index} className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70">
-                                <td className="p-4">{index+1}</td>
+                                <td className="p-4">
+                                    {(paginationCurrentPage - 1) * pageSize + index + 1}
+                                    </td>
                                 {/* <td className="p-4">{shortId(his?.userId)}</td> */}
                                 
 
@@ -91,6 +96,16 @@ return id.slice(-6);
                     </tbody>
                 </table>
             </div>
+
+
+                  {/* PAGINATION */}
+      {totalPaginationPages > 1 && !loading && (
+        <Pagination2
+          currentPage={paginationCurrentPage}
+          totalPages={totalPaginationPages}
+          onPageChange={setPaginationCurrentPage}
+        />
+      )}
         </>
     )
 }
