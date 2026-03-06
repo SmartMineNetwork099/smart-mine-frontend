@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import HashLoader from 'react-spinners/HashLoader';
 
-const ViewHistoryTable = ({data ,  loading}) => {
+const ViewHistoryTable = ({data=[] ,  loading=true , type='myIncome'}) => {
         const [responsiveColspan, setResponsiveColspan] = useState(2)
 
          // Handle Responsive 
@@ -16,6 +16,14 @@ const ViewHistoryTable = ({data ,  loading}) => {
     }, []);
     
     console.log(data,'datatata')
+    console.log(type,'typetypetype')
+    const formatDate = (date:any) => {
+  return new Date(date).toLocaleDateString("en-GB");
+};
+const shortId = (id) => {
+if (!id) return "";
+return id.slice(-6);
+};
  
     return (
         <>
@@ -24,10 +32,13 @@ const ViewHistoryTable = ({data ,  loading}) => {
                     <thead className="sticky top-0 z-10 bg-green-500 text-black">
                         <tr className="bg-green-500 text-black font-bold text-center">
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Sn.</th>
-                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">To</th>
+                            {/* <th className="w-[70px] sm:w-[100px] px-4 py-2 border">To</th> */}
+                            {
+                            type === 'withdraw' &&  
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">From</th>
+                            }
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Amount</th>
-                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Income Type</th>
+                            {/* <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Income Type</th> */}
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Action</th>
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Note</th>
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Time</th>
@@ -44,16 +55,21 @@ const ViewHistoryTable = ({data ,  loading}) => {
                             </td>
                         </tr>
                     ) : data && data.length > 0 ? (
-                         data?.map((his, index) => (
+                         data?.map((his:any, index:number) => (
                             <tr key={index} className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70">
                                 <td className="p-4">{index+1}</td>
-                                <td className="p-4">{his?.userId}</td>
-                                <td className="p-4">{his?.fromUserId}</td>
-                                <td className="p-4">{his?.amount}</td>
-                                <td className="p-4">{his?.type}</td>
-                                <td className="p-4">{his?.action}</td>
-                                <td className="p-4">{his?.note}</td>
-                                <td className="p-4">{his?.createdAt}</td>
+                                {/* <td className="p-4">{shortId(his?.userId)}</td> */}
+                                
+
+                                {
+                                type === 'withdraw' &&  
+                                <td className="p-4">{shortId(his?.fromUserId)|| '------'}</td>
+                                }
+                                <td className="p-4">{his?.amount} $</td>
+                                {/* <td className="p-4">{his?.type}</td> */}
+                                <td className={`p-4 ${his?.action==='debit' ? 'text-red-500' : 'text-green-500'}`}>{his?.action}</td>
+                                <td className="p-4">{his?.note || '------'}</td>
+                                <td className="p-4">{formatDate(his?.createdAt)}</td>
                             </tr>
                         ))
                     ) : (

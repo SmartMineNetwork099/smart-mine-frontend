@@ -54,7 +54,7 @@ const Table = () => {
 
      <Tab tabs={tabs} onTabChange={handleTabClick} defaultTab="myIncome"/>
       <div className="mt-3">
-        <ViewHistoryTable data={transactions} loading={loading}/>
+        <ViewHistoryTable data={transactions} loading={loading} type={selectTab}/>
       </div>
     </>
   );
