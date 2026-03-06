@@ -1,21 +1,50 @@
-// src/hooks/useWallet.ts
+"use client";
 import { useEffect, useState } from "react";
-import { getUserWalletAddress } from "@/utils/walletHelpers";
+import { getConnectedWalletAddress } from "@/utils/walletHelpers";
 import { normalizeWalletAddress } from "@/utils/func";
+
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
 
 export const useWalletAddress = () => {
   const [wallet, setWallet] = useState<string | null>(null);
 
   useEffect(() => {
-    getUserWalletAddress().then(res => {
-      if (res?.success){
-        console.log("Fetched wallet address:", res?.userWalletAddress);
-        const walletAddress = res?.userWalletAddress || null;
-        const normalizedWalletAddress = normalizeWalletAddress(walletAddress);
-        setWallet(normalizedWalletAddress);
-        localStorage.setItem("activeWallet", normalizedWalletAddress || "");
-      } 
-    });
+    const load = async () => {
+      const res = await getConnectedWalletAddress();
+      console.log(res,'rreeddssaa')
+
+      if (res.success) {
+        const normalized:any = normalizeWalletAddress(res.userWalletAddress);
+        setWallet(normalized);
+        localStorage.setItem("activeWallet", normalized);
+      } else {
+        console.log("Wallet not connected:", res.message);
+        setWallet(null);
+        localStorage.removeItem("activeWallet");
+      }
+    };
+
+    load();
+
+    // ✅ handle wallet switching
+    const onAccountsChanged = (accounts: string[]) => {
+      const addr = accounts?.[0] ?? null;
+      const normalized = addr ? normalizeWalletAddress(addr) : null;
+      setWallet(normalized);
+
+      if (normalized) localStorage.setItem("activeWallet", normalized);
+      else localStorage.removeItem("activeWallet");
+    };
+
+    window.ethereum?.on?.("accountsChanged", onAccountsChanged);
+
+    return () => {
+      window.ethereum?.removeListener?.("accountsChanged", onAccountsChanged);
+    };
   }, []);
 
   return wallet;

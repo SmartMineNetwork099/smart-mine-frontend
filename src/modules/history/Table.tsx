@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import ROUTES from "@/constants/routes";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import Tab from '@/components/Tab';
+import { useWalletAddress } from "@/hooks/useWallet";
+import { getUserTransactionsApi } from "@/apis/history";
+
 
 const tabs = [
   { label: 'My Income',value:'myIncome'  },
@@ -14,12 +17,26 @@ const tabs = [
 ];
 const Table = () => {
     const [selectTab , setSelectTab] = useState('myIncome')
+    const [transactions , setTransactions] = useState([])
   const router = useRouter();
   const handleBack = () => router.push(ROUTES?.STACKING?.DASHBOARD);
     const handleTabClick = (name?: string ) => {
          setSelectTab(name||'')
     };
     console.log(selectTab,'selectTabselectTabselectTabselectTab')
+
+    const walletAddress = useWalletAddress();
+    const getUserTransactions = async () =>{
+        const {data , error} = await getUserTransactionsApi()
+        if(data){
+            setTransactions(data|| [])
+        }
+        console.log(data,'ddaattaattaa')
+    }
+    useEffect(()=>{
+         if (!walletAddress) return;
+        getUserTransactions()
+    },[walletAddress])
 
   return (
     <>

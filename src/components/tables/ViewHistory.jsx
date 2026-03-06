@@ -1,5 +1,4 @@
-import React from 'react'
-import { DEFAULT_CURRENCY } from "@/constants/currency";
+import React, { useEffect } from 'react'
 
 
 const history = [
@@ -60,6 +59,7 @@ const history = [
 ]
 ;
 const ViewHistoryTable = () => {
+ 
     return (
         <>
             <div className="overflow-auto w-full max-h-[400px] md:max-h-[500px] rounded-lg scrollbar-hidden">

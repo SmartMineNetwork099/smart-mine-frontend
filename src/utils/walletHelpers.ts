@@ -184,6 +184,32 @@ export const getUserWalletAddress = async() => {
 }
 };
 
+
+export const getConnectedWalletAddress = async () => {
+  try {
+    if (!window.ethereum) {
+      return { success: false, message: "Wallet provider not found." };
+    }
+
+    // ✅ silent - no popup
+    const accounts: string[] = await window.ethereum.request({
+      method: "eth_accounts",
+    });
+    console.log(accounts,'accountsaccountsadmwccounts')
+
+    const userWalletAddress = accounts?.[0] ?? null;
+    console.log(userWalletAddress,'userWalletAduserWalletAddressdressuserWalletAddress')
+
+    if (!userWalletAddress) {
+      return { success: false, message: "Wallet not connected." };
+    }
+
+    return { success: true, userWalletAddress };
+  } catch (error: any) {
+    return { success: false, message: error?.message || "Something went wrong" };
+  }
+};
+
 // export const getUserWalletAddress2 = (): string | null => {
 //   try {
 //     if (typeof window === "undefined") return null; // 🛡️ SSR Guard
