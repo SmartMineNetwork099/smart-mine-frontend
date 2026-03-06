@@ -34,6 +34,9 @@ const Table = () => {
             setTransactions(data|| [])
             setLoading(false)
         }
+        if(error){
+            console.log(error,'get transaction api error')
+        }
         console.log(data,'ddaattaattaa')
     }
     useEffect(()=>{
