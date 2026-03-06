@@ -35,13 +35,11 @@ const pageSize = 50;
                     <thead className="sticky top-0 z-10 bg-green-500 text-black">
                         <tr className="bg-green-500 text-black font-bold text-center">
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Sn.</th>
-                            {/* <th className="w-[70px] sm:w-[100px] px-4 py-2 border">To</th> */}
                             {
                             type === 'withdraw' &&  
-                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">From</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">To</th>
                             }
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Amount</th>
-                            {/* <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Income Type</th> */}
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Action</th>
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Note</th>
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Time</th>
@@ -63,15 +61,12 @@ const pageSize = 50;
                                 <td className="p-4">
                                     {(paginationCurrentPage - 1) * pageSize + index + 1}
                                     </td>
-                                {/* <td className="p-4">{shortId(his?.userId)}</td> */}
-                                
 
                                 {
                                 type === 'withdraw' &&  
-                                <td className="p-4">{shortId(his?.fromUserId)|| '------'}</td>
+                                <td className="p-4">{shortId(his?.to)|| '------'}</td>
                                 }
                                 <td className="p-4">{his?.amount} $</td>
-                                {/* <td className="p-4">{his?.type}</td> */}
                                 <td className={`p-4 ${his?.action==='debit' ? 'text-red-500' : 'text-green-500'}`}>{his?.action}</td>
                                 <td className="p-4">{his?.note || '------'}</td>
                                 <td className="p-4">{formatDate(his?.createdAt)}</td>
