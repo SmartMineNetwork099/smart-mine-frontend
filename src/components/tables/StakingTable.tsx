@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import HashLoader from "@/components/HashLoader";
+import { formatAmount } from "@/utils/func";
 
 type TableProps = {
     data: any[];
@@ -54,7 +55,7 @@ const StakingTable = ({ data, loading = true , paginationCurrentPage=1 , totalNu
                                 </td>
                                 <td className="px-4 py-2 whitespace-nowrap">{row?._id ?? "-"}</td>
                                 <td className="px-4 py-2 text-end whitespace-nowrap">
-                                    {row?.wallet?.stakingAmount} $
+                                    {formatAmount(row?.wallet?.stakingAmount)} $
                                 </td>
                                 <td className="px-4 py-2 whitespace-nowrap">{row?.status}</td>
                                 <td className="px-4 py-2 whitespace-nowrap">

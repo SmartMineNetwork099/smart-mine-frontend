@@ -12,14 +12,17 @@ export const formatTime = (seconds: number) => {
 export const formatAmount = (value: any) => {
   // Step 1: Handle undefined / null / NaN
   let num = Number(value ?? 0);
-  if (isNaN(num)) num = 0;
+  if (!Number.isFinite(num)) num = 0;
+
   // Step 2: Remove negative values
   if (num < 0) num = 0;
-  // Step 3: Truncate (not round) to 2 decimals
-  num = Math.trunc(num * 100) / 100;
-  // Step 4: Always return as string with 2 decimals
-  return num.toFixed(2);
-}
+
+  // Step 3: Truncate (not round) to 4 decimals
+  num = Math.trunc(num * 10000) / 10000;
+
+  // Step 4: Always return string with 4 decimals
+  return num.toFixed(4);
+};
 
  export const formatWalletAddress = (addr: any) => {
     if (!addr) return 'N/A';

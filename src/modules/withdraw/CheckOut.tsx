@@ -11,6 +11,7 @@ import MyIncomeCard, { HistoryItem } from "./MyIncomeCard";
 import TeamIncomeCard from "./TeamIncomeCard";
 import ShareIncomeCard from "./ShareIncomeCard";
 import WithdrawHistory from "./WithdrawHistory";
+import { formatAmount } from "@/utils/func";
 
 const CheckOut = () => {
   const router = useRouter();
@@ -35,9 +36,9 @@ const CheckOut = () => {
       setLoadingBalance(true);
 
       const localUser: any = await getUserData(walletAddress);
-      const my = Number(localUser?.wallet?.balance?.myIncome ?? 0);
-      const team = Number(localUser?.wallet?.balance?.teamIncome ?? 0);
-      const share = Number(localUser?.wallet?.balance?.shareIncome ?? 0);
+      const my = formatAmount(localUser?.wallet?.balance?.myIncome ?? 0);
+      const team = formatAmount(localUser?.wallet?.balance?.teamIncome ?? 0);
+      const share = formatAmount(localUser?.wallet?.balance?.shareIncome ?? 0);
 
       setBalance({
         myIncome:  10,
