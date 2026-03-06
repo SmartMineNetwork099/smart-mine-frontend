@@ -18,6 +18,7 @@ const tabs = [
 const Table = () => {
     const [selectTab , setSelectTab] = useState('myIncome')
     const [transactions , setTransactions] = useState([])
+    const [loading , setLoading] = useState(true)
   const router = useRouter();
   const handleBack = () => router.push(ROUTES?.STACKING?.DASHBOARD);
     const handleTabClick = (name?: string ) => {
@@ -27,9 +28,11 @@ const Table = () => {
 
     const walletAddress = useWalletAddress();
     const getUserTransactions = async () =>{
+        setLoading(true)
         const {data , error} = await getUserTransactionsApi()
         if(data){
             setTransactions(data|| [])
+            setLoading(false)
         }
         console.log(data,'ddaattaattaa')
     }
@@ -51,7 +54,7 @@ const Table = () => {
 
      <Tab tabs={tabs} onTabChange={handleTabClick} defaultTab="myIncome"/>
       <div className="mt-3">
-        <ViewHistoryTable/>
+        <ViewHistoryTable data={transactions} loading={loading}/>
       </div>
     </>
   );

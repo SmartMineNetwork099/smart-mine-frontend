@@ -1,0 +1,82 @@
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react'
+import HashLoader from 'react-spinners/HashLoader';
+
+const ViewHistoryTable = ({data ,  loading}) => {
+        const [responsiveColspan, setResponsiveColspan] = useState(2)
+
+         // Handle Responsive 
+    useEffect(() => {
+        const handleResize = () => {
+            setResponsiveColspan(window.innerWidth <= 640 ? 5 : 8);
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+    
+    console.log(data,'datatata')
+ 
+    return (
+        <>
+            <div className="overflow-auto w-full max-h-[400px] md:max-h-[500px] rounded-lg scrollbar-hidden">
+                <table className="table-fixed min-w-[600px] sm:min-w-[900px] w-full text-sm">
+                    <thead className="sticky top-0 z-10 bg-green-500 text-black">
+                        <tr className="bg-green-500 text-black font-bold text-center">
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Sn.</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">To</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">From</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Amount</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Income Type</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Action</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Note</th>
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                       loading ? (
+                        <tr>
+                            <td colSpan={responsiveColspan} className="!text-center py-6">
+                                <div className="flex justify-center items-center">
+                                    <HashLoader color="#22c55e"/>
+                                </div>
+                            </td>
+                        </tr>
+                    ) : data && data.length > 0 ? (
+                         data?.map((his, index) => (
+                            <tr key={index} className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70">
+                                <td className="p-4">{index+1}</td>
+                                <td className="p-4">{his?.userId}</td>
+                                <td className="p-4">{his?.fromUserId}</td>
+                                <td className="p-4">{his?.amount}</td>
+                                <td className="p-4">{his?.type}</td>
+                                <td className="p-4">{his?.action}</td>
+                                <td className="p-4">{his?.note}</td>
+                                <td className="p-4">{his?.createdAt}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={responsiveColspan} className="text-center py-6">
+                                <Image
+                                    src="/undraw_no_data_found.svg"
+                                    className="mx-auto w-28 sm:w-40 h-28 sm:h-40"
+                                    alt="No data found image"
+                                    width={160}
+                                    height={160}
+                                />
+                                <p className="text-white mt-2 font-bold">No Data Found</p>
+                            </td>
+                        </tr>
+                    )
+
+                      }
+                    </tbody>
+                </table>
+            </div>
+        </>
+    )
+}
+
+export default ViewHistoryTable
