@@ -6,7 +6,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { usePathname } from 'next/navigation';
 import WalletData from '@/components/WalletData';
-import { initSocket } from "@/utils/socket";
 import { useWalletAddress } from '@/hooks/useWallet';
 import { silentLogin } from '@/apis/auth';
 
@@ -19,9 +18,6 @@ useEffect(() => {
   if (!walletAddress) return;
 
   const ethereum = typeof window !== "undefined" ? (window as any).ethereum : null;
-
-  // 🔹 Init socket
-  initSocket(walletAddress);
 
   // 🔹 Get accessToken_ from localStorage
   const accessToken=

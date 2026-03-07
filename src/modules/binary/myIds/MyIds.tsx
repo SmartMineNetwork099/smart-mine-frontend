@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import BinaryMyIdsTable from '@/components/tables/BinaryMyIdsTable';
 import Pagination from '@/components/Pagination';
-// import { getSocket, initSocket } from "@/utils/socket";
 import { getBinaryMyIds } from '@/apis/binaryApis';
 import { useWalletAddress } from '@/hooks/useWallet';
 // import { toast } from 'react-toastify';

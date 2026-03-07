@@ -9,7 +9,6 @@ import { useWalletAddress } from "@/hooks/useWallet";
 import { formatAmount, formatWalletAddress } from "@/utils/func";
 
 import { getUserDataApi , updateUserImage } from "@/apis/user";
-import { getSocket, initSocket } from "@/utils/socket";
 
 import { getUserData } from "@/db/getData";
 import { upsertUserData } from "@/db/saveData";
@@ -97,37 +96,6 @@ const WalletData = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  
-  // ✅ Socket wallet updates
-  useEffect(() => {
-    initSocket(walletAddress);
-    const socket = getSocket();
-    if (!socket) {
-      console.warn("⚠️ Socket not initialized yet");
-      return;
-    }
-
-    const handleConnect = () => {
-      console.log("🔌 Socket connected in WalletData, attaching wallet listener...");
-      if (walletAddress) {
-        socket.on("walletUpdated", (data: any) => {
-          console.log("💰 Wallet update received:", data);
-          setWalletData(data);
-        });
-      }
-    };
-
-    if (socket.connected) {
-      handleConnect();
-    } else {
-      socket.on("connect", handleConnect);
-    }
-
-    return () => {
-      socket.off("walletUpdated");
-      socket.off("connect", handleConnect);
-    };
-  }, [walletAddress]);
 
   // ✅ Generate display address
   const displayAddress = walletData?.walletAddress

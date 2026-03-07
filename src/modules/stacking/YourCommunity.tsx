@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import StakingTable from '@/components/tables/StakingTable';
 import { getReferralsAtLevel } from '@/apis/user';
 import Pagination from '@/components/Pagination';
-// import { getSocket, initSocket } from "@/utils/socket";
 import { useWalletAddress } from '@/hooks/useWallet';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import ROUTES from '@/constants/routes';
@@ -53,52 +52,7 @@ const YourCommunity = () => {
         }
     }, [walletAddress , page , paginationCurrentPage]);
 
-    // 👇 Unified real-time listener for wallet + status updates
-    // useEffect(() => {
-    //     if (!walletAddress) {
-            // toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address'));
-    //         return;
-    //     }
-    //     // ✅ Ensure socket is always initialized here
-    //     initSocket(walletAddress);
-    //     const socket = getSocket();
-    //     if (!socket) {
-    //         console.warn("⚠️ Socket not initialized yet");
-    //         return;
-    //     }
-    //     socket.on("statusUpdated", (data: any) => {
-    //         console.log("🔄 Real-time update:", data);
-    //         setTableData((prev: any) =>
-    //             prev.map((user: any) =>
-    //                 user._id === data.userId || user._id === data._id
-    //                     ? {
-    //                         ...user,
-    //                         status: data.status ?? user.status,
-    //                         wallet: data.wallet ?? user.wallet,
-    //                     }
-    //                     : user
-    //             )
-    //         );
-
-    //         // 📝 Optional: update localStorage walletData if current user matches
-    //         const walletDataString = localStorage.getItem(`walletData_${walletAddress}`);
-    //         if (walletDataString) {
-    //             const parsed = JSON.parse(walletDataString);
-    //             if (parsed._id === data.userId || parsed._id === data._id) {
-    //                 const updated = {
-    //                     ...parsed,
-    //                     wallet: data.wallet ?? parsed.wallet,
-    //                     status: data.status ?? parsed.status,
-    //                     miningTime: data.miningTime ?? parsed.miningTime
-    //                 };
-    //             }
-    //         }
-    //     });
-
-    //     return () => {
-    //         socket.off("statusUpdated");
-    //     };
-    // }, [walletAddress]);
+    
       const handleBack = () => {
     console.log('Back button clicked');
     router.push(ROUTES?.STACKING?.DASHBOARD)
