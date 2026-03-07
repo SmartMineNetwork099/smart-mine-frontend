@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import ROUTES from "@/constants/routes";
 import { useWalletAddress } from "@/hooks/useWallet";
 import { getUserData } from "@/db/getData";
-
+import { FiAlertTriangle, FiArrowUpRight, FiSend } from "react-icons/fi";
 import MyIncomeCard, { HistoryItem } from "./MyIncomeCard";
 import TeamIncomeCard from "./TeamIncomeCard";
 import ShareIncomeCard from "./ShareIncomeCard";
@@ -240,6 +240,66 @@ const CheckOut = () => {
           <span className="text-green-500">Withdraw</span>
         </p>
       </div>
+
+    {/* /////////////////////////////////////////////////////// */}
+ <div className="max-w-4xl mx-auto mb-5 rounded-2xl border border-green-500 p-4 shadow-lg shadow-green-500/20">
+      <div className="flex flex-col sm:flex-row items-start gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400">
+          <FiAlertTriangle size={20} />
+        </div>
+
+        <div className="flex-1">
+          <h3 className="text-sm font-semibold tracking-wide text-white">
+            Transaction Fee Notice
+          </h3>
+          <p className="mt-1 text-sm leading-6 text-gray-300">
+            Platform fees are deducted automatically before funds are delivered.
+            Please review the final receivable amount before confirming your
+            transaction.
+          </p>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm">
+              <div className="mb-2 flex items-center gap-2 text-amber-300">
+                <FiArrowUpRight size={16} />
+                <span className="text-xs font-medium uppercase tracking-wider">
+                  Withdrawal
+                </span>
+              </div>
+              <p className="text-sm text-gray-300">
+                A <span className="font-semibold text-white">20% fee</span> is
+                applied on withdrawals.
+              </p>
+              <p className="mt-1 text-sm text-green-400">
+                Example: Withdraw $100 → Receive $80
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm">
+              <div className="mb-2 flex items-center gap-2 text-cyan-300">
+                <FiSend size={16} />
+                <span className="text-xs font-medium uppercase tracking-wider">
+                  Transfer
+                </span>
+              </div>
+              <p className="text-sm text-gray-300">
+                A <span className="font-semibold text-white">10% fee</span> is
+                applied on transfers.
+              </p>
+              <p className="mt-1 text-sm text-green-400">
+                Example: Transfer $100 → Receiver gets $90
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-4 rounded-xl border border-amber-400/20 bg-amber-500/10 px-3 py-2 text-xs leading-5 text-amber-200">
+            Make sure you enter the correct amount, as the displayed fee will be
+            deducted from the transaction total.
+          </div>
+        </div>
+      </div>
+    </div>
+    {/* /////////////////////////////////////////////////////// */}
 
       <div className="space-y-4">
         <MyIncomeCard
