@@ -1,6 +1,6 @@
 // ✅ File 1: app/(your-path)/checkout/components/MyIncomeCard.tsx
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "@/components/Card";
 import { Input } from "rizzui/input";
 import { Button } from "rizzui/button";
@@ -35,9 +35,10 @@ type Props = {
   shareIncome: number;
   loadingBalance: boolean;
   onSend: (payload: { amount: number; userId: string }) => void;
+  setSource?:any;
 };
 
-const ShareIncomeCard = ({ shareIncome, loadingBalance, onSend }: Props) => {
+const ShareIncomeCard = ({ shareIncome, loadingBalance, onSend , setSource }: Props) => {
   const {
     control,
     handleSubmit,
@@ -51,14 +52,12 @@ const ShareIncomeCard = ({ shareIncome, loadingBalance, onSend }: Props) => {
       amount: "",
     },
   });
-
-
-
+  
   const onValid = (data: FormValues) => {
     const a = parseFloat(data.amount);
 
    
-   
+      setSource("shareIncome")
       onSend({ amount: a, userId: data.userId.trim() });
   
 

@@ -37,9 +37,10 @@ type Props = {
   loadingBalance: boolean;
   onWithdraw: (amount: number) => void;
   onSend: (payload: { amount: number; userId: string }) => void;
+  setSource?:any;
 };
 
-const TeamIncomeCard = ({ teamIncome, loadingBalance, onWithdraw, onSend }: Props) => {
+const TeamIncomeCard = ({ teamIncome, loadingBalance, onWithdraw, onSend , setSource }: Props) => {
   const {
     control,
     handleSubmit,
@@ -61,6 +62,7 @@ const TeamIncomeCard = ({ teamIncome, loadingBalance, onWithdraw, onSend }: Prop
   const mode = watch("mode");
 
   useEffect(() => {
+  
     if (mode === "withdraw") {
       setValue("userId", "");
       clearErrors("userId");
@@ -69,6 +71,7 @@ const TeamIncomeCard = ({ teamIncome, loadingBalance, onWithdraw, onSend }: Prop
 
   const onValid = (data: FormValues) => {
     const a = parseFloat(data.amount);
+    setSource("teamIncome")
 
     if (data.mode === "withdraw") {
       onWithdraw(a);

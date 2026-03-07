@@ -45,9 +45,10 @@ type Props = {
   loadingBalance: boolean;
   onWithdraw: (amount: number) => void;
   onSend: (payload: { amount: number; userId: string }) => void;
+  setSource?:any;
 };
 
-const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) => {
+const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend , setSource }: Props) => {
   const {
     control,
     handleSubmit,
@@ -78,6 +79,7 @@ const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) =
 
   const onValid = (data: FormValues) => {
     const a = parseFloat(data.amount);
+     setSource('myIncome')
 
     if (data.mode === "withdraw") {
       onWithdraw(a);

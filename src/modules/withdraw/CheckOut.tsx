@@ -12,22 +12,31 @@ import TeamIncomeCard from "./TeamIncomeCard";
 import ShareIncomeCard from "./ShareIncomeCard";
 import WithdrawHistory from "./WithdrawHistory";
 import { formatAmount } from "@/utils/func";
+import { shareIncomeApi, withdrawIncomeApi } from "@/apis/withdrawApis";
+import { toast } from "react-toastify";
+import { roundTo4 } from "@/utils/amount";
+import { upsertUserData } from "@/db/saveData";
 
 const CheckOut = () => {
   const router = useRouter();
   const walletAddress = useWalletAddress();
 
-  const [balance, setBalance] = useState<{ myIncome: number; teamIncome: number; shareIncome: number }>({
+  const [balance, setBalance] = useState<any>({
     myIncome: 0,
     teamIncome: 0,
     shareIncome: 0,
   });
   const [loadingBalance, setLoadingBalance] = useState<boolean>(true);
+  const [source, setSource] = useState('');
 
   const [history, setHistory] = useState<HistoryItem[]>([
     { date: "12/12/20", amount: 100, status: "Completed", type: "myIncome" },
     { date: "12/12/20", amount: 50, status: "Completed", type: "teamIncome" },
   ]);
+// withdraw income rules 
+  const minimumWithdrawRequiredIncome = process.env.NEXT_PUBLIC_MINIMUM_WIDTHDRAW_INCOME;
+// share income rules 
+  const minimumShareRequiredIncome = process.env.NEXT_PUBLIC_MINIMUM_SHARE_INCOME;
 
   const handleWalletDataFetch = async () => {
     if (!walletAddress) return;
@@ -40,16 +49,16 @@ const CheckOut = () => {
       const team = formatAmount(localUser?.wallet?.balance?.teamIncome ?? 0);
       const share = formatAmount(localUser?.wallet?.balance?.shareIncome ?? 0);
 
-      setBalance({
-        myIncome:  10,
-        teamIncome: 10,
-        shareIncome:10,
-      });
       // setBalance({
-      //   myIncome: Number.isFinite(my) ? my : 0,
-      //   teamIncome: Number.isFinite(team) ? team : 0,
-      //   shareIncome: Number.isFinite(share) ? share : 0,
+      //   myIncome:  10,
+      //   teamIncome: 10,
+      //   shareIncome:10,
       // });
+      setBalance({
+        myIncome: my,
+        teamIncome: team,
+        shareIncome: share,
+      });
     } catch (err) {
       console.error("Failed to fetch user data:", err);
       setBalance({ myIncome: 0, teamIncome: 0 , shareIncome: 0 });
@@ -67,50 +76,160 @@ const CheckOut = () => {
   const handleBack = () => router.push(ROUTES?.STACKING?.DASHBOARD);
 
   // ✅ callbacks for MyIncomeCard
-  const onWithdrawMyIncome = (amount: number) => {
-    setBalance((prev) => ({ ...prev, myIncome: prev.myIncome - amount }));
-    setHistory((prev) => [
-      { date: new Date().toLocaleString(), amount, status: "Withdraw Completed", type: "myIncome" },
-      ...prev,
-    ]);
+  const onWithdrawMyIncome =async (amount: number) => {
+    if(loadingBalance) return;
+    if (!walletAddress) return;
+
+    if(roundTo4(amount)>roundTo4(balance?.myIncome)){
+      toast.error('insufficient balance')
+      return;
+    }
+    if(roundTo4(amount)<roundTo4(minimumWithdrawRequiredIncome)){
+      toast.error(`minimum withdraw ${minimumWithdrawRequiredIncome}`)
+      return;
+    }
+
+    const payload = {
+      amount,
+      source,
+      // txHash
+    }
+    
+    const {data , error} = await withdrawIncomeApi(payload);
+    if(error){
+      toast.error(error)
+    }
+    console.log(data,'datadatacheckout1111')
+      const updatedFields = {
+           wallet : data?.wallet,
+          }
+          await upsertUserData(walletAddress || '', updatedFields);
+          handleWalletDataFetch()
   };
 
-  const onSendMyIncome = ({ amount, userId }: { amount: number; userId: string }) => {
-    setBalance((prev) => ({ ...prev, myIncome: prev.myIncome - amount }));
-    setHistory((prev) => [
-      { date: new Date().toLocaleString(), amount, status: `Sent to ${userId}`, type: "myIncome" },
-      ...prev,
-    ]);
+  const onSendMyIncome = async({ amount, userId }: { amount: number; userId: string }) => {
+       if(loadingBalance) return
+       if (!walletAddress) return;
+
+    if(roundTo4(amount)>roundTo4(balance?.myIncome)){
+      toast.error('insufficient balance')
+      return;
+    }
+    if(roundTo4(amount)<roundTo4(minimumShareRequiredIncome)){
+      toast.error(`minimum withdraw ${minimumShareRequiredIncome}`)
+      return;
+    }
+    const payload = {
+      receiverId:userId,
+      amount,
+      source
+    }
+    const {data , error} = await shareIncomeApi(payload);
+    console.log(data,'datadatacheckout1111')
+      if(error){
+      toast.error(error)
+    }
+    console.log(data,'datadatacheckout1111')
+      const updatedFields = {
+           wallet : data?.wallet,
+          }
+          await upsertUserData(walletAddress || '', updatedFields);
+          handleWalletDataFetch()
   };
 
   // ✅ callbacks for TeamIncomeCard
-  const onWithdrawTeam = (amount: number) => {
-    setBalance((prev) => ({ ...prev, teamIncome: prev.teamIncome - amount }));
-    setHistory((prev) => [
-      {
-        date: new Date().toLocaleString(),
-        amount,
-        status: "Withdraw Completed",
-        type: "teamIncome",
-      },
-      ...prev,
-    ]);
+  const onWithdrawTeam = async(amount: number) => {
+  
+  if(loadingBalance) return
+  if (!walletAddress) return;
+
+    if(roundTo4(amount)>roundTo4(balance?.teamIncome)){
+      toast.error('insufficient balance')
+      return;
+    }
+    if(roundTo4(amount)<roundTo4(minimumWithdrawRequiredIncome)){
+      toast.error(`minimum withdraw ${minimumWithdrawRequiredIncome}`)
+      return;
+    }
+
+    const payload = {
+      amount,
+      source,
+      // txHash
+    }
+    
+    const {data , error} = await withdrawIncomeApi(payload);
+    console.log(data,'datadatacheckout1111')
+      if(error){
+      toast.error(error)
+    }
+    console.log(data,'datadatacheckout1111')
+      const updatedFields = {
+           wallet : data?.wallet,
+          }
+          await upsertUserData(walletAddress || '', updatedFields);
+          handleWalletDataFetch()
   };
 
 
-  const onSendTeamIncome = ({ amount, userId }: { amount: number; userId: string }) => {
-    setBalance((prev) => ({ ...prev, teamIncome: prev.teamIncome - amount }));
-    setHistory((prev) => [
-      { date: new Date().toLocaleString(), amount, status: `Sent to ${userId}`, type: "teamIncome" },
-      ...prev,
-    ]);
+  const onSendTeamIncome = async ({ amount, userId }: { amount: number; userId: string }) => {
+       if(loadingBalance) return
+       if (!walletAddress) return;
+
+    if(roundTo4(amount)>roundTo4(balance?.teamIncome)){
+      toast.error('insufficient balance')
+      return;
+    }
+    if(roundTo4(amount)<roundTo4(minimumShareRequiredIncome)){
+      toast.error(`minimum withdraw ${minimumShareRequiredIncome}`)
+      return;
+    }
+    const payload = {
+      receiverId:userId,
+      amount,
+      source
+    }
+    const {data , error} = await shareIncomeApi(payload);
+    console.log(data,'datadatacheckout1111')
+      if(error){
+      toast.error(error)
+    }
+    console.log(data,'datadatacheckout1111')
+      const updatedFields = {
+           wallet : data?.wallet,
+          }
+          await upsertUserData(walletAddress || '', updatedFields);
+          handleWalletDataFetch()
+
   };
-  const onSendShareIncome = ({ amount, userId }: { amount: number; userId: string }) => {
-    setBalance((prev) => ({ ...prev, shareIncome: prev.shareIncome - amount }));
-    setHistory((prev) => [
-      { date: new Date().toLocaleString(), amount, status: `Sent to ${userId}`, type: "shareIncome" },
-      ...prev,
-    ]);
+  const onSendShareIncome = async ({ amount, userId }: { amount: number; userId: string }) => {
+     if(loadingBalance) return
+     if (!walletAddress) return;
+
+    if(roundTo4(amount)>roundTo4(balance?.shareIncome)){
+      toast.error('insufficient balance')
+      return;
+    }
+    if(roundTo4(amount)<roundTo4(minimumShareRequiredIncome)){
+      toast.error(`minimum withdraw ${minimumShareRequiredIncome}`)
+      return;
+    }
+    const payload = {
+      receiverId:userId,
+      amount,
+      source
+    }
+    const {data , error} = await shareIncomeApi(payload);
+    console.log(data,'datadatacheckout1111')
+      if(error){
+      toast.error(error)
+    }
+    console.log(data,'datadatacheckout1111')
+      const updatedFields = {
+           wallet : data?.wallet,
+          }
+          await upsertUserData(walletAddress || '', updatedFields);
+          handleWalletDataFetch()
   };
 
   return (
@@ -129,6 +248,7 @@ const CheckOut = () => {
           loadingBalance={loadingBalance}
           onWithdraw={onWithdrawMyIncome}
           onSend={onSendMyIncome}
+          setSource={setSource}
         />
 
         <TeamIncomeCard
@@ -136,12 +256,14 @@ const CheckOut = () => {
           loadingBalance={loadingBalance}
           onWithdraw={onWithdrawTeam}
           onSend={onSendTeamIncome}
-        />
+          setSource={setSource}
+          />
 
         <ShareIncomeCard
           shareIncome={balance.shareIncome}
           loadingBalance={loadingBalance}
           onSend={onSendShareIncome}
+          setSource={setSource}
         />
 
         {/* optional history */}
