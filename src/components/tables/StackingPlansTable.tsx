@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { useWalletAddress } from "@/hooks/useWallet";
 import { getUserData } from "@/db/getData";
 import { roundTo4 } from "@/utils/amount";
+import { upsertUserData } from "@/db/saveData";
 
 const StakingPlansTable = () => {
   const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
@@ -79,6 +80,11 @@ const StakingPlansTable = () => {
       if(buyPlanApi.data.success)
         {
           toast.success(buyPlanApi.data.message);
+          // update user wallet locally
+          const updatedFields = {
+            wallet : buyPlanApi?.data?.userWallet, 
+          }
+          await upsertUserData(walletAddress, updatedFields);
         }else{
           toast.error(buyPlanApi.error);
         }
