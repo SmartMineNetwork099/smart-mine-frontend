@@ -11,6 +11,8 @@ import { formatAmount } from "@/utils/func";
 import { sendPlatformFee } from "@/utils/paymentHandler";
 import { toast } from "react-toastify";
 import { useWalletAddress } from "@/hooks/useWallet";
+import { getUserData } from "@/db/getData";
+import { roundTo4 } from "@/utils/amount";
 
 const StakingPlansTable = () => {
   const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
@@ -32,24 +34,47 @@ const StakingPlansTable = () => {
   // ✅ Handle buy plan dynamically
   const handleBuyPlan = async () => {
     if (!selectedPlan) return;
+    if (!walletAddress) return;
     try {
       setLoadingBuy(true);
-  
-      const amount = String(selectedPlan?.investment);
+       // 1) Local user data
+            const localUser:any = await getUserData(walletAddress);
+            console.log(localUser,'localUserlocalUser11')
+
+            const planAmount = roundTo4(selectedPlan?.investment || 0);
+            const shareIncome = roundTo4(localUser?.wallet?.shareIncome || 0);
+
+             let feeTxHash = null;
+             let paymentSource = "";
+
+              // 2) Check local wallet first
+    if (shareIncome >= planAmount) {
+      paymentSource = "share_income";
+    } else {
+      // 3) Fallback to SafePal wallet payment
       const type = "buy_stacking_plan";
-      // const { success, message, feeTxHash, userWalletAddress } = await sendPlatformFee( {type , miningPlanBuyAmount: amount} );
-      /////////////////////////////////////
-    // if (success === false) {
-    //   toast.error(message || "Payment failed.");
-    //   return false;
-    // }
-      /////////////////////////////////////
+
+      const { success, message, feeTxHash: blockchainTxHash, userWalletAddress } =
+        await sendPlatformFee({
+          type,
+          planBuyAmount: String(planAmount),
+        });
+        if (success === false) {
+        toast.error(message || "Payment failed.");
+        return;
+      }
+
+       feeTxHash = blockchainTxHash;
+      paymentSource = "safepal";
+      }
+
+
+      // 4) Call backend API
       const buyPlanApi = await buyStackingPlans({
         walletAddress,
         planId: selectedPlan?._id, // ✅ Dynamic level
-        // feeTxHash,
-        paymentTxHash: '0x1234567890abcdef',
-        // walletAddress:userWalletAddress
+        feeTxHash,
+        paymentSource, // "share_income" or "safepal"
       });
       if(buyPlanApi.data.success)
         {

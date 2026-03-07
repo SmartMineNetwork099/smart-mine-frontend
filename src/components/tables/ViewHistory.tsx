@@ -41,6 +41,10 @@ const pageSize = 50;
                             }
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Amount</th>
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Action</th>
+                            {
+                             type === 'myIncome' &&  
+                            <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Source</th>
+                            }
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Note</th>
                             <th className="w-[70px] sm:w-[100px] px-4 py-2 border">Time</th>
                         </tr>
@@ -68,6 +72,10 @@ const pageSize = 50;
                                 }
                                 <td className="p-4">{his?.amount} $</td>
                                 <td className={`p-4 ${his?.action==='debit' ? 'text-red-500' : 'text-green-500'}`}>{his?.action}</td>
+                                {
+                                type === 'myIncome' &&  
+                                <td className="p-4">{his?.paymentSource|| '------'}</td>
+                                }
                                 <td className="p-4">{his?.note || '------'}</td>
                                 <td className="p-4">{formatDate(his?.createdAt)}</td>
                             </tr>

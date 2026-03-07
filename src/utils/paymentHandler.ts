@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import { toast } from "react-toastify";
 type SendPlatformFeeArgs = {
   type: "mining" | "buy_stacking_plan";
-  miningPlanBuyAmount?: string; // ✅ optional
+  planBuyAmount?: string; // ✅ optional
 };
 const PLATFORM_FEE_BNB = process.env.NEXT_PUBLIC_PLATFORM_FEE_FOR_MINING || "0";
 const CONFIRMATIONS = Number(
@@ -20,7 +20,7 @@ const ERC20_ABI = [
 
 export const sendPlatformFee = async ({
   type, // "mining" | "buy_stacking_plan"
-  miningPlanBuyAmount, // "10" | "20" etc (USDT human amount as string)
+  planBuyAmount, // "10" | "20" etc (USDT human amount as string)
 }:SendPlatformFeeArgs) => {
   try {
     if (!window.ethereum) {
@@ -39,7 +39,7 @@ export const sendPlatformFee = async ({
       return { success: false, message: "Please switch to opBNB network." };
     }
 
-    let txResponse;
+    let txResponse:any;
 
     // ✅ 1) MINING => native BNB transfer on opBNB
     if (type === "mining") {
@@ -58,7 +58,7 @@ export const sendPlatformFee = async ({
       if (!USDT_CONTRACT) {
         return { success: false, message: "USDT contract not configured." };
       }
-      if (!miningPlanBuyAmount || Number(miningPlanBuyAmount) <= 0) {
+      if (!planBuyAmount || Number(planBuyAmount) <= 0) {
         return { success: false, message: "Plan amount missing." };
       }
 
@@ -67,7 +67,7 @@ export const sendPlatformFee = async ({
       // fetch decimals from chain (safe for opBNB USDT)
       const decimals = Number(await usdt.decimals());
       const amountInSmallestUnits = ethers.parseUnits(
-        String(miningPlanBuyAmount),
+        String(planBuyAmount),
         decimals,
       );
 
