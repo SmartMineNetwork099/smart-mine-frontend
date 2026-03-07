@@ -10,7 +10,6 @@ import { getUserData } from "@/db/getData";
 import MyIncomeCard, { HistoryItem } from "./MyIncomeCard";
 import TeamIncomeCard from "./TeamIncomeCard";
 import ShareIncomeCard from "./ShareIncomeCard";
-import WithdrawHistory from "./WithdrawHistory";
 import { formatAmount } from "@/utils/func";
 import { shareIncomeApi, withdrawIncomeApi } from "@/apis/withdrawApis";
 import { toast } from "react-toastify";
@@ -266,8 +265,6 @@ const CheckOut = () => {
           setSource={setSource}
         />
 
-        {/* optional history */}
-        <WithdrawHistory items={history} />
       </div>
     </>
   );
