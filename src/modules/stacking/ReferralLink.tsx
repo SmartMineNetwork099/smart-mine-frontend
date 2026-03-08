@@ -5,11 +5,13 @@ import { LuCopy, LuCopyCheck } from "react-icons/lu";
 import Card from '@/components/Card';
 import { useWalletAddress } from '@/hooks/useWallet';
 import { getUserData } from '@/db/getData';
+import { normalizeWalletAddress } from '@/utils/func';
 
 const ReferralLink = () => {
     const [referralLink, setReferralLink] = useState('');
     const [copied, setCopied] = useState(false);
-        const walletAddress = useWalletAddress();
+        let walletAddress = useWalletAddress();
+           walletAddress = normalizeWalletAddress(walletAddress)
     
 
     const handleCopy = () => {

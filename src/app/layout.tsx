@@ -8,11 +8,13 @@ import { usePathname } from 'next/navigation';
 import WalletData from '@/components/WalletData';
 import { useWalletAddress } from '@/hooks/useWallet';
 import { silentLogin } from '@/apis/auth';
+import { normalizeWalletAddress } from '@/utils/func';
 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [accessToken ,  setAccessToken] = useState<string | null>(null);
-  const walletAddress = useWalletAddress()
+  let walletAddress = useWalletAddress()
+  walletAddress = normalizeWalletAddress(walletAddress)
 
 useEffect(() => {
   if (!walletAddress) return;

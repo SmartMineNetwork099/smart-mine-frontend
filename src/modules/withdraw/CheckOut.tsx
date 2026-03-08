@@ -10,7 +10,7 @@ import { FiAlertTriangle, FiArrowUpRight, FiSend } from "react-icons/fi";
 import MyIncomeCard, { HistoryItem } from "./MyIncomeCard";
 import TeamIncomeCard from "./TeamIncomeCard";
 import ShareIncomeCard from "./ShareIncomeCard";
-import { formatAmount } from "@/utils/func";
+import { formatAmount, normalizeWalletAddress } from "@/utils/func";
 import { shareIncomeApi, withdrawIncomeApi } from "@/apis/withdrawApis";
 import { toast } from "react-toastify";
 import { roundTo4 } from "@/utils/amount";
@@ -18,7 +18,8 @@ import { upsertUserData } from "@/db/saveData";
 
 const CheckOut = () => {
   const router = useRouter();
-  const walletAddress = useWalletAddress();
+   let walletAddress = useWalletAddress();
+      walletAddress = normalizeWalletAddress(walletAddress)
 
   const [balance, setBalance] = useState<any>({
     myIncome: 0,

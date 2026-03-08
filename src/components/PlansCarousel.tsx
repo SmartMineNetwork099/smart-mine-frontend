@@ -10,6 +10,7 @@ import SpinnerLoader from "@/components/SpinnerLoader";
 import { toast } from "react-toastify";
 import { useWalletAddress } from "@/hooks/useWallet";
 import Messages from "@/constants/messages";
+import { normalizeWalletAddress } from "@/utils/func";
 
 
 
@@ -35,7 +36,8 @@ const PlansCarousel = ({ plans, loading }: any) => {
     const [selectedPlans, setSelectedPlans] = useState([]);
     const [modelOpen, setModelOpen] = useState(false);
     const [loadingBuy, setLoadingBuy] = useState(false);
-    const walletAddress = useWalletAddress()
+    let walletAddress = useWalletAddress()
+    walletAddress = normalizeWalletAddress(walletAddress)
 
 
     const togglePlan = (plan: any) => {

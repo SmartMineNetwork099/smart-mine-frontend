@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import { getTeamStats } from "@/apis/user";
 import TeamStats from "@/components/TeamStats";
 import { useWalletAddress } from "@/hooks/useWallet";
+import { normalizeWalletAddress } from "@/utils/func";
 
 const NetworkOverview = () => {
     const [stats, setStats] = useState<{ directTeam: number; communitySize: number } | null>(null);
-    const walletAddress = useWalletAddress();
+     let walletAddress = useWalletAddress();
+        walletAddress = normalizeWalletAddress(walletAddress)
     useEffect(() => {
         if (walletAddress) fetchStats();
     }, [walletAddress]);

@@ -7,6 +7,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import Tab from '@/components/Tab';
 import { useWalletAddress } from "@/hooks/useWallet";
 import { getUserTransactionsApi } from "@/apis/history";
+import { normalizeWalletAddress } from "@/utils/func";
 
 
 const tabs = [
@@ -30,7 +31,8 @@ const Table = () => {
     };
     console.log(selectTab,'selectTabselectTabselectTabselectTab')
 
-    const walletAddress = useWalletAddress();
+     let walletAddress = useWalletAddress();
+        walletAddress = normalizeWalletAddress(walletAddress)
     const getUserTransactions = async () =>{
         setLoading(true)
         const {data , error} = await getUserTransactionsApi({type:selectTab , paginationCurrentPage})

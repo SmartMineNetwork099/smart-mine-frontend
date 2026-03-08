@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Messages from "@/constants/messages";
 
 import { useWalletAddress } from "@/hooks/useWallet";
-import { formatAmount, formatWalletAddress } from "@/utils/func";
+import { formatAmount, formatWalletAddress, normalizeWalletAddress } from "@/utils/func";
 
 import { getUserDataApi , updateUserImage } from "@/apis/user";
 
@@ -40,7 +40,8 @@ const ICONS: Record<string, React.ElementType> = {
 };
 
 const WalletData = () => {
-  const walletAddress = useWalletAddress();
+  let walletAddress = useWalletAddress();
+  walletAddress = normalizeWalletAddress(walletAddress)
 
   const [walletData, setWalletData] = useState<WalletDataType>({});
   const [isMobile, setIsMobile] = useState(false);

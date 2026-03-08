@@ -2,7 +2,7 @@
 import { DEFAULT_CURRENCY } from '@/constants/currency';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
-import { formatDate } from '@/utils/func';
+import { formatDate, normalizeWalletAddress } from '@/utils/func';
 import HashLoader from '@/components/HashLoader';
 import { getUserByIDAndPosition } from '@/apis/binaryApis';
 import { useWalletAddress } from '@/hooks/useWallet';
@@ -15,7 +15,8 @@ const SingleUserData = ({id }) => {
     const [loading, setLoading] = useState(false);
    
     console.log(id, 'singleuserdataaaaaaa1111') 
-    const walletAddress = useWalletAddress();
+    let walletAddress = useWalletAddress();
+    walletAddress = normalizeWalletAddress(walletAddress)
     const getUserInfo = async()=>{
         if(!walletAddress) return;
     setLoading(true)

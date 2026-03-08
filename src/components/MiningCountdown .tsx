@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import moment from "moment-timezone";
 import { toast } from "react-toastify";
-import { formatTime } from "@/utils/func";
+import { formatTime, normalizeWalletAddress } from "@/utils/func";
 import { MiningTimeApi } from "@/apis/mining";
 import Messages from "@/constants/messages";
 import { getUserData } from "@/db/getData";
@@ -17,7 +17,7 @@ const DUBAI_TZ = "Asia/Dubai";
 
 const MiningCountdown: React.FC<MiningCountdownProps> = ({
   handleClaim,
-  walletAddress = "",
+  walletAddress = null,
 }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -30,6 +30,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
 
   const radius = 150;
   const circumference = 2 * Math.PI * radius;
+  walletAddress = normalizeWalletAddress(walletAddress )
 
   const storageKey = useMemo(() => {
     return walletAddress ? `${NEXT_CYCLE_KEY}_${walletAddress}` : "";

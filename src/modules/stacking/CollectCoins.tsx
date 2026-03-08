@@ -11,9 +11,11 @@ import Messages from "@/constants/messages";
 import { Button } from "rizzui/button";
 import { collectBonusApi } from "@/apis/stackingApis";
 import { upsertUserData } from "@/db/saveData";
+import { normalizeWalletAddress } from "@/utils/func";
 
 const CollectCoins = () => {
-    const walletAddress = useWalletAddress();
+     let walletAddress = useWalletAddress();
+        walletAddress = normalizeWalletAddress(walletAddress)
   const handleClaim = async () => {
     try {
       if(!walletAddress) {

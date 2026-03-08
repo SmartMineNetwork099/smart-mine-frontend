@@ -9,9 +9,11 @@ import { logout } from '@/apis/auth';
 import { toast } from 'react-toastify';
 import Messages from '@/constants/messages'
 import { deleteUserData } from '@/db/getData';
+import { normalizeWalletAddress } from '@/utils/func';
 const Header = () => {
   const router = useRouter();
-  const walletAddress = useWalletAddress()
+  let walletAddress = useWalletAddress()
+  walletAddress = normalizeWalletAddress(walletAddress)
   
   const goHomePage = () => {
     router.push(ROUTES?.STACKING?.DASHBOARD);

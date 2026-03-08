@@ -1,4 +1,6 @@
 import moment from "moment";
+import { ethers } from "ethers";
+
 
 // function seconds to h:m:s format
 export const formatTime = (seconds: number) => {
@@ -41,6 +43,10 @@ export const normalizeWalletAddress = (walletAddress:any) => {
   if (!walletAddress || typeof walletAddress !== "string") {
     return null;
   }
+   const addr = walletAddress.trim();
 
-  return walletAddress.trim().toLowerCase();
+  if (!ethers.isAddress(addr)) {
+    return null;
+  }
+  return addr.toLowerCase();
 };

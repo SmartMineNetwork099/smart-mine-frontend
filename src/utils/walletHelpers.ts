@@ -33,6 +33,7 @@ export const connectWallet = async (): Promise<WalletConnectResult | null> => {
     let signer: ethers.Signer | null = null;
     let walletAddress = "";
     let type: WalletType;
+    
 
     const ethProvider = (window as Window & { ethereum?: SafePalEthereumProvider }).ethereum;
 

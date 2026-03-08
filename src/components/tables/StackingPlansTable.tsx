@@ -7,7 +7,7 @@ import Model from "@/components/Model";
 import Card from "@/components/Card";
 import { buyStackingPlans, getUserStackingPlans } from "@/apis/stackingApis";
 import SpinnerLoader from "@/components/SpinnerLoader";
-import { formatAmount } from "@/utils/func";
+import { formatAmount, normalizeWalletAddress } from "@/utils/func";
 import { sendPlatformFee } from "@/utils/paymentHandler";
 import { toast } from "react-toastify";
 import { useWalletAddress } from "@/hooks/useWallet";
@@ -23,7 +23,8 @@ const StakingPlansTable = () => {
   const [loadingBuy, setLoadingBuy] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>({}); // ✅ for dynamic level
 
-  const walletAddress = useWalletAddress();
+  let walletAddress = useWalletAddress();
+    walletAddress = normalizeWalletAddress(walletAddress)
 
   // ✅ Open model and store selected plan level
   const handleModelOpen = (level: number) => {

@@ -1,5 +1,6 @@
 import { STORES_NAME } from "@/config/dbConfig";
 import { openDB } from "./indexDB";
+import { normalizeWalletAddress } from "@/utils/func";
 
 function reqToPromise<T>(req: IDBRequest<T>): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -21,7 +22,7 @@ export const upsertUserData = async (
   data: Record<string, any>
 ) => {
   const db = await openDB();
-  const key = walletAddress.toLowerCase();
+  const key = normalizeWalletAddress(walletAddress);
 
   const tx = db.transaction(STORES_NAME.user, "readwrite");
   const store = tx.objectStore(STORES_NAME.user);

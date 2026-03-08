@@ -8,6 +8,7 @@ import { IoMdArrowRoundBack } from 'react-icons/io';
 import ROUTES from '@/constants/routes';
 import { useRouter } from 'next/navigation';
 import Pagination2 from "@/components/Pagination2";
+import { normalizeWalletAddress } from '@/utils/func';
 
 // import Messages from '@/constants/messages';
 // import { toast } from 'react-toastify';
@@ -22,7 +23,8 @@ const YourCommunity = () => {
     const [totalNumberOfNodesAtCurrentLevel , setTotalNumberOfNodesAtCurrentLevel ] = useState(0);
 
 
-    const walletAddress = useWalletAddress();
+     let walletAddress = useWalletAddress();
+        walletAddress = normalizeWalletAddress(walletAddress)
     const router = useRouter();
     
 

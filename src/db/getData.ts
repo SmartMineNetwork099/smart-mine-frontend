@@ -1,5 +1,6 @@
 import { STORES_NAME } from "@/config/dbConfig";
 import { openDB } from "./indexDB";
+import { normalizeWalletAddress } from "@/utils/func";
 
 export const getUserData = async (walletAddress:any) => {
   try {
@@ -9,7 +10,7 @@ export const getUserData = async (walletAddress:any) => {
       const tx = db.transaction(STORES_NAME?.user, "readonly");
       const store = tx.objectStore(STORES_NAME?.user);
 
-      const normalizedWallet = walletAddress.toLowerCase();
+      const normalizedWallet = normalizeWalletAddress(walletAddress);
       const request = store.get(normalizedWallet);
 
       request.onsuccess = () => {
@@ -34,7 +35,7 @@ export const deleteUserData = async (walletAddress:any) => {
       const tx = db.transaction(STORES_NAME?.user, "readwrite");
       const store = tx.objectStore(STORES_NAME?.user);
 
-      const normalizedWallet = walletAddress.toLowerCase();
+      const normalizedWallet = normalizeWalletAddress(walletAddress);
       const request = store.delete(normalizedWallet);
 
       request.onsuccess = () => {
