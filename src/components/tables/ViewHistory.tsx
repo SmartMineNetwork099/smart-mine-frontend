@@ -26,7 +26,7 @@ const shortId = (id:any) => {
 if (!id) return "";
 return id.slice(-6);
 };
-const pageSize = 50;
+const pageSize = 20; // Assuming 20 items per page
  
     return (
         <>

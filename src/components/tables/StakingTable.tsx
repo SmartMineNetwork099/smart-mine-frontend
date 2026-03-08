@@ -22,7 +22,7 @@ const StakingTable = ({ data, loading = true , paginationCurrentPage=1 , totalNu
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
-    const pageSize = 50; // Assuming 50 items per page
+    const pageSize = 20; // Assuming 20 items per page
     return (
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden">
             <table className="min-w-[500px] w-full text-sm border-collapse">

@@ -104,7 +104,7 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                         ) : filteredData && filteredData.length > 0 ? (
                             filteredData?.map((row: any, rowIndex: number) =>
                             {
-                                const pageSize = 50; // Assuming 50 items per page
+                                const pageSize = 20; // Assuming 20 items per page
                                return (
                                 <tr
                                     key={rowIndex}

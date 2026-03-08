@@ -121,7 +121,7 @@ console.log("data in table", data);
                         ) : filteredData && filteredData.length > 0 ? (
                             filteredData?.map((row: any, rowIndex: number) =>
                             {
-                                const pageSize = 50; // Assuming 50 items per page
+                                const pageSize = 20; // Assuming 20 items per page
                                console.log("row data", row);
                                 return (
                                 <tr
