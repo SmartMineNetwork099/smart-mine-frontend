@@ -10,7 +10,7 @@ const PLATFORM_FEE_BNB = process.env.NEXT_PUBLIC_PLATFORM_FEE_FOR_MINING || "0";
 const CONFIRMATIONS = Number(
   process.env.NEXT_PUBLIC_MIN_FEE_CONFIRMATIONS || 1,
 );
-const PLATFORM_FEE_ADDRESS = process.env.NEXT_PUBLIC_PLATFORM_FEE_ADDRESS;
+const COMPANY_RECEIVING_ACCOUNT_ADDRESS = process.env.NEXT_PUBLIC_COMPANY_RECEIVING_ACCOUNT_ADDRESS;
 const USDT_CONTRACT = process.env.NEXT_PUBLIC_USDT_CONTRACT;
 
 // minimal ERC20 ABI (same concept as backend)
@@ -27,10 +27,10 @@ export const sendPlatformFee = async ({
     if (!window.ethereum) {
       return { success: false, message: "Wallet provider not found." };
     }
-    if (!PLATFORM_FEE_ADDRESS) {
+    if (!COMPANY_RECEIVING_ACCOUNT_ADDRESS) {
       return { success: false, message: "Platform fee address missing." };
     }
-    if (!ethers.isAddress(PLATFORM_FEE_ADDRESS)) {
+    if (!ethers.isAddress(COMPANY_RECEIVING_ACCOUNT_ADDRESS)) {
   return { success: false, message: "Invalid platform fee address." };
 }
 
@@ -52,7 +52,7 @@ export const sendPlatformFee = async ({
       }
 
       txResponse = await signer.sendTransaction({
-        to: PLATFORM_FEE_ADDRESS,
+        to: COMPANY_RECEIVING_ACCOUNT_ADDRESS,
         value: ethers.parseEther(String(PLATFORM_FEE_BNB)),
       });
     }
@@ -79,7 +79,7 @@ export const sendPlatformFee = async ({
 
       // ERC20 transfer (NOT native)
       txResponse = await usdt.transfer(
-        PLATFORM_FEE_ADDRESS,
+        COMPANY_RECEIVING_ACCOUNT_ADDRESS,
         amountInSmallestUnits,
       );
     } else {
