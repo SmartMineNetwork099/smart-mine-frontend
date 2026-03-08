@@ -91,7 +91,6 @@ const CheckOut = () => {
     const payload = {
       amount,
       source,
-      // txHash
     }
     
     const {data , error} = await withdrawIncomeApi(payload);
@@ -154,7 +153,6 @@ const CheckOut = () => {
     const payload = {
       amount,
       source,
-      // txHash
     }
     
     const {data , error} = await withdrawIncomeApi(payload);

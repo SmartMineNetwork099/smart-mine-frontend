@@ -29,17 +29,20 @@ export const sendPlatformFee = async ({
     if (!PLATFORM_FEE_ADDRESS) {
       return { success: false, message: "Platform fee address missing." };
     }
+    if (!ethers.isAddress(PLATFORM_FEE_ADDRESS)) {
+  return { success: false, message: "Invalid platform fee address." };
+}
 
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
     const userWalletAddress = await signer.getAddress();
     const network = await provider.getNetwork();
-    const EXPECTED_CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID || "204";
-    if (String(network.chainId) !== String(EXPECTED_CHAIN_ID)) {
+    const EXPECTED_CHAIN_ID = BigInt(process.env.NEXT_PUBLIC_CHAIN_ID || "204");
+    if (network.chainId !== EXPECTED_CHAIN_ID) {
       return { success: false, message: "Please switch to opBNB network." };
     }
 
-    let txResponse:any;
+    let txResponse:ethers.TransactionResponse;
 
     // ✅ 1) MINING => native BNB transfer on opBNB
     if (type === "mining") {
@@ -49,20 +52,22 @@ export const sendPlatformFee = async ({
 
       txResponse = await signer.sendTransaction({
         to: PLATFORM_FEE_ADDRESS,
-        value: ethers.parseUnits(String(PLATFORM_FEE_BNB), "ether"),
+        value: ethers.parseEther(String(PLATFORM_FEE_BNB)),
       });
     }
 
     // ✅ 2) PLAN BUY => USDT ERC20 transfer on opBNB
     else if (type === "buy_stacking_plan") {
-      if (!USDT_CONTRACT) {
-        return { success: false, message: "USDT contract not configured." };
+      const usdtContractAddress = USDT_CONTRACT;
+        
+      if ( (!usdtContractAddress || !ethers.isAddress(usdtContractAddress))) {
+     return { success: false, message: "Invalid USDT contract address." };
+     }
+      
+      if (!planBuyAmount ||isNaN(Number(planBuyAmount)) || Number(planBuyAmount) <= 0) {
+        return { success: false, message: "Invalid plan amount." };
       }
-      if (!planBuyAmount || Number(planBuyAmount) <= 0) {
-        return { success: false, message: "Plan amount missing." };
-      }
-
-      const usdt = new ethers.Contract(USDT_CONTRACT, ERC20_ABI, signer);
+      const usdt = new ethers.Contract(usdtContractAddress, ERC20_ABI, signer);
 
       // fetch decimals from chain (safe for opBNB USDT)
       const decimals = Number(await usdt.decimals());
@@ -88,7 +93,7 @@ export const sendPlatformFee = async ({
     }
 
     // ethers v6 receipt has transactionHash
-    const feeTxHash = receipt.transactionHash;
+    const feeTxHash = receipt.hash;
 
     return { success: true, message: "Platform fee sent successfully.", feeTxHash, userWalletAddress };
 

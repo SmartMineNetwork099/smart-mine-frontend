@@ -45,7 +45,7 @@ const StakingPlansTable = () => {
             const planAmount = roundTo4(selectedPlan?.investment || 0);
             const shareIncome = roundTo4(localUser?.wallet?.shareIncome || 0);
 
-             let feeTxHash = null;
+             let feeTxHash: string | null = null;
              let paymentSource = "";
 
               // 2) Check local wallet first
@@ -65,7 +65,7 @@ const StakingPlansTable = () => {
         return;
       }
 
-       feeTxHash = blockchainTxHash;
+       feeTxHash = blockchainTxHash ?? null;
       paymentSource = "safepal";
       }
 
