@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { startMiningApi } from "@/apis/mining";
 import MiningCountdown from "@/components/MiningCountdown ";
@@ -12,10 +12,23 @@ import { Button } from "rizzui/button";
 import { collectBonusApi } from "@/apis/stackingApis";
 import { upsertUserData } from "@/db/saveData";
 import { normalizeTxHash, normalizeWalletAddress } from "@/utils/func";
+import { getUserData } from "@/db/getData";
 
 const CollectCoins = () => {
      let walletAddress = useWalletAddress();
         walletAddress = normalizeWalletAddress(walletAddress)
+        const [collectAbleIncome, setCollectAbleIncome] = useState<boolean>(false);
+        const fetchWalletLocally = async() =>{
+          const localUser:any = await getUserData(walletAddress);
+                if (localUser?.wallet?.collectableBonus>0) {
+                setCollectAbleIncome(true)
+                }
+
+        }
+          useEffect(() => {
+            if(!walletAddress) return
+            fetchWalletLocally();
+          }, [walletAddress]);
   const handleClaim = async () => {
     try {
       if(!walletAddress) {
@@ -41,13 +54,18 @@ const CollectCoins = () => {
       console.log("Mining response:", response);
       if (response?.data?.success) {
       const updatedFields = {
-      //  wallet : response?.data?.wallet,
+       wallet : response?.data?.wallet,
        status : response?.data?.status,
        lastMiningDate : response?.data?.lastMiningDate,
        timezone : response?.data?.timezone, 
       }
       await upsertUserData(walletAddress, updatedFields);
         toast.success(response.data.message);
+        window.dispatchEvent(
+        new CustomEvent("wallet-updated", {
+         detail: { walletAddress },
+        })
+        );
         return true;
       } else {
         toast.error(response?.error || Messages?.SOME_THING_WRONG);
@@ -60,20 +78,25 @@ const CollectCoins = () => {
   };
   const collectBonus = async () => {
     try {
+      toast.dismiss()
       if(!walletAddress) {
         toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
         return false;
+      }
+      if(!collectAbleIncome){
+        toast.error("No bonus available to collect");
+        return
       }
       const payload = {
         walletAddress,
       };
 
-      const response = await collectBonusApi(payload);
-      if (response?.data?.success) {
-        toast.success(response.data.message);
+      const {data , error} = await collectBonusApi(payload);
+      if (data?.success) {
+        toast.success(data.message);
         return true;
       } else {
-        toast.error(response?.data?.message || Messages?.SOME_THING_WRONG);
+        toast.error(error|| Messages?.SOME_THING_WRONG);
         return false;
       }
     } catch (error: any) {
@@ -94,7 +117,7 @@ const CollectCoins = () => {
   />
 ) : <HashLoader/>}
 <div>
-  <Button onClick={collectBonus} className="w-full bg-green-500 border-0 font-bold text-xl cursor-pointer">Claim Coins</Button>
+  <Button onClick={collectBonus} disabled={collectAbleIncome} className={`w-full bg-green-500 ${collectAbleIncome ? 'bg-green-500 cursor-pointer' : 'bg-red-400/40 cursor-not-allowed'} border-0 font-bold text-xl`}>Claim Coins</Button>
 </div>
 
     </Card>

@@ -18,10 +18,10 @@ export const getUserStackingPlans = async ( walletAddress:any) => {
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
-export const buyStackingPlans = async ({ planId , feeTxHash ,walletAddress}:any) => {
+export const buyStackingPlans = async ({ planId , feeTxHash ,walletAddress , paymentSource}:any) => {
     try {
         const res = await api.post<any>(`/api/stacking/buyStackingPlan`,{
-             planId , feeTxHash ,walletAddress
+             planId , feeTxHash ,walletAddress ,paymentSource
         });
         console.log(res, 'resresres11111232buyStackingPlansbuyStackingPlans')
         if(res?.data?.success){

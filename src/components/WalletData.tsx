@@ -56,6 +56,22 @@ const WalletData = () => {
     return ICONS[selectedIcon] || FaRegUser;
   }, [selectedIcon]);
 
+
+  const loadLocalUserData = async () => {
+  if (!walletAddress) return;
+
+  try {
+    const localUser: any = await getUserData(walletAddress);
+    console.log(localUser,'localUserlocalUser')
+    if (localUser) {
+      setWalletData(localUser);
+      setSelectedIcon(localUser?.image_url || "FaRegUser");
+    }
+  } catch (err) {
+    console.error("Failed to load local wallet data:", err);
+  }
+};
+
   // ✅ Fetch user data (local first, then server, then upsert local)
   const handleWalletDataFetch = async () => {
     if (!walletAddress) return;
@@ -82,6 +98,32 @@ const WalletData = () => {
       toast.error(Messages?.SOME_THING_WRONG);
     }
   };
+  useEffect(() => {
+  if (!walletAddress) return;
+  console.log('testing1')
+
+  const handleWalletUpdated = async (event: Event) => {
+    console.log('testing2')
+    const customEvent = event as CustomEvent<{ walletAddress?: string }>;
+    const updatedWalletAddress = normalizeWalletAddress(
+      customEvent?.detail?.walletAddress
+    );
+    console.log(updatedWalletAddress,'updatedWalletAddressupdatedWalletAddress')
+    console.log(walletAddress,'walletAddresswalletAddresswalletAddresswalletAddress')
+
+    if (!updatedWalletAddress) return;
+
+    if (updatedWalletAddress === walletAddress) {
+      await loadLocalUserData();
+    }
+  };
+
+  window.addEventListener("wallet-updated", handleWalletUpdated);
+
+  return () => {
+    window.removeEventListener("wallet-updated", handleWalletUpdated);
+  };
+}, [walletAddress]);
 
   useEffect(() => {
     if (!walletAddress) return;
