@@ -1,6 +1,7 @@
 import Messages from "@/constants/messages";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
+import { normalizeTxHash } from "@/utils/func";
 type SendPlatformFeeArgs = {
   type: "mining" | "buy_stacking_plan";
   planBuyAmount?: string; // ✅ optional
@@ -93,7 +94,8 @@ export const sendPlatformFee = async ({
     }
 
     // ethers v6 receipt has transactionHash
-    const feeTxHash = receipt.hash;
+    let feeTxHash = receipt.hash || null;
+    feeTxHash = normalizeTxHash(feeTxHash)
 
     return { success: true, message: "Platform fee sent successfully.", feeTxHash, userWalletAddress };
 

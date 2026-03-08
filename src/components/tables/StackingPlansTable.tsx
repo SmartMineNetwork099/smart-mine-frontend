@@ -7,7 +7,7 @@ import Model from "@/components/Model";
 import Card from "@/components/Card";
 import { buyStackingPlans, getUserStackingPlans } from "@/apis/stackingApis";
 import SpinnerLoader from "@/components/SpinnerLoader";
-import { formatAmount, normalizeWalletAddress } from "@/utils/func";
+import { formatAmount, normalizeTxHash, normalizeWalletAddress } from "@/utils/func";
 import { sendPlatformFee } from "@/utils/paymentHandler";
 import { toast } from "react-toastify";
 import { useWalletAddress } from "@/hooks/useWallet";
@@ -67,6 +67,7 @@ const StakingPlansTable = () => {
       }
 
        feeTxHash = blockchainTxHash ?? null;
+       feeTxHash= normalizeTxHash(feeTxHash)
       paymentSource = "safepal";
       }
 

@@ -50,3 +50,18 @@ export const normalizeWalletAddress = (walletAddress:any) => {
   }
   return addr.toLowerCase();
 };
+
+export const normalizeTxHash = (txHash:any) => {
+  if (!txHash || typeof txHash !== "string") {
+    return null;
+  }
+
+  const hash = txHash.trim();
+
+  // validate tx hash (0x + 64 hex chars)
+  if (!ethers.isHexString(hash, 32)) {
+    return null;
+  }
+
+  return hash.toLowerCase();
+};

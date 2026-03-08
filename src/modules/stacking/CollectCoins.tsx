@@ -11,7 +11,7 @@ import Messages from "@/constants/messages";
 import { Button } from "rizzui/button";
 import { collectBonusApi } from "@/apis/stackingApis";
 import { upsertUserData } from "@/db/saveData";
-import { normalizeWalletAddress } from "@/utils/func";
+import { normalizeTxHash, normalizeWalletAddress } from "@/utils/func";
 
 const CollectCoins = () => {
      let walletAddress = useWalletAddress();
@@ -22,18 +22,18 @@ const CollectCoins = () => {
         toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
         return false;
       }
-      // success: true, feeTxHash, userWalletAddress 
     // const { success, message, feeTxHash, userWalletAddress } = await sendPlatformFee( {type:"mining"} );
     // if (success===false) {
     //   toast.error(message || "Payment failed.");
     //   return false;
     // }
     // const miningTime = new Date().toISOString();
+    // const txHash = normalizeTxHash(feeTxHash);
 
       const payload = {
         amount: 1.00,
         // miningTime,
-        // feeTxHash,
+        // feeTxHash:txHash,
         walletAddress,
       };
 
