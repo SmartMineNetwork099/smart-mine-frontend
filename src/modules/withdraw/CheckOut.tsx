@@ -103,6 +103,11 @@ const CheckOut = () => {
            wallet : data?.wallet,
           }
           await upsertUserData(walletAddress || '', updatedFields);
+           window.dispatchEvent(
+        new CustomEvent("wallet-updated", {
+         detail: { walletAddress },
+        })
+        );
           handleWalletDataFetch()
   };
 
@@ -133,6 +138,11 @@ const CheckOut = () => {
            wallet : data?.wallet,
           }
           await upsertUserData(walletAddress || '', updatedFields);
+           window.dispatchEvent(
+        new CustomEvent("wallet-updated", {
+         detail: { walletAddress },
+        })
+        );
           handleWalletDataFetch()
   };
 
@@ -166,6 +176,11 @@ const CheckOut = () => {
            wallet : data?.wallet,
           }
           await upsertUserData(walletAddress || '', updatedFields);
+           window.dispatchEvent(
+        new CustomEvent("wallet-updated", {
+         detail: { walletAddress },
+        })
+        );
           handleWalletDataFetch()
   };
 
@@ -197,6 +212,11 @@ const CheckOut = () => {
            wallet : data?.wallet,
           }
           await upsertUserData(walletAddress || '', updatedFields);
+           window.dispatchEvent(
+        new CustomEvent("wallet-updated", {
+         detail: { walletAddress },
+        })
+        );
           handleWalletDataFetch()
 
   };
@@ -227,6 +247,11 @@ const CheckOut = () => {
            wallet : data?.wallet,
           }
           await upsertUserData(walletAddress || '', updatedFields);
+           window.dispatchEvent(
+        new CustomEvent("wallet-updated", {
+         detail: { walletAddress },
+        })
+        );
           handleWalletDataFetch()
   };
 
