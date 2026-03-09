@@ -35,6 +35,13 @@ const WalletActions = () => {
 
          </Button>         
     </div>
+    <div className='mt-2'>
+        <Button className={`w-full flex items-center justify-center gap-2 py-4 h-[50px] rounded-lg bg-green-500 font-bold text-sm sm:text-xl transition text-white cursor-pointer border-0`}
+        // onClick={() => handleTabClick('withdraw')}
+        >
+            Pay Registration Fee <BiMoneyWithdraw className='text-xl'/>
+         </Button>
+    </div>
     </>
   )
 }

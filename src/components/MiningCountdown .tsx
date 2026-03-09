@@ -23,7 +23,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
   const [loading, setLoading] = useState(false);
 
   // status boolean (true/false)
-  const [status, setStatus] = useState<string>('inactive');
+  const [status, setStatus] = useState<string>('inActive');
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const nextCycleRef = useRef<string | null>(null);
@@ -189,7 +189,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
           )}
 
           <p className={`text-white ${status === "active" ? "bg-green-500" : "bg-red-500"} text-sm sm:text-base px-2 py-0.5 rounded`}>
-            {status === "active" ? "active" : "inactive"}
+            {status === "active" ? "active" : "inActive"}
           </p>
         </div>
       </div>
