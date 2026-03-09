@@ -64,12 +64,10 @@ export const getUserDataApi = async (
     }
 };
 
-export const getTeamStats = async (walletAddress: string) => {
+export const getTeamStats = async () => {
     try {
         // Send walletAddress in the body
-        const res = await api.post(`/api/stacking/getTeamStats`, {
-            walletAddress,
-        });
+        const res = await api.post(`/api/stacking/getTeamStats`, {});
 
         console.log(res.data, "getTeamStats response");
 

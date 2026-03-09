@@ -1,11 +1,9 @@
 import  { AxiosError } from "axios";
 import api from "./axios.js"
 
-export const getUserStackingPlans = async ( walletAddress:any) => {
+export const getUserStackingPlans = async () => {
     try {
-        const res = await api.post<any>(`/api/stacking/getUserStackingPlans`,{
-              walletAddress
-        });
+        const res = await api.post<any>(`/api/stacking/getUserStackingPlans`,{});
         console.log(res, 'resresres11111232getAllStackingPlansgetAllStackingPlans')
         if(res?.data?.success){
         return { data: res?.data?.data , error: null };
@@ -35,12 +33,10 @@ export const buyStackingPlans = async ({ planId , feeTxHash ,walletAddress , pay
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
-export const collectBonusApi = async ({walletAddress}:any) => {
+export const collectBonusApi = async () => {
     try {
-        const res = await api.post<any>(`/api/stacking/collectBonus`,{
-             walletAddress
-        });
-        console.log(res, 'resresres11111232buyStackingPlansbuyStackingPlans')
+        const res = await api.post<any>(`/api/stacking/collectBonus`,{});
+        console.log(res, 'resresres11111232')
         if(res?.data?.success){
         return { data: res?.data , error: null };
         }else{

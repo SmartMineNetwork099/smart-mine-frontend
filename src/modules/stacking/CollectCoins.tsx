@@ -45,9 +45,7 @@ const CollectCoins = () => {
 
       const payload = {
         amount: 1.00,
-        // miningTime,
-        // feeTxHash:txHash,
-        walletAddress,
+        // feeTxHash:txHash
       };
 
       const response = await startMiningApi(payload);
@@ -78,20 +76,14 @@ const CollectCoins = () => {
   };
   const collectBonus = async () => {
     try {
+      console.log('collect coins')
       toast.dismiss()
-      if(!walletAddress) {
-        toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
-        return false;
-      }
       if(!collectAbleIncome){
         toast.error("No bonus available to collect");
         return
       }
-      const payload = {
-        walletAddress,
-      };
 
-      const {data , error} = await collectBonusApi(payload);
+      const {data , error} = await collectBonusApi();
       if (data?.success) {
         toast.success(data.message);
         return true;
@@ -117,7 +109,7 @@ const CollectCoins = () => {
   />
 ) : <HashLoader/>}
 <div>
-  <Button onClick={collectBonus} disabled={collectAbleIncome} className={`w-full bg-green-500 ${collectAbleIncome ? 'bg-green-500 cursor-pointer' : 'bg-red-400/40 cursor-not-allowed'} border-0 font-bold text-xl`}>Claim Coins</Button>
+  <Button onClick={collectBonus} className={`w-full bg-green-500 ${collectAbleIncome ? 'bg-green-500 cursor-pointer' : 'bg-red-400/40 cursor-not-allowed'} border-0 font-bold text-xl`}>Claim Coins</Button>
 </div>
 
     </Card>

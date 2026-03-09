@@ -74,7 +74,6 @@ const StakingPlansTable = () => {
 
       // 4) Call backend API
       const buyPlanApi = await buyStackingPlans({
-        walletAddress,
         planId: selectedPlan?._id, // ✅ Dynamic level
         feeTxHash,
         paymentSource, // "share_income" or "safepal"
@@ -104,11 +103,10 @@ const StakingPlansTable = () => {
   };
 
   const getStackingPlans = async (loader = true) => {
-    if(!walletAddress) return;
     if(loader){
         setLoading(true);
     } 
-    const plans = await getUserStackingPlans( walletAddress);
+    const plans = await getUserStackingPlans();
     console.log(plans?.data, 'plans data');
     setPlans(plans?.data || []);
     setLoading(false);
