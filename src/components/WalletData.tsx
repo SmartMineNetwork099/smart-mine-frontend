@@ -85,7 +85,7 @@ const WalletData = () => {
       }
 
       // 2) Server data
-      const res = await getUserDataApi(walletAddress);
+      const res = await getUserDataApi();
       const user = res?.data?.user || {};
 
       setWalletData(user);
@@ -175,9 +175,13 @@ const WalletData = () => {
       handleIconClick(); // Close icon picker
 
       // ✅ Optional server save (uncomment after you add API)
-      await updateUserImage(walletAddress, iconName);
-
-      toast.success(Messages?.SUCCESSFULLY_MESSAGE("Avatar updated"));
+      const {data , error} = await updateUserImage(iconName);
+       if(error){
+       toast.error(error || Messages?.FAILED_MESSAGE("Avatar update"))
+      }
+      if(data){
+      toast.success(data?.message)
+      } 
     } catch (err) {
       console.error("Failed to save avatar icon:", err);
       toast.error(Messages?.FAILED_MESSAGE("Avatar update"));

@@ -22,17 +22,13 @@ const YourCommunity = () => {
     const [paginationCurrentPage, setPaginationCurrentPage] = useState(1);
     const [totalNumberOfNodesAtCurrentLevel , setTotalNumberOfNodesAtCurrentLevel ] = useState(0);
 
-
-     let walletAddress = useWalletAddress();
-        walletAddress = normalizeWalletAddress(walletAddress)
     const router = useRouter();
     
 
     const getLevelData = async (LevelNumber: number = 1) => {
-        if (!walletAddress) return;
         try {
             setLoading(true);
-            const {data , error} = await getReferralsAtLevel(walletAddress, LevelNumber , paginationCurrentPage);
+            const {data , error} = await getReferralsAtLevel( LevelNumber , paginationCurrentPage);
             if(error){
                 console.error("API Error:", error);
                 return;
@@ -49,10 +45,8 @@ const YourCommunity = () => {
     }
 
     useEffect(() => {
-        if (walletAddress) {
             getLevelData(page);
-        }
-    }, [walletAddress , page , paginationCurrentPage]);
+    }, [ page , paginationCurrentPage]);
 
     
       const handleBack = () => {

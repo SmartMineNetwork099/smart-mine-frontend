@@ -17,13 +17,11 @@ export interface User {
 }
 
 export const getReferralsAtLevel = async (
-    walletAddress: string,
     level: number,
     paginationCurrentPage: number,
 ) => {
     try {
         const res = await api.post<any>(`/api/auth/referrals-level`, {
-            walletAddress,
             level,
             paginationCurrentPage,
         });
@@ -34,12 +32,10 @@ export const getReferralsAtLevel = async (
     }
 };
 export const updateUserImage = async (
-    walletAddress: string,
     imageUrl: string,
 ) => {
     try {
         const res = await api.post<{ accessToken_: string, message: string, image_url: string }>(`/api/auth/update-image`, {
-            walletAddress,
             imageUrl,
         });
         console.log(res, 'resresres')
@@ -53,10 +49,9 @@ export const updateUserImage = async (
     }
 };
 export const getUserDataApi = async (
-    walletAddress: string,
 ) => {
     try {
-        const res = await api.get<any>(`/api/auth/getUserByWalletAddress/${walletAddress}`);
+        const res = await api.get<any>(`/api/auth/getUserByWalletAddress`);
         console.log(res, 'resresres1111')
         if (res.status !== 200) {
             return { data: null, error: "Failed to fetch user data. Please try again." };
