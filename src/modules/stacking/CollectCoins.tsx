@@ -18,6 +18,7 @@ const CollectCoins = () => {
      let walletAddress = useWalletAddress();
         walletAddress = normalizeWalletAddress(walletAddress)
         const [collectAbleIncome, setCollectAbleIncome] = useState<boolean>(false);
+        const [loading, setLoading] = useState<boolean>(false);
         const fetchWalletLocally = async() =>{
           const localUser:any = await getUserData(walletAddress);
                 if (localUser?.wallet?.collectableBonus>0) {
@@ -82,18 +83,31 @@ const CollectCoins = () => {
         toast.error("No bonus available to collect");
         return
       }
+      if(!walletAddress) {
+        toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
+        return false;
+      }
+      setLoading(true)
 
       const {data , error} = await collectBonusApi();
       if (data?.success) {
+           const updatedFields = {
+                   wallet : data?.wallet,
+                  }
+                  await upsertUserData(walletAddress || '', updatedFields);
+                   window.dispatchEvent(
+                new CustomEvent("wallet-updated", {
+                 detail: { walletAddress },
+                })
+                );
+                setLoading(false)
+
         toast.success(data.message);
-        return true;
       } else {
         toast.error(error|| Messages?.SOME_THING_WRONG);
-        return false;
       }
     } catch (error: any) {
       toast.error(error?.message || Messages?.SOME_THING_WRONG);
-      return false;
     }
   }
 
@@ -109,7 +123,7 @@ const CollectCoins = () => {
   />
 ) : <HashLoader/>}
 <div>
-  <Button onClick={collectBonus} className={`w-full bg-green-500 ${collectAbleIncome ? 'bg-green-500 cursor-pointer' : 'bg-red-400/40 cursor-not-allowed'} border-0 font-bold text-xl`}>Claim Coins</Button>
+  <Button onClick={collectBonus} disabled={loading} className={`w-full bg-green-500 ${collectAbleIncome ? 'bg-green-500 cursor-pointer' : 'bg-red-400/40 cursor-not-allowed'} ${loading && 'bg-red-400/40 cursor-not-allowed'} border-0 font-bold text-xl`}>Claim Coins</Button>
 </div>
 
     </Card>
