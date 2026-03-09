@@ -74,12 +74,12 @@ const LoginContent: React.FC = () => {
 
 
     return (
-        <div className="bg-gradient-to-b h-[95vh] from-[#0f0c29] via-[#302b63] to-[#24243e] flex flex-col">
+        <div className="bg-gradient-to-b h-[95vh] flex flex-col">
             <div className="flex flex-1 items-center justify-center p-4">
-                <div className="w-full max-w-md bg-white border rounded-2xl p-8 shadow-lg text-black">
-                    <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">Login with Wallet</h1>
+                <div className="w-full max-w-md bg-white/10 backdrop-blur-sm border-2 border-green-500 rounded-2xl p-8 shadow-lg text-white">
+                    <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center text-green-500">Login with Wallet</h1>
                     <p className="text-xs sm:text-sm opacity-80 mb-6 text-center">
-                        Only SafePal wallet is supported (Extension + WalletConnect) and select network opBNB.
+                        Only SafePal wallet is supported (Extension + WalletConnect) and <span className="text-green-500 font-bold"> select network opBNB </span> 
                     </p>
                     <button
                         onClick={handleLogin}
