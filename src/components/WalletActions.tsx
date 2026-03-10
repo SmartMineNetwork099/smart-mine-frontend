@@ -7,7 +7,7 @@ import ROUTES from '@/constants/routes';
 import { MdOutlineWorkHistory } from 'react-icons/md';
 import { BiMoneyWithdraw } from 'react-icons/bi';
 import SpinnerLoader from './SpinnerLoader';
-import { confirmFreezeFeePaymentApi, getFreezeFeeQuote } from '@/apis/withdrawApis';
+import { verifyFreezeFeePaymentApi, getFreezeFeeQuote } from '@/apis/withdrawApis';
 import { Loader } from 'rizzui/loader';
 import { getUserData } from '@/db/getData';
 import { useWalletAddress } from '@/hooks/useWallet';
@@ -54,9 +54,15 @@ const WalletActions = () => {
         const {success, feeTxHash, userWalletAddress, message} = await sendPlatformFee({type: "freeze_fee", freezeFeeBnb:data?.requiredBnb});
        if(success){
         const payload = {
-
+        feeTxHash
         }
-        const {data , error } = await confirmFreezeFeePaymentApi(payload)
+        const {data , error } = await verifyFreezeFeePaymentApi(payload)
+        if(error){
+          toast.error(error || 'verify Freeze FeePayment error')
+        }
+        if(data){
+          toast.success(data?.message)
+        }
          setLoading(false)
        }
 

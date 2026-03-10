@@ -47,9 +47,9 @@ export const getFreezeFeeQuote = async () => {
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
-export const confirmFreezeFeePaymentApi = async (payload:any) => {
+export const verifyFreezeFeePaymentApi = async (payload:any) => {
     try {
-        const res = await api.post<any>(`/api/wallet/confirmFreezeFeePayment`,payload);
+        const res = await api.post<any>(`/api/wallet/verifyFreezeFeePayment`,payload);
         console.log(res, 'getCurrentBnbPriceApigetCurrentBnbPriceApi')
         if(res?.data?.success){
         return { data: res?.data , error: null };
