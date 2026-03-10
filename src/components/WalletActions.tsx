@@ -9,12 +9,11 @@ import { BiMoneyWithdraw } from 'react-icons/bi';
 import SpinnerLoader from './SpinnerLoader';
 import { verifyFreezeFeePaymentApi, getFreezeFeeQuote } from '@/apis/withdrawApis';
 import { Loader } from 'rizzui/loader';
-import { getUserData } from '@/db/getData';
-import { useWalletAddress } from '@/hooks/useWallet';
 import { toast } from 'react-toastify';
 import Messages from '@/constants/messages';
 import { useUserData } from '@/hooks/useUserData';
 import { sendPlatformFee } from '@/utils/paymentHandler';
+import { upsertUserData } from '@/db/saveData';
 
 
 const WalletActions = () => {
@@ -22,7 +21,8 @@ const WalletActions = () => {
       const [showModel , setShowModel]= useState(false)
       const [loading , setLoading]= useState(false)
       const [data , setData] = useState<any>(null)
-      const { isFreeze } = useUserData();
+      const { isFreeze,walletAddress, refreshUser } = useUserData();
+      
       
       const handleTabClick = async (name?: any ) => {
         toast.dismiss()
@@ -62,6 +62,16 @@ const WalletActions = () => {
         }
         if(data){
           toast.success(data?.message)
+             const updatedFields = {
+                     freeze : data?.freeze,
+                    }
+                    await upsertUserData(walletAddress || '', updatedFields);
+                    await refreshUser();
+                     window.dispatchEvent(
+                  new CustomEvent("wallet-updated", {
+                   detail: { walletAddress },
+                  })
+                  );
         }
          setLoading(false)
        }
