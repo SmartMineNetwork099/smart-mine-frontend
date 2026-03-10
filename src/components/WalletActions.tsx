@@ -7,13 +7,14 @@ import ROUTES from '@/constants/routes';
 import { MdOutlineWorkHistory } from 'react-icons/md';
 import { BiMoneyWithdraw } from 'react-icons/bi';
 import SpinnerLoader from './SpinnerLoader';
-import { getFreezeFeeQuote } from '@/apis/withdrawApis';
+import { confirmFreezeFeePaymentApi, getFreezeFeeQuote } from '@/apis/withdrawApis';
 import { Loader } from 'rizzui/loader';
 import { getUserData } from '@/db/getData';
 import { useWalletAddress } from '@/hooks/useWallet';
 import { toast } from 'react-toastify';
 import Messages from '@/constants/messages';
 import { useUserData } from '@/hooks/useUserData';
+import { sendPlatformFee } from '@/utils/paymentHandler';
 
 
 const WalletActions = () => {
@@ -39,10 +40,23 @@ const WalletActions = () => {
 
       const handlePayRegistrationFee =async() =>{
         setShowModel(true)
+        setLoading(true)
         const {data , error} = await getFreezeFeeQuote();
         console.log(data,'data in getFreezeFeeQuote')
         setData(data)
         setLoading(false)
+
+      }
+      const PayRegistrationFee =async() =>{
+        setLoading(true)
+        const {success, feeTxHash, userWalletAddress, message} = await sendPlatformFee({type: "freeze_fee", freezeFeeBnb:data?.requiredBnb});
+       if(success){
+        const payload = {
+
+        }
+        const {data , error } = await confirmFreezeFeePaymentApi(payload)
+         setLoading(false)
+       }
 
       }
     
@@ -93,7 +107,7 @@ const WalletActions = () => {
                 </p>
                 <div className="flex justify-center gap-4 mt-6">
                   <button
-                    // onClick={handleBuyPlan}
+                    onClick={PayRegistrationFee}
                     disabled={loading}
                     className={`flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl text-lg font-bold ${
                       loading ? 'opacity-70 cursor-not-allowed' : ''

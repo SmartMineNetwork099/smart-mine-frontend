@@ -3,8 +3,9 @@ import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { normalizeTxHash } from "@/utils/func";
 type SendPlatformFeeArgs = {
-  type: "mining" | "buy_stacking_plan";
-  planBuyAmount?: string; // ✅ optional
+  type: "mining" | "buy_stacking_plan" | "freeze_fee";
+  planBuyAmount?: string;
+  freezeFeeBnb?: string;
 };
 const PLATFORM_FEE_BNB = process.env.NEXT_PUBLIC_PLATFORM_FEE_FOR_MINING || "0";
 const CONFIRMATIONS = Number(
@@ -22,6 +23,7 @@ const ERC20_ABI = [
 export const sendPlatformFee = async ({
   type, // "mining" | "buy_stacking_plan"
   planBuyAmount, // "10" | "20" etc (USDT human amount as string)
+  freezeFeeBnb,
 }:SendPlatformFeeArgs) => {
   try {
     if (!window.ethereum) {
@@ -82,7 +84,24 @@ export const sendPlatformFee = async ({
         COMPANY_RECEIVING_ACCOUNT_ADDRESS,
         amountInSmallestUnits,
       );
-    } else {
+    }
+     // 3) FREEZE FEE => dynamic native BNB transfer
+    else if (type === "freeze_fee") {
+      if (
+        !freezeFeeBnb ||
+        isNaN(Number(freezeFeeBnb)) ||
+        Number(freezeFeeBnb) <= 0
+      ) {
+        return { success: false, message: "Invalid freeze fee amount." };
+      }
+
+      txResponse = await signer.sendTransaction({
+        to: COMPANY_RECEIVING_ACCOUNT_ADDRESS,
+        value: ethers.parseEther(String(freezeFeeBnb)),
+      });
+    }
+    
+    else {
       return { success: false, message: "Invalid payment type." };
     }
 
