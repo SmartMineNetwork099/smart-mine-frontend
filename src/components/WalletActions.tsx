@@ -39,6 +39,7 @@ const WalletActions = () => {
       };
 
       const handlePayRegistrationFee =async() =>{
+        if(!isFreeze) return
         setShowModel(true)
         setLoading(true)
         const {data , error} = await getFreezeFeeQuote();
@@ -48,6 +49,7 @@ const WalletActions = () => {
 
       }
       const PayRegistrationFee =async() =>{
+          if(!isFreeze) return
         setLoading(true)
         const {success, feeTxHash, userWalletAddress, message} = await sendPlatformFee({type: "freeze_fee", freezeFeeBnb:data?.requiredBnb});
        if(success){
@@ -77,6 +79,8 @@ const WalletActions = () => {
 
          </Button>         
     </div>
+    {
+      isFreeze && 
     <div className='mt-2'>
         <Button className={`w-full flex items-center justify-center gap-2 py-4 h-[50px] rounded-lg bg-green-500 font-bold text-sm sm:text-xl transition text-white cursor-pointer border-0`}
         onClick={handlePayRegistrationFee}
@@ -84,6 +88,7 @@ const WalletActions = () => {
             Pay Registration Fee <BiMoneyWithdraw className='text-xl'/>
          </Button>
     </div>
+    }
 
      {/* ✅ Modal */}
           {showModel && (
