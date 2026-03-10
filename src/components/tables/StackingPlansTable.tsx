@@ -14,6 +14,8 @@ import { useWalletAddress } from "@/hooks/useWallet";
 import { getUserData } from "@/db/getData";
 import { roundTo4 } from "@/utils/amount";
 import { upsertUserData } from "@/db/saveData";
+import { useUserData } from "@/hooks/useUserData";
+import Messages from "@/constants/messages";
 
 const StakingPlansTable = () => {
   const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
@@ -22,9 +24,8 @@ const StakingPlansTable = () => {
   const [loading, setLoading] = useState(true);
   const [loadingBuy, setLoadingBuy] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>({}); // ✅ for dynamic level
+  const { userData, isFreeze,walletAddress, status, refreshUser } = useUserData();
 
-  let walletAddress = useWalletAddress();
-    walletAddress = normalizeWalletAddress(walletAddress)
 
   // ✅ Open model and store selected plan level
   const handleModelOpen = (level: number) => {
@@ -37,6 +38,11 @@ const StakingPlansTable = () => {
   const handleBuyPlan = async () => {
     if (!selectedPlan) return;
     if (!walletAddress) return;
+      if(isFreeze){
+      toast.error(Messages?.FREEZE_ACCOUNT)
+      return;
+    }
+
     try {
       setLoadingBuy(true);
        // 1) Local user data

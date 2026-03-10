@@ -4,10 +4,9 @@ import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import ROUTES from "@/constants/routes";
-import { useWalletAddress } from "@/hooks/useWallet";
 import { getUserData } from "@/db/getData";
 import { FiAlertTriangle, FiArrowUpRight, FiSend } from "react-icons/fi";
-import MyIncomeCard, { HistoryItem } from "./MyIncomeCard";
+import MyIncomeCard from "./MyIncomeCard";
 import TeamIncomeCard from "./TeamIncomeCard";
 import ShareIncomeCard from "./ShareIncomeCard";
 import { formatAmount, normalizeWalletAddress } from "@/utils/func";
@@ -15,11 +14,11 @@ import { shareIncomeApi, withdrawIncomeApi } from "@/apis/withdrawApis";
 import { toast } from "react-toastify";
 import { roundTo4 } from "@/utils/amount";
 import { upsertUserData } from "@/db/saveData";
+import { useUserData } from "@/hooks/useUserData";
+import Messages from "@/constants/messages";
 
 const CheckOut = () => {
   const router = useRouter();
-   let walletAddress = useWalletAddress();
-      walletAddress = normalizeWalletAddress(walletAddress)
 
   const [balance, setBalance] = useState<any>({
     myIncome: 0,
@@ -28,11 +27,9 @@ const CheckOut = () => {
   });
   const [loadingBalance, setLoadingBalance] = useState<boolean>(true);
   const [source, setSource] = useState('');
+  const { userData, isFreeze,walletAddress, status, refreshUser } = useUserData();
 
-  const [history, setHistory] = useState<HistoryItem[]>([
-    { date: "12/12/20", amount: 100, status: "Completed", type: "myIncome" },
-    { date: "12/12/20", amount: 50, status: "Completed", type: "teamIncome" },
-  ]);
+
 // withdraw income rules 
   const minimumWithdrawRequiredIncome = process.env.NEXT_PUBLIC_MINIMUM_WIDTHDRAW_INCOME;
 // share income rules 
@@ -44,7 +41,7 @@ const CheckOut = () => {
     try {
       setLoadingBalance(true);
 
-      const localUser: any = await getUserData(walletAddress);
+      const localUser: any = userData;
       const my = formatAmount(localUser?.wallet?.balance?.myIncome ?? 0);
       const team = formatAmount(localUser?.wallet?.balance?.teamIncome ?? 0);
       const share = formatAmount(localUser?.wallet?.balance?.shareIncome ?? 0);
@@ -79,6 +76,10 @@ const CheckOut = () => {
   const onWithdrawMyIncome =async (amount: number) => {
     if(loadingBalance) return;
     if (!walletAddress) return;
+    if (isFreeze) {
+     toast.error(Messages?.FREEZE_ACCOUNT);
+    return;
+    }
 
     if(roundTo4(amount)>roundTo4(balance?.myIncome)){
       toast.error('insufficient balance')
@@ -103,6 +104,7 @@ const CheckOut = () => {
            wallet : data?.wallet,
           }
           await upsertUserData(walletAddress || '', updatedFields);
+          await refreshUser();
            window.dispatchEvent(
         new CustomEvent("wallet-updated", {
          detail: { walletAddress },
@@ -114,6 +116,10 @@ const CheckOut = () => {
   const onSendMyIncome = async({ amount, userId }: { amount: number; userId: string }) => {
        if(loadingBalance) return
        if (!walletAddress) return;
+      if (isFreeze) {
+     toast.error(Messages?.FREEZE_ACCOUNT);
+    return;
+    }
 
     if(roundTo4(amount)>roundTo4(balance?.myIncome)){
       toast.error('insufficient balance')
@@ -138,6 +144,7 @@ const CheckOut = () => {
            wallet : data?.wallet,
           }
           await upsertUserData(walletAddress || '', updatedFields);
+          await refreshUser();
            window.dispatchEvent(
         new CustomEvent("wallet-updated", {
          detail: { walletAddress },
@@ -147,10 +154,14 @@ const CheckOut = () => {
   };
 
   // ✅ callbacks for TeamIncomeCard
-  const onWithdrawTeam = async(amount: number) => {
+  const onWithdrawTeamIncome = async(amount: number) => {
   
   if(loadingBalance) return
   if (!walletAddress) return;
+      if (isFreeze) {
+     toast.error(Messages?.FREEZE_ACCOUNT);
+    return;
+    }
 
     if(roundTo4(amount)>roundTo4(balance?.teamIncome)){
       toast.error('insufficient balance')
@@ -176,6 +187,7 @@ const CheckOut = () => {
            wallet : data?.wallet,
           }
           await upsertUserData(walletAddress || '', updatedFields);
+          await refreshUser();
            window.dispatchEvent(
         new CustomEvent("wallet-updated", {
          detail: { walletAddress },
@@ -188,6 +200,10 @@ const CheckOut = () => {
   const onSendTeamIncome = async ({ amount, userId }: { amount: number; userId: string }) => {
        if(loadingBalance) return
        if (!walletAddress) return;
+           if (isFreeze) {
+     toast.error(Messages?.FREEZE_ACCOUNT);
+    return;
+    }
 
     if(roundTo4(amount)>roundTo4(balance?.teamIncome)){
       toast.error('insufficient balance')
@@ -212,6 +228,7 @@ const CheckOut = () => {
            wallet : data?.wallet,
           }
           await upsertUserData(walletAddress || '', updatedFields);
+          await refreshUser();
            window.dispatchEvent(
         new CustomEvent("wallet-updated", {
          detail: { walletAddress },
@@ -223,6 +240,10 @@ const CheckOut = () => {
   const onSendShareIncome = async ({ amount, userId }: { amount: number; userId: string }) => {
      if(loadingBalance) return
      if (!walletAddress) return;
+         if (isFreeze) {
+     toast.error(Messages?.FREEZE_ACCOUNT);
+    return;
+    }
 
     if(roundTo4(amount)>roundTo4(balance?.shareIncome)){
       toast.error('insufficient balance')
@@ -247,6 +268,7 @@ const CheckOut = () => {
            wallet : data?.wallet,
           }
           await upsertUserData(walletAddress || '', updatedFields);
+          await refreshUser();
            window.dispatchEvent(
         new CustomEvent("wallet-updated", {
          detail: { walletAddress },
@@ -337,7 +359,7 @@ const CheckOut = () => {
         <TeamIncomeCard
           teamIncome={balance.teamIncome}
           loadingBalance={loadingBalance}
-          onWithdraw={onWithdrawTeam}
+          onWithdraw={onWithdrawTeamIncome}
           onSend={onSendTeamIncome}
           setSource={setSource}
           />

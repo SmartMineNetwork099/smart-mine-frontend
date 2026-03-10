@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { formatTime, normalizeWalletAddress } from "@/utils/func";
 import { MiningTimeApi } from "@/apis/mining";
 import Messages from "@/constants/messages";
-import { getUserData } from "@/db/getData";
+import { useUserData } from "@/hooks/useUserData";
 
 interface MiningCountdownProps {
   handleClaim?: () => Promise<boolean>;
@@ -21,9 +21,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
 }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [loading, setLoading] = useState(false);
-
-  // status boolean (true/false)
-  const [status, setStatus] = useState<string>('inActive');
+  const { userData, isFreeze, status, refreshUser } = useUserData();
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const nextCycleRef = useRef<string | null>(null);
@@ -89,6 +87,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
     }, 1000);
   };
 
+
   // Load timer
   useEffect(() => {
     if (!walletAddress) return;
@@ -97,16 +96,14 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletAddress]);
 
-  // Load status from DB
-  const fetchStatus = async () => {
-    if (!walletAddress) return;
-    const userData: any = await getUserData(walletAddress);
-    setStatus(userData?.status);
-  };
+     // Load status from DB
+     const fetchStatus = async () => {
+     await refreshUser()
+     };
 
   useEffect(() => {
     if (!walletAddress) return;
-    fetchStatus();
+      fetchStatus()
   }, [walletAddress]);
 
   // Progress accurate to Dubai midnight cycle
@@ -128,8 +125,14 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
 
   // Start mining
   const startMining = async () => {
+    toast.dismiss()
     if (!walletAddress) {
       toast.error(Messages?.WAIT_MESSAGE("fetching Wallet Address"));
+      return;
+    }
+  
+  if(isFreeze){
+      toast.error(Messages?.FREEZE_ACCOUNT)
       return;
     }
 
@@ -144,10 +147,14 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
     try {
       const success = await handleClaim?.();
       if (success) {
-
-        setStatus("active"); // instant UI update
-        // optional: fetchStatus() to confirm from backend
+        await refreshUser()
+        window.dispatchEvent(
+     new CustomEvent("wallet-updated", {
+     detail: { walletAddress },
+      })
+      );
       }
+      
     } finally {
       setLoading(false);
     }

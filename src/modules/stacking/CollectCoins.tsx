@@ -11,17 +11,16 @@ import Messages from "@/constants/messages";
 import { Button } from "rizzui/button";
 import { collectBonusApi } from "@/apis/stackingApis";
 import { upsertUserData } from "@/db/saveData";
-import { normalizeTxHash, normalizeWalletAddress } from "@/utils/func";
-import { getUserData } from "@/db/getData";
+import { normalizeTxHash } from "@/utils/func";
+import { useUserData } from "@/hooks/useUserData";
 
 const CollectCoins = () => {
-     let walletAddress = useWalletAddress();
-        walletAddress = normalizeWalletAddress(walletAddress)
         const [collectAbleIncome, setCollectAbleIncome] = useState<boolean>(false);
         const [loading, setLoading] = useState<boolean>(false);
+        const { userData, isFreeze,walletAddress, status, refreshUser } = useUserData();
         const fetchWalletLocally = async() =>{
-          const localUser:any = await getUserData(walletAddress);
-                if (localUser?.wallet?.collectableBonus>0) {
+                await refreshUser()
+                if (userData?.wallet?.collectableBonus>0) {
                 setCollectAbleIncome(true)
                 }
 
@@ -36,6 +35,10 @@ const CollectCoins = () => {
         toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
         return false;
       }
+        if(isFreeze){
+      toast.error(Messages?.FREEZE_ACCOUNT)
+      return false;
+    }
     // const { success, message, feeTxHash, userWalletAddress } = await sendPlatformFee( {type:"mining"} );
     // if (success===false) {
     //   toast.error(message || "Payment failed.");
@@ -60,6 +63,7 @@ const CollectCoins = () => {
       }
       await upsertUserData(walletAddress, updatedFields);
         toast.success(response.data.message);
+        await refreshUser();
         window.dispatchEvent(
         new CustomEvent("wallet-updated", {
          detail: { walletAddress },
@@ -79,6 +83,10 @@ const CollectCoins = () => {
     try {
       console.log('collect coins')
       toast.dismiss()
+        if (isFreeze) {
+          toast.error(Messages?.FREEZE_ACCOUNT);
+          return;
+          }
       if(!collectAbleIncome){
         toast.error("No bonus available to collect");
         return
@@ -95,6 +103,7 @@ const CollectCoins = () => {
                    wallet : data?.wallet,
                   }
                   await upsertUserData(walletAddress || '', updatedFields);
+                  await refreshUser();
                    window.dispatchEvent(
                 new CustomEvent("wallet-updated", {
                  detail: { walletAddress },
