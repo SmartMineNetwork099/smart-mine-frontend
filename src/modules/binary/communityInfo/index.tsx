@@ -1,24 +1,24 @@
-"use client"
-import React from 'react'
-import Image from 'next/image';
+// "use client"
+// import React from 'react'
+// import Image from 'next/image';
 
 
-const Index = () => {
+// const Index = () => {
 
-  return (
-    <>
-      <div className='h-screen p-4'>
-        <Image
-          src='/undraw_coming_soon.svg'
-          alt='Coming Soon Image'
-          width={200}
-          height={200}
-          className='mx-auto'
-        />
-        <p className="text-white font-semibold text-lg text-center mt-4">Coming Soon</p>
-      </div>
-    </>
-  )
-}
+//   return (
+//     <>
+//       <div className='h-screen p-4'>
+//         <Image
+//           src='/undraw_coming_soon.svg'
+//           alt='Coming Soon Image'
+//           width={200}
+//           height={200}
+//           className='mx-auto'
+//         />
+//         <p className="text-white font-semibold text-lg text-center mt-4">Coming Soon</p>
+//       </div>
+//     </>
+//   )
+// }
 
-export default Index
+// export default Index

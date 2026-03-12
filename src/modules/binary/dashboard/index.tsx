@@ -1,7 +1,7 @@
 'use client';
 import React from 'react'
-import Summery from '@/modules/binary/dashboard/Summery';
-import PlansSummery from '@/modules/binary/dashboard/PlansSummery';
+// import Summery from '@/modules/binary/dashboard/Summery';
+// import PlansSummery from '@/modules/binary/dashboard/PlansSummery';
 // import RecentBonus from '@/modules/binary/dashboard/RecentBonus';
 // import Card from '@/components/Card';
 // import Image from 'next/image';
@@ -17,8 +17,8 @@ const index = () => {
           height={160} />
         <p className="text-white font-semibold text-lg">Comming Soon</p>
       </Card> */}
-      <Summery />
-      <PlansSummery />
+      {/* <Summery /> */}
+      {/* <PlansSummery /> */}
       {/* <RecentBonus /> */}
     </>
   )

@@ -1,15 +1,15 @@
-"use client"
-import React from 'react'
-import BinaryTree from '@/modules/binary/communityTree/BinaryTree'
+// "use client"
+// import React from 'react'
+// import BinaryTree from '@/modules/binary/communityTree/BinaryTree'
 
-const index = () => {
-  return (
-    <>
-      <div className='h-screen w-full overflow-x-auto'>
-          <BinaryTree />
-      </div>
-    </>
-  )
-}
+// const index = () => {
+//   return (
+//     <>
+//       <div className='h-screen w-full overflow-x-auto'>
+//           <BinaryTree />
+//       </div>
+//     </>
+//   )
+// }
 
-export default index
+// export default index

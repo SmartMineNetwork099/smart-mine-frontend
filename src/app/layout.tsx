@@ -13,7 +13,6 @@ import { normalizeWalletAddress } from '@/utils/func';
 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [accessToken ,  setAccessToken] = useState<string | null>(null);
   let walletAddress = useWalletAddress()
   walletAddress = normalizeWalletAddress(walletAddress)
 
@@ -21,16 +20,6 @@ useEffect(() => {
   if (!walletAddress) return;
 
   const ethereum = typeof window !== "undefined" ? (window as any).ethereum : null;
-
-  // 🔹 Get accessToken_ from localStorage
-  const accessToken=
-    typeof window !== "undefined"
-      ? localStorage.getItem(`accessToken_${walletAddress}`)
-      : null;
-
-  if (accessToken) {
-    setAccessToken(accessToken);
-  }
 
   // 🔹 Silent login (initial)
   // const init = async () => {
@@ -42,8 +31,12 @@ useEffect(() => {
 
   // 🔹 Wallet switch listener
   const handleAccountsChanged = async (accounts: string[]) => {
-    const newWallet = accounts?.[0];
-    const currentWallet = localStorage.getItem("activeWallet");
+    console.log(accounts,'accountsaccountsaccounts')
+    const newWallet = accounts?.[0] || '';
+    console.log(newWallet,'newWalletnewWalletnewWallet')
+    const currentWallet = localStorage.getItem("activeWallet") || '';
+    console.log(currentWallet,'currentWalletcurrentWalletcurrentWallet')
+
 
     if (newWallet && newWallet !== currentWallet) {
       await silentLogin(newWallet);
