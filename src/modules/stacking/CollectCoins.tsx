@@ -14,7 +14,7 @@ import { useUserData } from "@/hooks/useUserData";
 const CollectCoins = () => {
         const [collectAbleIncome, setCollectAbleIncome] = useState<boolean>(false);
         const [loading, setLoading] = useState<boolean>(false);
-        const { userData, isFreeze,walletAddress, status, refreshUser } = useUserData();
+        const { userData, isFreeze,walletAddress, refreshUser } = useUserData();
         const fetchWalletLocally = async() =>{
                 await refreshUser()
                 if (userData?.wallet?.collectableBonus>0) {

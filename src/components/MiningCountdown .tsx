@@ -21,7 +21,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
 }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [loading, setLoading] = useState(false);
-  const { userData, isFreeze, status, refreshUser } = useUserData();
+  const { isFreeze, status, refreshUser } = useUserData();
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const nextCycleRef = useRef<string | null>(null);

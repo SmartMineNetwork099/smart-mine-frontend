@@ -23,7 +23,7 @@ const StakingPlansTable = () => {
   const [loading, setLoading] = useState(true);
   const [loadingBuy, setLoadingBuy] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>({}); // ✅ for dynamic level
-  const { userData, isFreeze,walletAddress, status, refreshUser } = useUserData();
+  const { isFreeze,walletAddress} = useUserData();
 
 
   // ✅ Open model and store selected plan level
@@ -61,7 +61,7 @@ const StakingPlansTable = () => {
       // 3) Fallback to SafePal wallet payment
       const type = "buy_stacking_plan";
 
-      const { success, message, feeTxHash: blockchainTxHash, userWalletAddress } =
+      const { success, message, feeTxHash: blockchainTxHash } =
         await sendPlatformFee({
           type,
           planBuyAmount: String(planAmount),

@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { Button } from 'rizzui/button'
 import { useRouter } from 'next/navigation';
 import Model from "@/components/Model";
@@ -42,6 +42,9 @@ const WalletActions = () => {
         setShowModel(true)
         setLoading(true)
         const {data , error} = await getFreezeFeeQuote();
+        if(error){
+          toast.error(error||'Server Error in Pay Registration Fee')
+        }
         console.log(data,'data in getFreezeFeeQuote')
         setData(data)
         setLoading(false)
@@ -50,7 +53,7 @@ const WalletActions = () => {
       const PayRegistrationFee =async() =>{
           if(!isFreeze) return
         setLoading(true)
-        const {success, feeTxHash, userWalletAddress, message} = await sendPlatformFee({type: "freeze_fee", freezeFeeBnb:data?.requiredBnb});
+        const {success, feeTxHash} = await sendPlatformFee({type: "freeze_fee", freezeFeeBnb:data?.requiredBnb});
        if(success){
         const payload = {
         feeTxHash

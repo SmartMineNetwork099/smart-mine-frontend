@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import HashLoader from "@/components/HashLoader";
 import { Button } from "rizzui";
 import Pagination2 from "@/components/Pagination2";
-import Model from "@/components/Model";
-import MyIdsDetail from "@/modules/binary/myIds/MyIdsDetail";
+// import MyIdsDetail from "@/modules/binary/myIds/MyIdsDetail";
 
 
 type TableProps = {
@@ -180,11 +179,11 @@ console.log("data in table", data);
 
 
                   {/* Model Summary (Show for confirmation) */}
-                    {modelOpen && (
+                    {/* {modelOpen && (
                         <Model isOpen={modelOpen} onClose={() => setModelOpen(false)} title={`ID Details`} className="!bg-gray-200"  size = "xl">
                            <MyIdsDetail userID={userID}  nodeID={nodeID} position={position}/>
                         </Model>
-                    )}
+                    )} */}
 
 
 

@@ -26,7 +26,7 @@ const CheckOut = () => {
   });
   const [loadingBalance, setLoadingBalance] = useState<boolean>(true);
   const [source, setSource] = useState('');
-  const { userData, isFreeze,walletAddress, status, refreshUser } = useUserData();
+  const { userData, isFreeze,walletAddress, refreshUser } = useUserData();
 
 
 // withdraw income rules 
