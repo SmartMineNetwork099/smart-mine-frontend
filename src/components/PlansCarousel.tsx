@@ -4,7 +4,7 @@ import Card from "@/components/Card";
 import { SiTether } from "react-icons/si";
 import { FaCheck } from "react-icons/fa";
 import Model from "@/components/Model";
-import { buyPlans } from "@/apis/plans";
+// import { buyPlans } from "@/apis/plans";
 import HashLoader from "@/components/HashLoader";
 import SpinnerLoader from "@/components/SpinnerLoader";
 import { toast } from "react-toastify";
@@ -69,16 +69,16 @@ const PlansCarousel = ({ plans, loading }: any) => {
             setLoadingBuy(true);
               const planId = selectedPlans?.map((p: any) => p?._id);
               console.log(planId, 'planIdplanIdplanId')
-            const { data, error } = await buyPlans(walletAddress, planId);
+            // const { data, error } = await buyPlans(walletAddress, planId);
 
-            if (error) {
-                toast.error(error);
-            } else {
-                toast.success(Messages?.SUCCESSFULLY_MESSAGE("Plan(s) purchased"));
-                console.log("✅ Response:", data);
-                setSelectedPlans([]);
-                setModelOpen(false);
-            }
+            // if (error) {
+            //     toast.error(error);
+            // } else {
+            //     toast.success(Messages?.SUCCESSFULLY_MESSAGE("Plan(s) purchased"));
+            //     console.log("✅ Response:", data);
+            //     setSelectedPlans([]);
+            //     setModelOpen(false);
+            // }
         } catch (err) {
             console.error(err);
             toast.error(Messages?.SOME_THING_WRONG);

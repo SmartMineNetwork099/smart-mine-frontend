@@ -9,7 +9,6 @@ import { useSearchParams } from "next/navigation";
 import Messages from "@/constants/messages";
 import { normalizeWalletAddress } from "@/utils/func";
 import { upsertUserData } from "@/db/saveData";
-import { STORES_NAME } from "@/config/dbConfig";
 
 const LoginContent: React.FC = () => {   
     const [loading, setLoading] = useState<boolean>(false);
@@ -57,7 +56,7 @@ const LoginContent: React.FC = () => {
                 const normalizedWalletAddress = normalizeWalletAddress(walletAddress) || '';
                 const accessToken = verifyRes.data.accessToken;
                 localStorage.setItem(`walletAddress`, normalizedWalletAddress);
-                localStorage.setItem(`accessToken_${normalizedWalletAddress}`, accessToken);
+                // localStorage.setItem(`accessToken_${normalizedWalletAddress}`, accessToken);
                 localStorage.setItem(`activeWallet`, normalizedWalletAddress);
                 await upsertUserData(normalizedWalletAddress, verifyRes?.data);
                 setAccessToken(accessToken);

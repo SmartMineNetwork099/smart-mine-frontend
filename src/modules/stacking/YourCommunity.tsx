@@ -3,12 +3,10 @@ import React, { useEffect, useState } from 'react'
 import StakingTable from '@/components/tables/StakingTable';
 import { getReferralsAtLevel } from '@/apis/user';
 import Pagination from '@/components/Pagination';
-import { useWalletAddress } from '@/hooks/useWallet';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import ROUTES from '@/constants/routes';
 import { useRouter } from 'next/navigation';
 import Pagination2 from "@/components/Pagination2";
-import { normalizeWalletAddress } from '@/utils/func';
 
 // import Messages from '@/constants/messages';
 // import { toast } from 'react-toastify';

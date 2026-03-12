@@ -4,14 +4,11 @@ import { toast } from "react-toastify";
 import { startMiningApi } from "@/apis/mining";
 import MiningCountdown from "@/components/MiningCountdown ";
 import Card from "@/components/Card";
-import {sendPlatformFee} from "@/utils/paymentHandler";
-import { useWalletAddress } from "@/hooks/useWallet";
 import HashLoader from "@/components/HashLoader";
 import Messages from "@/constants/messages";
 import { Button } from "rizzui/button";
 import { collectBonusApi } from "@/apis/stackingApis";
 import { upsertUserData } from "@/db/saveData";
-import { normalizeTxHash } from "@/utils/func";
 import { useUserData } from "@/hooks/useUserData";
 
 const CollectCoins = () => {
