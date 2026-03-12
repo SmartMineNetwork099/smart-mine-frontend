@@ -45,3 +45,11 @@ body {
 .sr-only{
   display: none;
 }
+
+.fixed-bg {
+  background-image: url('/background1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}

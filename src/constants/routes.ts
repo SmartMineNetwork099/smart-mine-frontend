@@ -1,6 +1,8 @@
 const ROUTES = {
     STACKING: {
         DASHBOARD: "/stacking/dashboard",
+        COMMUNITY: "/stacking/community",
+
 
     },
     BINARY: {
@@ -11,6 +13,13 @@ const ROUTES = {
     },
     GAMING: {
         HOME: "/gaming",
+    },
+    WITHDRAW: {
+        HOME: "/withdraw",
+        HISTORY: "/history"
+    },
+    HISTORY: {
+        HOME: "/history",
     },
     AUTH: {
         LOGIN: "/auth/login",

@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { toast } from "react-toastify";
 import Messages from "@/constants/messages";
+import { normalizeWalletAddress } from "./func";
 
 
 // ✅ opBNB Mainnet Chain Info
@@ -32,6 +33,7 @@ export const connectWallet = async (): Promise<WalletConnectResult | null> => {
     let signer: ethers.Signer | null = null;
     let walletAddress = "";
     let type: WalletType;
+    
 
     const ethProvider = (window as Window & { ethereum?: SafePalEthereumProvider }).ethereum;
 
@@ -71,6 +73,7 @@ export const connectWallet = async (): Promise<WalletConnectResult | null> => {
       walletAddress = await signer.getAddress();
       type = "walletconnect";
     }
+    walletAddress = normalizeWalletAddress(walletAddress) || '';
 
     return { provider, signer, address: walletAddress, type };
   } catch (err: unknown) {
@@ -139,7 +142,7 @@ export const checkAndSwitchNetwork = async (
 //     console.log("urlUserId", urlUserId);
 //     if (urlUserId) {
 //       try {
-//         localStorage.setItem("userID", urlUserId);
+//         
 //       } catch (e) {
 //         console.warn("Could not save userID to localStorage", e);
 //       }
@@ -180,6 +183,32 @@ export const getUserWalletAddress = async() => {
       message: error.message || "Something went wrong"
   };
 }
+};
+
+
+export const getConnectedWalletAddress = async () => {
+  try {
+    if (!window.ethereum) {
+      return { success: false, message: "Wallet provider not found." };
+    }
+
+    // ✅ silent - no popup
+    const accounts: string[] = await window.ethereum.request({
+      method: "eth_accounts",
+    });
+    console.log(accounts,'accountsaccountsadmwccounts')
+
+    const userWalletAddress = accounts?.[0] ?? null;
+    console.log(userWalletAddress,'userWalletAduserWalletAddressdressuserWalletAddress')
+
+    if (!userWalletAddress) {
+      return { success: false, message: "Wallet not connected." };
+    }
+
+    return { success: true, userWalletAddress };
+  } catch (error: any) {
+    return { success: false, message: error?.message || "Something went wrong" };
+  }
 };
 
 // export const getUserWalletAddress2 = (): string | null => {

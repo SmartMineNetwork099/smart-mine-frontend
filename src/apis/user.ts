@@ -2,8 +2,6 @@ import  { AxiosError } from "axios";
 import api from "./axios.js"
 export interface Wallet {
     balance: number;
-    miningEarnings: number;
-    referralEarnings: number;
 }
 export interface User {
     _id: string;
@@ -19,13 +17,13 @@ export interface User {
 }
 
 export const getReferralsAtLevel = async (
-    walletAddress: string,
     level: number,
+    paginationCurrentPage: number,
 ) => {
     try {
-        const res = await api.post<{ accessToken_: string, message: string }>(`/api/auth/referrals-level`, {
-            walletAddress,
+        const res = await api.post<any>(`/api/auth/referrals-level`, {
             level,
+            paginationCurrentPage,
         });
         return { data: res?.data, error: null };
     } catch (err) {
@@ -34,12 +32,10 @@ export const getReferralsAtLevel = async (
     }
 };
 export const updateUserImage = async (
-    walletAddress: string,
     imageUrl: string,
 ) => {
     try {
         const res = await api.post<{ accessToken_: string, message: string, image_url: string }>(`/api/auth/update-image`, {
-            walletAddress,
             imageUrl,
         });
         console.log(res, 'resresres')
@@ -52,11 +48,10 @@ export const updateUserImage = async (
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
-export const getUserData = async (
-    walletAddress: string,
+export const getUserDataApi = async (
 ) => {
     try {
-        const res = await api.get<any>(`/api/auth/getUserByWalletAddress/${walletAddress}`);
+        const res = await api.get<any>(`/api/auth/getUserByWalletAddress`);
         console.log(res, 'resresres1111')
         if (res.status !== 200) {
             return { data: null, error: "Failed to fetch user data. Please try again." };
@@ -69,12 +64,10 @@ export const getUserData = async (
     }
 };
 
-export const getTeamStats = async (walletAddress: string) => {
+export const getTeamStats = async () => {
     try {
         // Send walletAddress in the body
-        const res = await api.post(`/api/stacking/getTeamStats`, {
-            walletAddress,
-        });
+        const res = await api.post(`/api/stacking/getTeamStats`, {});
 
         console.log(res.data, "getTeamStats response");
 

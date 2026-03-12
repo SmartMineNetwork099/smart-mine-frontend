@@ -5,12 +5,17 @@ import HashLoader from "@/components/HashLoader";
 import { Button } from "rizzui/button";
 import Model from "@/components/Model";
 import Card from "@/components/Card";
-import { buyStackingPlans, getAllStackingPlansWithTeamData } from "@/apis/stackingApis";
+import { buyStackingPlans, getUserStackingPlans } from "@/apis/stackingApis";
 import SpinnerLoader from "@/components/SpinnerLoader";
-import { formatAmount } from "@/utils/func";
+import { formatAmount, normalizeTxHash, normalizeWalletAddress } from "@/utils/func";
 import { sendPlatformFee } from "@/utils/paymentHandler";
 import { toast } from "react-toastify";
 import { useWalletAddress } from "@/hooks/useWallet";
+import { getUserData } from "@/db/getData";
+import { roundTo4 } from "@/utils/amount";
+import { upsertUserData } from "@/db/saveData";
+import { useUserData } from "@/hooks/useUserData";
+import Messages from "@/constants/messages";
 
 const StakingPlansTable = () => {
   const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
@@ -19,8 +24,8 @@ const StakingPlansTable = () => {
   const [loading, setLoading] = useState(true);
   const [loadingBuy, setLoadingBuy] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>({}); // ✅ for dynamic level
+  const { userData, isFreeze,walletAddress, status, refreshUser } = useUserData();
 
-  const walletAddress = useWalletAddress();
 
   // ✅ Open model and store selected plan level
   const handleModelOpen = (level: number) => {
@@ -32,27 +37,61 @@ const StakingPlansTable = () => {
   // ✅ Handle buy plan dynamically
   const handleBuyPlan = async () => {
     if (!selectedPlan) return;
+    if (!walletAddress) return;
+      if(isFreeze){
+      toast.error(Messages?.FREEZE_ACCOUNT)
+      return;
+    }
+
     try {
       setLoadingBuy(true);
-      // const amount = selectedPlan?.investment;
-      /////////////////////////////////////
-    // const feeResult = await sendPlatformFee(false ,true , amount);
-    // if (!feeResult.success) {
-    //   toast.error(feeResult.message || "Payment failed.");
-    //   return false;
-    // }
-    // const { feeTxHash, userWalletAddress } = feeResult;
-      /////////////////////////////////////
+       // 1) Local user data
+            const localUser:any = await getUserData(walletAddress);
+            console.log(localUser,'localUserlocalUser11')
+
+            const planAmount = roundTo4(selectedPlan?.investment || 0);
+            const shareIncome = roundTo4(localUser?.wallet?.shareIncome || 0);
+
+             let feeTxHash: string | null = null;
+             let paymentSource = "";
+
+              // 2) Check local wallet first
+    if (shareIncome >= planAmount) {
+      paymentSource = "share_income";
+    } else {
+      // 3) Fallback to SafePal wallet payment
+      const type = "buy_stacking_plan";
+
+      const { success, message, feeTxHash: blockchainTxHash, userWalletAddress } =
+        await sendPlatformFee({
+          type,
+          planBuyAmount: String(planAmount),
+        });
+        if (success === false) {
+        toast.error(message || "Payment failed.");
+        return;
+      }
+
+       feeTxHash = blockchainTxHash ?? null;
+       feeTxHash= normalizeTxHash(feeTxHash)
+      paymentSource = "safepal";
+      }
+
+
+      // 4) Call backend API
       const buyPlanApi = await buyStackingPlans({
-        walletAddress,
         planId: selectedPlan?._id, // ✅ Dynamic level
-        // feeTxHash,
-        paymentTxHash: '0x1234567890abcdef',
-        // walletAddress:userWalletAddress
+        feeTxHash,
+        paymentSource, // "share_income" or "safepal"
       });
       if(buyPlanApi.data.success)
         {
           toast.success(buyPlanApi.data.message);
+          // update user wallet locally
+          const updatedFields = {
+            wallet : buyPlanApi?.data?.userWallet, 
+          }
+          await upsertUserData(walletAddress, updatedFields);
         }else{
           toast.error(buyPlanApi.error);
         }
@@ -70,11 +109,10 @@ const StakingPlansTable = () => {
   };
 
   const getStackingPlans = async (loader = true) => {
-    if(!walletAddress) return;
     if(loader){
         setLoading(true);
     } 
-    const plans = await getAllStackingPlansWithTeamData( walletAddress);
+    const plans = await getUserStackingPlans();
     console.log(plans?.data, 'plans data');
     setPlans(plans?.data || []);
     setLoading(false);
@@ -100,15 +138,13 @@ const StakingPlansTable = () => {
           Plans <span className="text-green-500">Summery</span>
         </p>
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden mt-4">
-          <table className="min-w-[380px] w-full text-sm border-collapse">
+          <table className="min-w-[400px] w-full text-sm border-collapse">
             <thead className="sticky top-0 z-10">
               <tr className="bg-green-500 text-black font-bold text-xs sm:text-base text-center">
-                <th className="px-1 sm:px-4 py-2 w-[40px] sm:w-[150px] ">Plan</th>
-                <th className="px-2 sm:px-4 py-2 w-[100px] sm:w-[140px]">Team</th>
-                <th className="px-2 sm:px-4 py-2 w-[90px] sm:w-[150px] text-end ">Earn 2x</th>
-                <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[140px] text-end ">Loss</th>
-                <th className="px-2 sm:px-4 py-2 w-[60px] sm:w-[140px] ">Status</th>
-                <th className="px-2 sm:px-4 py-2 w-[70px] sm:w-[140px] ">Action</th>
+                <th className="px-2 sm:px-4 py-2 w-[25%]">Action</th>
+                <th className="px-2 sm:px-4 py-2 w-[25%] text-end">Earn 3x</th>
+                <th className="px-2 sm:px-4 py-2 w-[25%] text-end">Loss</th>
+                <th className="px-2 sm:px-4 py-2 w-[25%]">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -120,20 +156,31 @@ const StakingPlansTable = () => {
                     </div>
                   </td>
                 </tr>
-              ) : plans && plans.length > 0 ? (
-                plans.map((row: any, rowIndex: number) => (
+              ) : plans && plans?.length > 0 ? (
+                plans?.map((row: any, rowIndex: number) => (
                   <tr
                     key={rowIndex}
-                    className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-xs sm:text-sm"
+                    className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70 text-xs sm:text-sm"
                   >
-                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">{row?.level}</td>
-                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">{row?.teamSize}</td>
+                      <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">
+                      <Button
+                        onClick={() => handleModelOpen(row)}
+                        disabled={row?.status === 'active' && row?.isPurchased === true || loadingBuy}
+                        className={`px-2 py-1 text-[10px] sm:text-sm rounded-md ${
+                          row?.status === 'active' && row?.isPurchased === true || loadingBuy
+                            ? 'cursor-not-allowed opacity-40'
+                            : 'cursor-pointer'
+                        } bg-green-500 text-black font-bold border-0`}
+                      >
+                        Buy {row?.investment} $
+                      </Button>
+                    </td>
                     <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap ">{formatAmount(row?.earned)} $ </td>
                     <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap text-red-500 "> {formatAmount(row?.lossAmount)} $</td>
                     <td className="">
                       <span
                         className={`px-1 py-1 text-white rounded-full text-[10px] sm:text-xs font-semibold ${
-                          row?.status === 'active'
+                          row?.status === 'active' && row?.isPurchased === true
                             ? 'bg-green-500'
                             : 'bg-red-500'
                         }`}
@@ -142,19 +189,7 @@ const StakingPlansTable = () => {
                       </span>
                     </td>
 
-                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">
-                      <Button
-                        onClick={() => handleModelOpen(row)}
-                        disabled={row?.status === 'active' || loadingBuy}
-                        className={`px-2 py-1 text-[10px] sm:text-sm rounded-md ${
-                          row?.status === 'active' || loadingBuy
-                            ? 'cursor-not-allowed opacity-40'
-                            : 'cursor-pointer'
-                        } bg-green-500 text-black font-bold border-0`}
-                      >
-                        Buy {row?.investment} $
-                      </Button>
-                    </td>
+                  
                   </tr>
                 ))
               ) : (

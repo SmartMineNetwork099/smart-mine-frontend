@@ -9,6 +9,7 @@ interface TabItem {
     label: string;
     link?: string;
     icon?: IconType;
+    value?:string;
 }
 
 // 2️⃣ Define the props type
@@ -16,18 +17,20 @@ interface TabProps {
     tabs: TabItem[];
     style?: string;
     heading?: string;
-    defaultLink?:string
+    defaultTab?:string
+    onTabChange?: (name: string) => void;
 }
 
-const Tab: React.FC<TabProps> = ({ tabs, style, heading,defaultLink }) => {
-    const [activeTab, setActiveTab] = useState(defaultLink);
-    const router = useRouter();
+const Tab: React.FC<TabProps> = ({ tabs, style, heading,defaultTab, onTabChange }) => {
+    const [activeTab, setActiveTab] = useState(defaultTab);
 
-    const handleTabClick = (link?: string) => {
-        if (!link) return;
-        setActiveTab(link);
-        router.push(`${link}`);
-    };
+const handleTabClick = (name: string) => {
+    setActiveTab(name);
+
+    if (onTabChange) {
+        onTabChange(name);
+    }
+};
     return (
         <>
             {
@@ -38,9 +41,9 @@ const Tab: React.FC<TabProps> = ({ tabs, style, heading,defaultLink }) => {
                 {tabs?.map((tab) => (
                     <Button
                         key={tab?.label}
-                        onClick={() => handleTabClick(tab?.link)}
-                        className={`${style} flex items-center justify-center gap-0.5 sm:gap-2 py-3 rounded-lg font-semibold text-xs sm:text-sm transition text-black cursor-pointer border-0
-                        ${activeTab === tab?.link
+                        onClick={() => handleTabClick(tab?.value||'')}
+                        className={`${style} flex items-center justify-center gap-0.5 sm:gap-2 py-3 rounded-lg font-semibold text-[10px] sm:text-sm transition text-black cursor-pointer border-0
+                        ${activeTab === tab?.value
                                 ? 'bg-green-500'
                                 : 'bg-neutral-800 text-white'
                             }`}

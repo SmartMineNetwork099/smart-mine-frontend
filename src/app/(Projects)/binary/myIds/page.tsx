@@ -1,10 +1,10 @@
 import React from 'react'
-import MYIDS from '@/modules/binary/myIds/index'
+// import MYIDS from '@/modules/binary/myIds/index'
 
 const page = () => {
     return (
         <>
-            <MYIDS />
+            {/* <MYIDS /> */}
         </>
     )
 }

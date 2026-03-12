@@ -7,6 +7,7 @@ const Messages = {
   ALREADY_MESSAGE: (name) => `You have already ${name}.`,
   SELECT_ATLEST_MESSAGE: (name) => `Please select at least one ${name}.`,
   SOME_THING_WRONG:'Something went wrong. Try again.',
+  FREEZE_ACCOUNT:'First Pay Registration Fee.'
 
 }
 export default Messages

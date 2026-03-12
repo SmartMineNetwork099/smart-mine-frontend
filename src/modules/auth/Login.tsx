@@ -7,6 +7,9 @@ import { connectWallet, checkAndSwitchNetwork } from "@/utils/walletHelpers";
 import ROUTES from "@/constants/routes";
 import { useSearchParams } from "next/navigation";
 import Messages from "@/constants/messages";
+import { normalizeWalletAddress } from "@/utils/func";
+import { upsertUserData } from "@/db/saveData";
+import { STORES_NAME } from "@/config/dbConfig";
 
 const LoginContent: React.FC = () => {   
     const [loading, setLoading] = useState<boolean>(false);
@@ -51,12 +54,12 @@ const LoginContent: React.FC = () => {
                 console.log(verifyRes?.data, 'verifyRes?.data');
                 const userID = verifyRes.data.userId;
                 const walletAddress = verifyRes?.data?.walletAddress;
+                const normalizedWalletAddress = normalizeWalletAddress(walletAddress) || '';
                 const accessToken = verifyRes.data.accessToken;
-                localStorage.setItem(`userID`, userID);
-                localStorage.setItem(`walletAddress`, walletAddress);
-                localStorage.setItem(`accessToken_${walletAddress}`, accessToken);
-                localStorage.setItem(`activeWallet`, walletAddress);
-                localStorage.setItem(`walletData_${walletAddress}`, JSON.stringify(verifyRes?.data));
+                localStorage.setItem(`walletAddress`, normalizedWalletAddress);
+                localStorage.setItem(`accessToken_${normalizedWalletAddress}`, accessToken);
+                localStorage.setItem(`activeWallet`, normalizedWalletAddress);
+                await upsertUserData(normalizedWalletAddress, verifyRes?.data);
                 setAccessToken(accessToken);
                 router.replace(`${ROUTES?.STACKING?.DASHBOARD}?userId=${userID}`);
                 toast.success(verifyRes?.data?.message);
@@ -71,12 +74,12 @@ const LoginContent: React.FC = () => {
 
 
     return (
-        <div className="bg-gradient-to-b h-[95vh] from-[#0f0c29] via-[#302b63] to-[#24243e] flex flex-col">
+        <div className="bg-gradient-to-b h-[95vh] flex flex-col">
             <div className="flex flex-1 items-center justify-center p-4">
-                <div className="w-full max-w-md bg-white border rounded-2xl p-8 shadow-lg text-black">
-                    <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">Login with Wallet</h1>
+                <div className="w-full max-w-md bg-white/10 backdrop-blur-sm border-2 border-green-500 rounded-2xl p-8 shadow-lg text-white">
+                    <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center text-green-500">Login with Wallet</h1>
                     <p className="text-xs sm:text-sm opacity-80 mb-6 text-center">
-                        Only SafePal wallet is supported (Extension + WalletConnect) and select network opBNB.
+                        Only SafePal wallet is supported (Extension + WalletConnect) and <span className="text-green-500 font-bold"> select network opBNB </span> 
                     </p>
                     <button
                         onClick={handleLogin}

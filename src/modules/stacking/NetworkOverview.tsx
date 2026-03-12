@@ -2,17 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { getTeamStats } from "@/apis/user";
 import TeamStats from "@/components/TeamStats";
-import { useWalletAddress } from "@/hooks/useWallet";
 
 const NetworkOverview = () => {
     const [stats, setStats] = useState<{ directTeam: number; communitySize: number } | null>(null);
-    const walletAddress = useWalletAddress();
     useEffect(() => {
-        if (walletAddress) fetchStats();
-    }, [walletAddress]);
+     fetchStats();
+    }, []);
     const fetchStats = async () => {
-        if(!walletAddress) return;
-        const { data, error } = await getTeamStats(walletAddress);
+        const { data, error } = await getTeamStats();
         if (error) {
             console.error(error);
         } else {

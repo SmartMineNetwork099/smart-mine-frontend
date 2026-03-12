@@ -104,11 +104,11 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                         ) : filteredData && filteredData.length > 0 ? (
                             filteredData?.map((row: any, rowIndex: number) =>
                             {
-                                const pageSize = 50; // Assuming 50 items per page
+                                const pageSize = 20; // Assuming 20 items per page
                                return (
                                 <tr
                                     key={rowIndex}
-                                    className="text-center text-white bg-neutral-800 odd:bg-neutral-900 text-[10px] sm:text-sm"
+                                    className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70 text-[10px] sm:text-sm"
                                 >
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
                                          {(paginationCurrentPage - 1) * pageSize + rowIndex + 1}

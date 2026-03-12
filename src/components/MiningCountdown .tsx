@@ -1,185 +1,179 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import moment from "moment";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import moment from "moment-timezone";
 import { toast } from "react-toastify";
-import { formatTime } from "@/utils/func";
+import { formatTime, normalizeWalletAddress } from "@/utils/func";
 import { MiningTimeApi } from "@/apis/mining";
-import { getSocket, initSocket } from "@/utils/socket";
-import { useSearchParams } from "next/navigation";
 import Messages from "@/constants/messages";
+import { useUserData } from "@/hooks/useUserData";
 
 interface MiningCountdownProps {
   handleClaim?: () => Promise<boolean>;
   walletAddress?: string;
 }
 
-interface WalletData {
-  status?: string;
-}
-
 const NEXT_CYCLE_KEY = "nextCycleTime";
+const DUBAI_TZ = "Asia/Dubai";
 
-const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim , walletAddress='' }) => {
+const MiningCountdown: React.FC<MiningCountdownProps> = ({
+  handleClaim,
+  walletAddress = null,
+}) => {
   const [timeLeft, setTimeLeft] = useState(0);
-  const [isMining, setIsMining] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [walletData, setWalletData] = useState<WalletData | null>(null);
-  const searchParams = useSearchParams();
-  
+  const { userData, isFreeze, status, refreshUser } = useUserData();
+
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const nextCycleRef = useRef<string | null>(null);
 
   const radius = 150;
   const circumference = 2 * Math.PI * radius;
-  
+  walletAddress = normalizeWalletAddress(walletAddress )
 
-  // ✅ Fetch next cycle time from backend
-  const fetchNextCycle = async () => {
-    try {
-      console.log("📡 Fetching next cycle time...");
-      const res = await MiningTimeApi();
-      if (walletAddress) {
-        localStorage.setItem(`${NEXT_CYCLE_KEY}_${walletAddress}`, res?.data?.nextCycle);
-      }
-      return res?.data?.nextCycle;
-    } catch (err) {
-      console.error("❌ Timer API Error:", err);
+  const storageKey = useMemo(() => {
+    return walletAddress ? `${NEXT_CYCLE_KEY}_${walletAddress}` : "";
+  }, [walletAddress]);
+
+  const clearTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
     }
   };
 
-  // ✅ Timer setup
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
+  const fetchNextCycle = async () => {
+    const res = await MiningTimeApi();
+    const nextCycle = res?.data?.nextCycle;
+    if (nextCycle && storageKey) {
+      localStorage.setItem(storageKey, nextCycle);
+    }
+    nextCycleRef.current = nextCycle || null;
+    return nextCycle || null;
+  };
 
-    const initTimer = async () => {
-      if (!walletAddress) {
-        console.warn("⚠️ walletAddress not ready yet — skipping timer init");
+  const ensureNextCycle = async () => {
+    if (!storageKey) return null;
+    const cached = localStorage.getItem(storageKey);
+    if (cached) {
+      nextCycleRef.current = cached;
+      return cached;
+    }
+    return await fetchNextCycle();
+  };
+
+  const startTicking = async () => {
+    if (!walletAddress) return;
+
+    await ensureNextCycle();
+    if (!nextCycleRef.current) return;
+
+    clearTimer();
+    timerRef.current = setInterval(async () => {
+      const nowDubai = moment().tz(DUBAI_TZ);
+      const endDubai = moment(nextCycleRef.current).tz(DUBAI_TZ);
+
+      const diff = endDubai.diff(nowDubai, "seconds");
+
+      if (diff <= 0) {
+        setTimeLeft(0);
+        clearTimer();
+        if (storageKey) localStorage.removeItem(storageKey);
+        await fetchNextCycle();
+        await startTicking();
         return;
       }
 
-      let nextCycle = localStorage.getItem(`${NEXT_CYCLE_KEY}_${walletAddress}`);
-      console.log("⏱️ Next Cycle from localStorage:", nextCycle);
-
-      if (!nextCycle) {
-        console.log("⏳ Fetching new cycle time from API...");
-        nextCycle = await fetchNextCycle();
-      }
-
-      timer = setInterval(async () => {
-        const now = moment();
-        const end = moment(nextCycle);
-        const diff = end.diff(now, "seconds");
-
-        if (diff <= 0) {
-          clearInterval(timer);
-          localStorage.removeItem(`${NEXT_CYCLE_KEY}_${walletAddress}`);
-          nextCycle = await fetchNextCycle();
-          setTimeLeft(0);
-          setIsMining(false);
-          return;
-        }
-
-        setTimeLeft(diff);
-        setIsMining(true);
-      }, 1000);
-    };
-
-    initTimer();
-    return () => clearInterval(timer);
-  }, [ walletAddress]);
-
-  // ✅ Calculate progress
-  const percentage =
-    timeLeft > 0 ? ((24 * 3600 - timeLeft) / (24 * 3600)) * 100 : 100;
-  const dashOffset = circumference - (percentage / 100) * circumference;
-
-  // ✅ Mining start logic
-  const startMining = async () => {
-    if(!walletAddress) {
-      toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address'));
-      return;
-    }
-    setLoading(true);
-
-    if (walletData?.status === "active") {
-      toast.error(Messages?.ALREADY_MESSAGE("mined today. Try again after reset!"));
-      setLoading(false);
-      return;
-    }
-
-    if (timeLeft <= 0) {
-      toast.error(Messages?.WAIT_MESSAGE('for the next cycle to start.'));
-      setLoading(false);
-      return;
-    }
-
-    const success = await handleClaim?.();
-    if (success) {
-      toast.success(Messages?.SUCCESSFULLY_MESSAGE("✅ Mining started"));
-      setIsMining(true);
-    }
-
-    setLoading(false);
+      setTimeLeft(diff);
+    }, 1000);
   };
 
-  // ✅ Load wallet data
+
+  // Load timer
   useEffect(() => {
     if (!walletAddress) return;
-    const data = localStorage.getItem(`walletData_${walletAddress}`);
-    const userWalletData = data ? JSON.parse(data) : null;
-    setWalletData(userWalletData);
+    startTicking();
+    return () => clearTimer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletAddress]);
 
-  // ✅ Setup socket listener
+     // Load status from DB
+     const fetchStatus = async () => {
+     await refreshUser()
+     };
+
   useEffect(() => {
     if (!walletAddress) return;
+      fetchStatus()
+  }, [walletAddress]);
 
-    initSocket(walletAddress);
-    const socket = getSocket();
-    if (!socket) {
-      console.warn("⚠️ Socket not initialized yet");
+  // Progress accurate to Dubai midnight cycle
+  const percentage = useMemo(() => {
+    if (!nextCycleRef.current) return 0;
+
+    const nowDubai = moment().tz(DUBAI_TZ);
+    const endDubai = moment(nextCycleRef.current).tz(DUBAI_TZ);
+    const startDubai = endDubai.clone().subtract(1, "day");
+
+    const total = endDubai.diff(startDubai, "seconds");
+    const elapsed = nowDubai.diff(startDubai, "seconds");
+
+    if (total <= 0) return 0;
+    return Math.min(100, Math.max(0, (elapsed / total) * 100));
+  }, [timeLeft]);
+
+  const dashOffset = circumference - (percentage / 100) * circumference;
+
+  // Start mining
+  const startMining = async () => {
+    toast.dismiss()
+    if (!walletAddress) {
+      toast.error(Messages?.WAIT_MESSAGE("fetching Wallet Address"));
+      return;
+    }
+  
+  if(isFreeze){
+      toast.error(Messages?.FREEZE_ACCOUNT)
       return;
     }
 
-    const handleConnect = () => {
-      console.log("🔌 Socket connected, listening for wallet updates...");
-      socket.on("walletUpdated", (data: any) => {
-        console.log("💰 Wallet update received:", data);
-        setWalletData(data);
-      });
-    };
+    if (loading) return;
 
-    if (socket.connected) handleConnect();
-    else socket.on("connect", handleConnect);
+    if (status === "active") {
+      toast.error("You already mined today. Try again after Dubai 12:00 AM reset.");
+      return;
+    }
 
-    return () => {
-      socket.off("walletUpdated");
-      socket.off("connect", handleConnect);
-    };
-  }, [walletAddress]);
+    setLoading(true);
+    try {
+      const success = await handleClaim?.();
+      if (success) {
+        await refreshUser()
+        window.dispatchEvent(
+     new CustomEvent("wallet-updated", {
+     detail: { walletAddress },
+      })
+      );
+      }
+      
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // ✅ UI
+  const isDisabled = loading || status === "active";
+
   return (
     <div className="flex flex-col items-center space-y-4">
       <div
         className={`relative w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] ${
-          loading || walletData?.status?.toLowerCase() === "active"
-            ? "opacity-50 cursor-not-allowed"
-            : "cursor-pointer"
+          isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
         }`}
         onClick={() => {
-          if (!loading && walletData?.status?.toLowerCase() !== "active" && !walletAddress)
-            startMining();
+          if (!isDisabled && walletAddress) startMining();
         }}
       >
-        {/* Progress Circle */}
         <svg className="absolute inset-0" viewBox="0 0 400 400">
-          <circle
-            cx="200"
-            cy="200"
-            r={radius}
-            stroke="#e7ebf1ff"
-            strokeWidth="15"
-            fill="white"
-          />
+          <circle cx="200" cy="200" r={radius} stroke="#e7ebf1ff" strokeWidth="15" fill="white" />
           <circle
             cx="200"
             cy="200"
@@ -194,22 +188,16 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({ handleClaim , walletA
           />
         </svg>
 
-        {/* Timer Text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-xl sm:text-3xl font-bold">
           {loading ? (
             <span className="text-green-600">Processing...</span>
           ) : (
             <p className="text-center text-black">{formatTime(timeLeft)}</p>
           )}
-          {walletData?.status && (
-            <p
-              className={`text-white ${
-                walletData?.status === "active" ? "bg-green-500" : "bg-red-500"
-              } text-sm sm:text-base px-2 py-0.5 rounded`}
-            >
-              {walletData.status}
-            </p>
-          )}
+
+          <p className={`text-white ${status === "active" ? "bg-green-500" : "bg-red-500"} text-sm sm:text-base px-2 py-0.5 rounded`}>
+            {status === "active" ? "active" : "inActive"}
+          </p>
         </div>
       </div>
     </div>

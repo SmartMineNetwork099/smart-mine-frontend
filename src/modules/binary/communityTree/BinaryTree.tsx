@@ -11,6 +11,7 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { Input } from "rizzui/input";
 import { useWalletAddress } from "@/hooks/useWallet";
 import Messages from "@/constants/messages";
+import { normalizeWalletAddress } from "@/utils/func";
 
 interface TreeNode {
   id: string;
@@ -169,7 +170,8 @@ const BinaryTree = () => {
    // New states for search
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchMode, setSearchMode] = useState(false);
-  const walletAddress = useWalletAddress();
+  let walletAddress = useWalletAddress();
+  walletAddress = normalizeWalletAddress(walletAddress)
 
   const handleNodeClick = (node: TreeNode) => {
     // push current root onto history stack so user can go back

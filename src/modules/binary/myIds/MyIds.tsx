@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react'
 import BinaryMyIdsTable from '@/components/tables/BinaryMyIdsTable';
 import Pagination from '@/components/Pagination';
-// import { getSocket, initSocket } from "@/utils/socket";
 import { getBinaryMyIds } from '@/apis/binaryApis';
 import { useWalletAddress } from '@/hooks/useWallet';
+import { normalizeWalletAddress } from '@/utils/func';
 // import { toast } from 'react-toastify';
 
 
@@ -16,7 +16,8 @@ const MyIds = () => {
     const [totalPaginationPages , setTotalPaginationPages ] = useState(1);
     const [totalNumberOfNodesAtCurrentLevel , setTotalNumberOfNodesAtCurrentLevel ] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);
-    const walletAddress = useWalletAddress();
+     let walletAddress = useWalletAddress();
+        walletAddress = normalizeWalletAddress(walletAddress)
     
 
     const getLevelData = async () => {

@@ -4,11 +4,14 @@ import { Input } from "rizzui";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";
 import Card from '@/components/Card';
 import { useWalletAddress } from '@/hooks/useWallet';
+import { getUserData } from '@/db/getData';
+import { normalizeWalletAddress } from '@/utils/func';
 
 const ReferralLink = () => {
     const [referralLink, setReferralLink] = useState('');
     const [copied, setCopied] = useState(false);
-        const walletAddress = useWalletAddress();
+        let walletAddress = useWalletAddress();
+           walletAddress = normalizeWalletAddress(walletAddress)
     
 
     const handleCopy = () => {
@@ -16,12 +19,14 @@ const ReferralLink = () => {
         setCopied(true);
         setTimeout(() => setCopied(false), 1500); // Auto hide after 1.5s
     };
-
+    const generateReferralLink = async (walletAddress: string) => {
+      const userData:any = await getUserData(walletAddress);
+      console.log(userData,'userData in referral link')
+        setReferralLink(userData?.referralLink ?? "");
+}
     useEffect(() => {
         if(!walletAddress) return;
-        const walletDataString = localStorage.getItem(`walletData_${walletAddress}`);
-        const walletData = walletDataString ? JSON.parse(walletDataString) : null;
-        setReferralLink(walletData?.referralLink ?? "");
+        generateReferralLink(walletAddress);
     }, [walletAddress]);
 
     return (
@@ -33,7 +38,7 @@ const ReferralLink = () => {
             <div className='flex items-center justify-between rounded-lg border-2 border-green-500 mt-3 relative'>
                 <Input
                     className='w-11/12 border-e-2 border-green-500 text-gray-300 px-2 focus:outline-none'
-                    inputClassName='border-none'
+                    inputClassName='border-none text-xs sm:text-sm'
                     value={referralLink || " "}
                     readOnly
                     variant="text"
@@ -41,10 +46,12 @@ const ReferralLink = () => {
 
                 {/* Copy Button + Tooltip */}
                 <div
-                    className='cursor-pointer flex items-center justify-center w-1/6 sm:w-1/12 text-xl text-white relative'
+                    className='cursor-pointer flex items-center justify-center w-1/4 sm:w-1/12 h-[40px] text-xl text-white relative bg-green-500'
                     onClick={handleCopy}
                 >
+                    <span className='text-2xl'>
                     {copied ? <LuCopyCheck /> : <LuCopy />}
+                    </span>
 
                     {/* ✅ Custom Tooltip */}
                     {copied && (

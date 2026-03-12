@@ -6,10 +6,12 @@ import { toast } from 'react-toastify';
 import { getPlans } from '@/apis/plans';
 import { useWalletAddress } from '@/hooks/useWallet';
 import Messages from '@/constants/messages';
+import { normalizeWalletAddress } from '@/utils/func';
 const PlansSummery = () => {
     const [plans, setPlans] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const walletAddress = useWalletAddress();
+     let walletAddress = useWalletAddress();
+        walletAddress = normalizeWalletAddress(walletAddress)
     // ✅ useEffect for fetching + resize
     useEffect(() => {
         if (walletAddress){

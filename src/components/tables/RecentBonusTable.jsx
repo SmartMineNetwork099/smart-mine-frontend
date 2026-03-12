@@ -101,7 +101,7 @@ const RecentBonusTable = () => {
                     </thead>
                     <tbody>
                         {employees.map((employee, index) => (
-                            <tr key={index} className="text-center text-white bg-neutral-800 odd:bg-neutral-900">
+                            <tr key={index} className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70">
                                 <td className="p-4">{employee?.from}</td>
                                 <td className="p-4 text-green-500">
                                     {employee?.amount} <span className="font-semibold">{DEFAULT_CURRENCY}</span>

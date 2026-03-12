@@ -24,28 +24,8 @@ const processQueue = (error, token = null) => {
    REQUEST INTERCEPTOR
    ========================= */
 api.interceptors.request.use(
-  (config) => {
-    if (typeof window !== "undefined") {
-      ////////////////////////////////////////
-      const skipAuth =
-        config.url?.includes("/api/auth/nonce") ||
-        config.url?.includes("/api/auth/verify") ||
-        config.url?.includes("/api/auth/refreshAccessToken");
-
-      if (!skipAuth) {
-        const walletAddress = localStorage.getItem("activeWallet");
-        const accessToken = walletAddress
-          ? localStorage.getItem(`accessToken_${walletAddress}`)
-          : null;
-        if (accessToken) {
-          config.headers.Authorization = `Bearer ${accessToken}`;
-        }
-      }
-      ///////////////////////////////////////
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
+  (config) => config,
+  (error) => Promise.reject(error),
 );
 
 /* =========================
@@ -67,10 +47,7 @@ api.interceptors.response.use(
         // ⏳ wait for refresh
         return new Promise((resolve, reject) => {
           failedQueue.push({
-            resolve: (token) => {
-              originalRequest.headers.Authorization = `Bearer ${token}`;
-              resolve(api(originalRequest));
-            },
+            resolve: () => resolve(api(originalRequest)),
             reject,
           });
         });
@@ -80,17 +57,8 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const res = await api.get("/api/auth/refreshAccessToken");
-        const accessToken = res?.data?.accessToken;
-        const walletAddress = localStorage.getItem("activeWallet");
-        if (walletAddress) {
-          localStorage.setItem(`accessToken_${walletAddress}`, accessToken);
-        }
-        api.defaults.headers.Authorization = `Bearer ${accessToken}`;
-        processQueue(null, accessToken);
-
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-
+        await api.get("/api/auth/refreshAccessToken"); // ✅ cookie update ho jayegi
+        processQueue(null, true);
         return api(originalRequest);
       } catch (err) {
         // 🔥 refresh token invalid / expired
@@ -110,7 +78,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

@@ -2,7 +2,6 @@
 import React, { Suspense } from 'react'
 import CollectCoins from '@/modules/stacking/CollectCoins'
 import ReferralLink from '@/modules/stacking/ReferralLink'
-import YourCommunity from '@/modules/stacking/YourCommunity'
 import NetworkOverview from '@/modules/stacking/NetworkOverview'
 import WalletActions from '@/components/WalletActions'
 import StakingPlansTable from '@/components/tables/StackingPlansTable'
@@ -15,11 +14,10 @@ const index = () => {
          </div>
             <CollectCoins />
             <ReferralLink />
+            <NetworkOverview />
             <div className='my-4'>
               <StakingPlansTable/>
          </div>
-            <NetworkOverview />
-            <YourCommunity />
             </Suspense>
         </>
     )
