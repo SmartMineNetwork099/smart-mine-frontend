@@ -15,7 +15,6 @@ import { useUserData } from '@/hooks/useUserData';
 import { sendPlatformFee } from '@/utils/paymentHandler';
 import { upsertUserData } from '@/db/saveData';
 
-
 const WalletActions = () => {
       const router = useRouter();
       const [showModel , setShowModel]= useState(false)
