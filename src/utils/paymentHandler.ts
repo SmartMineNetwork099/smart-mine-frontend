@@ -27,7 +27,7 @@ const ERC20_ABI = [
 ];
 
 export const sendPlatformFee = async ({
-  type, // "mining" | "buy_stacking_plan"
+  type, // "mining" | "buy_stacking_plan" | "freeze_fee"
   planBuyAmount,  // "10" | "20" etc (USDT human amount as string)
   freezeFeeBnb,
   miningFee=0,
