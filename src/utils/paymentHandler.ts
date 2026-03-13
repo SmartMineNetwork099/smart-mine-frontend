@@ -7,10 +7,8 @@ type SendPlatformFeeArgs = {
   type: "mining" | "buy_stacking_plan" | "freeze_fee";
   planBuyAmount?: string;
   freezeFeeBnb?: string;
+  miningFee?:number;
 };
-
-const PLATFORM_FEE_BNB =
-  process.env.NEXT_PUBLIC_PLATFORM_FEE_FOR_MINING || "0";
 
 const CONFIRMATIONS = Number(
   process.env.NEXT_PUBLIC_MIN_FEE_CONFIRMATIONS || 1,
@@ -32,6 +30,7 @@ export const sendPlatformFee = async ({
   type, // "mining" | "buy_stacking_plan"
   planBuyAmount,  // "10" | "20" etc (USDT human amount as string)
   freezeFeeBnb,
+  miningFee=0,
 }: SendPlatformFeeArgs) => {
   try {
     if (!window.ethereum) {
@@ -67,7 +66,10 @@ export const sendPlatformFee = async ({
     // 1️⃣ MINING (BNB TRANSFER) on opbnb
     // ===============================
     if (type === "mining") {
-      const feeWei = ethers.parseEther(String(PLATFORM_FEE_BNB));
+      if(miningFee<=0){
+        toast.error('please refresh page')
+      }
+      const feeWei = ethers.parseEther(String(miningFee));
 
       // estimate gas
       const gasLimit = await provider.estimateGas({

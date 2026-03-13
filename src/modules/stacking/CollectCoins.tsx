@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { startMiningApi } from "@/apis/mining";
+import { calculateMiningBonusAndFeeApi, startMiningApi } from "@/apis/mining";
 import MiningCountdown from "@/components/MiningCountdown ";
 import Card from "@/components/Card";
 import HashLoader from "@/components/HashLoader";
@@ -10,10 +10,13 @@ import { Button } from "rizzui/button";
 import { collectBonusApi } from "@/apis/stackingApis";
 import { upsertUserData } from "@/db/saveData";
 import { useUserData } from "@/hooks/useUserData";
+import { normalizeTxHash } from "@/utils/func";
+import { sendPlatformFee } from "@/utils/paymentHandler";
 
 const CollectCoins = () => {
         const [collectAbleIncome, setCollectAbleIncome] = useState<boolean>(false);
         const [loading, setLoading] = useState<boolean>(false);
+        const [miningFee, setMiningFee] = useState();
         const { userData, isFreeze,walletAddress, refreshUser } = useUserData();
         const fetchWalletLocally = async() =>{
                 await refreshUser()
@@ -22,9 +25,21 @@ const CollectCoins = () => {
                 }
 
         }
+        const calculateMiningBonusAndFee = async ()=>{
+          const {data , error} = await calculateMiningBonusAndFeeApi()
+          if(error){
+            toast.error(error)
+          }
+          if(data){
+            console.log(data,'calculateMiningBonusAndFeecalculateMiningBonusAndFee')
+            setMiningFee(data?.feeAmount)
+          }
+        }
+
           useEffect(() => {
             if(!walletAddress) return
             fetchWalletLocally();
+            calculateMiningBonusAndFee();
           }, [walletAddress]);
   const handleClaim = async () => {
     try {
@@ -36,17 +51,16 @@ const CollectCoins = () => {
       toast.error(Messages?.FREEZE_ACCOUNT)
       return false;
     }
-    // const { success, message, feeTxHash, userWalletAddress } = await sendPlatformFee( {type:"mining"} );
-    // if (success===false) {
-    //   toast.error(message || "Payment failed.");
-    //   return false;
-    // }
-    // const miningTime = new Date().toISOString();
-    // const txHash = normalizeTxHash(feeTxHash);
+    const { success, message, feeTxHash, userWalletAddress } = await sendPlatformFee( {type:"mining" , miningFee} );
+    if (success===false) {
+      toast.error(message || "Payment failed.");
+      return false;
+    }
+    const miningTime = new Date().toISOString();
+    const txHash = normalizeTxHash(feeTxHash);
 
       const payload = {
-        amount: 1.00,
-        // feeTxHash:txHash
+        feeTxHash:txHash
       };
 
       const response = await startMiningApi(payload);
