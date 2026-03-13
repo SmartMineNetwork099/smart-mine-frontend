@@ -53,9 +53,16 @@ const WalletActions = () => {
       const PayRegistrationFee =async() =>{
           if(!isFreeze) return
         setLoading(true)
-        const {success, feeTxHash} = await sendPlatformFee({type: "freeze_fee", freezeFeeBnb:data?.requiredBnb});
-       if(success){
-        const payload = {
+        const {success, feeTxHash , message} = await sendPlatformFee({type: "freeze_fee", freezeFeeBnb:data?.requiredBnb});
+        if(success===false){
+          toast.error(message)
+          setLoading(false)
+          setShowModel(false)
+          return
+        }
+        if(success){
+          toast.success(message)
+          const payload = {
         feeTxHash
         }
         const {data , error } = await verifyFreezeFeePaymentApi(payload)
@@ -76,6 +83,7 @@ const WalletActions = () => {
                   );
         }
          setLoading(false)
+         setShowModel(false)
        }
 
       }

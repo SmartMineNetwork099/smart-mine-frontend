@@ -215,7 +215,7 @@ const WalletData = () => {
             <p className="relative flex items-center gap-2  w-full">
                <span>User ID: {walletData?.userId}</span>
                {/* Copy Button + Tooltip */}
-                              <div
+                              <span
                                   className='cursor-pointer flex items-center justify-center text-white relative '
                                   onClick={handleCopy}
                               >
@@ -229,7 +229,7 @@ const WalletData = () => {
                                           Copied!
                                       </span>
                                    )} 
-                              </div>
+                              </span>
             </p>
             <p>
               Refer By: <span>{walletData?.referredBy || "-"}</span>
@@ -267,12 +267,12 @@ const WalletData = () => {
         {walletInfo?.map((item, index) => (
           <div
             key={index}
-            className={`flex flex-col justify-between py-3 sm:py-4 px-2 backdrop-blur-sm ${
+            className={`flex flex-col justify-between py-3 sm:py-4 px-1.5 sm:px-2 backdrop-blur-sm ${
               item?.name.includes("Loss") ? "bg-red-500" : " "
             } text-white rounded-lg`}
           >
             <div>
-              <p className={`font-bold ${item?.name.includes("Loss") ? "text-black" : "text-gray-300"} text-base`}>
+              <p className={`font-bold ${item?.name.includes("Loss") ? "text-black" : "text-gray-300"} text-sm sm:text-base`}>
                 {item?.name}
               </p>
             </div>

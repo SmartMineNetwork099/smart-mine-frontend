@@ -37,7 +37,7 @@ const StakingPlansTable = () => {
   const handleBuyPlan = async () => {
     if (!selectedPlan) return;
     if (!walletAddress) return;
-      if(isFreeze){
+    if(isFreeze){
       toast.error(Messages?.FREEZE_ACCOUNT)
       return;
     }
@@ -47,6 +47,12 @@ const StakingPlansTable = () => {
        // 1) Local user data
             const localUser:any = await getUserData(walletAddress);
             console.log(localUser,'localUserlocalUser11')
+            if(localUser.freeze===true){
+               toast.error(Messages?.FREEZE_ACCOUNT)
+               setLoadingBuy(false);
+               setModelOpen(false);
+               return;
+            }
 
             const planAmount = roundTo4(selectedPlan?.investment || 0);
             const shareIncome = roundTo4(localUser?.wallet?.shareIncome || 0);
@@ -104,6 +110,7 @@ const StakingPlansTable = () => {
       console.error(err);
     } finally {
       setLoadingBuy(false);
+      setModelOpen(false);
     }
   };
 
@@ -165,7 +172,7 @@ const StakingPlansTable = () => {
                       <Button
                         onClick={() => handleModelOpen(row)}
                         disabled={row?.status === 'active' && row?.isPurchased === true || loadingBuy}
-                        className={`px-2 py-1 text-[10px] sm:text-sm rounded-md ${
+                        className={`px-3 text-[10px] sm:text-sm rounded-md ${
                           row?.status === 'active' && row?.isPurchased === true || loadingBuy
                             ? 'cursor-not-allowed opacity-40'
                             : 'cursor-pointer'
