@@ -6,6 +6,11 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("accessToken")?.value;
 
+    // API routes skip
+  if (pathname.startsWith("/api")) {
+    return NextResponse.next();
+  }
+
   // Next.js internals aur static files skip
   if (
     pathname.startsWith("/_next") ||

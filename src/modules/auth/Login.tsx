@@ -77,7 +77,15 @@ const LoginContent: React.FC = () => {
             body: JSON.stringify({ accessToken }),
              });
 
-             const cookieData = await cookieRes.json();
+             const text = await cookieRes.text();
+             console.log("cookie raw response:", text);
+
+             let cookieData:any = null;
+             try {
+                cookieData = text ? JSON.parse(text) : null;
+                } catch (error) {
+                 console.error("Invalid JSON response:", text);
+                }
             console.log("cookieData:", cookieData);
 
            if (!cookieRes.ok) {
