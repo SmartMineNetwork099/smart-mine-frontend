@@ -17,59 +17,72 @@ const LoginContent: React.FC = () => {
     const searchParams = useSearchParams();
     const ref = searchParams.get("ref");
     console.log("refffffffffff", ref);
-    const handleLogin = async () => {
-        try {
-            setLoading(true);
+  const handleLogin = async () => {
+    try {
+        setLoading(true);
 
-            // ✅ Step 1: Connect Wallet
-            const wallet = await connectWallet();
-            if (!wallet) return;
+        const wallet = await connectWallet();
+        console.log("wallet:", wallet);
+        if (!wallet) return;
 
-            // ✅ Step 2: Check Network
-            const isCorrectNetwork = await checkAndSwitchNetwork(wallet.provider);
-            if (!isCorrectNetwork) return;
+        const isCorrectNetwork = await checkAndSwitchNetwork(wallet.provider);
+        console.log("isCorrectNetwork:", isCorrectNetwork);
+        if (!isCorrectNetwork) return;
 
-            // ✅ Step 3: Get nonce
-            const nonceRes = await getNonceApi(wallet.address, ref);
-            if (nonceRes?.error) {
-                toast.error(nonceRes?.error);
-                return;
-            }
-            const nonce = nonceRes?.data?.nonce as string;
+        const nonceRes = await getNonceApi(wallet.address, ref);
+        console.log("nonceRes:", nonceRes);
 
-            // ✅ Step 4: Sign message
-            const message = `Login with wallet. Nonce: ${nonce}`;
-            const signature = await wallet.signer.signMessage(message);
-
-            // ✅ Step 5: Verify
-            const verifyRes = await verifySignatureApi(wallet.address, signature);
-            if (verifyRes?.error) {
-                toast.error(verifyRes?.error);
-                return;
-            }
-            console.log("verifyRes", verifyRes);
-            // ✅ Step 6: Save accessToken
-            if (verifyRes?.data) {
-                console.log(verifyRes?.data, 'verifyRes?.data');
-                const userID = verifyRes.data.userId;
-                const walletAddress = verifyRes?.data?.walletAddress;
-                const normalizedWalletAddress = normalizeWalletAddress(walletAddress) || '';
-                const accessToken = verifyRes.data.accessToken;
-                localStorage.setItem(`walletAddress`, normalizedWalletAddress);
-                // localStorage.setItem(`accessToken_${normalizedWalletAddress}`, accessToken);
-                localStorage.setItem(`activeWallet`, normalizedWalletAddress);
-                await upsertUserData(normalizedWalletAddress, verifyRes?.data);
-                setAccessToken(accessToken);
-                router.replace(`${ROUTES?.STACKING?.DASHBOARD}?userId=${userID}`);
-                toast.success(verifyRes?.data?.message);
-            }
-        } catch (err) {
-            console.error("Login failed:", err);
-            toast.error(Messages?.FAILED_MESSAGE("❌ Login"));
-        } finally {
-            setLoading(false);
+        if (nonceRes?.error) {
+            toast.error(nonceRes?.error);
+            return;
         }
-    };
+
+        const nonce = nonceRes?.data?.nonce as string;
+        const message = `Login_with_wallet_Nonce_${nonce}`;
+        console.log(message,'messagemessagemessagemessagemessage')
+        const signature = await wallet.signer.signMessage(message);
+        console.log(signature,'signaturesignaturesignaturesignature')
+
+        const verifyRes = await verifySignatureApi(wallet.address, signature);
+        console.log("verifyRes:", verifyRes);
+
+        if (verifyRes?.error) {
+            toast.error(verifyRes?.error);
+            return;
+        }
+
+        if (verifyRes?.data) {
+            const userID = verifyRes.data.userId;
+            const walletAddress = verifyRes?.data?.walletAddress;
+            const normalizedWalletAddress = normalizeWalletAddress(walletAddress) || '';
+            const accessToken = verifyRes.data.accessToken;
+
+            console.log("userID:", userID);
+            console.log("normalizedWalletAddress:", normalizedWalletAddress);
+            console.log("accessToken:", accessToken);
+
+            localStorage.setItem(`walletAddress`, normalizedWalletAddress);
+            localStorage.setItem(`activeWallet`, normalizedWalletAddress);
+
+            console.log("before upsertUserData");
+            await upsertUserData(normalizedWalletAddress, verifyRes?.data);
+            console.log("after upsertUserData");
+
+            console.log("before router.replace");
+            router.replace(`${ROUTES?.STACKING?.DASHBOARD}?userId=${userID}`);
+            console.log("after router.replace");
+
+            toast.success(verifyRes?.data?.message);
+        } else {
+            console.log("verifyRes.data missing");
+        }
+    } catch (err) {
+        console.error("Login failed:", err);
+        toast.error(Messages?.FAILED_MESSAGE("❌ Login"));
+    } finally {
+        setLoading(false);
+    }
+};
 
 
     return (

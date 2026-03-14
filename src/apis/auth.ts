@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import api from "./axios.js"
+import api from "./axios"
 
 
 // ✅ Get Nonce
@@ -57,10 +57,12 @@ export const silentLogin = async (walletAddress: string) =>{
     `/api/auth/verify`,
     { walletAddress, signature },
   );
+   // Optional UI state only
+    localStorage.setItem("activeWallet", walletAddress);
 
   // 4. save token
-  localStorage.setItem(`accessToken_${walletAddress}`,res.data.accessToken);
-  localStorage.setItem("activeWallet", walletAddress);
+//   localStorage.setItem(`accessToken_${walletAddress}`,res.data.accessToken);
+//   localStorage.setItem("activeWallet", walletAddress);
   return { success: true };
 }
 export const logout = async () =>{

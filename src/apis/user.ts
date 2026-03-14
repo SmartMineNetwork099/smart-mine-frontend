@@ -1,5 +1,5 @@
 import  { AxiosError } from "axios";
-import api from "./axios.js"
+import api from "./axios"
 export interface Wallet {
     balance: number;
 }
