@@ -37,7 +37,7 @@ export const formatAmount = (value: any) => {
     console.log(dateString, 'datestringggg')
   if (!dateString) return 'N/A';
   return moment(dateString).format("DD-MMMM-YYYY hh:mm A");
-};
+}; 
 
 export const normalizeWalletAddress = (walletAddress:any) => {
   if (!walletAddress || typeof walletAddress !== "string") {
