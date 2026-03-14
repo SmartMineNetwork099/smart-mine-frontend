@@ -61,18 +61,42 @@ const LoginContent: React.FC = () => {
             console.log("normalizedWalletAddress:", normalizedWalletAddress);
             console.log("accessToken:", accessToken);
 
+            if (!accessToken) {
+               toast.error("Access token missing");
+               return;
+               }
             localStorage.setItem(`walletAddress`, normalizedWalletAddress);
             localStorage.setItem(`activeWallet`, normalizedWalletAddress);
 
             console.log("before upsertUserData");
+             const cookieRes = await fetch("/api/set-auth-cookie", {
+             method: "POST",
+             headers: {
+            "Content-Type": "application/json",
+             },
+            body: JSON.stringify({ accessToken }),
+             });
+
+             const cookieData = await cookieRes.json();
+            console.log("cookieData:", cookieData);
+
+           if (!cookieRes.ok) {
+            toast.error(cookieData?.message || "Failed to set auth cookie");
+             return;
+             }
+            console.log("before upsertUserData");
             await upsertUserData(normalizedWalletAddress, verifyRes?.data);
             console.log("after upsertUserData");
+
+            console.log("before redirect");
+            toast.success(verifyRes?.data?.message);
+            // window.location.href = `${ROUTES?.STACKING?.DASHBOARD}?userId=${userID}`;
+            // return;
 
             console.log("before router.replace");
             router.replace(`${ROUTES?.STACKING?.DASHBOARD}?userId=${userID}`);
             console.log("after router.replace");
 
-            toast.success(verifyRes?.data?.message);
         } else {
             console.log("verifyRes.data missing");
         }
