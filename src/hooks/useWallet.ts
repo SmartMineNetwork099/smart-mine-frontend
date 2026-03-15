@@ -31,8 +31,10 @@ export const useWalletAddress = () => {
       } else {
         console.log("Wallet not connected:", res.message);
         setWallet(null);
-        clearAccessToken();
-        clearActiveWallet();
+        
+          clearAccessToken();
+          clearActiveWallet();
+        
       }
     };
 

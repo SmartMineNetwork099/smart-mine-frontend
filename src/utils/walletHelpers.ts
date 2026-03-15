@@ -24,7 +24,30 @@ export type WalletConnectResult = {
 // SafePal ka ethereum object type (extends EIP-1193)
 export interface SafePalEthereumProvider extends ethers.Eip1193Provider {
   isSafePal?: boolean;
+  providers?: SafePalEthereumProvider[];
 }
+
+const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+export const waitForEthereumProvider = async (
+  retries = 12,
+  delay = 250,
+): Promise<SafePalEthereumProvider | null> => {
+  for (let attempt = 0; attempt < retries; attempt += 1) {
+    const provider = (window as Window & {
+      ethereum?: SafePalEthereumProvider;
+    }).ethereum;
+
+    if (provider) {
+      return provider;
+    }
+
+    await sleep(delay);
+  }
+
+  return null;
+};
 
 // ---------- Step 1: Detect Wallet ----------
 export const connectWallet = async (): Promise<WalletConnectResult | null> => {
@@ -160,12 +183,13 @@ export const checkAndSwitchNetwork = async (
 
 export const getUserWalletAddress = async() => {
   try {
-     if (!window.ethereum) {
-          return { success: false, message: "Wallet provider not found." };
-        }
-    
+     const ethereum = await waitForEthereumProvider();
+     if (!ethereum) {
+           return { success: false, message: "Wallet provider not found." };
+         }
+     
         // Initialize provider and signer
-        const provider = new ethers.BrowserProvider(window.ethereum);
+        const provider = new ethers.BrowserProvider(ethereum);
         const signer = await provider.getSigner();
     
         // Get connected wallet address
@@ -188,12 +212,17 @@ export const getUserWalletAddress = async() => {
 
 export const getConnectedWalletAddress = async () => {
   try {
-    if (!window.ethereum) {
+    const ethereum = await waitForEthereumProvider();
+
+    // console.log("ethereum_ethereum", ethereum);
+    // console.log("providers_providers", ethereum?.providers);
+
+    if (!ethereum) {
       return { success: false, message: "Wallet provider not found." };
     }
 
     // ✅ silent - no popup
-    const accounts: string[] = await window.ethereum.request({
+    const accounts: string[] = await ethereum.request({
       method: "eth_accounts",
     });
     console.log(accounts,'accountsaccountsadmwccounts')
