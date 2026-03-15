@@ -15,6 +15,8 @@ import { roundTo4 } from "@/utils/amount";
 import { upsertUserData } from "@/db/saveData";
 import { useUserData } from "@/hooks/useUserData";
 import Messages from "@/constants/messages";
+import { MINIMUM_WITHDRAW_INCOME , MAXIMUM_WITHDRAW_INCOME, MINIMUM_SHARE_INCOME, MAXIMUM_SHARE_INCOME} from "@/config/constants";
+import { formatCooldownRemaining, getCooldownRemainingMs } from "@/utils/cooldown";
 
 const CheckOut = () => {
   const router = useRouter();
@@ -29,10 +31,6 @@ const CheckOut = () => {
   const { userData, isFreeze,walletAddress, refreshUser } = useUserData();
 
 
-// withdraw income rules 
-  const minimumWithdrawRequiredIncome = process.env.NEXT_PUBLIC_MINIMUM_WIDTHDRAW_INCOME;
-// share income rules 
-  const minimumShareRequiredIncome = process.env.NEXT_PUBLIC_MINIMUM_SHARE_INCOME;
 
   const handleWalletDataFetch = async () => {
     if (!walletAddress) return;
@@ -84,10 +82,24 @@ const CheckOut = () => {
       toast.error('insufficient balance')
       return;
     }
-    if(roundTo4(amount)<roundTo4(minimumWithdrawRequiredIncome)){
-      toast.error(`minimum withdraw ${minimumWithdrawRequiredIncome}`)
+    if(roundTo4(amount)<roundTo4(MINIMUM_WITHDRAW_INCOME)){
+      toast.error(`minimum withdraw ${MINIMUM_WITHDRAW_INCOME}`)
       return;
     }
+    if(roundTo4(amount)>roundTo4(MAXIMUM_WITHDRAW_INCOME)){
+      toast.error(`maximum withdraw ${MAXIMUM_WITHDRAW_INCOME}`)
+      return;
+    }
+
+
+
+     const withdrawCooldownRemaining = getCooldownRemainingMs(userData?.wallet?.lastWithdrawAt);
+    if (withdrawCooldownRemaining > 0) {
+      toast.error(`Please try again after ${formatCooldownRemaining(withdrawCooldownRemaining)}.`)
+      return;
+    }
+
+
 
     const payload = {
       amount,
@@ -124,10 +136,23 @@ const CheckOut = () => {
       toast.error('insufficient balance')
       return;
     }
-    if(roundTo4(amount)<roundTo4(minimumShareRequiredIncome)){
-      toast.error(`minimum withdraw ${minimumShareRequiredIncome}`)
+    if(roundTo4(amount)<roundTo4(MINIMUM_SHARE_INCOME)){
+      toast.error(`minimum withdraw ${MINIMUM_SHARE_INCOME}`)
       return;
     }
+    if(roundTo4(amount)>roundTo4(MAXIMUM_SHARE_INCOME)){
+      toast.error(`maximum withdraw ${MAXIMUM_SHARE_INCOME}`)
+      return;
+    }
+
+    
+     const shareCooldownRemaining = getCooldownRemainingMs(userData?.wallet?.lastShareAt);
+    if (shareCooldownRemaining > 0) {
+      toast.error(`Please try again after ${formatCooldownRemaining(shareCooldownRemaining)}.`)
+      return;
+    }
+
+
     const payload = {
       receiverId:userId,
       amount,
@@ -166,10 +191,21 @@ const CheckOut = () => {
       toast.error('insufficient balance')
       return;
     }
-    if(roundTo4(amount)<roundTo4(minimumWithdrawRequiredIncome)){
-      toast.error(`minimum withdraw ${minimumWithdrawRequiredIncome}`)
+    if(roundTo4(amount)<roundTo4(MINIMUM_WITHDRAW_INCOME)){
+      toast.error(`minimum withdraw ${MINIMUM_WITHDRAW_INCOME}`)
       return;
     }
+     if(roundTo4(amount)>roundTo4(MAXIMUM_WITHDRAW_INCOME)){
+      toast.error(`maximum withdraw ${MAXIMUM_WITHDRAW_INCOME}`)
+      return;
+    }
+
+    const withdrawCooldownRemaining = getCooldownRemainingMs(userData?.wallet?.lastWithdrawAt);
+    if (withdrawCooldownRemaining > 0) {
+      toast.error(`Please try again after ${formatCooldownRemaining(withdrawCooldownRemaining)}.`)
+      return;
+    }
+
 
     const payload = {
       amount,
@@ -208,10 +244,23 @@ const CheckOut = () => {
       toast.error('insufficient balance')
       return;
     }
-    if(roundTo4(amount)<roundTo4(minimumShareRequiredIncome)){
-      toast.error(`minimum withdraw ${minimumShareRequiredIncome}`)
+    if(roundTo4(amount)<roundTo4(MINIMUM_SHARE_INCOME)){
+      toast.error(`minimum withdraw ${MINIMUM_SHARE_INCOME}`)
       return;
     }
+     if(roundTo4(amount)>roundTo4(MAXIMUM_SHARE_INCOME)){
+      toast.error(`maximum withdraw ${MAXIMUM_SHARE_INCOME}`)
+      return;
+    }
+
+    
+     const shareCooldownRemaining = getCooldownRemainingMs(userData?.wallet?.lastShareAt);
+    if (shareCooldownRemaining > 0) {
+      toast.error(`Please try again after ${formatCooldownRemaining(shareCooldownRemaining)}.`)
+      return;
+    }
+
+
     const payload = {
       receiverId:userId,
       amount,
@@ -248,10 +297,23 @@ const CheckOut = () => {
       toast.error('insufficient balance')
       return;
     }
-    if(roundTo4(amount)<roundTo4(minimumShareRequiredIncome)){
-      toast.error(`minimum withdraw ${minimumShareRequiredIncome}`)
+    if(roundTo4(amount)<roundTo4(MINIMUM_SHARE_INCOME)){
+      toast.error(`minimum withdraw ${MINIMUM_SHARE_INCOME}`)
       return;
     }
+     if(roundTo4(amount)>roundTo4(MAXIMUM_SHARE_INCOME)){
+      toast.error(`maximum withdraw ${MAXIMUM_SHARE_INCOME}`)
+      return;
+    }
+
+    
+     const shareCooldownRemaining = getCooldownRemainingMs(userData?.wallet?.lastShareAt);
+    if (shareCooldownRemaining > 0) {
+      toast.error(`Please try again after ${formatCooldownRemaining(shareCooldownRemaining)}.`)
+      return;
+    }
+
+
     const payload = {
       receiverId:userId,
       amount,
