@@ -267,12 +267,12 @@ const WalletData = () => {
         {walletInfo?.map((item, index) => (
           <div
             key={index}
-            className={`flex flex-col justify-between py-3 sm:py-4 px-1.5 sm:px-2 backdrop-blur-sm ${
+            className={`flex flex-col justify-between py-3 sm:py-4 px-3 sm:px-2 backdrop-blur-sm ${
               item?.name.includes("Loss") ? "bg-red-500" : " "
             } text-white rounded-lg`}
           >
             <div>
-              <p className={`font-bold ${item?.name.includes("Loss") ? "text-black" : "text-gray-300"} text-sm sm:text-base`}>
+              <p className={`font-bold ${item?.name.includes("Loss") ? "text-black" : "text-gray-300"} text-xs sm:text-base`}>
                 {item?.name}
               </p>
             </div>
@@ -280,7 +280,7 @@ const WalletData = () => {
               <p
                 className={`font-bold ${
                   item?.name.includes("Loss") ? "text-black" : "text-green-500"
-                } rounded-lg text-sm sm:text-base inline sm:block`}
+                } rounded-lg text-xs sm:text-base inline sm:block`}
               >
                 {item?.transactions}
               </p>
