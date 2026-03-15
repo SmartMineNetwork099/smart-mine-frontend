@@ -2,17 +2,15 @@
 import React, { useState, Suspense } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { getNonceApi, verifySignatureApi } from "@/apis/auth";
+import { getNonceApi, persistAuthSession, verifySignatureApi } from "@/apis/auth";
 import { connectWallet, checkAndSwitchNetwork } from "@/utils/walletHelpers";
 import ROUTES from "@/constants/routes";
 import { useSearchParams } from "next/navigation";
 import Messages from "@/constants/messages";
 import { normalizeWalletAddress } from "@/utils/func";
-import { upsertUserData } from "@/db/saveData";
 
 const LoginContent: React.FC = () => {   
     const [loading, setLoading] = useState<boolean>(false);
-    const [accessToken, setAccessToken] = useState<any>(null);
     const router = useRouter();
     const searchParams = useSearchParams();
     const ref = searchParams.get("ref");
@@ -65,36 +63,10 @@ const LoginContent: React.FC = () => {
                toast.error("Access token missing");
                return;
                }
-            localStorage.setItem(`walletAddress`, normalizedWalletAddress);
-            localStorage.setItem(`activeWallet`, normalizedWalletAddress);
-
-            console.log("before upsertUserData");
-             const cookieRes = await fetch("/api/set-auth-cookie", {
-             method: "POST",
-             headers: {
-            "Content-Type": "application/json",
-             },
-            body: JSON.stringify({ accessToken }),
-             });
-
-             const text = await cookieRes.text();
-             console.log("cookie raw response:", text);
-
-             let cookieData:any = null;
-             try {
-                cookieData = text ? JSON.parse(text) : null;
-                } catch (error) {
-                 console.error("Invalid JSON response:", text);
-                }
-            console.log("cookieData:", cookieData);
-
-           if (!cookieRes.ok) {
-            toast.error(cookieData?.message || "Failed to set auth cookie");
-             return;
-             }
-            console.log("before upsertUserData");
-            await upsertUserData(normalizedWalletAddress, verifyRes?.data);
-            console.log("after upsertUserData");
+            await persistAuthSession({
+              ...verifyRes.data,
+              walletAddress: normalizedWalletAddress,
+            });
 
             console.log("before redirect");
             toast.success(verifyRes?.data?.message);

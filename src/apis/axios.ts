@@ -1,5 +1,14 @@
 import ROUTES from "@/constants/routes";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import {
+  clearWalletSession,
+  getAccessToken,
+  getActiveWallet,
+  getWalletSession,
+  saveWalletSession,
+  setCurrentWalletAccessToken,
+} from "@/utils/authSession";
+import { normalizeWalletAddress } from "@/utils/func";
 
 const API = process.env.NEXT_PUBLIC_API_BASE;
 
@@ -9,12 +18,8 @@ type RetryableRequestConfig = InternalAxiosRequestConfig & {
 
 const api = axios.create({
   baseURL: API,
-  withCredentials: true,
 });
 
-/* =========================
-   REFRESH STATE
-========================= */
 let isRefreshing = false;
 let isRedirecting = false;
 
@@ -43,31 +48,61 @@ const shouldSkipRefresh = (url = "") => {
   return skipUrls.some((path) => url.includes(path));
 };
 
-const clearClientAuthState = () => {
-  if (typeof window === "undefined") return;
-
-  localStorage.removeItem("activeWallet");
-
-  Object.keys(localStorage).forEach((key) => {
-    if (key.startsWith("accessToken_")) {
-      localStorage.removeItem(key);
-    }
-  });
-};
-
-const redirectToLogin = () => {
-  if (typeof window === "undefined") return;
-  if (isRedirecting) return;
+const redirectToLogin = async () => {
+  if (typeof window === "undefined" || isRedirecting) return;
 
   isRedirecting = true;
-  clearClientAuthState();
+  const activeWallet = getActiveWallet();
+  await clearWalletSession(activeWallet);
 
   const loginRoute = ROUTES?.AUTH?.LOGIN || "/auth/login";
   window.location.replace(loginRoute);
 };
 
+const refreshCurrentWalletSession = async () => {
+  const activeWallet = normalizeWalletAddress(getActiveWallet());
+
+  if (!activeWallet) {
+    throw new Error("No active wallet found");
+  }
+
+  const storedSession: any = await getWalletSession(activeWallet);
+  const refreshToken = storedSession?.refreshToken;
+
+  if (!refreshToken) {
+    throw new Error("Refresh token missing");
+  }
+
+  const response = await axios.get(`${API}/api/auth/refreshAccessToken`, {
+    headers: {
+      "x-refresh-token": refreshToken,
+    },
+  });
+
+  await saveWalletSession(activeWallet, {
+    ...storedSession,
+    ...response.data,
+    walletAddress: normalizeWalletAddress(response.data.walletAddress) || activeWallet,
+  });
+
+  setCurrentWalletAccessToken(
+    normalizeWalletAddress(response.data.walletAddress) || activeWallet,
+    response.data.accessToken,
+  );
+
+  return response.data.accessToken;
+};
+
 api.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    const token = getAccessToken();
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
   (error) => Promise.reject(error),
 );
 
@@ -101,27 +136,27 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await api.get("/api/auth/refreshAccessToken", {
-          withCredentials: true,
-        });
+        const newAccessToken = await refreshCurrentWalletSession();
+        if (newAccessToken) {
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        }
 
         processQueue(null);
         return api(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError);
-        redirectToLogin();
+        await redirectToLogin();
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }
     }
 
-    // Agar refresh endpoint khud fail ho jaye
     if (
       status === 401 &&
       requestUrl.includes("/api/auth/refreshAccessToken")
     ) {
-      redirectToLogin();
+      await redirectToLogin();
     }
 
     return Promise.reject(error);
