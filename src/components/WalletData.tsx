@@ -150,10 +150,9 @@ const WalletData = () => {
   const walletInfo = [
     { name: "Today Income", transactions: `${formatAmount(walletData?.wallet?.todayIncome || 0)} $` },
     { name: "Total Income", transactions: `${formatAmount(walletData?.wallet?.balance || 0)} $` },
-    { name: "Total Withdraw", transactions: `${formatAmount(walletData?.wallet?.totalWithdraw || 0)} $` },
-    { name: "Total Loss", transactions: `${formatAmount(walletData?.wallet?.lossIncome || 0)} $` },
     { name: "Pending Income", transactions: `${formatAmount(walletData?.wallet?.pendingBonus || 0)} $` },
     { name: "Collectable Income", transactions: `${formatAmount(walletData?.wallet?.collectableBonus || 0)} $` },
+    { name: "Total Withdraw", transactions: `${formatAmount(walletData?.wallet?.totalWithdraw || 0)} $` },
     { name: "Share Income", transactions: `${formatAmount(walletData?.wallet?.shareIncome || 0)} $` },
   ];
 
@@ -262,6 +261,22 @@ const WalletData = () => {
            }
       </div>
 
+      {/* Wallet Card total loss  */}
+       <div
+            className={`flex flex-col justify-between py-3 sm:py-4 px-3 sm:px-2 -mb-4 mt-4 backdrop-blur-sm bg-red-500
+               rounded-lg font-bold text-black text-base`}
+          >
+            <div>
+              <p>
+                Total Loss
+              </p>
+            </div>
+            <div className="sm:w-auto">
+              <p>
+                {formatAmount(walletData?.wallet?.lossIncome || 0)} $
+              </p>
+            </div>
+          </div>
       {/* Wallet Cards */}
       <div className=" py-2 px-0.5 grid grid-cols-2 lg:grid-cols-4 gap-2 mt-4">
         {walletInfo?.map((item, index) => (
