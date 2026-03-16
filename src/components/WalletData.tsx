@@ -154,6 +154,8 @@ const WalletData = () => {
     { name: "Collectable Income", transactions: `${formatAmount(walletData?.wallet?.collectableBonus || 0)} $` },
     { name: "Total Withdraw", transactions: `${formatAmount(walletData?.wallet?.totalWithdraw || 0)} $` },
     { name: "Share Income", transactions: `${formatAmount(walletData?.wallet?.shareIncome || 0)} $` },
+    { name: "YesterDay Loss", transactions: `${formatAmount(walletData?.wallet?.yesterdayLossIncome || 0)} $` },
+    { name: "Total Loss", transactions: `${formatAmount(walletData?.wallet?.lossIncome || 0)} $` },
   ];
 
   // ✅ Icon select handler: save locally + (optional) server
@@ -262,7 +264,7 @@ const WalletData = () => {
       </div>
 
       {/* Wallet Card total loss  */}
-       <div
+       {/* <div
             className={`flex flex-col justify-between py-3 sm:py-4 px-3 sm:px-2 -mb-4 mt-4 backdrop-blur-sm bg-red-500
                rounded-lg font-bold text-black text-base`}
           >
@@ -276,7 +278,7 @@ const WalletData = () => {
                 {formatAmount(walletData?.wallet?.lossIncome || 0)} $
               </p>
             </div>
-          </div>
+          </div> */}
       {/* Wallet Cards */}
       <div className=" py-2 px-0.5 grid grid-cols-2 lg:grid-cols-4 gap-2 mt-4">
         {walletInfo?.map((item, index) => (
