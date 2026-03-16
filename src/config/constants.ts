@@ -19,3 +19,8 @@ export const MINIMUM_SHARE_INCOME = Number(
 export const MAXIMUM_SHARE_INCOME = Number(
   process.env.NEXT_PUBLIC_MAXIMUM_SHARE_INCOME
 );
+
+
+export const FREEZE_FEE_BNB = Number(
+  process.env.NEXT_PUBLIC_FREEZE_FEE_BNB
+);

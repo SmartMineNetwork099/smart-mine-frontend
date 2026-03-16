@@ -7,19 +7,19 @@ import ROUTES from '@/constants/routes';
 import { MdOutlineWorkHistory } from 'react-icons/md';
 import { BiMoneyWithdraw } from 'react-icons/bi';
 import SpinnerLoader from './SpinnerLoader';
-import { verifyFreezeFeePaymentApi, getFreezeFeeQuote } from '@/apis/withdrawApis';
+import { verifyFreezeFeePaymentApi } from '@/apis/withdrawApis';
 import { Loader } from 'rizzui/loader';
 import { toast } from 'react-toastify';
 import Messages from '@/constants/messages';
 import { useUserData } from '@/hooks/useUserData';
 import { sendPlatformFee } from '@/utils/paymentHandler';
 import { upsertUserData } from '@/db/saveData';
+import { FREEZE_FEE_BNB } from '@/config/constants';
 
 const WalletActions = () => {
       const router = useRouter();
       const [showModel , setShowModel]= useState(false)
       const [loading , setLoading]= useState(false)
-      const [data , setData] = useState<any>(null)
       const { isFreeze,walletAddress, refreshUser } = useUserData();
       
       
@@ -40,20 +40,17 @@ const WalletActions = () => {
       const handlePayRegistrationFee =async() =>{
         if(!isFreeze) return
         setShowModel(true)
-        setLoading(true)
-        const {data , error} = await getFreezeFeeQuote();
-        if(error){
-          toast.error(error||'Server Error in Pay Registration Fee')
-        }
-        console.log(data,'data in getFreezeFeeQuote')
-        setData(data)
-        setLoading(false)
-
       }
       const PayRegistrationFee =async() =>{
-          if(!isFreeze) return
+          if(!isFreeze){
+            toast.success("Your account is not freeze")
+            return
+          }
+          if(!FREEZE_FEE_BNB){
+            toast.error('please wait while fetching fee')
+          }
         setLoading(true)
-        const {success, feeTxHash , message} = await sendPlatformFee({type: "freeze_fee", freezeFeeBnb:data?.requiredBnb});
+        const {success, feeTxHash , message} = await sendPlatformFee({type: "freeze_fee", freezeFeeBnb:String(FREEZE_FEE_BNB)});
         if(success===false){
           toast.error(message)
           setLoading(false)
@@ -129,8 +126,8 @@ const WalletActions = () => {
                   Are you sure you want to pay Registration Fee{" "}
                   <p className='flex items-center justify-center'>
                   {
-                    data ? 
-                    <span className="text-green-400 font-semibold"> { data?.requiredBnb  } BNB</span>
+                    FREEZE_FEE_BNB ? 
+                    <span className="text-green-400 font-semibold"> { FREEZE_FEE_BNB  } BNB</span>
                     :
                      <Loader variant="threeDot" size='sm' color="success" className='text-green-500'/>
                     }
