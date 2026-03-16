@@ -58,7 +58,7 @@ const CollectCoins = () => {
       toast.error('please wait while fetching mining fee')
       return false;
     }
-    if(!miningFee){
+    if(!miningFee || miningFee <= 0){
       toast.error('try again. Refresh Your page')
       return false;
     }
