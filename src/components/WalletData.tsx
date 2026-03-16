@@ -196,7 +196,7 @@ const WalletData = () => {
         setCopied(true);
         setTimeout(() => setCopied(false), 1500); // Auto hide after 1.5s
     };
-
+console.log(walletData,'walletDatawalletDatawalletData')
   return (
     <Card className="flex flex-col flex-grow">
       <div className="rounded-2xl text-white">
@@ -237,6 +237,9 @@ const WalletData = () => {
             </p>
             <p>
               Address: <span>{displayAddress}</span>
+            </p>
+            <p className="border border-red-500">
+               {String(walletData.freeze)}
             </p>
           </div>
         </div>
