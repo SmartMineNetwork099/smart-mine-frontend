@@ -238,9 +238,6 @@ console.log(walletData,'walletDatawalletDatawalletData')
             <p>
               Address: <span>{displayAddress}</span>
             </p>
-            <p className="border border-red-500">
-               {String(walletData.freeze)}
-            </p>
           </div>
         </div>
 
