@@ -10,6 +10,7 @@ import { useUserData } from "@/hooks/useUserData";
 interface MiningCountdownProps {
   handleClaim?: () => Promise<boolean>;
   walletAddress?: string;
+  miningFeeLoading?:boolean;
 }
 
 const NEXT_CYCLE_KEY = "nextCycleTime";
@@ -18,6 +19,7 @@ const DUBAI_TZ = "Asia/Dubai";
 const MiningCountdown: React.FC<MiningCountdownProps> = ({
   handleClaim,
   walletAddress = null,
+  miningFeeLoading,
 }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -160,7 +162,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
     }
   };
 
-  const isDisabled = loading || status === "active";
+  const isDisabled = miningFeeLoading || loading || status === "active";
 
   return (
     <div className="flex flex-col items-center space-y-4">

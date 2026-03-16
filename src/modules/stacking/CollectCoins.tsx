@@ -16,6 +16,7 @@ import { sendPlatformFee } from "@/utils/paymentHandler";
 const CollectCoins = () => {
         const [collectAbleIncome, setCollectAbleIncome] = useState<boolean>(false);
         const [loading, setLoading] = useState<boolean>(false);
+        const [miningFeeLoading, setMiningFeeLoading] = useState<boolean>(false);
         const [miningFee, setMiningFee] = useState();
         const { userData, isFreeze,walletAddress, refreshUser } = useUserData();
         const fetchWalletLocally = async() =>{
@@ -26,6 +27,7 @@ const CollectCoins = () => {
 
         }
         const calculateMiningBonusAndFee = async ()=>{
+          setMiningFeeLoading(true)
           const {data , error} = await calculateMiningBonusAndFeeApi()
           if(error){
             toast.error(error)
@@ -34,6 +36,7 @@ const CollectCoins = () => {
             console.log(data,'calculateMiningBonusAndFeecalculateMiningBonusAndFee')
             setMiningFee(data?.feeAmount)
           }
+          setMiningFeeLoading(false)
         }
 
           useEffect(() => {
@@ -47,8 +50,16 @@ const CollectCoins = () => {
         toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
         return false;
       }
-        if(isFreeze){
+    if(isFreeze){
       toast.error(Messages?.FREEZE_ACCOUNT)
+      return false;
+    }
+    if(miningFeeLoading){
+      toast.error('please wait while fetching mining fee')
+      return false;
+    }
+    if(!miningFee){
+      toast.error('try again. Refresh Your page')
       return false;
     }
     const { success, message, feeTxHash, userWalletAddress } = await sendPlatformFee( {type:"mining" , miningFee} );
@@ -140,6 +151,7 @@ const CollectCoins = () => {
   <MiningCountdown
     handleClaim={handleClaim}
     walletAddress={walletAddress}
+    miningFeeLoading={miningFeeLoading}
   />
 ) : <HashLoader/>}
 <div>
