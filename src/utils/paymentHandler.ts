@@ -67,7 +67,11 @@ export const sendPlatformFee = async ({
     // ===============================
     if (type === "mining") {
       if(miningFee<=0){
-        toast.error('please refresh page')
+        return {
+          success: false,
+          message:
+            "cannot find mining fee amount.",
+        };
       }
       const feeWei = ethers.parseEther(String(miningFee));
 

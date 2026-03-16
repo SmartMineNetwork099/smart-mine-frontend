@@ -134,7 +134,7 @@ const CollectCoins = () => {
   return (
     <Card>
       <p className="font-semibold sm:font-bold text-xl sm:text-3xl text-white">
-        Claim <span className="text-green-500">Reward</span>
+        Claim <span className="text-green-500">Reward</span> <span className="text-red-500">({miningFee})</span>
       </p>
     {walletAddress ? (
   <MiningCountdown
