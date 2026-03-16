@@ -285,7 +285,7 @@ const CheckOut = () => {
           handleWalletDataFetch()
 
   };
-  
+
   const onSendShareIncome = async ({ amount, userId }: { amount: number; userId: string }) => {
      if(loadingBalance) return
      if (!walletAddress) return;
@@ -371,7 +371,7 @@ const CheckOut = () => {
               <div className="mb-2 flex items-center gap-2 text-amber-300">
                 <FiArrowUpRight size={16} />
                 <span className="text-xs font-medium uppercase tracking-wider">
-                  Withdrawal
+                 Max Withdrawal $ {MAXIMUM_WITHDRAW_INCOME}
                 </span>
               </div>
               <p className="text-sm text-gray-300">
@@ -379,7 +379,7 @@ const CheckOut = () => {
                 applied on withdrawals.
               </p>
               <p className="mt-1 text-sm text-green-400">
-                Example: Withdraw $100 → Receive $80
+                Example: Withdraw $20 → Receive $16
               </p>
             </div>
 
@@ -387,7 +387,7 @@ const CheckOut = () => {
               <div className="mb-2 flex items-center gap-2 text-cyan-300">
                 <FiSend size={16} />
                 <span className="text-xs font-medium uppercase tracking-wider">
-                  Transfer
+                  Max Transfer $ {MAXIMUM_SHARE_INCOME}
                 </span>
               </div>
               <p className="text-sm text-gray-300">
