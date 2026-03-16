@@ -143,7 +143,7 @@ const WalletActions = () => {
                       loading ? 'opacity-70 cursor-not-allowed' : ''
                     }`}
                   >
-                    Buy
+                    Pay
                     {loading && <SpinnerLoader />}
                   </button>
                   <button
