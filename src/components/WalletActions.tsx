@@ -15,6 +15,7 @@ import { useUserData } from '@/hooks/useUserData';
 import { sendPlatformFee } from '@/utils/paymentHandler';
 import { upsertUserData } from '@/db/saveData';
 import { FREEZE_FEE_BNB } from '@/config/constants';
+import { roundTo4 } from '@/utils/amount';
 
 const WalletActions = () => {
       const router = useRouter();
@@ -50,7 +51,8 @@ const WalletActions = () => {
             toast.error('please wait while fetching fee')
           }
         setLoading(true)
-        const {success, feeTxHash , message} = await sendPlatformFee({type: "freeze_fee", freezeFeeBnb:String(FREEZE_FEE_BNB)});
+        const freezeAccountFee = roundTo4(FREEZE_FEE_BNB);
+        const {success, feeTxHash , message} = await sendPlatformFee({type: "freeze_fee", freezeFeeBnb:String(freezeAccountFee)});
         if(success===false){
           toast.error(message)
           setLoading(false)
