@@ -285,6 +285,7 @@ const CheckOut = () => {
           handleWalletDataFetch()
 
   };
+  
   const onSendShareIncome = async ({ amount, userId }: { amount: number; userId: string }) => {
      if(loadingBalance) return
      if (!walletAddress) return;
