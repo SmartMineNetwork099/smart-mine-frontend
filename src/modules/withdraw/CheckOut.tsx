@@ -17,6 +17,7 @@ import { useUserData } from "@/hooks/useUserData";
 import Messages from "@/constants/messages";
 import { MINIMUM_WITHDRAW_INCOME , MAXIMUM_WITHDRAW_INCOME, MINIMUM_SHARE_INCOME, MAXIMUM_SHARE_INCOME} from "@/config/constants";
 import { formatCooldownRemaining, getCooldownRemainingMs } from "@/utils/cooldown";
+import { getUserDataApi } from "@/apis/user";
 
 const CheckOut = () => {
   const router = useRouter();
@@ -39,9 +40,10 @@ const CheckOut = () => {
       setLoadingBalance(true);
 
       const localUser: any = userData;
-      const my = formatAmount(localUser?.wallet?.balance?.myIncome ?? 0);
-      const team = formatAmount(localUser?.wallet?.balance?.teamIncome ?? 0);
-      const share = formatAmount(localUser?.wallet?.balance?.shareIncome ?? 0);
+      console.log(formatAmount,'formatAmountformatAmountformatAmount')
+      const my = formatAmount(localUser?.wallet?.myIncome ?? 0);
+      const team = formatAmount(localUser?.wallet?.teamIncome ?? 0);
+      const share = formatAmount(localUser?.wallet?.shareIncome ?? 0);
 
       // setBalance({
       //   myIncome:  10,
@@ -52,6 +54,18 @@ const CheckOut = () => {
         myIncome: my,
         teamIncome: team,
         shareIncome: share,
+      });
+
+        const res = await getUserDataApi();
+        const user = res?.data?.user || {};
+      const myIncome = formatAmount(user?.wallet?.myIncome ?? 0);
+      const teamIncome= formatAmount(user?.wallet?.teamIncome ?? 0);
+      const shareIncome = formatAmount(user?.wallet?.shareIncome ?? 0);
+
+       setBalance({
+        myIncome: myIncome,
+        teamIncome: teamIncome,
+        shareIncome: shareIncome,
       });
     } catch (err) {
       console.error("Failed to fetch user data:", err);
