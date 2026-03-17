@@ -85,7 +85,7 @@ const StakingPlansTable = () => {
 
       // 4) Call backend API
       const buyPlanApi = await buyStackingPlans({
-        planId: selectedPlan?._id, // ✅ Dynamic level
+        planId: selectedPlan?.templatePlanId, // ✅ Dynamic level
         feeTxHash,
         paymentSource, // "share_income" or "safepal"
       });
