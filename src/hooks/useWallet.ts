@@ -15,26 +15,48 @@ declare global {
 }
 
 export const useWalletAddress = () => {
-  const [wallet, setWallet] = useState<string | null>(null);
+  const [wallet, setWallet] = useState<string | null | undefined>(undefined);
 
   useEffect(() => {
-    const load = async () => {
-      const res = await getConnectedWalletAddress();
-      console.log(res,'rreeddssaa')
+    let isMounted = true;
 
-      if (res.success) {
-        const normalized:any = normalizeWalletAddress(res.userWalletAddress);
-        setWallet(normalized);
-        if (normalized) {
-          setActiveWallet(normalized);
+    const sleep = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
+
+    const load = async () => {
+      for (let attempt = 0; attempt < 6; attempt += 1) {
+        const res = await getConnectedWalletAddress();
+        console.log(res, "rreeddssaa");
+
+        if (!isMounted) return;
+
+        if (res.success) {
+          const normalized: any = normalizeWalletAddress(res.userWalletAddress);
+          setWallet(normalized);
+          console.log(normalized, "normalizednormalizednormalizedv");
+          if (normalized) {
+            setActiveWallet(normalized);
+          }
+          return;
         }
-      } else {
+
         console.log("Wallet not connected:", res.message);
-        setWallet(null);
-        
+        console.log(res, "rrrrrrrrrreeessss");
+
+        if (res.message === "Wallet not connected.") {
+          setWallet(null);
           clearAccessToken();
           clearActiveWallet();
-        
+          return;
+        }
+
+        if (attempt < 5) {
+          await sleep(250);
+        }
+      }
+
+      if (isMounted) {
+        setWallet(undefined);
       }
     };
 
@@ -56,6 +78,7 @@ export const useWalletAddress = () => {
     window.ethereum?.on?.("accountsChanged", onAccountsChanged);
 
     return () => {
+      isMounted = false;
       window.ethereum?.removeListener?.("accountsChanged", onAccountsChanged);
     };
   }, []);

@@ -115,8 +115,14 @@ export const restoreWalletSession = async (walletAddress: string) => {
 
     return { success: true, data: res.data };
   } catch (err) {
-    await clearWalletSession(normalizedWallet);
     const error = err as AxiosError<{ message: string }>;
+    const status = error.response?.status;
+    console.log(status,'statusstatusstatus')
+
+    if (status === 401 || status === 403) {
+      await clearWalletSession(normalizedWallet);
+    }
+
     return {
       success: false,
       message: error.response?.data?.message ?? "Unable to restore session.",

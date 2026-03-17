@@ -20,8 +20,7 @@ import {
 const protectedPrefixes = ['/stacking', '/binary', '/withdraw', '/history', '/gaming'];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  let walletAddress = useWalletAddress();
-  walletAddress = normalizeWalletAddress(walletAddress);
+  const walletAddress = useWalletAddress();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -31,10 +30,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     const isProtectedRoute = protectedPrefixes.some((prefix) =>
       pathname.startsWith(prefix),
     );
+    // console.log(ethereum,'ethereumethereumethereum_inside_use_effect')
+    // console.log(isLoginPage,'isLoginPageisLoginPage')
+    console.log(walletAddress,'walletAddresswalletAddressinside_use_effect')
 
     let cancelled = false;
 
     const syncCurrentWalletSession = async (targetWallet?: string | null) => {
+      if (typeof targetWallet === 'undefined') {
+        return;
+      }
+
       const normalizedWallet = normalizeWalletAddress(targetWallet);
 
       if (!normalizedWallet) {
@@ -76,6 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
     const handleAccountsChanged = async (accounts: string[]) => {
       const newWallet = normalizeWalletAddress(accounts?.[0] || '');
+      console.log(newWallet,'newWalletnewWalletnewWallet')
 
       if (!newWallet) {
         clearAccessToken();
