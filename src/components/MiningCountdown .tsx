@@ -14,7 +14,7 @@ interface MiningCountdownProps {
 }
 
 const NEXT_CYCLE_KEY = "nextCycleTime";
-const DUBAI_TZ = "Asia/Dubai";
+const INDIA_TZ = "Asia/Kolkata";
 
 const MiningCountdown: React.FC<MiningCountdownProps> = ({
   handleClaim,
@@ -71,10 +71,10 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
 
     clearTimer();
     timerRef.current = setInterval(async () => {
-      const nowDubai = moment().tz(DUBAI_TZ);
-      const endDubai = moment(nextCycleRef.current).tz(DUBAI_TZ);
+      const nowIndia = moment().tz(INDIA_TZ);
+      const endIndia = moment(nextCycleRef.current).tz(INDIA_TZ);
 
-      const diff = endDubai.diff(nowDubai, "seconds");
+      const diff = endIndia.diff(nowIndia, "seconds");
 
       if (diff <= 0) {
         setTimeLeft(0);
@@ -108,16 +108,16 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
       fetchStatus()
   }, [walletAddress]);
 
-  // Progress accurate to Dubai midnight cycle
+  // Progress accurate to India midnight cycle
   const percentage = useMemo(() => {
     if (!nextCycleRef.current) return 0;
 
-    const nowDubai = moment().tz(DUBAI_TZ);
-    const endDubai = moment(nextCycleRef.current).tz(DUBAI_TZ);
-    const startDubai = endDubai.clone().subtract(1, "day");
+    const nowIndia = moment().tz(INDIA_TZ);
+    const endIndia = moment(nextCycleRef.current).tz(INDIA_TZ);
+    const startIndia = endIndia.clone().subtract(1, "day");
 
-    const total = endDubai.diff(startDubai, "seconds");
-    const elapsed = nowDubai.diff(startDubai, "seconds");
+    const total = endIndia.diff(startIndia, "seconds");
+    const elapsed = nowIndia.diff(startIndia, "seconds");
 
     if (total <= 0) return 0;
     return Math.min(100, Math.max(0, (elapsed / total) * 100));
@@ -141,7 +141,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
     if (loading) return;
 
     if (status === "active") {
-      toast.error("You already mined today. Try again after Dubai 12:00 AM reset.");
+      toast.error("You already mined today. Try again after 12:00 AM reset.");
       return;
     }
 
