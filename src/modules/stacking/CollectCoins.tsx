@@ -19,13 +19,13 @@ const CollectCoins = () => {
         const [miningFeeLoading, setMiningFeeLoading] = useState<boolean>(false);
         const [miningFee, setMiningFee] = useState();
         const { userData, isFreeze,walletAddress, refreshUser } = useUserData();
-        const fetchWalletLocally = async() =>{
-                await refreshUser()
-                if (userData?.wallet?.collectableBonus>0) {
-                setCollectAbleIncome(true)
-                }
+        // const fetchWalletLocally = async() =>{
+        //         await refreshUser()
+        //         if (userData?.wallet?.collectableBonus>0) {
+        //         setCollectAbleIncome(true)
+        //         }
 
-        }
+        // }
         const calculateMiningBonusAndFee = async ()=>{
           setMiningFeeLoading(true)
           const {data , error} = await calculateMiningBonusAndFeeApi()
@@ -41,7 +41,7 @@ const CollectCoins = () => {
 
           useEffect(() => {
             if(!walletAddress) return
-            fetchWalletLocally();
+            // fetchWalletLocally();
             calculateMiningBonusAndFee();
           }, [walletAddress]);
   const handleClaim = async () => {
@@ -101,46 +101,46 @@ const CollectCoins = () => {
       return false;
     }
   };
-  const collectBonus = async () => {
-    try {
-      console.log('collect coins')
-      toast.dismiss()
-        if (isFreeze) {
-          toast.error(Messages?.FREEZE_ACCOUNT);
-          return;
-          }
-      if(!collectAbleIncome){
-        toast.error("No bonus available to collect");
-        return
-      }
-      if(!walletAddress) {
-        toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
-        return false;
-      }
-      setLoading(true)
+  // const collectBonus = async () => {
+  //   try {
+  //     console.log('collect coins')
+  //     toast.dismiss()
+  //       if (isFreeze) {
+  //         toast.error(Messages?.FREEZE_ACCOUNT);
+  //         return;
+  //         }
+  //     if(!collectAbleIncome){
+  //       toast.error("No bonus available to collect");
+  //       return
+  //     }
+  //     if(!walletAddress) {
+  //       toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
+  //       return false;
+  //     }
+  //     setLoading(true)
 
-      const {data , error} = await collectBonusApi();
-      if (data?.success) {
-           const updatedFields = {
-                   wallet : data?.wallet,
-                  }
-                  await upsertUserData(walletAddress || '', updatedFields);
-                  await refreshUser();
-                   window.dispatchEvent(
-                new CustomEvent("wallet-updated", {
-                 detail: { walletAddress },
-                })
-                );
-                setLoading(false)
+  //     const {data , error} = await collectBonusApi();
+  //     if (data?.success) {
+  //          const updatedFields = {
+  //                  wallet : data?.wallet,
+  //                 }
+  //                 await upsertUserData(walletAddress || '', updatedFields);
+  //                 await refreshUser();
+  //                  window.dispatchEvent(
+  //               new CustomEvent("wallet-updated", {
+  //                detail: { walletAddress },
+  //               })
+  //               );
+  //               setLoading(false)
 
-        toast.success(data.message);
-      } else {
-        toast.error(error|| Messages?.SOME_THING_WRONG);
-      }
-    } catch (error: any) {
-      toast.error(error?.message || Messages?.SOME_THING_WRONG);
-    }
-  }
+  //       toast.success(data.message);
+  //     } else {
+  //       toast.error(error|| Messages?.SOME_THING_WRONG);
+  //     }
+  //   } catch (error: any) {
+  //     toast.error(error?.message || Messages?.SOME_THING_WRONG);
+  //   }
+  // }
 
   return (
     <Card>
@@ -150,13 +150,12 @@ const CollectCoins = () => {
     {walletAddress ? (
   <MiningCountdown
     handleClaim={handleClaim}
-    walletAddress={walletAddress}
     miningFeeLoading={miningFeeLoading}
   />
 ) : <HashLoader/>}
-<div>
+{/* <div>
   <Button onClick={collectBonus} disabled={loading} className={`w-full bg-green-500 ${collectAbleIncome ? 'bg-green-500 cursor-pointer' : 'bg-red-400/40 cursor-not-allowed'} ${loading && 'bg-red-400/40 cursor-not-allowed'} border-0 font-bold text-xl`}>Claim Coins</Button>
-</div>
+</div> */}
 
     </Card>
   );

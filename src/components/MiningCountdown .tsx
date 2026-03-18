@@ -6,10 +6,12 @@ import { formatTime, normalizeWalletAddress } from "@/utils/func";
 import { MiningTimeApi } from "@/apis/mining";
 import Messages from "@/constants/messages";
 import { useUserData } from "@/hooks/useUserData";
+import { Button } from "rizzui/button";
+import { upsertUserData } from "@/db/saveData";
+import { collectBonusApi } from "@/apis/stackingApis";
 
 interface MiningCountdownProps {
   handleClaim?: () => Promise<boolean>;
-  walletAddress?: string;
   miningFeeLoading?:boolean;
 }
 
@@ -18,19 +20,18 @@ const INDIA_TZ = "Asia/Kolkata";
 
 const MiningCountdown: React.FC<MiningCountdownProps> = ({
   handleClaim,
-  walletAddress = null,
   miningFeeLoading,
 }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [loading, setLoading] = useState(false);
-  const { isFreeze, status, refreshUser } = useUserData();
+  const { userData,status, isFreeze,walletAddress, refreshUser } = useUserData();
+  
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const nextCycleRef = useRef<string | null>(null);
 
   const radius = 150;
   const circumference = 2 * Math.PI * radius;
-  walletAddress = normalizeWalletAddress(walletAddress )
 
   const storageKey = useMemo(() => {
     return walletAddress ? `${NEXT_CYCLE_KEY}_${walletAddress}` : "";
@@ -155,12 +156,34 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
      detail: { walletAddress },
       })
       );
+      //////////////////////////////////////////
+     
+        const {data , error} = await collectBonusApi();
+      if (data?.success) {
+           const updatedFields = {
+                   wallet : data?.wallet,
+                  }
+                  await upsertUserData(walletAddress || '', updatedFields);
+                  await refreshUser();
+                   window.dispatchEvent(
+                new CustomEvent("wallet-updated", {
+                 detail: { walletAddress },
+                })
+                );
+
+        toast.success("Mining successful and bonus collected.");
+      } else {
+        toast.success("Mining successful.")
+      }
+      /////////////////////////////////////////
       }
       
     } finally {
       setLoading(false);
     }
   };
+  ////////////////////////////////////////
+
 
   const isDisabled = miningFeeLoading || loading || status === "active";
 
@@ -191,15 +214,18 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
         </svg>
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-xl sm:text-3xl font-bold">
+          <p className={`text-white ${status === "active" ? "bg-green-500" : "bg-red-500"} text-sm sm:text-base px-2 py-0.5 mb-3 sm:mb-6 rounded`}>
+            {status === "active" ? "active" : "inActive"}
+          </p>
           {loading ? (
             <span className="text-green-600">Processing...</span>
           ) : (
             <p className="text-center text-black">{formatTime(timeLeft)}</p>
           )}
+          <div className="mt-3 sm:mt-6">
+           <Button className={`w-full bg-green-500 cursor-pointer border-0 font-bold sm:text-xl`}>Claim ${userData?.wallet?.collectableBonus || 0}</Button>
+         </div>
 
-          <p className={`text-white ${status === "active" ? "bg-green-500" : "bg-red-500"} text-sm sm:text-base px-2 py-0.5 rounded`}>
-            {status === "active" ? "active" : "inActive"}
-          </p>
         </div>
       </div>
     </div>
