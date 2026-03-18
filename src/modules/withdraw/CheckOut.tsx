@@ -28,7 +28,6 @@ const CheckOut = () => {
     shareIncome: 0,
   });
   const [loadingBalance, setLoadingBalance] = useState<boolean>(true);
-  const [source, setSource] = useState('');
   const { userData, isFreeze,walletAddress, refreshUser } = useUserData();
 
 
@@ -40,7 +39,6 @@ const CheckOut = () => {
       setLoadingBalance(true);
 
       const localUser: any = userData;
-      console.log(formatAmount,'formatAmountformatAmountformatAmount')
       const my = formatAmount(localUser?.wallet?.myIncome ?? 0);
       const team = formatAmount(localUser?.wallet?.teamIncome ?? 0);
       const share = formatAmount(localUser?.wallet?.shareIncome ?? 0);
@@ -84,7 +82,8 @@ const CheckOut = () => {
   const handleBack = () => router.push(ROUTES?.STACKING?.DASHBOARD);
 
   // ✅ callbacks for MyIncomeCard
-  const onWithdrawMyIncome =async (amount: number) => {
+  const onWithdrawMyIncome =async (amount: number, source: string) => {
+  
     if(loadingBalance) return;
     if (!walletAddress) return;
     if (isFreeze) {
@@ -138,7 +137,15 @@ const CheckOut = () => {
           handleWalletDataFetch()
   };
 
-  const onSendMyIncome = async({ amount, userId }: { amount: number; userId: string }) => {
+  const onSendMyIncome = async({
+    amount,
+    userId,
+    source,
+  }: {
+    amount: number;
+    userId: string;
+    source: string;
+  }) => {
        if(loadingBalance) return
        if (!walletAddress) return;
       if (isFreeze) {
@@ -192,7 +199,7 @@ const CheckOut = () => {
   };
 
   // ✅ callbacks for TeamIncomeCard
-  const onWithdrawTeamIncome = async(amount: number) => {
+  const onWithdrawTeamIncome = async(amount: number, source: string) => {
   
   if(loadingBalance) return
   if (!walletAddress) return;
@@ -246,7 +253,15 @@ const CheckOut = () => {
   };
 
 
-  const onSendTeamIncome = async ({ amount, userId }: { amount: number; userId: string }) => {
+  const onSendTeamIncome = async ({
+    amount,
+    userId,
+    source,
+  }: {
+    amount: number;
+    userId: string;
+    source: string;
+  }) => {
        if(loadingBalance) return
        if (!walletAddress) return;
            if (isFreeze) {
@@ -300,7 +315,15 @@ const CheckOut = () => {
 
   };
 
-  const onSendShareIncome = async ({ amount, userId }: { amount: number; userId: string }) => {
+  const onSendShareIncome = async ({
+    amount,
+    userId,
+    source,
+  }: {
+    amount: number;
+    userId: string;
+    source: string;
+  }) => {
      if(loadingBalance) return
      if (!walletAddress) return;
          if (isFreeze) {
@@ -429,7 +452,6 @@ const CheckOut = () => {
           loadingBalance={loadingBalance}
           onWithdraw={onWithdrawMyIncome}
           onSend={onSendMyIncome}
-          setSource={setSource}
         />
 
         <TeamIncomeCard
@@ -437,14 +459,12 @@ const CheckOut = () => {
           loadingBalance={loadingBalance}
           onWithdraw={onWithdrawTeamIncome}
           onSend={onSendTeamIncome}
-          setSource={setSource}
           />
 
         <ShareIncomeCard
           shareIncome={balance.shareIncome}
           loadingBalance={loadingBalance}
           onSend={onSendShareIncome}
-          setSource={setSource}
         />
 
       </div>
