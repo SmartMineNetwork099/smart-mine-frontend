@@ -54,8 +54,10 @@ const CheckOut = () => {
         shareIncome: share,
       });
 
-        const res = await getUserDataApi();
-        const user = res?.data?.user || {};
+       setLoadingBalance(false);
+
+      const res = await getUserDataApi();
+      const user = res?.data?.user || {};
       const myIncome = formatAmount(user?.wallet?.myIncome ?? 0);
       const teamIncome= formatAmount(user?.wallet?.teamIncome ?? 0);
       const shareIncome = formatAmount(user?.wallet?.shareIncome ?? 0);
@@ -68,8 +70,6 @@ const CheckOut = () => {
     } catch (err) {
       console.error("Failed to fetch user data:", err);
       setBalance({ myIncome: 0, teamIncome: 0 , shareIncome: 0 });
-    } finally {
-      setLoadingBalance(false);
     }
   };
 
