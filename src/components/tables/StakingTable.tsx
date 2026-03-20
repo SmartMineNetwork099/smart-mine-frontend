@@ -57,7 +57,7 @@ const StakingTable = ({ data, loading = true , paginationCurrentPage=1 , totalNu
                                 <td className="px-4 py-2 text-end whitespace-nowrap">
                                     {formatAmount(row?.wallet?.stakingAmount)} $
                                 </td>
-                                <td className="px-4 py-2 whitespace-nowrap">{row?.status}</td>
+                                <td className={`px-4 py-2 whitespace-nowrap ${row?.status === 'active' ? 'text-green-500':'text-red-500'}`}>{row?.status}</td>
                                 <td className="px-4 py-2 whitespace-nowrap">
                                     {row?.directTeam?.length ?? 0}
                                 </td>
