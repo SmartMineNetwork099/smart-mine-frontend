@@ -17,7 +17,7 @@ const CollectCoins = () => {
         const [collectAbleIncome, setCollectAbleIncome] = useState<boolean>(false);
         const [loading, setLoading] = useState<boolean>(false);
         const [miningFeeLoading, setMiningFeeLoading] = useState<boolean>(false);
-        const [miningFee, setMiningFee] = useState();
+        const [miningFee, setMiningFee] = useState(0);
         const { userData, isFreeze,walletAddress, refreshUser } = useUserData();
         // const fetchWalletLocally = async() =>{
         //         await refreshUser()
@@ -34,13 +34,12 @@ const CollectCoins = () => {
           }
           if(data){
             console.log(data,'calculateMiningBonusAndFeecalculateMiningBonusAndFee')
-            setMiningFee(data?.feeAmount)
+            setMiningFee(data?.requiredBnbForMiningFee)
           }
           setMiningFeeLoading(false)
         }
 
           useEffect(() => {
-            if(!walletAddress) return
             // fetchWalletLocally();
             calculateMiningBonusAndFee();
           }, [walletAddress]);
