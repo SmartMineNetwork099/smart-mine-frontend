@@ -17,7 +17,7 @@ const CollectCoins = () => {
         const [collectAbleIncome, setCollectAbleIncome] = useState<boolean>(false);
         const [loading, setLoading] = useState<boolean>(false);
         const [miningFeeLoading, setMiningFeeLoading] = useState<boolean>(false);
-        const [miningFee, setMiningFee] = useState(0);
+        const [miningFee, setMiningFee] = useState<string>('');
         const { userData, isFreeze,walletAddress, refreshUser } = useUserData();
         // const fetchWalletLocally = async() =>{
         //         await refreshUser()
@@ -34,7 +34,8 @@ const CollectCoins = () => {
           }
           if(data){
             console.log(data,'calculateMiningBonusAndFeecalculateMiningBonusAndFee')
-            setMiningFee(data?.requiredBnbForMiningFee)
+            const requiredFee = String(data?.requiredBnbForMiningFee)
+            setMiningFee(requiredFee)
           }
           setMiningFeeLoading(false)
         }
@@ -57,8 +58,10 @@ const CollectCoins = () => {
       toast.error('please wait while fetching mining fee')
       return false;
     }
-    if(!miningFee || miningFee <= 0){
-      toast.error('try again. Refresh Your page')
+    console.log(miningFee,'miningFeeminingFee')
+    if (!miningFee || isNaN(Number(miningFee)) || Number(miningFee) <= 0) {
+
+      toast.error('Kindly buy any plan.')
       return false;
     }
     const { success, message, feeTxHash, userWalletAddress } = await sendPlatformFee( {type:"mining" , miningFee} );

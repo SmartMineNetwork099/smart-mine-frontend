@@ -7,7 +7,7 @@ type SendPlatformFeeArgs = {
   type: "mining" | "buy_stacking_plan" | "freeze_fee";
   planBuyAmount?: string;
   freezeFeeBnb?: string;
-  miningFee?:number;
+  miningFee?:string;
 };
 
 const CONFIRMATIONS = Number(
@@ -30,9 +30,10 @@ export const sendPlatformFee = async ({
   type, // "mining" | "buy_stacking_plan" | "freeze_fee"
   planBuyAmount,  // "10" | "20" etc (USDT human amount as string)
   freezeFeeBnb,
-  miningFee=0,
+  miningFee='0',
 }: SendPlatformFeeArgs) => {
   try {
+    console.log(miningFee,'miningFee_afterafter')
     if (!window.ethereum) {
       return { success: false, message: "Wallet provider not found." };
     }
@@ -66,14 +67,14 @@ export const sendPlatformFee = async ({
     // 1️⃣ MINING (BNB TRANSFER) on opbnb
     // ===============================
     if (type === "mining") {
-      if(miningFee<=0){
+      if (!miningFee || isNaN(Number(miningFee)) || Number(miningFee) <= 0) {
         return {
           success: false,
           message:
             "cannot find mining fee amount.",
         };
       }
-      const feeWei = ethers.parseEther(String(miningFee));
+      const feeWei = ethers.parseEther(miningFee);
 
       // estimate gas
       const gasLimit = await provider.estimateGas({
