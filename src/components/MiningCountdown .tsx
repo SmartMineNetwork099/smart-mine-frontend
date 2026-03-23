@@ -9,6 +9,7 @@ import { useUserData } from "@/hooks/useUserData";
 import { Button } from "rizzui/button";
 import { upsertUserData } from "@/db/saveData";
 import { collectBonusApi } from "@/apis/stackingApis";
+import { getUserData } from "@/db/getData";
 
 interface MiningCountdownProps {
   handleClaim?: () => Promise<boolean>;
@@ -24,7 +25,55 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
 }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [walletData, setWalletData] = useState<any>({});
+  
   const { userData,status, isFreeze,walletAddress, refreshUser } = useUserData();
+
+  ////////////////////////////////
+  const loadLocalUserData = async () => {
+  if (!walletAddress) return;
+
+  try {
+    const localUser: any = await getUserData(walletAddress);
+    console.log(localUser,'localUserlocalUser')
+    if (localUser) {
+      setWalletData(localUser);
+    }
+  } catch (err) {
+    console.error("Failed to load local wallet data:", err);
+  }
+};
+
+
+
+
+  useEffect(() => {
+  if (!walletAddress) return;
+  console.log('testing1')
+
+  const handleWalletUpdated = async (event: Event) => {
+    console.log('testing2')
+    const customEvent = event as CustomEvent<{ walletAddress?: string }>;
+    const updatedWalletAddress = normalizeWalletAddress(
+      customEvent?.detail?.walletAddress
+    );
+    console.log(updatedWalletAddress,'updatedWalletAddressupdatedWalletAddress')
+    console.log(walletAddress,'walletAddresswalletAddresswalletAddresswalletAddress')
+
+    if (!updatedWalletAddress) return;
+
+    if (updatedWalletAddress === walletAddress) {
+      await loadLocalUserData();
+    }
+  };
+
+  window.addEventListener("wallet-updated", handleWalletUpdated);
+
+  return () => {
+    window.removeEventListener("wallet-updated", handleWalletUpdated);
+  };
+}, [walletAddress]);
+  ///////////////////////////////
   
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -223,7 +272,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
             <p className="text-center text-black">{formatTime(timeLeft)}</p>
           )}
           <div className="mt-3 sm:mt-6">
-           <Button className={`w-full bg-green-500 cursor-pointer border-0 font-bold sm:text-xl`}>Claim ${userData?.wallet?.collectableBonus || 0}</Button>
+           <Button className={`w-full bg-green-500 cursor-pointer border-0 font-bold sm:text-xl`}>Claim ${walletData?.wallet?.collectableBonus || 0}</Button>
          </div>
 
         </div>
