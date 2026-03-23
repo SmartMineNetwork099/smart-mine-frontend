@@ -17,7 +17,6 @@ const CollectCoins = () => {
         const [collectAbleIncome, setCollectAbleIncome] = useState<boolean>(false);
         const [loading, setLoading] = useState<boolean>(false);
         const [miningFeeLoading, setMiningFeeLoading] = useState<boolean>(false);
-        const [miningFee, setMiningFee] = useState<string>('');
         const { userData, isFreeze,walletAddress, refreshUser } = useUserData();
         // const fetchWalletLocally = async() =>{
         //         await refreshUser()
@@ -28,28 +27,26 @@ const CollectCoins = () => {
         // }
         const calculateMiningBonusAndFee = async ()=>{
           setMiningFeeLoading(true)
+          let requiredFee='';
           const {data , error} = await calculateMiningBonusAndFeeApi()
           if(error){
             toast.error(error)
           }
           if(data){
             console.log(data,'calculateMiningBonusAndFeecalculateMiningBonusAndFee')
-            const requiredFee = String(data?.requiredBnbForMiningFee)
-            setMiningFee(requiredFee)
+             requiredFee = String(data?.requiredBnbForMiningFee)
           }
           setMiningFeeLoading(false)
+          return requiredFee
         }
 
-          useEffect(() => {
-            // fetchWalletLocally();
-            calculateMiningBonusAndFee();
-          }, [walletAddress]);
   const handleClaim = async () => {
     try {
       if(!walletAddress) {
         toast.error(Messages?.WAIT_MESSAGE('fetching Wallet Address')); 
         return false;
       }
+    
     if(isFreeze){
       toast.error(Messages?.FREEZE_ACCOUNT)
       return false;
@@ -58,13 +55,14 @@ const CollectCoins = () => {
       toast.error('please wait while fetching mining fee')
       return false;
     }
-    console.log(miningFee,'miningFeeminingFee')
-    if (!miningFee || isNaN(Number(miningFee)) || Number(miningFee) <= 0) {
+    const miningFeeAmount = await calculateMiningBonusAndFee()
+    console.log(miningFeeAmount,'miningFeeAmountminingFeeAmount')
+    if (!miningFeeAmount || isNaN(Number(miningFeeAmount)) || Number(miningFeeAmount) <= 0) {
 
       toast.error('Kindly buy any plan.')
       return false;
     }
-    const { success, message, feeTxHash, userWalletAddress } = await sendPlatformFee( {type:"mining" , miningFee} );
+    const { success, message, feeTxHash, userWalletAddress } = await sendPlatformFee( {type:"mining" , miningFee:miningFeeAmount} );
     if (success===false) {
       toast.error(message || "Payment failed.");
       return false;
