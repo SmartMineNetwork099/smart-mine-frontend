@@ -166,17 +166,17 @@ const StakingPlansTable = () => {
                 plans?.map((row: any, rowIndex: number) => (
                   <tr
                     key={rowIndex}
-                    className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70 text-xs sm:text-sm"
+                    className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70 text-sm"
                   >
                       <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">
                       <Button
                         onClick={() => handleModelOpen(row)}
                         disabled={row?.status === 'active' && row?.isPurchased === true || loadingBuy}
-                        className={`px-3 text-[10px] sm:text-sm rounded-md ${
+                        className={`px-3 text-sm rounded-md ${
                           row?.status === 'active' && row?.isPurchased === true || loadingBuy
                             ? 'cursor-not-allowed opacity-40'
                             : 'cursor-pointer'
-                        } bg-green-500 text-black font-bold border-0`}
+                        } bg-green-500 text-black font-extrabold border-0`}
                       >
                         Buy {row?.investment} $
                       </Button>
@@ -185,7 +185,7 @@ const StakingPlansTable = () => {
                     <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap text-red-500 "> {formatAmount(row?.lossAmount)} $</td>
                     <td className="">
                       <span
-                        className={`px-1 py-1 text-white rounded-full text-[10px] sm:text-xs font-semibold ${
+                        className={`px-2 py-2 text-black rounded-md text-sm font-bold sm:font-extrabold ${
                           row?.status === 'active' && row?.isPurchased === true
                             ? 'bg-green-500'
                             : 'bg-red-500'
