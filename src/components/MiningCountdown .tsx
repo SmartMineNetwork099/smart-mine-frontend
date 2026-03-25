@@ -218,7 +218,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
         </svg>
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-xl sm:text-3xl font-bold">
-          <p className={`text-white ${status === "active" ? "bg-green-500" : "bg-red-500"} text-sm sm:text-base px-2 py-0.5 mb-3 sm:mb-6 rounded`}>
+          <p className={`text-black ${status === "active" ? "bg-green-500" : "bg-red-500"} text-base px-3 py-1 mb-3 sm:mb-6 rounded`}>
             {status === "active" ? "active" : "inActive"}
           </p>
           {loading ? (
