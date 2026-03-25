@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import moment from "moment-timezone";
 import { toast } from "react-toastify";
-import { formatTime, normalizeWalletAddress } from "@/utils/func";
+import { formatAmountTo8, formatTime, normalizeWalletAddress } from "@/utils/func";
 import { MiningTimeApi } from "@/apis/mining";
 import Messages from "@/constants/messages";
 import { useUserData } from "@/hooks/useUserData";
@@ -226,8 +226,8 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
           ) : (
             <p className="text-center text-black">{formatTime(timeLeft)}</p>
           )}
-          <div className="mt-3 sm:mt-6">
-           <Button className={`w-full bg-green-500 cursor-pointer border-0 font-bold sm:text-xl`}>Claim ${userData?.wallet?.collectableBonus || 0}</Button>
+          <div className="mt-1 sm:mt-6">
+           <Button className={`w-full text-black cursor-pointer border-0 font-bold sm:text-xl`}>Claim ${formatAmountTo8(userData?.wallet?.collectableBonus) || 0}</Button>
          </div>
 
         </div>

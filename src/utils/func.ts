@@ -11,7 +11,7 @@ export const formatTime = (seconds: number) => {
   return `${hrs > 0 ? `${String(hrs).padStart(2, "0")}h : ` : ""}${String(mins).padStart(2, "0")}m : ${String(secs).padStart(2, "0")}s`;
 };
 
-export const formatAmount = (value) => {
+export const formatAmount = (value:any) => {
   if (value === null || value === undefined) return "0";
 
   const str = String(value);
@@ -28,6 +28,29 @@ export const formatAmount = (value) => {
 
     // jitne decimals thay (max 4 tak)
     const limited = decimals.slice(0, 4);
+
+    return `${Math.trunc(num)}.${limited}`;
+  }
+
+  return num.toString();
+};
+export const formatAmountTo8 = (value:any) => {
+  if (value === null || value === undefined) return "0";
+
+  const str = String(value);
+
+  let num = Number(str);
+  if (!Number.isFinite(num) || num < 0) return "0";
+
+  // truncate to 4 decimals
+  num = Math.trunc(num * 100000000) / 100000000;
+
+  // agar original me decimal tha to preserve karo
+  if (str.includes(".")) {
+    const decimals = str.split(".")[1];
+
+    // jitne decimals thay (max 8 tak)
+    const limited = decimals.slice(0, 8);
 
     return `${Math.trunc(num)}.${limited}`;
   }
