@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import HashLoader from 'react-spinners/HashLoader';
 import Pagination2 from "@/components/Pagination2";
+import { formatAmount } from '@/utils/func';
 
 
 const ViewHistoryTable = ({data=[] ,  loading=true , type='myIncome' , totalPaginationPages=1 , paginationCurrentPage=1 , setPaginationCurrentPage}) => {
@@ -70,7 +71,7 @@ const pageSize = 20; // Assuming 20 items per page
                                 type === 'withdraw' &&  
                                 <td className="p-4">{shortId(his?.to)|| '------'}</td>
                                 }
-                                <td className="p-4">{his?.amount} $</td>
+                                <td className="p-4">{formatAmount(his?.amount)} $</td>
                                 <td className={`p-4 ${his?.action==='debit' ? 'text-red-500' : 'text-green-500'}`}>{his?.action}</td>
                                 {
                                 type === 'myIncome' &&  

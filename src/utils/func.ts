@@ -11,19 +11,28 @@ export const formatTime = (seconds: number) => {
   return `${hrs > 0 ? `${String(hrs).padStart(2, "0")}h : ` : ""}${String(mins).padStart(2, "0")}m : ${String(secs).padStart(2, "0")}s`;
 };
 
-export const formatAmount = (value: any) => {
-  // Step 1: Handle undefined / null / NaN
-  let num = Number(value ?? 0);
-  if (!Number.isFinite(num)) num = 0;
+export const formatAmount = (value) => {
+  if (value === null || value === undefined) return "0";
 
-  // Step 2: Remove negative values
-  if (num < 0) num = 0;
+  const str = String(value);
 
-  // Step 3: Truncate (not round) to 4 decimals
+  let num = Number(str);
+  if (!Number.isFinite(num) || num < 0) return "0";
+
+  // truncate to 4 decimals
   num = Math.trunc(num * 10000) / 10000;
 
-  // Step 4: Always return string with 4 decimals
-  return num.toFixed(4);
+  // agar original me decimal tha to preserve karo
+  if (str.includes(".")) {
+    const decimals = str.split(".")[1];
+
+    // jitne decimals thay (max 4 tak)
+    const limited = decimals.slice(0, 4);
+
+    return `${Math.trunc(num)}.${limited}`;
+  }
+
+  return num.toString();
 };
 
  export const formatWalletAddress = (addr: any) => {
