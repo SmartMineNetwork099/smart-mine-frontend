@@ -31,7 +31,7 @@ const pageSize = 20; // Assuming 20 items per page
  
     return (
         <>
-            <div className="overflow-auto w-full max-h-[300px] md:max-h-[500px] border border-red-500 rounded-lg scrollbar-hidden">
+            <div className="overflow-auto w-full max-h-[500px] border border-red-500 rounded-lg scrollbar-hidden">
                 <table className="table-fixed min-w-[600px] sm:min-w-[900px] w-full text-sm">
                     <thead className="sticky top-0 z-10 bg-green-500 text-black">
                         <tr className="bg-green-500 text-black font-bold text-center">
