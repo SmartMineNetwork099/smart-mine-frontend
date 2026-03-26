@@ -13,7 +13,6 @@ import { normalizeWalletAddress } from "@/utils/func";
 const tabs = [
   { label: 'My Income',value:'myIncome'  },
   { label: ' Team Income', value:'teamIncome' },
-  { label: 'Loss', value:'loss' },
   { label: 'Withdraw', value:'withdraw' },
 ];
 const Table = () => {
