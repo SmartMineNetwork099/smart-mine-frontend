@@ -17,7 +17,7 @@ const tabs = [
 ];
 const Table = () => {
     const [selectTab , setSelectTab] = useState('myIncome')
-    const [transactions , setTransactions] = useState([])
+    const [transactions , setTransactions] = useState<any>([])
     const [loading , setLoading] = useState(true)
     const [totalPaginationPages , setTotalPaginationPages ] = useState(1);
     const [paginationCurrentPage, setPaginationCurrentPage] = useState <any>(1);
