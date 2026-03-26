@@ -10,6 +10,7 @@ import { Button } from "rizzui/button";
 import { upsertUserData } from "@/db/saveData";
 import { collectBonusApi } from "@/apis/stackingApis";
 import { getUserData } from "@/db/getData";
+import { getUserDataApi } from "@/apis/user";
 
 interface MiningCountdownProps {
   handleClaim?: () => Promise<boolean>;
@@ -25,10 +26,40 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
 }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+  const [walletData, setWalletData] = useState<any>({});
   
-  const { userData,status, isFreeze,walletAddress, refreshUser } = useUserData();
+  
+  const { isFreeze,walletAddress, refreshUser } = useUserData();
 
-  
+
+// ✅ Fetch user data (local first, then server, then upsert local)
+  const handleWalletDataFetch = async () => {
+    if (!walletAddress) return;
+    setLoading2(true)
+
+    try {
+      // 1) Local (IndexedDB) data
+      const localUser:any = await getUserData(walletAddress);
+      if (localUser) {
+        setWalletData(localUser);
+      }
+      setLoading2(false)
+
+      // 2) Server data
+      const res = await getUserDataApi();
+      const user = res?.data?.user || {};
+
+      setWalletData(user);
+      // 3) Upsert local
+      await upsertUserData(walletAddress, user);
+
+    } catch (err) {
+      console.error("Failed to fetch user data:", err);
+      toast.error(Messages?.SOME_THING_WRONG);
+    }
+  };
+
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const nextCycleRef = useRef<string | null>(null);
@@ -109,6 +140,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
 
   useEffect(() => {
     if (!walletAddress) return;
+      handleWalletDataFetch()
       fetchStatus()
   }, [walletAddress]);
 
@@ -144,7 +176,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
 
     if (loading) return;
 
-    if (status === "active") {
+    if (walletData?.status === "active") {
       toast.error("You already mined today. Try again after 12:00 AM reset.");
       return;
     }
@@ -188,8 +220,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
   ////////////////////////////////////////
 
 
-  const isDisabled = miningFeeLoading || loading || status === "active";
-  console.log(userData,'userDatauserDatauserDatauserData')
+  const isDisabled = miningFeeLoading || loading || walletData?.status === "active";
 
   return (
     <div className="flex flex-col items-center space-y-4">
@@ -218,8 +249,8 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
         </svg>
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-xl sm:text-3xl font-bold">
-          <p className={`text-black ${status === "active" ? "bg-green-500" : "bg-red-500"} text-base px-3 py-1 mb-3 sm:mb-6 rounded`}>
-            {status === "active" ? "active" : "inActive"}
+          <p className={`text-black ${walletData?.status === "active" ? "bg-green-500" : "bg-red-500"} text-base px-3 py-1 mb-3 sm:mb-6 rounded`}>
+            {walletData?.status === "active" ? "active" : "inActive"}
           </p>
           {loading ? (
             <span className="text-green-600">Processing...</span>
@@ -227,7 +258,9 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
             <p className="text-center text-black">{formatTime(timeLeft)}</p>
           )}
           <div className="mt-1 sm:mt-6">
-           <Button className={`w-full text-black cursor-pointer border-0 font-bold text-sm sm:text-xl ${Number(formatAmountTo8(userData?.wallet?.collectableBonus)) <= 0 ? "bg-green-300 px-5" : "bg-green-500"}`}>${formatAmountTo8(userData?.wallet?.collectableBonus) || 0} </Button>
+            {!loading2 &&
+           <Button className={`w-full text-black cursor-pointer border-0 font-bold text-sm sm:text-xl ${Number(formatAmountTo8(walletData?.wallet?.collectableBonus)) <= 0 ? "bg-green-300 px-5" : "bg-green-500"}`}> ${formatAmountTo8(walletData?.wallet?.collectableBonus) || 0} </Button>
+            }
          </div>
 
         </div>
