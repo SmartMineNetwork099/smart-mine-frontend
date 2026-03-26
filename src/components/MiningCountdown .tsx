@@ -191,6 +191,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
      detail: { walletAddress },
       })
       );
+      handleWalletDataFetch()
       //////////////////////////////////////////
      
         const {data , error} = await collectBonusApi();
