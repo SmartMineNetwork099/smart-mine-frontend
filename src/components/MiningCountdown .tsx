@@ -227,7 +227,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
             <p className="text-center text-black">{formatTime(timeLeft)}</p>
           )}
           <div className="mt-1 sm:mt-6">
-           <Button className={`w-full text-black bg-green-500 cursor-pointer border-0 font-bold text-sm sm:text-xl`}>Claim ${formatAmountTo8(userData?.wallet?.collectableBonus) || 0} </Button>
+           <Button className={`w-full text-black cursor-pointer border-0 font-bold text-sm sm:text-xl ${Number(formatAmountTo8(userData?.wallet?.collectableBonus)) <= 0 ? "bg-green-300 px-5" : "bg-green-500"}`}>${formatAmountTo8(userData?.wallet?.collectableBonus) || 0} </Button>
          </div>
 
         </div>
