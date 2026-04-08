@@ -148,7 +148,7 @@ const StakingPlansTable = () => {
             <thead className="sticky top-0 z-10">
               <tr className="bg-green-500 text-black font-bold text-xs sm:text-base text-center">
                 <th className="px-2 sm:px-4 py-2 w-[25%]">Action</th>
-                <th className="px-2 sm:px-4 py-2 w-[25%] text-end">Earn 3x</th>
+                <th className="px-2 sm:px-4 py-2 w-[25%] text-end">Earn 2x</th>
                 <th className="px-2 sm:px-4 py-2 w-[25%] text-end">Loss</th>
                 <th className="px-2 sm:px-4 py-2 w-[25%]">Status</th>
               </tr>
