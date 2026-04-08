@@ -46,6 +46,7 @@ const WalletData = () => {
   const [walletData, setWalletData] = useState<WalletDataType>({});
   const [isMobile, setIsMobile] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copiedWalletAddress, setCopiedWalletAddress] = useState(false);
   
 
   // ✅ avatar icon state
@@ -196,6 +197,11 @@ const WalletData = () => {
         setCopied(true);
         setTimeout(() => setCopied(false), 1500); // Auto hide after 1.5s
     };
+  const handleCopyWalletAddress = () => {
+        navigator.clipboard.writeText(walletData?.walletAddress);
+        setCopiedWalletAddress(true);
+        setTimeout(() => setCopiedWalletAddress(false), 1500); // Auto hide after 1.5s
+    };
 console.log(walletData,'walletDatawalletDatawalletData')
   return (
     <Card className="flex flex-col flex-grow">
@@ -214,7 +220,7 @@ console.log(walletData,'walletDatawalletDatawalletData')
           {/* User Info */}
           <div className="text-[10px] sm:text-sm text-gray-300 flex flex-col justify-center  w-full">
             <p className="relative flex items-center gap-2  w-full">
-               <span>User ID: {walletData?.userId}</span>
+               <span>User ID : {walletData?.userId}</span>
                {/* Copy Button + Tooltip */}
                               <span
                                   className='cursor-pointer flex items-center justify-center text-white relative '
@@ -233,10 +239,26 @@ console.log(walletData,'walletDatawalletDatawalletData')
                               </span>
             </p>
             <p>
-              Refer By: <span>{walletData?.referredBy || "-"}</span>
+              Refer By : <span>{walletData?.referredBy || "-"}</span>
             </p>
-            <p>
-              Address: <span>{displayAddress}</span>
+            <p className="relative flex items-center gap-2  w-full">
+               <span>Address : {displayAddress}</span>
+                {/* Copy Button + Tooltip */}
+                              <span
+                                  className='cursor-pointer flex items-center justify-center text-white relative '
+                                  onClick={handleCopyWalletAddress}
+                              >
+                                  <span className=''>
+                                  {copiedWalletAddress ? <LuCopyCheck /> : <LuCopy />}
+                                  </span>
+              
+                                  {/* ✅ Custom Tooltip */}
+                                  {copiedWalletAddress && (
+                                      <span className="absolute -top-8 bg-gray-700 text-white text-xs px-2 py-1 rounded shadow-md">
+                                          Copied!
+                                      </span>
+                                   )} 
+                              </span>
             </p>
           </div>
         </div>
