@@ -144,13 +144,13 @@ const StakingPlansTable = () => {
           Plans <span className="text-green-500">Summery</span>
         </p>
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden mt-4">
-          <table className="min-w-[400px] w-full text-sm border-collapse">
+          <table className="min-w-[360px] w-full text-sm border-collapse">
             <thead className="sticky top-0 z-10">
               <tr className="bg-green-500 text-black font-bold text-xs sm:text-base text-center">
                 <th className="px-2 sm:px-4 py-2 w-[25%]">Action</th>
                 <th className="px-2 sm:px-4 py-2 w-[25%] text-end">Earn 2x</th>
                 <th className="px-2 sm:px-4 py-2 w-[25%] text-end">Loss</th>
-                <th className="px-2 sm:px-4 py-2 w-[25%]">Status</th>
+                <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[25%]">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -166,13 +166,13 @@ const StakingPlansTable = () => {
                 plans?.map((row: any, rowIndex: number) => (
                   <tr
                     key={rowIndex}
-                    className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70 text-sm"
+                    className="text-center text-white bg-neutral-700/5 odd:bg-neutral-700/70 text-xs sm:text-sm"
                   >
                       <td className="px-2 sm:px-4 py-2 whitespace-nowrap ">
                       <Button
                         onClick={() => handleModelOpen(row)}
                         disabled={row?.status === 'active' && row?.isPurchased === true || loadingBuy}
-                        className={`px-3 text-sm rounded-md ${
+                        className={`w-[95px] sm:w-[100px] px-1 rounded-md ${
                           row?.status === 'active' && row?.isPurchased === true || loadingBuy
                             ? 'cursor-not-allowed opacity-40'
                             : 'cursor-pointer'
@@ -185,7 +185,7 @@ const StakingPlansTable = () => {
                     <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap text-red-500 "> {formatAmount(row?.lossAmount)} $</td>
                     <td className="">
                       <span
-                        className={`px-2 py-2 text-black rounded-md text-sm font-bold sm:font-extrabold ${
+                        className={`px-1 sm:px-2 py-2 text-black rounded-md font-bold sm:font-extrabold ${
                           row?.status === 'active' && row?.isPurchased === true
                             ? 'bg-green-500'
                             : 'bg-red-500'
