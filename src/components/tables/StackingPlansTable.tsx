@@ -172,11 +172,11 @@ const StakingPlansTable = () => {
                       <Button
                         onClick={() => handleModelOpen(row)}
                         disabled={row?.status === 'active' && row?.isPurchased === true || loadingBuy}
-                        className={`w-[95px] sm:w-[100px] px-1 rounded-md ${
+                        className={`w-[90px] sm:w-[100px] px-1 rounded-md ${
                           row?.status === 'active' && row?.isPurchased === true || loadingBuy
                             ? 'cursor-not-allowed opacity-40'
                             : 'cursor-pointer'
-                        } bg-green-500 text-black font-extrabold border-0`}
+                        } bg-green-500 text-black font-bold sm:font-extrabold border-0`}
                       >
                         Buy {row?.investment} $
                       </Button>
@@ -184,15 +184,15 @@ const StakingPlansTable = () => {
                     <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap ">{formatAmount(row?.earned)} $ </td>
                     <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap text-red-500 "> {formatAmount(row?.lossAmount)} $</td>
                     <td className="">
-                      <span
-                        className={`px-1 sm:px-2 py-2 text-black rounded-md font-bold sm:font-extrabold ${
+                      <Button
+                        className={`w-[65px] sm:w-[100px] border-0 px-1 py-2 text-black rounded-md font-bold sm:font-extrabold ${
                           row?.status === 'active' && row?.isPurchased === true
                             ? 'bg-green-500'
                             : 'bg-red-500'
                         }`}
                       >
                         {row?.status}
-                      </span>
+                      </Button>
                     </td>
 
                   
