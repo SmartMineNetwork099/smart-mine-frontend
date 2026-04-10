@@ -155,7 +155,7 @@ const WalletData = () => {
     // { name: "Collectable Income", transactions: `${formatAmount(walletData?.wallet?.collectableBonus || 0)} $` },
     { name: "Total Withdraw", transactions: `${formatAmount(walletData?.wallet?.totalWithdraw || 0)} $` },
     // { name: "Share Income", transactions: `${formatAmount(walletData?.wallet?.shareIncome || 0)} $` },
-    { name: "YesterDay Loss", transactions: `${formatAmount(walletData?.wallet?.yesterdayLossIncome || 0)} $` },
+    { name: "Today Loss", transactions: `${formatAmount(walletData?.wallet?.todayLossIncome || 0)} $` },
     { name: "Total Loss", transactions: `${formatAmount(walletData?.wallet?.lossIncome || 0)} $` },
   ];
 
