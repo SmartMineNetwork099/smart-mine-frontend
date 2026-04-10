@@ -416,7 +416,7 @@ const CheckOut = () => {
                 applied on withdrawals.
               </p>
               <p className="mt-1 text-sm text-green-400">
-                Example: Withdraw $20 → Receive $16
+                Example: Withdraw $100 → Receive $80
               </p>
             </div>
 
