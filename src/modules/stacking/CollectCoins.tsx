@@ -84,7 +84,7 @@ const CollectCoins = () => {
        timezone : response?.data?.timezone, 
       }
       await upsertUserData(walletAddress, updatedFields);
-        toast.success(response.data.message);
+        // toast.success(response.data.message);
         await refreshUser();
         window.dispatchEvent(
         new CustomEvent("wallet-updated", {
