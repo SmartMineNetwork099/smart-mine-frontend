@@ -42,7 +42,7 @@ export const formatAmountTo8 = (value:any) => {
   let num = Number(str);
   if (!Number.isFinite(num) || num < 0) return "0";
 
-  // truncate to 4 decimals
+  // truncate to 8 decimals
   num = Math.trunc(num * 100000000) / 100000000;
 
   // agar original me decimal tha to preserve karo

@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import moment from "moment-timezone";
 import { toast } from "react-toastify";
-import { formatAmountTo8, formatTime, normalizeWalletAddress } from "@/utils/func";
+import { formatAmount,  formatTime, normalizeWalletAddress } from "@/utils/func";
 import { MiningTimeApi } from "@/apis/mining";
 import Messages from "@/constants/messages";
 import { useUserData } from "@/hooks/useUserData";
@@ -260,7 +260,7 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
           )}
           <div className="mt-1 sm:mt-6">
             {!loading2 &&
-           <Button className={`w-full text-black cursor-pointer border-0 font-bold text-sm sm:text-xl ${Number(formatAmountTo8(walletData?.wallet?.collectableBonus)) <= 0 ? "bg-green-300 px-5" : "bg-green-500"}`}> ${formatAmountTo8(walletData?.wallet?.collectableBonus) || 0} </Button>
+           <Button className={`w-full text-black cursor-pointer border-0 font-bold text-sm sm:text-xl ${Number(formatAmount(walletData?.wallet?.collectableBonus)) <= 0 ? "bg-green-300 px-5" : "bg-green-500"}`}> ${formatAmount(walletData?.wallet?.collectableBonus) || 0} </Button>
             }
          </div>
 
