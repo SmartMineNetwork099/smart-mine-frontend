@@ -241,9 +241,8 @@ console.log(walletData,'walletDatawalletDatawalletData')
             <p>
               Refer By : <span>{walletData?.referredBy || "-"}</span>
             </p>
-            <p className="relative flex items-center gap-2  w-full">
+            {/* <p className="relative flex items-center gap-2  w-full">
                <span>Address : {displayAddress}</span>
-                {/* Copy Button + Tooltip */}
                               <span
                                   className='cursor-pointer flex items-center justify-center text-white relative '
                                   onClick={handleCopyWalletAddress}
@@ -252,14 +251,14 @@ console.log(walletData,'walletDatawalletDatawalletData')
                                   {copiedWalletAddress ? <LuCopyCheck /> : <LuCopy />}
                                   </span>
               
-                                  {/* ✅ Custom Tooltip */}
+                                 
                                   {copiedWalletAddress && (
                                       <span className="absolute -top-8 bg-gray-700 text-white text-xs px-2 py-1 rounded shadow-md">
                                           Copied!
                                       </span>
                                    )} 
                               </span>
-            </p>
+            </p> */}
           </div>
         </div>
 
