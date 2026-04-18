@@ -38,7 +38,7 @@ export const formatAmountTo8 = (value:any) => {
   if (value === null || value === undefined) return "0";
 
   const str = String(value);
-
+ 
   let num = Number(str);
   if (!Number.isFinite(num) || num < 0) return "0";
 
