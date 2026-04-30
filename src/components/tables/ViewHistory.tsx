@@ -71,7 +71,7 @@ const pageSize = 20; // Assuming 20 items per page
                                 type === 'withdraw' &&  
                                 <td className="p-4">{shortId(his?.to)|| '------'}</td>
                                 }
-                                <td className="p-4">{formatAmount(his?.amount)} $</td>
+                                <td className="p-4">${formatAmount(his?.amount)}</td>
                                 <td className={`p-4 ${his?.action==='debit' ? 'text-red-500' : 'text-green-500'}`}>{his?.action}</td>
                                 {
                                 type === 'myIncome' &&  
