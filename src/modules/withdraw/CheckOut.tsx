@@ -408,7 +408,7 @@ const CheckOut = () => {
               <div className="mb-2 flex items-center gap-2 text-amber-300">
                 <FiArrowUpRight size={16} />
                 <span className="text-xs font-medium uppercase tracking-wider">
-                 Max Withdrawal $ {MAXIMUM_WITHDRAW_INCOME}
+                 Max Withdrawal ${MAXIMUM_WITHDRAW_INCOME}
                 </span>
               </div>
               <p className="text-sm text-gray-300">
@@ -424,7 +424,7 @@ const CheckOut = () => {
               <div className="mb-2 flex items-center gap-2 text-cyan-300">
                 <FiSend size={16} />
                 <span className="text-xs font-medium uppercase tracking-wider">
-                  Max Transfer $ {MAXIMUM_SHARE_INCOME}
+                  Max Transfer ${MAXIMUM_SHARE_INCOME}
                 </span>
               </div>
               <p className="text-sm text-gray-300">

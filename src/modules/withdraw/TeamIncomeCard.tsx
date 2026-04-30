@@ -88,7 +88,7 @@ const TeamIncomeCard = ({ teamIncome, loadingBalance, onWithdraw, onSend }: Prop
           <p className="text-white text-base sm:text-xl">
             Team Income :{" "}
             <span className={`text-xl font-black ${teamIncome <= 0 ? "text-red-500" : "text-green-500"}`}>
-              $ {loadingBalance ? "Loading..." : teamIncome.toLocaleString()}
+              ${loadingBalance ? "Loading..." : teamIncome.toLocaleString()}
             </span>
           </p>
 

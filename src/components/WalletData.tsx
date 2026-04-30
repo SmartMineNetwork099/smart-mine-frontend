@@ -149,14 +149,14 @@ const WalletData = () => {
     : "";
 
   const walletInfo = [
-    { name: "Today Income", transactions: `${formatAmount(walletData?.wallet?.todayIncome || 0)} $` },
-    { name: "Total Income", transactions: `${formatAmount(walletData?.wallet?.totalEarning || 0)} $` },
-    { name: "Today Commission", transactions: `${formatAmount(walletData?.wallet?.todayTeamCommision || 0)} $` },
-    // { name: "Collectable Income", transactions: `${formatAmount(walletData?.wallet?.collectableBonus || 0)} $` },
-    { name: "Total Withdraw", transactions: `${formatAmount(walletData?.wallet?.totalWithdraw || 0)} $` },
-    // { name: "Share Income", transactions: `${formatAmount(walletData?.wallet?.shareIncome || 0)} $` },
-    { name: "Today Loss", transactions: `${formatAmount(walletData?.wallet?.todayLossIncome || 0)} $` },
-    { name: "Total Loss", transactions: `${formatAmount(walletData?.wallet?.lossIncome || 0)} $` },
+    { name: "Today Staking Income", transactions: `$${formatAmount(walletData?.wallet?.todayIncome || 0)}` },
+    { name: "Total Income", transactions: `$${formatAmount(walletData?.wallet?.totalEarning || 0)}` },
+    { name: "Today Team Commission", transactions: `$${formatAmount(walletData?.wallet?.todayTeamCommision || 0)}` },
+    // { name: "Collectable Income", transactions: `$${formatAmount(walletData?.wallet?.collectableBonus || 0)}` },
+    { name: "Total Withdraw", transactions: `$${formatAmount(walletData?.wallet?.totalWithdraw || 0)}` },
+    // { name: "Share Income", transactions: `$${formatAmount(walletData?.wallet?.shareIncome || 0)}` },
+    { name: "Today Loss", transactions: `$${formatAmount(walletData?.wallet?.todayLossIncome || 0)}` },
+    { name: "Total Loss", transactions: `$${formatAmount(walletData?.wallet?.lossIncome || 0)}` },
   ];
 
   // ✅ Icon select handler: save locally + (optional) server

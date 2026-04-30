@@ -68,7 +68,7 @@ const ShareIncomeCard = ({ shareIncome, loadingBalance, onSend }: Props) => {
           <p className="text-white text-base sm:text-xl">
             Share Income :{" "}
             <span className={`text-xl font-black ${shareIncome <= 0 ? "text-red-500" : "text-green-500"}`}>
-              $ {loadingBalance ? "Loading..." : shareIncome.toLocaleString()}
+              ${loadingBalance ? "Loading..." : shareIncome.toLocaleString()}
             </span>
           </p>
 

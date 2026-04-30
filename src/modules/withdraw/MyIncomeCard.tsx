@@ -96,7 +96,7 @@ const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) =
           <p className="text-white text-base sm:text-xl">
             My Income :{" "}
             <span className={`text-xl font-black ${myIncome <= 0 ? "text-red-500" : "text-green-500"}`}>
-              $ {loadingBalance ? "Loading..." : myIncome.toLocaleString()}
+              ${loadingBalance ? "Loading..." : myIncome.toLocaleString()}
             </span>
           </p>
 

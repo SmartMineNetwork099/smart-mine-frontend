@@ -178,11 +178,11 @@ const StakingPlansTable = () => {
                             : 'cursor-pointer'
                         } bg-green-500 text-black font-bold sm:font-extrabold border-0`}
                       >
-                        Buy {row?.investment} $
+                        Buy ${row?.investment}
                       </Button>
                     </td>
-                    <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap ">{formatAmount(row?.earned)} $ </td>
-                    <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap text-red-500 "> {formatAmount(row?.lossAmount)} $</td>
+                    <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap ">${formatAmount(row?.earned)} </td>
+                    <td className="px-2 sm:px-4 py-2 text-end whitespace-nowrap text-red-500 "> ${formatAmount(row?.lossAmount)}</td>
                     <td className="">
                       <Button
                         className={`w-[65px] sm:w-[100px] border-0 px-1 py-2 text-black rounded-md font-bold sm:font-extrabold ${
