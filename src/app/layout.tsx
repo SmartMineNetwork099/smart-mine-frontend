@@ -72,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         }
         return;
       }
-
+ 
       if (isProtectedRoute && !isLoginPage) {
         router.replace(ROUTES?.AUTH?.LOGIN);
       }
