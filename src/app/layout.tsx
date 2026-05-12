@@ -151,6 +151,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     };
 
   const showHeader = pathname.includes('stacking/dashboard');
+  const showWallet = pathname.includes('stacking');
 
   const isNotGamingPage = !(pathname.includes('/gaming'));
   const isBinaryPage = pathname.includes('/binary');
@@ -170,20 +171,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Tab tabs={tabs} style='min-w-20 sm:w-32' onTabChange={handleTabClick} defaultTab={ROUTES?.STACKING?.DASHBOARD} />
               </div>
 
-             {isNotGamingPage && (
-                <>
+              {isBinaryPage && (
+                <div className="w-full p-4">
+                  <Tab tabs={tabs2} style='min-w-40 sm:min-w-44' onTabChange={handleTabClick} defaultTab={ROUTES?.BINARY?.DASHBOARD} />
+                </div>
+              )}
 
+             {showWallet && (
+                <>
                   <div className="w-full px-3">
                     <WalletData />
                   </div>
                 </>
               )}
 
-              {isBinaryPage && (
-                <div className="w-full p-4">
-                  <Tab tabs={tabs2} style='min-w-40 sm:min-w-44' onTabChange={handleTabClick} defaultTab={ROUTES?.BINARY?.DASHBOARD} />
-                </div>
-              )}
 
               
             </>
