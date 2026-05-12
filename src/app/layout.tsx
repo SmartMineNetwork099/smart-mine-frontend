@@ -5,6 +5,7 @@ import './globals.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { usePathname, useRouter } from 'next/navigation';
+import Tab from '@/components/Tab';
 import WalletData from '@/components/WalletData';
 import { useWalletAddress } from '@/hooks/useWallet';
 import { silentLogin } from '@/apis/auth';
@@ -16,8 +17,25 @@ import {
   getAccessToken,
   getAccessTokenWallet,
 } from '@/utils/authSession';
+import { LiaDonateSolid } from 'react-icons/lia';
+import { RiDashboardHorizontalLine } from 'react-icons/ri';
+import { MdOutlineInfo } from 'react-icons/md';
+import { TbBinaryTree } from "react-icons/tb";
+import { IoGameControllerOutline } from "react-icons/io5";
+
+
 
 const protectedPrefixes = ['/stacking', '/binary', '/withdraw', '/history', '/gaming'];
+const tabs = [
+  { label: 'Stacking', icon: LiaDonateSolid, value: ROUTES?.STACKING?.DASHBOARD },
+  { label: 'Binary', icon: TbBinaryTree, value: ROUTES?.BINARY?.DASHBOARD },
+  { label: 'Gaming', icon: IoGameControllerOutline, value: ROUTES?.GAMING?.HOME },
+];
+const tabs2 = [
+  { label: 'Dashboard', icon: RiDashboardHorizontalLine, value: ROUTES?.BINARY?.DASHBOARD },
+  { label: 'Community Tree', icon: TbBinaryTree, value: ROUTES?.BINARY?.COMMUNITY_TREE },
+  { label: 'Community Info', icon: MdOutlineInfo, value: ROUTES?.BINARY?.COMMUNITY_INFO },
+];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const walletAddress = useWalletAddress();
@@ -72,7 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         }
         return;
       }
- 
+
       if (isProtectedRoute && !isLoginPage) {
         router.replace(ROUTES?.AUTH?.LOGIN);
       }
@@ -119,6 +137,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       ethereum.on('accountsChanged', handleAccountsChanged);
     }
 
+
+    
     return () => {
       cancelled = true;
       if (ethereum) {
@@ -126,22 +146,48 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       }
     };
   }, [pathname, router, walletAddress]);
+   const handleTabClick = (link?: string ) => {
+         router.push(link||'')
+    };
 
   const showHeader = pathname.includes('stacking/dashboard');
+
+  const isNotGamingPage = !(pathname.includes('/gaming'));
+  const isBinaryPage = pathname.includes('/binary');
+  console.log(isBinaryPage,'isBinaryPageisBinaryPageisBinaryPage')
+
+
 
   return (
     <html lang="en">
       <body className="bg-gray-200">
         <div className='fixed-bg w-full min-h-screen'>
-          {showHeader && (
+          {/* {showHeader && ( */}
             <>
               <Header />
 
-              <div className="w-full px-3">
-                <WalletData />
+               <div className="w-full p-4">
+                <Tab tabs={tabs} style='min-w-20 sm:w-32' onTabChange={handleTabClick} defaultTab={ROUTES?.STACKING?.DASHBOARD} />
               </div>
+
+             {isNotGamingPage && (
+                <>
+
+                  <div className="w-full px-3">
+                    <WalletData />
+                  </div>
+                </>
+              )}
+
+              {isBinaryPage && (
+                <div className="w-full p-4">
+                  <Tab tabs={tabs2} style='min-w-40 sm:min-w-44' onTabChange={handleTabClick} defaultTab={ROUTES?.BINARY?.DASHBOARD} />
+                </div>
+              )}
+
+              
             </>
-          )}
+           {/* )} */}
 
           <main className="p-3">
             {children}
