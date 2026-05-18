@@ -151,6 +151,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     };
 
   const showHeader = pathname.includes('stacking/dashboard');
+  const notshowHeader = pathname.includes('auth');
   const showWallet = pathname.includes('stacking');
 
   const isNotGamingPage = !(pathname.includes('/gaming'));
@@ -163,7 +164,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="bg-gray-200">
         <div className='fixed-bg w-full min-h-screen'>
-          {/* {showHeader && ( */}
+          {!notshowHeader && ( 
             <>
               <Header />
 
@@ -188,7 +189,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
               
             </>
-           {/* )} */}
+            )} 
 
           <main className="p-3">
             {children}
