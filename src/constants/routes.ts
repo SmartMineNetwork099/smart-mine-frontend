@@ -9,6 +9,7 @@ const ROUTES = {
         DASHBOARD: "/binary/dashboard",
         MY_IDS: "/binary/myIds",
         COMMUNITY_TREE: "/binary/communityTree",
+        LEVEL_TREE: "/userBinary/levelTree",
         COMMUNITY_INFO: "/binary/communityInfo",
     },
     GAMING: {

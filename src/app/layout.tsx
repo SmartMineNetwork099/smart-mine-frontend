@@ -34,6 +34,7 @@ const tabs = [
 const tabs2 = [
   { label: 'Dashboard', icon: RiDashboardHorizontalLine, value: ROUTES?.BINARY?.DASHBOARD },
   { label: 'Community Tree', icon: TbBinaryTree, value: ROUTES?.BINARY?.COMMUNITY_TREE },
+  { label: 'Level Tree', icon: TbBinaryTree, value: ROUTES?.BINARY?.LEVEL_TREE },
   { label: 'Community Info', icon: MdOutlineInfo, value: ROUTES?.BINARY?.COMMUNITY_INFO },
 ];
 
@@ -155,7 +156,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const showWallet = pathname.includes('stacking');
 
   const isNotGamingPage = !(pathname.includes('/gaming'));
-  const isBinaryPage = pathname.includes('/binary');
+  const isBinaryPage = pathname.includes('/binary' ) || pathname.includes('/userBinary') ;
   console.log(isBinaryPage,'isBinaryPageisBinaryPageisBinaryPage')
 
 

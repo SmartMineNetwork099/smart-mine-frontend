@@ -1,8 +1,7 @@
 import { AxiosError } from "axios";
 import api from "./axios"
 
-export const getuserBinaryTree = async (payload:any) => {
-    console.log(payload, 'payloadpayloadpayloadpayload')
+export const getuserBinaryTree = async () => {
   try {
     const res = await api.get<any>(`/api/userBinary/downline`);
     return { data: res?.data, error: null };
@@ -10,6 +9,32 @@ export const getuserBinaryTree = async (payload:any) => {
     console.error('Error in getBinaryTree:', err);
     return { data: null, error: err.response?.data?.error ?? "Error, try again." };
   }
+};
+
+
+
+export const getUserByID = async (walletAddress : any , nodeID :any) => {
+    console.log(walletAddress , nodeID , 'userIdplanLeveluserIdplanLevelgetBinaryMyIds')
+    try {
+        const res = await api.post<any>(`/api/userBinary/getUserDetailInUserBinaryTree`,{
+            walletAddress , nodeID 
+        },
+    {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+        console.log(res, 'resresres11111232getBinaryMyIdsgetBinaryMyIdsgetBinaryMyIds')
+        if(res?.data?.success){
+        return { data: res?.data?.data , error: null };
+        }else{
+            return { data: null, error:res?.data?.message || "error try again." };
+        }
+    }
+    catch (err) {
+        const error = err as AxiosError<{ message: string }>;
+        return { data: null, error: error.response?.data?.message ?? "error try again." };
+    }
 };
 
 
