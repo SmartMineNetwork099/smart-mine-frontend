@@ -119,7 +119,7 @@ const StakingPlansTable = () => {
         setLoading(true);
     } 
     const plans = await getUserStackingPlans();
-    console.log(plans?.data, 'plans data');
+    console.log(plans?.data, 'stacking_plans_data');
     setPlans(plans?.data || []);
     setLoading(false);
   };

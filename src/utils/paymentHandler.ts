@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { normalizeTxHash } from "@/utils/func";
 
 type SendPlatformFeeArgs = {
-  type: "mining" | "buy_stacking_plan" | "freeze_fee";
+  type: "mining" | "buy_stacking_plan" | "freeze_fee" | "buy_ids";
   planBuyAmount?: string;
   freezeFeeBnb?: string;
   miningFee?:string;
@@ -27,7 +27,7 @@ const ERC20_ABI = [
 ];
 
 export const sendPlatformFee = async ({
-  type, // "mining" | "buy_stacking_plan" | "freeze_fee"
+  type, // "mining" | "buy_stacking_plan" | "freeze_fee" | "buy_ids"
   planBuyAmount,  // "10" | "20" etc (USDT human amount as string)
   freezeFeeBnb,
   miningFee='0',
@@ -199,7 +199,70 @@ export const sendPlatformFee = async ({
         to: COMPANY_RECEIVING_ACCOUNT_ADDRESS,
         value: feeWei,
       });
-    } else {
+    } 
+    
+    
+    // ===============================
+    // 4️⃣ Buy Ids (BNB)
+    // ===============================
+    else if (type === "buy_ids") {
+      const usdtContractAddress = USDT_CONTRACT;
+
+      if (!usdtContractAddress || !ethers.isAddress(usdtContractAddress)) {
+        return { success: false, message: "Invalid USDT contract address." };
+      }
+
+      const BuyIdsAmount = Number(planBuyAmount);
+
+      if (
+        !BuyIdsAmount ||
+        isNaN(Number(BuyIdsAmount)) ||
+        Number(BuyIdsAmount) <= 0
+      ) {
+        return { success: false, message: "Invalid buy IDs amount." };
+      }
+
+      const usdt = new ethers.Contract(usdtContractAddress, ERC20_ABI, signer);
+
+      const decimals = Number(await usdt.decimals());
+
+      const amount = ethers.parseUnits(String(BuyIdsAmount), decimals);
+
+      const userUsdtBalance: bigint = await usdt.balanceOf(userWalletAddress);
+
+      if (userUsdtBalance < amount) {
+        return {
+          success: false,
+          message: "Insufficient USDT balance.",
+        };
+      }
+
+      // estimate gas for ERC20 transfer
+      const gasLimit = await usdt.transfer.estimateGas(
+        COMPANY_RECEIVING_ACCOUNT_ADDRESS,
+        amount,
+      );
+
+      const feeData = await provider.getFeeData();
+      const gasPrice = feeData.gasPrice ?? BigInt(0);
+
+      const gasCost = gasLimit * gasPrice;
+
+      if (userBnbBalance < gasCost) {
+        return {
+          success: false,
+          message:
+            "Insufficient BNB for gas fee. Please add small amount of BNB.",
+        };
+      }
+
+      txResponse = await usdt.transfer(
+        COMPANY_RECEIVING_ACCOUNT_ADDRESS,
+        amount,
+      );
+    }
+    
+    else {
       return { success: false, message: "Invalid payment type." };
     }
 
