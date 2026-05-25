@@ -46,7 +46,7 @@ type Props = {
   onSend: (payload: { amount: number; userId: string; source: string }) => void;
 };
 
-const BinaryIncomeCard = ({ binaryIncome, loadingBalance, onWithdraw, onSend }: Props) => {
+const BinaryIncomeCard = ({ binaryIncome = 0, loadingBalance, onWithdraw, onSend }: Props) => {
   const {
     control,
     handleSubmit,
