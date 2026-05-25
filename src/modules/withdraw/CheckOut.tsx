@@ -18,6 +18,7 @@ import Messages from "@/constants/messages";
 import { MINIMUM_WITHDRAW_INCOME , MAXIMUM_WITHDRAW_INCOME, MINIMUM_SHARE_INCOME, MAXIMUM_SHARE_INCOME} from "@/config/constants";
 import { formatCooldownRemaining, getCooldownRemainingMs } from "@/utils/cooldown";
 import { getUserDataApi } from "@/apis/user";
+import BinaryIncomeCard from "./BinaryIncomeCard";
 
 const CheckOut = () => {
   const router = useRouter();
@@ -136,6 +137,125 @@ const CheckOut = () => {
         );
           handleWalletDataFetch()
   };
+
+
+  const onWithdrawBinaryIncome =async (amount: number, source: string) => {
+  
+    if(loadingBalance) return;
+    if (!walletAddress) return;
+    if (isFreeze) {
+     toast.error(Messages?.FREEZE_ACCOUNT);
+    return;
+    }
+
+    if(roundTo4(amount)>roundTo4(balance?.binaryIncome)){
+      toast.error('insufficient balance')
+      return;
+    }
+    if(roundTo4(amount)<roundTo4(MINIMUM_WITHDRAW_INCOME)){
+      toast.error(`minimum withdraw ${MINIMUM_WITHDRAW_INCOME}`)
+      return;
+    }
+    if(roundTo4(amount)>roundTo4(MAXIMUM_WITHDRAW_INCOME)){
+      toast.error(`maximum withdraw ${MAXIMUM_WITHDRAW_INCOME}`)
+      return;
+    }
+
+
+
+     const withdrawCooldownRemaining = getCooldownRemainingMs(userData?.wallet?.lastWithdrawAt);
+    if (withdrawCooldownRemaining > 0) {
+      toast.error(`Please try again after ${formatCooldownRemaining(withdrawCooldownRemaining)}.`)
+      return;
+    }
+
+
+
+    const payload = {
+      amount,
+      source,
+    }
+    
+    const {data , error} = await withdrawIncomeApi(payload);
+    if(error){
+      toast.error(error)
+    }
+    console.log(data,'datadatacheckout1111')
+      const updatedFields = {
+           wallet : data?.wallet,
+          }
+          await upsertUserData(walletAddress || '', updatedFields);
+          await refreshUser();
+           window.dispatchEvent(
+        new CustomEvent("wallet-updated", {
+         detail: { walletAddress },
+        })
+        );
+          handleWalletDataFetch()
+  };
+
+
+  const onSendBinaryIncome = async({
+    amount,
+    userId,
+    source,
+  }: {
+    amount: number;
+    userId: string;
+    source: string;
+  }) => {
+       if(loadingBalance) return
+       if (!walletAddress) return;
+      if (isFreeze) {
+     toast.error(Messages?.FREEZE_ACCOUNT);
+    return;
+    }
+
+    if(roundTo4(amount)>roundTo4(balance?.binaryIncome)){
+      toast.error('insufficient balance')
+      return;
+    }
+    if(roundTo4(amount)<roundTo4(MINIMUM_SHARE_INCOME)){
+      toast.error(`minimum withdraw ${MINIMUM_SHARE_INCOME}`)
+      return;
+    }
+    if(roundTo4(amount)>roundTo4(MAXIMUM_SHARE_INCOME)){
+      toast.error(`maximum withdraw ${MAXIMUM_SHARE_INCOME}`)
+      return;
+    }
+
+    
+     const shareCooldownRemaining = getCooldownRemainingMs(userData?.wallet?.lastShareAt);
+    if (shareCooldownRemaining > 0) {
+      toast.error(`Please try again after ${formatCooldownRemaining(shareCooldownRemaining)}.`)
+      return;
+    }
+
+
+    const payload = {
+      receiverId:userId,
+      amount,
+      source
+    }
+    const {data , error} = await shareIncomeApi(payload);
+    console.log(data,'datadatacheckout1111')
+      if(error){
+      toast.error(error)
+    }
+    console.log(data,'datadatacheckout1111')
+      const updatedFields = {
+           wallet : data?.wallet,
+          }
+          await upsertUserData(walletAddress || '', updatedFields);
+          await refreshUser();
+           window.dispatchEvent(
+        new CustomEvent("wallet-updated", {
+         detail: { walletAddress },
+        })
+        );
+          handleWalletDataFetch()
+  };
+
 
   const onSendMyIncome = async({
     amount,
@@ -452,6 +572,13 @@ const CheckOut = () => {
           loadingBalance={loadingBalance}
           onWithdraw={onWithdrawMyIncome}
           onSend={onSendMyIncome}
+        />
+
+        <BinaryIncomeCard
+          binaryIncome={balance.binaryIncome}
+          loadingBalance={loadingBalance}
+          onWithdraw={onWithdrawBinaryIncome}
+          onSend={onSendBinaryIncome}
         />
 
         <TeamIncomeCard
