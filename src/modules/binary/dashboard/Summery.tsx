@@ -1,15 +1,24 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TeamStats from '@/components/TeamStats';
+import { getTeamStats } from '@/apis/user';
 
 const Summery = () => {
-    const summeryData = {
-        directTeam: 0,
-        communitySize: 0
-    }
+    const [stats, setStats] = useState<{ directTeam: number; communitySize: number } | null>(null);
+        useEffect(() => {
+         fetchStats();
+        }, []);
+        const fetchStats = async () => {
+            const { data, error } = await getTeamStats();
+            if (error) {
+                console.error(error);
+            } else {
+                setStats(data);
+            }
+        };
     return (
         <>
-            <TeamStats data={summeryData} />
+            <TeamStats data={stats} />
         </>
     );
 };
