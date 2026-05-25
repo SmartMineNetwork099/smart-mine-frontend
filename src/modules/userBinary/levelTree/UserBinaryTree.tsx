@@ -236,7 +236,7 @@ const UserBinaryTree = () => {
     <div className="min-h-screen p-6 flex flex-col items-center">
       <h1 className="text-xl sm:text-2xl text-green-500 font-bold mb-4">Level Tree</h1>
        {/* Search input added */}
-       <div className="mb-3">
+       {/* <div className="mb-3">
     <div className="flex border-2 border-neutral-800 rounded-lg overflow-hidden focus-within:border-green-500">
   <Input
     type="text"
@@ -256,7 +256,7 @@ const UserBinaryTree = () => {
   </button>
 </div>
 
-       </div>
+       </div> */}
 
       {/* Back button shown when there is history to go back to */}
       {historyStack.length > 0 && (
