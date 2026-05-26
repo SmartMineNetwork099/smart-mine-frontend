@@ -158,7 +158,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const isNotGamingPage = !(pathname.includes('/gaming'));
   const isBinaryPage = pathname.includes('/binary' ) || pathname.includes('/userBinary') ;
   console.log(isBinaryPage,'isBinaryPageisBinaryPageisBinaryPage')
-
+ 
 
 
   return (
