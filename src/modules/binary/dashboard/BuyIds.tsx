@@ -165,7 +165,7 @@ const BuyIds: React.FC = () => {
           </Card>
         </div>
       )}
-
+ 
     </div>
   );
 };
