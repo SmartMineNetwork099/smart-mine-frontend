@@ -28,8 +28,8 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
         { label: "InComplete", color: "bg-red-600" },
     ];
 
-   // FILTER LOGIC (run only when currentPage === 10)
-    const filteredData = currentPage === 10 
+   // FILTER LOGIC (run only when currentPage === 15)
+    const filteredData = currentPage === 15 
         ? data?.filter((row) => {
             if (selected === "Complete") return row?.completeUpgraded === true;
             if (selected === "InComplete") return row?.completeUpgraded === false;
@@ -54,8 +54,8 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
         <>
             <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden max-h-[400px] md:max-h-[500px]">
 
-               {/* Show Filters ONLY when currentPage === 10 */}
-                {/* {currentPage === 10 && filteredData?.length>=1 && (
+               {/* Show Filters ONLY when currentPage === 15 */}
+                {/* {currentPage === 15 && filteredData?.length>=1 && (
                     <div className="flex flex-wrap gap-2 my-3">
                         {options.map((opt) => (
                             <Button
@@ -85,7 +85,7 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                             {/* <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[120px] ">Position</th> */}
                             <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[100px]">Level</th>
                             <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[150px] text-end">Income</th>
-                            {/* {currentPage === 10 && 
+                            {/* {currentPage === 15 && 
                             <th className="px-2 sm:px-4 py-2 w-[100px]">Status</th>
                             } */}
                             <th className="px-2 sm:px-4 py-2 w-[70px] sm:w-[160px]">Cumminity Size</th>
@@ -117,7 +117,7 @@ console.log("totalPaginationPagestotalPaginationPages", totalPaginationPages);
                                     {/* <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.position ?? "-"}</td> */}
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.planName ?? 'N/A'}</td>
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-end">{Number(row?.earnedIncome) ?? 0}</td>
-                                     {/* {currentPage === 10 && (
+                                     {/* {currentPage === 15 && (
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
                                         <span
                                             className={`

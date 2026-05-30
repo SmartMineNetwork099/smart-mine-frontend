@@ -52,7 +52,7 @@ const MyIds = () => {
                 My <span className='text-green-500'>IDS <span className='font-black'>({totalNumberOfNodes || 0})</span></span>
             </p>
             <div className='my-2'>
-                <Pagination currentPage={page} onPageChange={setPage} pages={10}/>
+                <Pagination currentPage={page} onPageChange={setPage} pages={15}/>
             </div>
             <BinaryMyIdsTable data={tableData} loading={loading} currentPage={page} totalPaginationPages ={totalPaginationPages } paginationCurrentPage={paginationCurrentPage} setPaginationCurrentPage={setPaginationCurrentPage} totalNumberOfNodesAtCurrentLevel={totalNumberOfNodesAtCurrentLevel}/>
         </div>

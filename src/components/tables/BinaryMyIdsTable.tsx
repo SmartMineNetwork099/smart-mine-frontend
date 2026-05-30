@@ -34,8 +34,8 @@ console.log("data in table", data);
         { label: "InComplete", color: "bg-red-600" },
     ];
 
-   // FILTER LOGIC (run only when currentPage === 10)
-    const filteredData = currentPage === 10 
+   // FILTER LOGIC (run only when currentPage === 15)
+    const filteredData = currentPage === 15 
         ? data?.filter((row) => {
             if (selected === "Complete") return row?.completeUpgraded === true;
             if (selected === "InComplete") return row?.completeUpgraded === false;
@@ -69,8 +69,8 @@ console.log("data in table", data);
         <>
             <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden max-h-[400px] md:max-h-[500px]">
 
-               {/* Show Filters ONLY when currentPage === 10 */}
-                {currentPage === 10 && filteredData?.length>=1 && (
+               {/* Show Filters ONLY when currentPage === 15 */}
+                {currentPage === 15 && filteredData?.length>=1 && (
                     <div className="flex flex-wrap gap-2 my-3">
                         {options.map((opt) => (
                             <Button
@@ -92,7 +92,7 @@ console.log("data in table", data);
 
 
                 {/* Table */}
-                <table className={`${currentPage === 10 ? 'min-w-[520px]' : 'min-w-[450px]'} w-full text-sm border-collaps`}>
+                <table className={`${currentPage === 15 ? 'min-w-[520px]' : 'min-w-[450px]'} w-full text-sm border-collaps`}>
                     <thead className="sticky top-0 z-10 bg-green-500 text-black">
                         <tr className="bg-green-500 text-black text-xs sm:text-base font-bold text-center">
                             <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[100px]">Sno. <span className="font-bold sm:font-extrabold text-white">({totalNumberOfNodesAtCurrentLevel || 0})</span></th>
@@ -101,7 +101,7 @@ console.log("data in table", data);
                             <th className="px-2 sm:px-4 py-2 w-[60px] sm:w-[100px]">Level</th>
                             {/* <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[150px]">Total Income</th> */}
                             <th className="px-2 sm:px-4 py-2 w-[50px] sm:w-[150px]">Net Profit</th>
-                            {currentPage === 10 && 
+                            {currentPage === 15 && 
                             <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[100px]">Status</th>
                             }
                             <th className="px-2 sm:px-4 py-2 w-[80px] sm:w-[160px]">Cumminity Size</th>
@@ -136,7 +136,7 @@ console.log("data in table", data);
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.planName ?? 'N/A'}</td>
                                     {/* <td className={`px-2 sm:px-4 py-2 whitespace-nowrap ${responsiveColspan===2 && 'text-end'}`}>{Number(row?.earnedIncome) ?? 0}$</td> */}
                                     <td className={`px-2 sm:px-4 py-2 whitespace-nowrap ${responsiveColspan===2 && 'text-end'}`}>{Number(row?.netEarnedIncome) ?? 0}$</td>
-                                     {currentPage === 10 && (
+                                     {currentPage === 15 && (
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
                                         <span
                                             className={`

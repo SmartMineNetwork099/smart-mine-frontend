@@ -36,7 +36,7 @@ const MyIdsDetail = ({userID , nodeID , position}) => {
   return (
     <>
       <div className='my-2'>
-        <Pagination currentPage={page} onPageChange={setPage} pages={10}/>
+        <Pagination currentPage={page} onPageChange={setPage} pages={15}/>
       </div>
     <BinaryMyIdsDetailTable data={tableData} loading={loading} totalPaginationPages={totalPaginationPages} paginationCurrentPage={paginationCurrentPage} setPaginationCurrentPage={setPaginationCurrentPage} totalNumberOfNodesAtCurrentLevel={totalNumberOfNodesAtCurrentLevel}/>
     </>

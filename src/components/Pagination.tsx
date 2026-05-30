@@ -10,7 +10,7 @@ interface PaginationProps {
 const Pagination: React.FC<PaginationProps> = ({
     currentPage,
     onPageChange,
-    pages=10,
+    pages=15,
 }) => {
 
     // Dynamically generate array:

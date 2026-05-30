@@ -61,7 +61,7 @@ const YourCommunity = () => {
             </p>
             </div>
             <div className='my-2'>
-                <Pagination currentPage={page} onPageChange={setPage} pages={10}/>
+                <Pagination currentPage={page} onPageChange={setPage} pages={15}/>
             </div>
             <StakingTable data={tableData} loading={loading} paginationCurrentPage={paginationCurrentPage} totalNumberOfNodesAtCurrentLevel={totalNumberOfNodesAtCurrentLevel}/>
             <div>
