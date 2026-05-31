@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import React from 'react'
-// import MYIDS from '@/modules/binary/myIds/index'
+import MYIDS from '@/modules/binary/myIds/index'
 
 const page = () => {
     return (
         <>
-            {/* <MYIDS /> */}
-            <div className='h-screen p-4'>
+            <MYIDS />
+            {/* <div className='h-screen p-4'>
         <Image
           src='/undraw_coming_soon.svg'
           alt='Coming Soon Image'
@@ -15,7 +15,7 @@ const page = () => {
           className='mx-auto'
         />
         <p className="text-white font-semibold text-lg text-center mt-4">Coming Soon</p>
-      </div>
+      </div> */}
         </>
     )
 }
