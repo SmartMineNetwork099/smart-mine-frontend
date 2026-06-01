@@ -135,7 +135,7 @@ console.log("data in table", data);
                                     {/* <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.position ?? "-"}</td> */}
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{row?.planName ?? 'N/A'}</td>
                                     {/* <td className={`px-2 sm:px-4 py-2 whitespace-nowrap ${responsiveColspan===2 && 'text-end'}`}>{Number(row?.earnedIncome) ?? 0}$</td> */}
-                                    <td className={`px-2 sm:px-4 py-2 whitespace-nowrap ${responsiveColspan===2 && 'text-end'}`}>{Number(row?.netEarnedIncome) ?? 0}$</td>
+                                    <td className={`px-2 sm:px-4 py-2 whitespace-nowrap ${responsiveColspan===2 && 'text-end'}`}>{Number(row?.perLevelNetEarnedIncome) ?? 0}$</td>
                                      {currentPage === 15 && (
                                     <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
                                         <span
