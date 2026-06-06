@@ -156,6 +156,7 @@ const WalletData = () => {
     { name: "Binary Level Income", transactions: `$${formatAmount(walletData?.wallet?.binaryLevelIncome || 0)}` },
     { name: "Binary Referral Income", transactions: `$${formatAmount(walletData?.wallet?.binaryReferralIncome || 0)}` },
     { name: "Binary Pending Referral Income", transactions: `$${formatAmount(walletData?.wallet?.pendingBinaryReferralIncome || 0)}` },
+    { name: "Auto Activation Income", transactions: `$${formatAmount(walletData?.wallet?.autoActivationIncome || 0)}` },
     // { name: "Collectable Income", transactions: `$${formatAmount(walletData?.wallet?.collectableBonus || 0)}` },
     { name: "Total Withdraw", transactions: `$${formatAmount(walletData?.wallet?.totalWithdraw || 0)}` },
     // { name: "Share Income", transactions: `$${formatAmount(walletData?.wallet?.shareIncome || 0)}` },
