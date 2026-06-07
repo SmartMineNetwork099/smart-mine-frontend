@@ -26,6 +26,7 @@ const CheckOut = () => {
   const [balance, setBalance] = useState<any>({
     myIncome: 0,
     teamIncome: 0,
+    binaryIncome: 0,
     shareIncome: 0,
   });
   const [loadingBalance, setLoadingBalance] = useState<boolean>(true);
@@ -42,16 +43,19 @@ const CheckOut = () => {
       const localUser: any = userData;
       const my = formatAmount(localUser?.wallet?.myIncome ?? 0);
       const team = formatAmount(localUser?.wallet?.teamIncome ?? 0);
+      const binary = formatAmount(localUser?.wallet?.binaryIncome ?? 0);
       const share = formatAmount(localUser?.wallet?.shareIncome ?? 0);
 
       // setBalance({
       //   myIncome:  10,
       //   teamIncome: 10,
+      //   binaryIncome: 10,
       //   shareIncome:10,
       // });
       setBalance({
         myIncome: my,
         teamIncome: team,
+        binaryIncome: binary,
         shareIncome: share,
       });
 
@@ -61,16 +65,18 @@ const CheckOut = () => {
       const user = res?.data?.user || {};
       const myIncome = formatAmount(user?.wallet?.myIncome ?? 0);
       const teamIncome= formatAmount(user?.wallet?.teamIncome ?? 0);
+      const binaryIncome= formatAmount(user?.wallet?.binaryIncome ?? 0);
       const shareIncome = formatAmount(user?.wallet?.shareIncome ?? 0);
 
        setBalance({
         myIncome: myIncome,
         teamIncome: teamIncome,
+        binaryIncome: binaryIncome,
         shareIncome: shareIncome,
       });
     } catch (err) {
       console.error("Failed to fetch user data:", err);
-      setBalance({ myIncome: 0, teamIncome: 0 , shareIncome: 0 });
+      setBalance({ myIncome: 0, teamIncome: 0 , binaryIncome : 0 , shareIncome: 0 });
     }
   };
 
