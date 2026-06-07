@@ -575,7 +575,7 @@ const CheckOut = () => {
         />
 
         <BinaryIncomeCard
-          binaryIncome={balance.binaryIncome || 0}
+          binaryIncome={balance?.binaryIncome || 0}
           loadingBalance={loadingBalance}
           onWithdraw={onWithdrawBinaryIncome}
           onSend={onSendBinaryIncome}
