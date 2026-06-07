@@ -23,8 +23,9 @@ import {
   FaUserNurse,
   FaUserMd,
 } from "react-icons/fa";
-import { FaUserSecret } from "react-icons/fa6";
+import {  FaUserSecret } from "react-icons/fa6";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";
+import { ImArrowDown } from "react-icons/im";
 
 type WalletDataType = any;
 
@@ -149,19 +150,18 @@ const WalletData = () => {
     : "";
 
   const walletInfo = [
-    { name: "Today Staking Income", transactions: `$${formatAmount(walletData?.wallet?.todayIncome || 0)}` },
-    { name: "Total Income", transactions: `$${formatAmount(walletData?.wallet?.totalEarning || 0)}` },
-    { name: "Today Team Commission", transactions: `$${formatAmount(walletData?.wallet?.todayTeamCommision || 0)}` },
-    { name: "Binary Income", transactions: `$${formatAmount(walletData?.wallet?.binaryIncome || 0)}` },
-    { name: "Total Binary Level Income", transactions: `$${formatAmount(walletData?.wallet?.totalBinaryLevelIncome || 0)}` },
-    { name: "Total Weekly Salery", transactions: `$${formatAmount(walletData?.wallet?.totalBinaryReferralIncome || 0)}` },
+    { name: "Staking Income", transactions: `$${formatAmount(walletData?.wallet?.totalMyIncome || 0)}` , todayTransactions: `$${formatAmount(walletData?.wallet?.todayMyIncome || 0)}` },
+    { name: "Total Income", transactions: `$${formatAmount(walletData?.wallet?.totalEarning || 0)}`   },
+    { name: "Team Commission", transactions: `$${formatAmount(walletData?.wallet?.todayTeamCommision || 0)}`   },
+    { name: "Binary Income", transactions: `$${formatAmount(walletData?.wallet?.totalBinaryIncome || 0)}`  , todayTransactions: `$${formatAmount(walletData?.wallet?.todayBinaryIncome || 0)}` },
+    { name: "Binary Level Income", transactions: `$${formatAmount(walletData?.wallet?.totalBinaryLevelIncome || 0)}`  , todayTransactions: `$${formatAmount(walletData?.wallet?.todayBinaryLevelIncome || 0)}` },
+    { name: "Weekly Salery", transactions: `$${formatAmount(walletData?.wallet?.totalBinaryReferralIncome || 0)}`  , todayTransactions: `$${formatAmount(walletData?.wallet?.todayBinaryReferralIncome || 0)}` },
     // { name: "Binary Pending Referral Income", transactions: `$${formatAmount(walletData?.wallet?.pendingBinaryReferralIncome || 0)}` },
-    { name: "Auto Upgrade Plans", transactions: `$${formatAmount(walletData?.wallet?.autoActivationIncome || 0)}` },
+    { name: "Auto Upgrade Plans", transactions: `$${formatAmount(walletData?.wallet?.autoActivationIncome || 0)}`  },
     // { name: "Collectable Income", transactions: `$${formatAmount(walletData?.wallet?.collectableBonus || 0)}` },
-    { name: "Total Withdraw", transactions: `$${formatAmount(walletData?.wallet?.totalWithdraw || 0)}` },
+    { name: "Total Withdraw", transactions: `$${formatAmount(walletData?.wallet?.totalWithdraw || 0)}`  },
     // { name: "Share Income", transactions: `$${formatAmount(walletData?.wallet?.shareIncome || 0)}` },
-    { name: "Today Loss", transactions: `$${formatAmount(walletData?.wallet?.todayLossIncome || 0)}` },
-    { name: "Total Loss", transactions: `$${formatAmount(walletData?.wallet?.lossIncome || 0)}` },
+    { name: "Total Loss", transactions: `$${formatAmount(walletData?.wallet?.lossIncome || 0)}`  , todayTransactions: `$${formatAmount(walletData?.wallet?.todayLossIncome || 0)}` },
   ];
 
   // ✅ Icon select handler: save locally + (optional) server
@@ -306,14 +306,16 @@ console.log(walletData,'walletDatawalletDatawalletData')
             </div>
           </div> */}
       {/* Wallet Cards */}
-      <div className=" py-2 px-0.5 grid grid-cols-2 lg:grid-cols-4 gap-2 mt-4">
+      <div className=" py-2 px-0.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 mt-4">
         {walletInfo?.map((item, index) => (
           <div
             key={index}
-            className={`flex flex-col justify-between py-3 sm:py-4 px-3 sm:px-2 backdrop-blur-sm ${
+            className={`flex  justify-between py-3 sm:py-4 px-3 sm:px-2 backdrop-blur-sm ${
               item?.name.includes("Loss") ? "bg-red-500" : " "
             } text-white rounded-lg`}
           >
+            <div className="">
+
             <div>
               <p className={`font-bold ${item?.name.includes("Loss") ? "text-black" : "text-gray-300"} text-xs sm:text-base`}>
                 {item?.name}
@@ -328,6 +330,15 @@ console.log(walletData,'walletDatawalletDatawalletData')
                 {item?.transactions}
               </p>
             </div>
+            </div>
+            {
+              item?.todayTransactions && 
+            <div className="flex items-start justify-center gap-2">
+              <ImArrowDown    className="text-green-500" />
+              <p className="text-sm sm:text-base">{item?.todayTransactions}</p>
+
+            </div>
+            }
           </div>
         ))}
       </div>
