@@ -43,8 +43,8 @@ const BuyIds: React.FC = () => {
       return;
     }
       const plans = await getUserStackingPlans();
-      console.log(plans?.data, 'stacking_plans_data');
-      const hasPurchasedAboveLevel1 = plans?.data?.some(
+      console.log(plans?.data?.userPlans, 'stacking_plans_data');
+      const hasPurchasedAboveLevel1 = plans?.data?.userPlans?.some(
        (plan:any) =>
         plan?.level > 1 &&
         plan?.isPurchased === true &&
