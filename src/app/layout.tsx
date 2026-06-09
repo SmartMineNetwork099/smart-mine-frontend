@@ -27,11 +27,11 @@ import { OWNER_Id } from '@/config/constants';
 
 
 
-const protectedPrefixes = ['/stacking', '/binary', '/withdraw', '/history', '/gaming'];
+const protectedPrefixes = ['/stacking', '/binary', '/withdraw', '/history', '/admin'];
 const tabs = [
   { label: 'Stacking', icon: LiaDonateSolid, value: ROUTES?.STACKING?.DASHBOARD },
   { label: 'Binary', icon: TbBinaryTree, value: ROUTES?.BINARY?.DASHBOARD },
-  { label: 'Gaming', icon: IoGameControllerOutline, value: ROUTES?.GAMING?.HOME },
+  { label: 'Admin', icon: IoGameControllerOutline, value: ROUTES?.ADMIN?.HOME },
 ];
 const tabs2 = [
   { label: 'Dashboard', icon: RiDashboardHorizontalLine, value: ROUTES?.BINARY?.DASHBOARD },
@@ -155,17 +155,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
          router.push(link||'')
     };
 
-  const allowedGamingUserId = OWNER_Id;
-  const showGamingTab = userData?.userId?.toString() === allowedGamingUserId;
-  const visibleTabs = tabs.filter((t) => (t.label === 'Gaming' ? showGamingTab : true));
+  const allowedAdminUserId = OWNER_Id?.toString();
+  const showAdminTab = userData?.userId?.toString() === allowedAdminUserId;
+  const visibleTabs = tabs.filter((t) => (t.label === 'Admin' ? showAdminTab : true));
 
   const showHeader = pathname.includes('stacking/dashboard');
   const notshowHeader = pathname.includes('auth');
   const showWallet = pathname.includes('stacking');
 
-  const isNotGamingPage = !(pathname.includes('/gaming'));
+  const isNotAdminPage = !(pathname.includes('/admin'));
   const isBinaryPage = pathname.includes('/binary' ) || pathname.includes('/userBinary') ;
-  console.log(isBinaryPage,'isBinaryPageisBinaryPageisBinaryPage')
  
 
 

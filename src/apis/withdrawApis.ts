@@ -16,9 +16,9 @@ export const withdrawIncomeApi = async (payload:any) => {
         return { data: null, error: error.response?.data?.message ?? "error try again." };
     }
 };
-export const getWalletIncomeStatsApi = async (payload:any) => {
+export const getWalletIncomeStatsApi = async () => {
     try {
-        const res = await api.get<any>(`/api/wallet/getWalletIncomeStats`,payload,);
+        const res = await api.get<any>(`/api/wallet/getWalletIncomeStats`,);
         console.log(res, 'getWalletIncomeSApigetWalletIncomeStatsApi')
         if(res?.data?.success){
         return { data: res?.data , error: null };

@@ -26,6 +26,4 @@ export const FREEZE_FEE_BNB = Number(
 );
 
 
-export const OWNER_Id = Number(
-  process.env.NEXT_PUBLIC_OWNER_ID
-);
+export const OWNER_Id = process.env.NEXT_PUBLIC_OWNER_ID;

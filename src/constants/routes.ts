@@ -12,8 +12,8 @@ const ROUTES = {
         LEVEL_TREE: "/userBinary/levelTree",
         COMMUNITY_INFO: "/binary/communityInfo",
     },
-    GAMING: {
-        HOME: "/gaming",
+    ADMIN: {
+        HOME: "/admin",
     },
     WITHDRAW: {
         HOME: "/withdraw",
