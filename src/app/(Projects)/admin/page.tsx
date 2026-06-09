@@ -1,20 +1,41 @@
+'use client';
 import Image from 'next/image'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Index from '@/modules/admin/index'
+import AdminPasswordModal from '@/components/AdminPasswordModal'
+
 const page = () => {
+    const [isPasswordVerified, setIsPasswordVerified] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+
+    // Show modal on component mount
+    useEffect(() => {
+        setShowModal(true);
+    }, []);
+
+    const handlePasswordVerify = (isCorrect: boolean) => {
+        if (isCorrect) {
+            setIsPasswordVerified(true);
+            setShowModal(false);
+        }
+    };
+
     return (
         <>
-            <Index />
-            {/* <div className='h-screen p-4'>
-        <Image
-          src='/undraw_coming_soon.svg'
-          alt='Coming Soon Image'
-          width={200}
-          height={200}
-          className='mx-auto'
-        />
-        <p className="text-white font-semibold text-lg text-center mt-4">Coming Soon</p>
-      </div> */}
+            {/* Password Modal */}
+            <AdminPasswordModal
+                isOpen={showModal && !isPasswordVerified}
+                onVerify={handlePasswordVerify}
+            />
+
+            {/* Show admin content only if password is verified */}
+            {isPasswordVerified ? (
+                <Index />
+            ) : (
+                <div className='h-screen flex items-center justify-center'>
+                    <p className="text-gray-400 text-lg">Please verify your password to access admin panel</p>
+                </div>
+            )}
         </>
     )
 }
