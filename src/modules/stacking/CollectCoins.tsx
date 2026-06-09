@@ -12,6 +12,7 @@ import { upsertUserData } from "@/db/saveData";
 import { useUserData } from "@/hooks/useUserData";
 import { normalizeTxHash } from "@/utils/func";
 import { sendPlatformFee } from "@/utils/paymentHandler";
+import { roundTo4 } from "@/utils/amount";
 
 const CollectCoins = () => {
           const [collectAbleIncome, setCollectAbleIncome] = useState<boolean>(false);
@@ -169,13 +170,14 @@ const CollectCoins = () => {
       <p className="font-semibold sm:font-bold text-xl sm:text-3xl text-white">
         Claim <span className="text-green-500">Reward</span>
       </p>
+      <p className="font-semibold text-sm sm:text-base text-white text-end">
+        Stacking Amount <span className="ml-1 p-1 rounded-md border-2 border-green-500">{loading ? "Loading..." : `${roundTo4(userStackingInvestments)}`}</span>
+      </p>
 
     {walletAddress ? (
   <MiningCountdown
     handleClaim={handleClaim}
     miningFeeLoading={miningFeeLoading}
-    userStackingInvestments={userStackingInvestments}
-    userStackingInvestmentsLoading={loading}
   />
 ) : <HashLoader/>}
 {/* <div>

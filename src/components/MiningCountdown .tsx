@@ -15,8 +15,6 @@ import { getUserDataApi } from "@/apis/user";
 interface MiningCountdownProps {
   handleClaim?: () => Promise<boolean>;
   miningFeeLoading?:boolean;
-  userStackingInvestments?:any;
-  userStackingInvestmentsLoading?:boolean;
 }
 
 const NEXT_CYCLE_KEY = "nextCycleTime";
@@ -25,8 +23,6 @@ const INDIA_TZ = "Asia/Kolkata";
 const MiningCountdown: React.FC<MiningCountdownProps> = ({
   handleClaim,
   miningFeeLoading,
-  userStackingInvestments,
-  userStackingInvestmentsLoading
 }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -262,13 +258,11 @@ const MiningCountdown: React.FC<MiningCountdownProps> = ({
           ) : (
             <p className="text-center text-black">{formatTime(timeLeft)}</p>
           )}
-          <p className="text-center text-green-500 font-bold">{userStackingInvestmentsLoading ? "Loading..." : `${userStackingInvestments}`}</p>
           <div className="mt-1 sm:mt-2">
             {!loading2 &&
            <Button className={`w-full text-black cursor-pointer border-0 font-bold text-sm sm:text-xl ${Number(formatAmount(walletData?.wallet?.collectableBonus)) <= 0 ? "bg-green-300 px-5" : "bg-green-500"}`}> ${formatAmount(walletData?.wallet?.collectableBonus) || 0} </Button>
             }
          </div>
-
         </div>
       </div>
     </div>

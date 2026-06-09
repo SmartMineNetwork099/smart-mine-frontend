@@ -15,6 +15,7 @@ import { roundTo4 } from "@/utils/amount";
 import { upsertUserData } from "@/db/saveData";
 import { useUserData } from "@/hooks/useUserData";
 import Messages from "@/constants/messages";
+import { getUserDataApi } from "@/apis/user";
 
 const StakingPlansTable = () => {
   const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
@@ -23,6 +24,7 @@ const StakingPlansTable = () => {
   const [loading, setLoading] = useState(true);
   const [loadingBuy, setLoadingBuy] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>({}); // ✅ for dynamic level
+  const [userData, setUserData] = useState<any>({});
   const { isFreeze,walletAddress} = useUserData();
 
 
@@ -137,11 +139,25 @@ const StakingPlansTable = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [walletAddress]);
 
+  const getUserDataFun = async () => {
+        const res = await getUserDataApi();
+        const user = res?.data?.user || {};
+        setUserData(user);
+  }
+
+  useEffect(() => {
+   getUserDataFun()
+  }, []);
+
   return (
     <>
       <Card>
         <p className="font-semibold sm:font-bold text-xl sm:text-3xl text-white">
           Plans <span className="text-green-500">Summery</span>
+        </p>
+        <p className="font-semibold text-white text-sm sm:text-base text-end">
+          Auto Activation Amount
+          <span className="text-green-500 pl-1 border-2 border-green-500 p-1 rounded-md ml-1">{roundTo4(userData?.wallet?.autoActivationIncome || 0)}</span>
         </p>
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden mt-4">
           <table className="min-w-[360px] w-full text-sm border-collapse">
