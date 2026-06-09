@@ -22,7 +22,6 @@ const StakingPlansTable = () => {
   const [plans, setPlans] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingBuy, setLoadingBuy] = useState(false);
-  const [userStackingAmount, setUserStackingAmount] = useState(0);
   const [selectedPlan, setSelectedPlan] = useState<any>({}); // ✅ for dynamic level
   const { isFreeze,walletAddress} = useUserData();
 
@@ -122,22 +121,6 @@ const StakingPlansTable = () => {
     const plans = await getUserStackingPlans();
     console.log(plans?.data, 'stacking_plans_data');
     setPlans(plans?.data?.userPlans || []);
-
-    const totalInvestment =
-  plans?.data?.userPlans
-    ?.filter(
-      (plan:any) => plan?.isPurchased === true && plan?.status === "active"
-    )
-    ?.reduce((sum, plan) => sum + Number(plan?.investment || 0), 0) || 0;
-
-const finalAmount =
-  totalInvestment +
-  (plans?.data?.completeWelcomeBonus === false ? 5 : 0);
-
-console.log("Total Investment:", totalInvestment);
-console.log("Final Amount:", finalAmount);
-
-setUserStackingAmount(finalAmount)
     setLoading(false);
   };
 
@@ -159,7 +142,6 @@ setUserStackingAmount(finalAmount)
       <Card>
         <p className="font-semibold sm:font-bold text-xl sm:text-3xl text-white">
           Plans <span className="text-green-500">Summery</span>
-          <span className="ml-1 text-green-500">({userStackingAmount})</span>
         </p>
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden mt-4">
           <table className="min-w-[360px] w-full text-sm border-collapse">

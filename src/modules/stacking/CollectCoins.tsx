@@ -7,18 +7,19 @@ import Card from "@/components/Card";
 import HashLoader from "@/components/HashLoader";
 import Messages from "@/constants/messages";
 import { Button } from "rizzui/button";
-import { collectBonusApi } from "@/apis/stackingApis";
+import {collectBonusApi, getUserStackingInvestments } from "@/apis/stackingApis";
 import { upsertUserData } from "@/db/saveData";
 import { useUserData } from "@/hooks/useUserData";
 import { normalizeTxHash } from "@/utils/func";
 import { sendPlatformFee } from "@/utils/paymentHandler";
 
 const CollectCoins = () => {
-        const [collectAbleIncome, setCollectAbleIncome] = useState<boolean>(false);
+          const [collectAbleIncome, setCollectAbleIncome] = useState<boolean>(false);
         const [loading, setLoading] = useState<boolean>(false);
         const [miningFeeLoading, setMiningFeeLoading] = useState<boolean>(false);
-        const { userData, isFreeze,walletAddress, refreshUser } = useUserData();
-        // const fetchWalletLocally = async() =>{
+        const [userStackingInvestments, setUserStackingInvestments] = useState<any[]>([]);
+        const {userData, isFreeze,walletAddress, refreshUser } = useUserData();
+       // const fetchWalletLocally = async() =>{
         //         await refreshUser()
         //         if (userData?.wallet?.collectableBonus>0) {
         //         setCollectAbleIncome(true)
@@ -39,7 +40,6 @@ const CollectCoins = () => {
           setMiningFeeLoading(false)
           return requiredFee
         }
-
   const handleClaim = async () => {
     try {
       if(!walletAddress) {
@@ -101,7 +101,7 @@ const CollectCoins = () => {
       return false;
     }
   };
-  // const collectBonus = async () => {
+   // const collectBonus = async () => {
   //   try {
   //     console.log('collect coins')
   //     toast.dismiss()
@@ -142,15 +142,40 @@ const CollectCoins = () => {
   //   }
   // }
 
+
+   const getUserStackingInvestment = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await getUserStackingInvestments();
+      setUserStackingInvestments(data || 0);
+      setLoading(false);
+      console.log(data,'getUserStackingInvestmentgetUserStackingInvestment')
+      if (error) {
+        toast.error(error);
+        setLoading(false);
+        return;
+      }
+    }
+      catch (error: any) {
+        toast.error(error?.message || Messages?.SOME_THING_WRONG);
+      }
+    }
+  useEffect(() => {
+    getUserStackingInvestment()
+  }, [])
+
   return (
     <Card>
       <p className="font-semibold sm:font-bold text-xl sm:text-3xl text-white">
         Claim <span className="text-green-500">Reward</span>
       </p>
+
     {walletAddress ? (
   <MiningCountdown
     handleClaim={handleClaim}
     miningFeeLoading={miningFeeLoading}
+    userStackingInvestments={userStackingInvestments}
+    userStackingInvestmentsLoading={loading}
   />
 ) : <HashLoader/>}
 {/* <div>
