@@ -16,6 +16,7 @@ import { upsertUserData } from "@/db/saveData";
 import { useUserData } from "@/hooks/useUserData";
 import Messages from "@/constants/messages";
 import { getUserDataApi } from "@/apis/user";
+import { getSettingsApi } from "@/apis/settings";
 
 const StakingPlansTable = () => {
   const [responsiveColspan, setResponsiveColspan] = useState<number>(2);
@@ -43,6 +44,21 @@ const StakingPlansTable = () => {
       toast.error(Messages?.FREEZE_ACCOUNT)
       return;
     }
+    const {data , error} = await getSettingsApi();
+        if(error){
+            toast.error(error);
+            setLoading(false);
+            return;
+        }
+        console.log(data, 'getSettingsgetSettingsgetSettings')
+        if(data?.success){
+          console.log(data?.data?.canBuyPlans,'canBuyPlanscanBuyPlanssdfdfd') 
+          if(!data?.data?.canBuyPlans){
+            toast.error("Buying stacking plans is currently disabled");
+            setModelOpen(false);
+            return;
+          }
+        }
 
     try {
       setLoadingBuy(true);

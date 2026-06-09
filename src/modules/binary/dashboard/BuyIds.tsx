@@ -12,6 +12,7 @@ import { buyIds } from "@/apis/binaryApis";
 import { upsertUserData } from "@/db/saveData";
 import { getUserStackingPlans } from "@/apis/stackingApis";
 import SpinnerLoader from "@/components/SpinnerLoader";
+import { getSettingsApi } from "@/apis/settings";
 
 const BuyIds: React.FC = () => {
   const [count, setCount] = useState<number>(0);
@@ -42,6 +43,22 @@ const BuyIds: React.FC = () => {
       setLoading(false);
       return;
     }
+    const {data , error} = await getSettingsApi();
+            if(error){
+                toast.error(error);
+                setLoading(false);
+                return;
+            }
+            console.log(data, 'getSettingsgetSettingsgetSettings')
+            if(data?.success){
+              console.log(data?.data?.canBuyPlans,'canBuyPlanscanBuyPlanssdfdfd') 
+              if(!data?.data?.canBuyPlans){
+                toast.error("Buying stacking plans is currently disabled");
+                setShowConfirm(false);
+                setLoading(false);
+                return;
+              }
+            }
       const plans = await getUserStackingPlans();
       console.log(plans?.data?.userPlans, 'stacking_plans_data');
       const hasPurchasedAboveLevel1 = plans?.data?.userPlans?.some(
