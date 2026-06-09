@@ -91,6 +91,12 @@ const StakingPlansTable = () => {
         feeTxHash,
         paymentSource, // "share_income" or "safepal"
       });
+      console.log(buyPlanApi, 'buyPlanApi1234');
+      if(buyPlanApi?.error){
+        toast.error(buyPlanApi.error);
+        setLoadingBuy(false);
+        return;
+      }
       if(buyPlanApi.data.success)
         {
           toast.success(buyPlanApi.data.message);
@@ -102,7 +108,6 @@ const StakingPlansTable = () => {
         }else{
           toast.error(buyPlanApi.error);
         }
-      console.log(buyPlanApi, 'buyPlanApi');
       // ✅ Reset states after success
       setModelOpen(false);
       setSelectedPlan(null);

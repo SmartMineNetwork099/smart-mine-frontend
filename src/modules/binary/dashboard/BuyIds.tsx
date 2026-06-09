@@ -46,7 +46,6 @@ const BuyIds: React.FC = () => {
       console.log(plans?.data?.userPlans, 'stacking_plans_data');
       const hasPurchasedAboveLevel1 = plans?.data?.userPlans?.some(
        (plan:any) =>
-        plan?.level > 1 &&
         plan?.isPurchased === true &&
         plan?.status === "active"
         );
@@ -108,6 +107,15 @@ const BuyIds: React.FC = () => {
                            feeTxHash,
                            paymentSource, // "share_income" or "safepal"
                          });
+
+                         console.log(buyIdsApi, 'buyIdsApibuyIdsApi')
+                         if(buyIdsApi.error){
+                           toast.error(buyIdsApi.error);
+                           setShowConfirm(false);
+                           setCount(0);
+                           setLoading(false);
+                           return;
+                         }
 
                           if(buyIdsApi.data.success)
                                  {
