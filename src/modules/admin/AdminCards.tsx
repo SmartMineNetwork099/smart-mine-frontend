@@ -5,6 +5,7 @@ import Card from '@/components/Card'
 import { getWalletIncomeStatsApi } from '@/apis/withdrawApis'
 import { formatAmount } from '@/utils/func'
 import { toast } from 'react-toastify'
+import Actions from './Actions'
 const AdminCards = () => {
     const [loading , setLoading] = useState<boolean>(false);
     const [usersData , setUsersData] = useState<any>({});
@@ -27,7 +28,6 @@ const AdminCards = () => {
     walletData();
   }, [])
 
-  console.log(usersData,'usersDatausersDatausersDatadfd')
     const walletInfo = [
       { name: "Total My Income", transactions: `$${formatAmount(usersData?.totalMyIncome || 0)}` },
       { name: "Total Team Income", transactions: `$${formatAmount(usersData?.totalTeamIncome || 0)}`   },
@@ -69,7 +69,12 @@ const AdminCards = () => {
                </div>
              ))}
            </div>
+
+
       </Card>
+<div className='mt-4'>
+<Actions/>
+</div>
     </>
   )
 }
