@@ -156,7 +156,7 @@ const StakingPlansTable = () => {
           Plans <span className="text-green-500">Summery</span>
         </p>
         <p className="font-semibold text-white text-sm sm:text-base text-end">
-          Auto Activation Amount
+          Auto Upgrade Plans
           <span className="text-green-500 pl-1 border-2 border-green-500 p-1 rounded-md ml-1">{roundTo4(userData?.wallet?.autoActivationIncome || 0)}</span>
         </p>
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden mt-4">
