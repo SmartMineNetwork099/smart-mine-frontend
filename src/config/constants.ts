@@ -24,3 +24,8 @@ export const MAXIMUM_SHARE_INCOME = Number(
 export const FREEZE_FEE_BNB = Number(
   process.env.NEXT_PUBLIC_FREEZE_FEE_BNB
 );
+
+
+export const OWNER_Id = Number(
+  process.env.NEXT_PUBLIC_OWNER_ID
+);

@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { usePathname, useRouter } from 'next/navigation';
 import Tab from '@/components/Tab';
 import WalletData from '@/components/WalletData';
+import { useUserData } from '@/hooks/useUserData';
 import { useWalletAddress } from '@/hooks/useWallet';
 import { silentLogin } from '@/apis/auth';
 import { normalizeWalletAddress } from '@/utils/func';
@@ -22,6 +23,7 @@ import { RiDashboardHorizontalLine } from 'react-icons/ri';
 import { MdOutlineInfo } from 'react-icons/md';
 import { TbBinaryTree } from "react-icons/tb";
 import { IoGameControllerOutline } from "react-icons/io5";
+import { OWNER_Id } from '@/config/constants';
 
 
 
@@ -43,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const walletAddress = useWalletAddress();
   const pathname = usePathname();
   const router = useRouter();
+  const { userData } = useUserData();
 
   useEffect(() => {
     const ethereum = typeof window !== 'undefined' ? (window as any).ethereum : null;
@@ -148,9 +151,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       }
     };
   }, [pathname, router, walletAddress]);
-   const handleTabClick = (link?: string ) => {
+  const handleTabClick = (link?: string ) => {
          router.push(link||'')
     };
+
+  const allowedGamingUserId = OWNER_Id;
+  const showGamingTab = userData?.userId?.toString() === allowedGamingUserId;
+  const visibleTabs = tabs.filter((t) => (t.label === 'Gaming' ? showGamingTab : true));
 
   const showHeader = pathname.includes('stacking/dashboard');
   const notshowHeader = pathname.includes('auth');
@@ -171,7 +178,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Header />
 
                <div className="w-full p-4">
-                <Tab tabs={tabs} style='min-w-20 sm:w-32' onTabChange={handleTabClick} defaultTab={ROUTES?.STACKING?.DASHBOARD} />
+                <Tab tabs={visibleTabs} style='min-w-20 sm:w-32' onTabChange={handleTabClick} defaultTab={ROUTES?.STACKING?.DASHBOARD} />
               </div>
 
               {isBinaryPage && (
