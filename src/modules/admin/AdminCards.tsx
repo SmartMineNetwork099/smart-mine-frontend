@@ -32,6 +32,7 @@ const AdminCards = () => {
       { name: "Total My Income", transactions: `$${formatAmount(usersData?.totalMyIncome || 0)}` },
       { name: "Total Team Income", transactions: `$${formatAmount(usersData?.totalTeamIncome || 0)}`   },
       { name: "Total Binary Income", transactions: `$${formatAmount(usersData?.totalBinaryIncome || 0)}`   },
+      { name: "Total Auto Activation", transactions: `$${formatAmount(usersData?.totalAutoActivation || 0)}`   },
     ];
   return (
     <>
