@@ -157,7 +157,7 @@ const WalletData = () => {
     { name: "Binary Level Income", transactions: `$${formatAmount(walletData?.wallet?.totalBinaryLevelIncome || 0)}`  , todayTransactions: `$${formatAmount(walletData?.wallet?.todayBinaryLevelIncome || 0)}` },
     { name: "Weekly Salery", transactions: `$${formatAmount(walletData?.wallet?.totalBinaryReferralIncome || 0)}`  , todayTransactions: `$${formatAmount(walletData?.wallet?.todayBinaryReferralIncome || 0)}` },
     // { name: "Binary Pending Referral Income", transactions: `$${formatAmount(walletData?.wallet?.pendingBinaryReferralIncome || 0)}` },
-    { name: "Auto Upgrade Plans", transactions: `$${formatAmount(walletData?.wallet?.autoActivationIncome || 0)}`  },
+    // { name: "Auto Upgrade Plans", transactions: `$${formatAmount(walletData?.wallet?.autoActivationIncome || 0)}`  },
     // { name: "Collectable Income", transactions: `$${formatAmount(walletData?.wallet?.collectableBonus || 0)}` },
     { name: "Total Withdraw", transactions: `$${formatAmount(walletData?.wallet?.totalWithdraw || 0)}`  },
     // { name: "Share Income", transactions: `$${formatAmount(walletData?.wallet?.shareIncome || 0)}` },
