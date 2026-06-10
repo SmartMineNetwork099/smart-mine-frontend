@@ -1,6 +1,5 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
 import Card from '@/components/Card'
 import { getWalletIncomeStatsApi } from '@/apis/withdrawApis'
 import { formatAmount } from '@/utils/func'

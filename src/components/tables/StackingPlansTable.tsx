@@ -176,10 +176,29 @@ const StakingPlansTable = () => {
         <p className="font-semibold sm:font-bold text-xl sm:text-3xl text-white">
           Plans <span className="text-green-500">Summery</span>
         </p>
-        <p className="font-semibold text-white text-sm sm:text-base text-end">
+        {/* <p className="font-semibold text-white text-sm sm:text-base text-end">
           Auto Upgrade Plans
           <span className="text-green-500 pl-1 border-2 border-green-500 p-1 rounded-md ml-1">{roundTo4(userData?.wallet?.autoActivationIncome || 0)}</span>
-        </p>
+        </p> */}
+        {/* ////////////////////////////////////////////////// */}
+         <div
+                    className={`py-3 sm:py-4 px-3 sm:px-2 mt-2 backdrop-blur-sm text-white rounded-lg w-full sm:w-[49%] `}
+                  >
+        
+                    <div>
+                      <p className={`font-bold text-xs sm:text-base`}>
+                        Auto Upgrade Plans
+                      </p>
+                    </div>
+                    <div className="sm:w-auto">
+                      <p
+                        className={`font-bold text-green-500" rounded-lg text-sm sm:text-base inline sm:block text-green-500`}
+                      >
+                        {roundTo4(userData?.wallet?.autoActivationIncome || 0)}
+                      </p>
+                    </div>
+                    </div>
+        {/* ////////////////////////////////////////////////// */}
         <div className="overflow-x-auto w-full rounded-lg scrollbar-hidden mt-4">
           <table className="min-w-[360px] w-full text-sm border-collapse">
             <thead className="sticky top-0 z-10">
