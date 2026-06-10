@@ -54,7 +54,7 @@ const StakingPlansTable = () => {
         if(data?.success){
           console.log(data?.data?.canBuyPlans,'canBuyPlanscanBuyPlanssdfdfd') 
           if(!data?.data?.canBuyPlans){
-            toast.error("Buying stacking plans is currently disabled");
+            toast.error("This feature is temporarily unavailable due to backend maintenance.");
             setModelOpen(false);
             return;
           }
