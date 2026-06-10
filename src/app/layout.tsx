@@ -30,7 +30,7 @@ import { OWNER_Id } from '@/config/constants';
 const protectedPrefixes = ['/stacking', '/binary', '/withdraw', '/history', '/admin'];
 const tabs = [
   { label: 'Stacking', icon: LiaDonateSolid, value: ROUTES?.STACKING?.DASHBOARD },
-  { label: 'Binary', icon: TbBinaryTree, value: ROUTES?.BINARY?.DASHBOARD },
+  { label: 'Matrix', icon: TbBinaryTree, value: ROUTES?.BINARY?.DASHBOARD },
   { label: 'Admin', icon: IoGameControllerOutline, value: ROUTES?.ADMIN?.HOME },
 ];
 const tabs2 = [
