@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from "react";
 import HashLoader from "@/components/HashLoader";
-import Image from "next/image";
+import Image from "next/image"; 
 
 // const plans = [
 //     { name: 'Beginner', teamMembers: '2', totalIncome: '10', upgrade: '10', netProfit: '0', loss: '0', directMembers: 0 },
