@@ -151,7 +151,6 @@ const WalletData = () => {
 
   const walletInfo = [
     { name: "Staking Income", transactions: `$${formatAmount(walletData?.wallet?.totalMyIncome || 0)}` , todayTransactions: `$${formatAmount(walletData?.wallet?.todayMyIncome || 0)}` },
-    { name: "Total Income", transactions: `$${formatAmount(walletData?.wallet?.totalEarning || 0)}`   },
     { name: "Team Commission", transactions: `$${formatAmount(walletData?.wallet?.todayTeamCommision || 0)}`   },
     { name: "Binary Income", transactions: `$${formatAmount(walletData?.wallet?.totalBinaryIncome || 0)}`  , todayTransactions: `$${formatAmount(walletData?.wallet?.todayBinaryIncome || 0)}` },
     { name: "Binary Level Income", transactions: `$${formatAmount(walletData?.wallet?.totalBinaryLevelIncome || 0)}`  , todayTransactions: `$${formatAmount(walletData?.wallet?.todayBinaryLevelIncome || 0)}` },
@@ -159,6 +158,7 @@ const WalletData = () => {
     // { name: "Binary Pending Referral Income", transactions: `$${formatAmount(walletData?.wallet?.pendingBinaryReferralIncome || 0)}` },
     // { name: "Auto Upgrade Plans", transactions: `$${formatAmount(walletData?.wallet?.autoActivationIncome || 0)}`  },
     // { name: "Collectable Income", transactions: `$${formatAmount(walletData?.wallet?.collectableBonus || 0)}` },
+    { name: "Total Income", transactions: `$${formatAmount(walletData?.wallet?.totalEarning || 0)}`   },
     { name: "Total Withdraw", transactions: `$${formatAmount(walletData?.wallet?.totalWithdraw || 0)}`  },
     // { name: "Share Income", transactions: `$${formatAmount(walletData?.wallet?.shareIncome || 0)}` },
     { name: "Total Loss", transactions: `$${formatAmount(walletData?.wallet?.lossIncome || 0)}`  , todayTransactions: `$${formatAmount(walletData?.wallet?.todayLossIncome || 0)}` },

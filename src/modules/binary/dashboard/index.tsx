@@ -10,10 +10,10 @@ import Card from '@/components/Card';
 const index = () => {
   return (
     <>
-      <Summery />
+      {/* <Summery /> */}
       <BuyIds />
       <PlansSummery />
-      <RecentBonus />
+      {/* <RecentBonus /> */}
     </>
   )
 }
