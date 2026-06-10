@@ -38,6 +38,11 @@ const CollectCoins = () => {
             console.log(data,'calculateMiningBonusAndFeecalculateMiningBonusAndFee')
              requiredFee = String(data?.requiredBnbForMiningFee)
           }
+          if(data?.totalInvestment<=0){
+            toast.error('Kindly buy any plan to start mining.')
+            setMiningFeeLoading(false)
+            return false;
+          }
           setMiningFeeLoading(false)
           return requiredFee
         }
