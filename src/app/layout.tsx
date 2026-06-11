@@ -29,7 +29,7 @@ import { OWNER_Id } from '@/config/constants';
 
 const protectedPrefixes = ['/stacking', '/binary', '/withdraw', '/history', '/admin'];
 const tabs = [
-  { label: 'Stacking Plan', icon: LiaDonateSolid, value: ROUTES?.STACKING?.DASHBOARD },
+  { label: 'Staking Plan', icon: LiaDonateSolid, value: ROUTES?.STACKING?.DASHBOARD },
   { label: 'Matrix Plan', icon: TbBinaryTree, value: ROUTES?.BINARY?.DASHBOARD },
   { label: 'Admin', icon: IoGameControllerOutline, value: ROUTES?.ADMIN?.HOME },
 ];
@@ -177,7 +177,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Header />
 
                <div className="w-full p-4">
-                <Tab tabs={visibleTabs} style='min-w-20 sm:w-32' onTabChange={handleTabClick} defaultTab={ROUTES?.STACKING?.DASHBOARD} />
+                <Tab tabs={visibleTabs} style='min-w-20 sm:w-40' onTabChange={handleTabClick} defaultTab={ROUTES?.STACKING?.DASHBOARD} />
               </div>
 
               {isBinaryPage && (

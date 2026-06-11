@@ -12,7 +12,7 @@ const index = () => {
     <>
       {/* <Summery /> */}
       <BuyIds />
-      <PlansSummery />
+      {/* <PlansSummery /> */}
       {/* <RecentBonus /> */}
     </>
   )
