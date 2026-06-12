@@ -14,7 +14,7 @@ const tabs = [
   { label: 'My Income',value:'myIncome'  },
   { label: 'Team Income', value:'teamIncome' },
   { label: 'M Level', value:'binaryLevelIncome' },
-  { label: 'M Referral ', value:'binaryReferralIncome' },
+  { label: 'M Upgrade ', value:'binaryUpgradeIncome' },
   { label: 'Withdraw', value:'withdraw' },
 ];
 const Table = () => {
