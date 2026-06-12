@@ -13,8 +13,8 @@ import { normalizeWalletAddress } from "@/utils/func";
 const tabs = [
   { label: 'My Income',value:'myIncome'  },
   { label: 'Team Commission', value:'teamIncome' },
-  { label: 'M Level', value:'binaryLevelIncome' },
-  { label: 'M Upgrade ', value:'binaryUpgradeIncome' },
+  { label: 'Matrix Level', value:'binaryLevelIncome' },
+  { label: 'Matrix Upgrade ', value:'binaryUpgradeIncome' },
   { label: 'Withdraw', value:'withdraw' },
 ];
 const Table = () => {
@@ -61,7 +61,8 @@ const Table = () => {
         </p>
       </div>
 
-     <Tab tabs={tabs} onTabChange={handleTabClick} defaultTab="myIncome"/>
+     <Tab tabs={tabs} style='min-w-32 sm:min-w-40' onTabChange={handleTabClick} defaultTab="myIncome"/>
+
       <div className="mt-3">
         <ViewHistoryTable data={transactions} loading={loading} type={selectTab} totalPaginationPages={totalPaginationPages} paginationCurrentPage={paginationCurrentPage} setPaginationCurrentPage={setPaginationCurrentPage}/>
       </div>
