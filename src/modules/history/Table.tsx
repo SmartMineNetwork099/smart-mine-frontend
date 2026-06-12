@@ -47,9 +47,8 @@ const Table = () => {
         }
     }
     useEffect(()=>{
-         if (!walletAddress) return;
         getUserTransactions()
-    },[walletAddress , selectTab])
+    },[walletAddress , selectTab , paginationCurrentPage])
 
   return (
     <>
