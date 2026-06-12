@@ -12,7 +12,7 @@ import { normalizeWalletAddress } from "@/utils/func";
 
 const tabs = [
   { label: 'My Income',value:'myIncome'  },
-  { label: 'Team Income', value:'teamIncome' },
+  { label: 'Team Commission', value:'teamIncome' },
   { label: 'M Level', value:'binaryLevelIncome' },
   { label: 'M Upgrade ', value:'binaryUpgradeIncome' },
   { label: 'Withdraw', value:'withdraw' },

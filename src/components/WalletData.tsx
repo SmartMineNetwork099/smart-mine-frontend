@@ -151,7 +151,7 @@ const WalletData = () => {
 
   const walletInfo = [
     { name: "Staking Income", transactions: `$${formatAmount(walletData?.wallet?.totalMyIncome || 0)}` , todayTransactions: `$${formatAmount(walletData?.wallet?.todayMyIncome || 0)}` },
-    { name: "Team Commission", transactions: `$${formatAmount(walletData?.wallet?.todayTeamCommision || 0)}`   },
+    { name: "Team Commission", transactions: `$${formatAmount(walletData?.wallet?.totalTeamIncome || 0)}`   , todayTransactions: `$${formatAmount(walletData?.wallet?.todayTeamIncome || 0)}` },
     { name: "Matrix Upgrade Income", transactions: `$${formatAmount(walletData?.wallet?.totalBinaryUpgradeIncome || 0)}`  , todayTransactions: `$${formatAmount(walletData?.wallet?.todayBinaryUpgradeIncome || 0)}` },
     { name: "Matrix Level Income", transactions: `$${formatAmount(walletData?.wallet?.totalBinaryLevelIncome || 0)}`  , todayTransactions: `$${formatAmount(walletData?.wallet?.todayBinaryLevelIncome || 0)}` },
     { name: "Weekly Salery", transactions: `$${formatAmount(walletData?.wallet?.totalBinaryReferralIncome || 0)}`  , todayTransactions: `$${formatAmount(walletData?.wallet?.todayBinaryReferralIncome || 0)}` },
