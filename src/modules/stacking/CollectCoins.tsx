@@ -175,9 +175,7 @@ const CollectCoins = () => {
       <p className="font-semibold sm:font-bold text-xl sm:text-3xl text-white">
         Claim <span className="text-green-500">Reward</span>
       </p>
-      {/* <p className="font-semibold text-sm sm:text-base text-white text-end">
-        Stacking Amount <span className="ml-1 p-1 rounded-md border-2 border-green-500">{loading ? "Loading..." : `${roundTo4(userStackingInvestments)}`}</span>
-      </p> */}
+
       {/* ////////////////////////////////////////////////////// */}
        <div
                           className={`py-3 sm:py-4 px-3 sm:px-2 mt-2 backdrop-blur-sm text-white rounded-lg w-full sm:w-[49%] `}
@@ -185,7 +183,7 @@ const CollectCoins = () => {
               
                           <div>
                             <p className={`font-bold text-xs sm:text-base`}>
-                             Stacking Amount
+                             Staking Amount
                             </p>
                           </div>
                           <div className="sm:w-auto">
