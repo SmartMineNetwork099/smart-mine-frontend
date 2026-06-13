@@ -94,7 +94,8 @@ const MyIncomeCard = ({ myIncome, loadingBalance, onWithdraw, onSend }: Props) =
       <div className="flex items-center justify-center">
         <div className="w-[100%] sm:w-[60%]">
           <p className="text-white text-base sm:text-xl">
-            My Income :{" "}
+            {/* My Income  */}
+            Staking income: {" "}
             <span className={`text-xl font-black ${myIncome <= 0 ? "text-red-500" : "text-green-500"}`}>
               ${loadingBalance ? "Loading..." : myIncome.toLocaleString()}
             </span>

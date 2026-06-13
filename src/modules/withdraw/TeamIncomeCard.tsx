@@ -86,7 +86,8 @@ const TeamIncomeCard = ({ teamIncome, loadingBalance, onWithdraw, onSend }: Prop
       <div className="flex items-center justify-center">
         <div className="w-[100%] sm:w-[60%]">
           <p className="text-white text-base sm:text-xl">
-            Team Income :{" "}
+            {/* Team Income */}
+            Team commission:{" "}
             <span className={`text-xl font-black ${teamIncome <= 0 ? "text-red-500" : "text-green-500"}`}>
               ${loadingBalance ? "Loading..." : teamIncome.toLocaleString()}
             </span>

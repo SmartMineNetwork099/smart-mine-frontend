@@ -187,7 +187,7 @@ const StakingPlansTable = () => {
         
                     <div>
                       <p className={`font-bold text-xs sm:text-base`}>
-                        Auto Upgrade Plans
+                        Package Auto Upgrade Wallet
                       </p>
                     </div>
                     <div className="sm:w-auto">
